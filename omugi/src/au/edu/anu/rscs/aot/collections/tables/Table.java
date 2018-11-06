@@ -49,6 +49,10 @@ import fr.ens.biologie.generic.Textable;
 public interface Table 
 		extends DataContainer, Sizeable, Textable, Showable {
 	
+	// index for type of delimiters used in saving to files (cf. Textable interface)
+	public static int TABLEix = 0;
+	public static int DIMix = 1;
+	
 	/** returns the number of dimensions (=number of Dimensioners) of this storage */
 	public int ndim();
 	

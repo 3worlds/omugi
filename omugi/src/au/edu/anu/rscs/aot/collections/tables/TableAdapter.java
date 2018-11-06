@@ -43,10 +43,6 @@ import fr.cnrs.iees.OmugiException;
  */
 // Tested OK with version 0.0.1 on 6-11-2018
 public abstract class TableAdapter implements Table {
-		
-	// index for type of delimiters used in saving to files (cf. Textable interface)
-	protected static int TABLE = 0;
-	protected static int DIM = 1;
 
 	protected Dimensioner[] dimensioners;
 	
@@ -203,17 +199,17 @@ public abstract class TableAdapter implements Table {
 	@Override
 	public String toSaveableString(char[][] bdel, char[] isep) {
 		StringBuilder sb = new StringBuilder(1024);
-		sb.append(bdel[TABLE][BLOCK_OPEN])
-			.append(bdel[DIM][BLOCK_OPEN])
+		sb.append(bdel[TABLEix][BLOCK_OPEN])
+			.append(bdel[DIMix][BLOCK_OPEN])
 			.append(dimensioners[0].getLength());
 		for (int i=1; i<dimensioners.length; i++)
-			sb.append(isep[DIM]).append(dimensioners[i].getLength());
-		sb.append(bdel[DIM][BLOCK_CLOSE]);
+			sb.append(isep[DIMix]).append(dimensioners[i].getLength());
+		sb.append(bdel[DIMix][BLOCK_CLOSE]);
 		if (flatSize>0) 
 			sb.append(elementToString(0));
 		for (int i=1; i<flatSize; i++)
-			sb.append(isep[TABLE]).append(elementToString(i));
-		sb.append(bdel[TABLE][BLOCK_CLOSE]);
+			sb.append(isep[TABLEix]).append(elementToString(i));
+		sb.append(bdel[TABLEix][BLOCK_CLOSE]);
 		return sb.toString();
 	}
 				

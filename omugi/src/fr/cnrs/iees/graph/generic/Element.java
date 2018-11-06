@@ -135,5 +135,11 @@ public interface Element extends Textable {
 	 */
 	public Element newInstance();
 
+
+	// At this level of the hierarchy, there is nothing to save
+	@Override
+	public default String toSaveableString(char[][] blockDelimiters, char[] itemSeparators) {
+		return null;
+	}
 	
 }
