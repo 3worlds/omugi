@@ -111,7 +111,7 @@ public class DoubleTable extends TableAdapter {
 	}
 
 	@Override
-	public DoubleTable copy(TableAdapter from) {
+	public DoubleTable copy(Table from) {
 		if (Double.class.isAssignableFrom(from.contentType())) {
 			DoubleTable dt = (DoubleTable)from;
 			for (int i=0; i<data.length; i++)

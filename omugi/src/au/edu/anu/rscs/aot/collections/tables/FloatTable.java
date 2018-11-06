@@ -110,7 +110,7 @@ public class FloatTable extends TableAdapter {
 	}
 
 	@Override
-	public FloatTable copy(TableAdapter from) {
+	public FloatTable copy(Table from) {
 		if (Float.class.isAssignableFrom(from.contentType())) {
 			// check this is possible - maybe not
 			FloatTable ft = (FloatTable)from;

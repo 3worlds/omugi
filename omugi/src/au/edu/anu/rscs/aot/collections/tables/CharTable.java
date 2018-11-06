@@ -110,7 +110,7 @@ public class CharTable extends TableAdapter {
 	}
 
 	@Override
-	public CharTable copy(TableAdapter from) {
+	public CharTable copy(Table from) {
 		if (from.getClass().equals(getClass())) {
 			CharTable ct = (CharTable)from;
 			for (int i=0; i<data.length; i++)

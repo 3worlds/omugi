@@ -110,7 +110,7 @@ public class LongTable extends TableAdapter {
 	}
 
 	@Override
-	public LongTable copy(TableAdapter from) {
+	public LongTable copy(Table from) {
 		if (Long.class.isAssignableFrom(from.contentType())) {
 			LongTable lt = (LongTable)from;
 			for (int i=0; i<data.length; i++)

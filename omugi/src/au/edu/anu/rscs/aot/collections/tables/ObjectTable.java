@@ -116,7 +116,7 @@ public class ObjectTable<T> extends TableAdapter {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ObjectTable<T> copy(TableAdapter from) {
+	public ObjectTable<T> copy(Table from) {
 		if (contentType()==null || contentType().isAssignableFrom(from.contentType())) {
 			ObjectTable<T> ot = (ObjectTable<T>)from;
 			for (int i=0; i<data.length; i++)

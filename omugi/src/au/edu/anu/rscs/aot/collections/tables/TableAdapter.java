@@ -34,10 +34,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import fr.cnrs.iees.OmugiException;
-import fr.ens.biologie.generic.DataContainer;
-import fr.ens.biologie.generic.Sizeable;
-import fr.ens.biologie.generic.Textable;
 
+/**
+ * 
+ * @author Shayne Flint - Loooong ago.
+ * refactored by J. Gignoux Oct. 2018
+ *
+ */
+// Tested OK with version 0.0.1 on 6-11-2018
 public abstract class TableAdapter implements Table {
 		
 	// index for type of delimiters used in saving to files (cf. Textable interface)
@@ -102,7 +106,7 @@ public abstract class TableAdapter implements Table {
 //		return result;
 //	}
 
-	// TableAccess methods
+	// Table methods
 	//
 	
 	@Override
@@ -121,7 +125,7 @@ public abstract class TableAdapter implements Table {
 		return index;
 	}
 
-
+	// not tested (because not used)
 	@Override
 	public final int getFlatIndex(Object... indexes) {
 		if (indexes.length != dimensioners.length)
@@ -135,7 +139,6 @@ public abstract class TableAdapter implements Table {
 		}
 		return index;
 	}
-
 
 	@Override
 	public final int[] getIndexes(int flatIndex) {
@@ -170,14 +173,14 @@ public abstract class TableAdapter implements Table {
 	// Sizeable methods
 	//
 	
+	// NB: replaces getFlatSize();
 	@Override
 	public final int size() {
 		return flatSize;
 	}
 	
-	// other methods
+	// Textable methods
 	//
-
 
 	// CAUTION: this cannot be used to save files anymore since it is not
 	// displaying more than 10 items. Just for debugging.
@@ -196,7 +199,24 @@ public abstract class TableAdapter implements Table {
 		sb.append("}");
 		return sb.toString();
 	}
-			
+	
+	@Override
+	public String toSaveableString(char[][] bdel, char[] isep) {
+		StringBuilder sb = new StringBuilder(1024);
+		sb.append(bdel[TABLE][BLOCK_OPEN])
+			.append(bdel[DIM][BLOCK_OPEN])
+			.append(dimensioners[0].getLength());
+		for (int i=1; i<dimensioners.length; i++)
+			sb.append(isep[DIM]).append(dimensioners[i].getLength());
+		sb.append(bdel[DIM][BLOCK_CLOSE]);
+		if (flatSize>0) 
+			sb.append(elementToString(0));
+		for (int i=1; i<flatSize; i++)
+			sb.append(isep[TABLE]).append(elementToString(i));
+		sb.append(bdel[TABLE][BLOCK_CLOSE]);
+		return sb.toString();
+	}
+				
 //	public String toString(int[] indexes) {
 //		StringBuilder sb = new StringBuilder(1024);
 ////		String result = "[" + indexes[0];
@@ -210,15 +230,6 @@ public abstract class TableAdapter implements Table {
 //		return sb.toString();
 //	}
 
-	public void show(String message) {
-		System.out.println(message + " " + toString());
-	}
-
-	public void show() {
-		System.out.println(toString());
-	}
-	
-	
 	// COMPONENTS OF valueOf() methods for descendants
 	
 	/**
@@ -261,31 +272,13 @@ public abstract class TableAdapter implements Table {
 			dim[i] = new Dimensioner(dims.get(i));
 		return dim;
 	}
-	
-	@Override
-	public String toSaveableString(char[][] bdel, char[] isep) {
-		StringBuilder sb = new StringBuilder(1024);
-		sb.append(bdel[TABLE][BLOCK_OPEN])
-			.append(bdel[DIM][BLOCK_OPEN])
-			.append(dimensioners[0].getLength());
-		for (int i=1; i<dimensioners.length; i++)
-			sb.append(isep[DIM]).append(dimensioners[i].getLength());
-		sb.append(bdel[DIM][BLOCK_CLOSE]);
-		if (flatSize>0) 
-			sb.append(elementToString(0));
-		for (int i=1; i<flatSize; i++)
-			sb.append(isep[TABLE]).append(elementToString(i));
-		sb.append(bdel[TABLE][BLOCK_CLOSE]);
-		return sb.toString();
-	}
-	
-	
-	// methods specified here
-	
-	public abstract TableAdapter copy (TableAdapter from);
-	
-	public abstract Class<?> contentType();
 
+	// Showable methods
 	
+	// dummy - not tested
+	@Override
+	public void show(String header) {
+		System.out.println(header + " " + toString());
+	}
 	
 }

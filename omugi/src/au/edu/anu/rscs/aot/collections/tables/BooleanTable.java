@@ -60,10 +60,12 @@ public class BooleanTable extends TableAdapter {
 		data[index] = value;
 	}
 
+	// not tested because not used
 	public boolean get(Object... indexes) {
 		return data[getFlatIndex(indexes)];
 	}
 
+	// not tested because not used
 	public void set(boolean value, Object... indexes) {
 		data[getFlatIndex(indexes)] = value;
 	}
@@ -111,7 +113,7 @@ public class BooleanTable extends TableAdapter {
 	}
 
 	@Override
-	public BooleanTable copy(TableAdapter from) {
+	public BooleanTable copy(Table from) {
 		if (from.getClass().equals(getClass())) {
 			BooleanTable bt = (BooleanTable)from;
 			for (int i=0; i<data.length; i++)

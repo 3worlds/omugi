@@ -112,7 +112,7 @@ public class ByteTable extends TableAdapter {
 	}
 
 	@Override
-	public ByteTable copy(TableAdapter from) {
+	public ByteTable copy(Table from) {
 		if (Byte.class.isAssignableFrom(from.contentType())) {
 			ByteTable bt = (ByteTable)from;
 			for (int i=0; i<data.length; i++)

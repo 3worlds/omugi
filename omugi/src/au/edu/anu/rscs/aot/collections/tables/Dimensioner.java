@@ -44,6 +44,7 @@ public class Dimensioner {
 	
 	public Dimensioner(int length) {
 		this.last  = length - 1;
+		this.names = null;
 	}
 	
 	public Dimensioner(String... names) {
@@ -60,7 +61,7 @@ public class Dimensioner {
 	}
 	
 	public String getName(int index) {
-		if (names.length == 0)
+		if ((names==null)||(names.length == 0))
 			throw new OmugiException("Dimensioner.getName: there are no names associated with " + toString());
 		else
 			return names[index];
@@ -88,7 +89,27 @@ public class Dimensioner {
 		return result;
 	}
 
-	public String toShortString() {
-		return "[" + "0.." + last + "]";
+// This class is NOT Textable, so please stop confusion.	
+//	public String toShortString() {
+//		return "[" + "0.." + last + "]";
+//	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (Dimensioner.class.isAssignableFrom(obj.getClass())) {
+			Dimensioner dim = (Dimensioner) obj;
+			if (dim.last==last) {
+				if (names!=null) {
+					for (int i=0; i<names.length; i++)
+						if (!names[i].equals(dim.names[i]))
+							return false;
+					return true;
+				}
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
+	
 }

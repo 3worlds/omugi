@@ -113,7 +113,7 @@ public class IntTable extends TableAdapter {
 	}
 
 	@Override
-	public IntTable copy(TableAdapter from) {
+	public IntTable copy(Table from) {
 		if (Integer.class.isAssignableFrom(from.contentType())) {
 			IntTable it = (IntTable)from;
 			for (int i=0; i<data.length; i++)

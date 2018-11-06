@@ -112,7 +112,7 @@ public class StringTable extends TableAdapter {
 	}
 
 	@Override
-	public TableAdapter copy(TableAdapter from) {
+	public TableAdapter copy(Table from) {
 		if (String.class.isAssignableFrom(from.contentType())) {
 			StringTable st = (StringTable)from;
 			for (int i=0; i<data.length; i++)

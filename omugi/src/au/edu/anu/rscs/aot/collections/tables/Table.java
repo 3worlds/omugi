@@ -31,6 +31,7 @@
 package au.edu.anu.rscs.aot.collections.tables;
 
 import fr.ens.biologie.generic.DataContainer;
+import fr.ens.biologie.generic.Showable;
 import fr.ens.biologie.generic.Sizeable;
 import fr.ens.biologie.generic.Textable;
 
@@ -46,7 +47,7 @@ import fr.ens.biologie.generic.Textable;
  */
 // NB: a template Table<T> is not used because of a performance loss with primitive type wrappers
 public interface Table 
-		extends DataContainer, Sizeable, Textable {
+		extends DataContainer, Sizeable, Textable, Showable {
 	
 	/** returns the number of dimensions (=number of Dimensioners) of this storage */
 	public int ndim();
@@ -76,6 +77,10 @@ public interface Table
 //	/** returns the full content of this element as a String for saving into text files*/
 //	public String elementToToken(int flatIndex);
 	
+	public abstract Table copy (Table from);
+	
+	public abstract Class<?> contentType();
+
 	
 	// Default setters for descendants - all do nothing by default
 	// short

@@ -116,7 +116,7 @@ public class ShortTable extends TableAdapter {
 	}
 
 	@Override
-	public ShortTable copy(TableAdapter from) {
+	public ShortTable copy(Table from) {
 		if (Short.class.isAssignableFrom(from.contentType())) {
 			ShortTable st = (ShortTable) from;
 			for (int i=0; i<data.length; i++)
