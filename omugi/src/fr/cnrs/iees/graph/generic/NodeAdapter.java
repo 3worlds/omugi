@@ -8,14 +8,25 @@ import java.util.EnumMap;
  * @author gignoux - 16 août 2017
  *
  */
+// Tested through descendant SimpleNodeImpl
 public abstract class NodeAdapter extends ElementAdapter implements Node, Element {
 	
+	private GraphElementFactory<? extends Node, ? extends Edge> factory;
 	protected EnumMap<Direction,Collection<Edge>> edges = null;
+	
+	protected NodeAdapter(GraphElementFactory<? extends Node, ? extends Edge> factory) {
+		super();
+		this.factory = factory;
+	}
 
 	// NODE ==================================================================
 	
 	@Override
 	public final boolean addEdge(Edge edge, Direction direction) {
+		if ((direction==Direction.IN)&&(!edge.endNode().equals(this)))
+			return false;
+		if ((direction==Direction.OUT)&&(!edge.startNode().equals(this)))
+			return false;
 		return edges.get(direction).add(edge);
 	}
 	
@@ -78,7 +89,7 @@ public abstract class NodeAdapter extends ElementAdapter implements Node, Elemen
 			if (!list.contains(node)) {
 				list.add(node);
 				for (Edge e:node.getEdges(Direction.IN))
-					traversal(list,e.endNode(),distance-1);
+					traversal(list,e.startNode(),distance-1);
 				for (Edge e:node.getEdges(Direction.OUT))
 					traversal(list,e.endNode(),distance-1);
 			}
@@ -99,7 +110,10 @@ public abstract class NodeAdapter extends ElementAdapter implements Node, Elemen
 			if (!list.contains(node)) {
 				list.add(node);
 				for (Edge e:node.getEdges(direction))
-					traversal(list,e.endNode(),distance-1,direction);
+					if (direction.equals(Direction.OUT))
+						traversal(list,e.endNode(),distance-1,direction);
+					else 
+						traversal(list,e.startNode(),distance-1,direction);
 			}
 		}
 		return list;
@@ -123,5 +137,9 @@ public abstract class NodeAdapter extends ElementAdapter implements Node, Elemen
 		return result;
 	}
 
-	
+	@Override
+	public final GraphElementFactory<? extends Node, ? extends Edge> factory() {
+		return factory;
+	}
+
 }

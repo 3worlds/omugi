@@ -62,11 +62,8 @@ public interface Node extends Element {
 	 * <p>CAUTION: does not update the Edge start/end nodes</p>
 	 */
 	public default boolean removeEdge(Edge edge) {
-		boolean result = removeEdge(edge,Direction.IN);
-		if (result) 
-			return result;
-		else 
-			return removeEdge(edge,Direction.OUT);
+		// the | (NOT ||) because of loop edges. otherwise fine.
+		return (removeEdge(edge,Direction.IN)|removeEdge(edge,Direction.OUT));
 	}
 	
 	/**
@@ -118,16 +115,17 @@ public interface Node extends Element {
 	 */
 	public int degree(Direction direction);
 
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public default Node addConnectionsLike(Element element) {
 		Node node = (Node) element;
 		for (Edge e:node.getEdges(Direction.IN)) {
-			Edge newEdge = (Edge) e.newInstance();
-			newEdge.setNodes(e.startNode(), this);
+			GraphElementFactory<Node,Edge> f = (GraphElementFactory<Node, Edge>) e.factory();
+			Edge newEdge = f.makeEdge(e.startNode(), this);			
 		}
 		for (Edge e:node.getEdges(Direction.OUT)) {
-			Edge newEdge = (Edge) e.newInstance();
-			newEdge.setNodes(this, e.endNode());
+			GraphElementFactory<Node,Edge> f = (GraphElementFactory<Node, Edge>) e.factory();
+			Edge newEdge = f.makeEdge(this, e.endNode());
 		}
 		return this;
 	}

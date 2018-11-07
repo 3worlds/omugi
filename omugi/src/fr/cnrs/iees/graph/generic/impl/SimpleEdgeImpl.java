@@ -2,6 +2,7 @@ package fr.cnrs.iees.graph.generic.impl;
 
 import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.EdgeAdapter;
+import fr.cnrs.iees.graph.generic.GraphElementFactory;
 import fr.cnrs.iees.graph.generic.Node;
 
 /**
@@ -18,18 +19,14 @@ import fr.cnrs.iees.graph.generic.Node;
  */
 public class SimpleEdgeImpl extends EdgeAdapter {
 
-	public SimpleEdgeImpl(Node start, Node end) {
-		super(start,end);
+	protected SimpleEdgeImpl(Node start, Node end, 
+			GraphElementFactory<? extends Node, ? extends Edge> factory) {
+		super(start,end,factory);
 	}
 
 	@Override
 	public Edge clone() {
-		return new SimpleEdgeImpl(startNode(),endNode());
-	}
-	
-	@Override 
-	public Edge newInstance() {
-		return new SimpleEdgeImpl(startNode(),endNode());
+		return new SimpleEdgeImpl(startNode(),endNode(),factory());
 	}
 		
 }

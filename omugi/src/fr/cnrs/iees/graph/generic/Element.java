@@ -100,8 +100,9 @@ public interface Element extends Textable {
 	}
 	
 	/**
-	 * As traversal(), but stopping after <em>distance</em> recursion steps. For example, 
-	 * node.traversal(1) will return all the Nodes connected with only 1 edge to this one.
+	 * As traversal(), but stopping after <em>distance</em> recursion steps. For example,
+	 * node.traversal(1) will return only node, while 
+	 * node.traversal(2) will return all the Nodes connected with only 1 edge to this one.
 	 * @param distance the number of recursion steps to search
 	 * @return the connected Graph containing this instance
 	 */
@@ -129,17 +130,16 @@ public interface Element extends Textable {
 	 */
 	public Uid getId();
 
-	/**
-	 * 
-	 * @return a new instance of the same class
-	 */
-	public Element newInstance();
-
-
 	// At this level of the hierarchy, there is nothing to save
 	@Override
 	public default String toSaveableString(char[][] blockDelimiters, char[] itemSeparators) {
 		return null;
 	}
+	
+	/**
+	 * Getter for the factory that created this element
+	 * @return
+	 */
+	public GraphElementFactory<? extends Node, ? extends Edge> factory();
 	
 }

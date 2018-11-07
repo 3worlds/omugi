@@ -152,6 +152,14 @@ public class ValidPropertyTypes {
 			System.out.println(getDefaultValue(name).toString());
 		}
 	}
+	
+	/**
+	 * for looping on type names (by java class) if needed
+	 * @return
+	 */
+	static public Iterable<String> types() {
+		return typeIndex.keySet();
+	}
 
 	// DEFAULT TYPES and initialisation
 	
