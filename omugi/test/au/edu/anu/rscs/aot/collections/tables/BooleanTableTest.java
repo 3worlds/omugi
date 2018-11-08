@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.ens.biologie.generic.Textable;
+import fr.ens.biologie.generic.SaveableAsText;
 
 // TODO: Since the code for tables is generated, the tests should also be generated.
 // meanwhile, tests not written for other table types 
@@ -125,8 +125,8 @@ class BooleanTableTest {
 	@Test
 	void testValueOf() {
 		String table = "([3,2]false,true,false,true,false,true)";
-		char[][] bdel = {Textable.BRACKETS,Textable.SQUARE_BRACKETS};
-		char[] isep = {Textable.COMMA,Textable.COMMA};
+		char[][] bdel = {SaveableAsText.BRACKETS,SaveableAsText.SQUARE_BRACKETS};
+		char[] isep = {SaveableAsText.COMMA,SaveableAsText.COMMA};
 		BooleanTable tb2 = BooleanTable.valueOf(table, bdel, isep);
 		assertNotNull(tb2);
 		assertFalse(tb2.getWithFlatIndex(0));

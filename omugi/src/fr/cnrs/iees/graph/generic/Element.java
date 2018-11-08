@@ -130,12 +130,6 @@ public interface Element extends Textable {
 	 */
 	public Uid getId();
 
-	// At this level of the hierarchy, there is nothing to save
-	@Override
-	public default String toSaveableString(char[][] blockDelimiters, char[] itemSeparators) {
-		return null;
-	}
-	
 	/**
 	 * Getter for the factory that created this element
 	 * @return

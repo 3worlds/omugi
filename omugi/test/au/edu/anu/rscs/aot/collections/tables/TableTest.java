@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.ens.biologie.generic.Textable;
+import fr.ens.biologie.generic.SaveableAsText;
 
 class TableTest {
 
@@ -89,14 +89,14 @@ class TableTest {
 
 	@Test
 	void testGetBlockContent() {
-		assertEquals(TableAdapter.getBlockContent("[5,3,2]",Textable.SQUARE_BRACKETS),"5,3,2");
+		assertEquals(TableAdapter.getBlockContent("[5,3,2]",SaveableAsText.SQUARE_BRACKETS),"5,3,2");
 	}
 
 	@Test
 	void testReadDimensioners() {
 		Dimensioner[] dims = TableAdapter.readDimensioners("[5,3,2]", 
-			Textable.SQUARE_BRACKETS, 
-			Textable.COMMA);
+			SaveableAsText.SQUARE_BRACKETS, 
+			SaveableAsText.COMMA);
 		assertEquals(dims.length,3);
 		for (int i=0; i<dims.length; i++) 
 			assertEquals(dims[i],tb.getDimensioners()[i]);
@@ -104,8 +104,8 @@ class TableTest {
 
 	@Test
 	void testToSaveableString() {
-		char[][] bdel = {Textable.BRACKETS,Textable.TRIANGULAR_BRACKETS};
-		char[] isep = {Textable.BLANK,Textable.PLUS};
+		char[][] bdel = {SaveableAsText.BRACKETS,SaveableAsText.TRIANGULAR_BRACKETS};
+		char[] isep = {SaveableAsText.BLANK,SaveableAsText.PLUS};
 		show("testToSaveableString",tb.toSaveableString(bdel, isep));
 		assertEquals(tb.toSaveableString(bdel, isep),"(<5+3+2>false false false false false "
 			+ "false false false false false false false false false false false false false "

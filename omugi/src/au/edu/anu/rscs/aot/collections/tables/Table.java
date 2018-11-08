@@ -31,6 +31,7 @@
 package au.edu.anu.rscs.aot.collections.tables;
 
 import fr.ens.biologie.generic.DataContainer;
+import fr.ens.biologie.generic.SaveableAsText;
 import fr.ens.biologie.generic.Showable;
 import fr.ens.biologie.generic.Sizeable;
 import fr.ens.biologie.generic.Textable;
@@ -47,7 +48,7 @@ import fr.ens.biologie.generic.Textable;
  */
 // NB: a template Table<T> is not used because of a performance loss with primitive type wrappers
 public interface Table 
-		extends DataContainer, Sizeable, Textable, Showable {
+		extends DataContainer, Sizeable, Textable, Showable, SaveableAsText {
 	
 	// index for type of delimiters used in saving to files (cf. Textable interface)
 	public static int TABLEix = 0;
