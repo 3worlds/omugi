@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import au.edu.anu.rscs.aot.util.Uid;
+import fr.cnrs.iees.graph.generic.Direction;
 import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Node;
 
@@ -46,6 +47,10 @@ class SimpleEdgeImplTest {
 		e5 = f.makeEdge(n3,n4);
 	}
 
+	private void show(String method,String text) {
+		System.out.println(method+": "+text);
+	}
+	
 	@Test
 	void testSimpleEdgeImpl() {
 		assertNotNull(e1);
@@ -54,76 +59,106 @@ class SimpleEdgeImplTest {
 	@Test
 	void testClone() {
 		Edge e = e2.clone();
-	}
-
-	@Test
-	void testNewInstance() {
-		fail("Not yet implemented");
+		assertNotNull(e);
+		assertEquals(e.startNode().getId(),e2.startNode().getId());
 	}
 
 	@Test
 	void testToDetailedString() {
-		fail("Not yet implemented");
+		show("testToDetailedString",e5.toDetailedString());
+		assertTrue(e5.toDetailedString().contains(n4.getId().toString()));
 	}
 
 	@Test
 	void testDisconnect() {
-		fail("Not yet implemented");
+		assertEquals(n2.degree(),5);
+		e4.disconnect();
+		assertEquals(n2.degree(),4);
 	}
 
 	@Test
 	void testTraversalInt() {
-		fail("Not yet implemented");
+//		for (Node n:e4.traversal(1))
+//			show("testTraversalInt",nodes.get(n.getId()));
+		assertTrue(e4.traversal(1).contains(n2));
+		assertTrue(e4.traversal(1).contains(n3));
+		assertFalse(e4.traversal(1).contains(n1));
+		assertFalse(e4.traversal(1).contains(n4));
+
+		assertTrue(e4.traversal(2).contains(n2));
+		assertTrue(e4.traversal(2).contains(n3));
+		assertTrue(e4.traversal(2).contains(n1));
+		assertTrue(e4.traversal(2).contains(n4));
+
 	}
 
 	@Test
 	void testTraversalIntDirection() {
-		fail("Not yet implemented");
+//		for (Node n:e2.traversal(3,Direction.IN))
+//			show("testTraversalIntDirection",nodes.get(n.getId()));
+		assertTrue(e2.traversal(3,Direction.IN).contains(n1));
+		assertTrue(e2.traversal(3,Direction.IN).contains(n2));
+		assertFalse(e2.traversal(3,Direction.IN).contains(n3));
+
+		assertTrue(e2.traversal(3,Direction.OUT).contains(n1));
+		assertTrue(e2.traversal(3,Direction.OUT).contains(n2));
+		assertTrue(e2.traversal(3,Direction.OUT).contains(n3));
 	}
 
 	@Test
 	void testStartNode() {
-		fail("Not yet implemented");
+		assertEquals(e1.startNode(),n1);
+		assertEquals(e3.startNode(),n2);
 	}
 
 	@Test
 	void testEndNode() {
-		fail("Not yet implemented");
+		assertEquals(e1.endNode(),n2);
+		assertEquals(e3.endNode(),n2);
 	}
 
 	@Test
 	void testOtherNode() {
-		fail("Not yet implemented");
+		assertEquals(e1.otherNode(n1),n2);
+		assertEquals(e3.otherNode(n2),n2);
 	}
 
 	@Test
 	void testSetStartNode() {
-		fail("Not yet implemented");
+		e2.setStartNode(n1);
+		assertEquals(e2.startNode(),n1);
 	}
 
 	@Test
 	void testSetEndNode() {
-		fail("Not yet implemented");
+		e2.setEndNode(n2);
+		assertEquals(e2.endNode(),n2);
 	}
 
 	@Test
 	void testToShortString() {
-		fail("Not yet implemented");
+		show("testToShortString",e2.toShortString());
+		assertTrue(e2.toShortString().contains(e2.getId().toString()));
 	}
 
 	@Test
 	void testSetId() {
-		fail("Not yet implemented");
+		e1.setId(Uid.nullUid());
+		show("testSetId",e1.getId().toString());
+		assertEquals(e1.getId().toString(),"000000000000-0000000000000000-0000");
 	}
 
 	@Test
 	void testGetId() {
-		fail("Not yet implemented");
+		show("testGetId",e1.getId().toString());
+		e1.setId(Uid.nullUid());
+		assertEquals(e1.getId().toString(),"000000000000-0000000000000000-0000");
 	}
 
 	@Test
 	void testToString() {
-		fail("Not yet implemented");
+		show("testToString",e2.toString());
+		assertTrue(e2.toString().contains(n2.getId().toString()));
 	}
 
 }

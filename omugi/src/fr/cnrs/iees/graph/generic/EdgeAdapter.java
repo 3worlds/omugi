@@ -1,6 +1,10 @@
 package fr.cnrs.iees.graph.generic;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import fr.cnrs.iees.OmugiException;
 
@@ -63,17 +67,21 @@ public abstract class EdgeAdapter extends ElementAdapter implements Element, Edg
 	
 	@Override
 	public final Collection<Node> traversal(int distance) {
-		// NB: since the start node and end node are connected through this edge, any traversal
-		// will contain both of them
-		return start.traversal(distance);
+		int dist=distance;
+		Collection<Node> result1 = start.traversal(distance);
+		Collection<Node> result2 = end.traversal(dist);
+		Set<Node> result = new HashSet<Node>();
+		result.addAll(result1);
+		result.addAll(result2);
+		return result;
 	}
 
 	@Override
 	public final Collection<? extends Node> traversal(int distance, Direction direction) {
 		if (direction==Direction.IN)
-			return end.traversal(distance,direction);
-		else if (direction==Direction.OUT)
 			return start.traversal(distance,direction);
+		else if (direction==Direction.OUT)
+			return end.traversal(distance,direction);
 		return null;
 	}
 

@@ -6,6 +6,8 @@ import fr.cnrs.iees.graph.properties.SimplePropertyList;
 
 /**
  * A simple factory for graph elements - mainly for testing purposes.
+ * Ideally this should be grouped with the Graph interface in a graph implementation (to
+ * make node and edge creation consistent with graph constraints).
  * 
  * @author Jacques Gignoux - 7 nov. 2018
  *
