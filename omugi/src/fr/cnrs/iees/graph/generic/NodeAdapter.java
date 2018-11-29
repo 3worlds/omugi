@@ -11,10 +11,10 @@ import java.util.EnumMap;
 // Tested through descendant SimpleNodeImpl
 public abstract class NodeAdapter extends ElementAdapter implements Node, Element {
 	
-	private GraphElementFactory<? extends Node, ? extends Edge> factory;
+	private GraphElementFactory factory;
 	protected EnumMap<Direction,Collection<Edge>> edges = null;
 	
-	protected NodeAdapter(GraphElementFactory<? extends Node, ? extends Edge> factory) {
+	protected NodeAdapter(GraphElementFactory factory) {
 		super();
 		this.factory = factory;
 	}
@@ -138,7 +138,7 @@ public abstract class NodeAdapter extends ElementAdapter implements Node, Elemen
 	}
 
 	@Override
-	public final GraphElementFactory<? extends Node, ? extends Edge> factory() {
+	public final GraphElementFactory factory() {
 		return factory;
 	}
 

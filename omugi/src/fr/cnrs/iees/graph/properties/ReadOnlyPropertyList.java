@@ -38,22 +38,8 @@ import fr.ens.biologie.generic.Sizeable;
  * @author gignoux - 15 juin 2017
  *
  */
-// This is a temporary version - see what happens to isProperty(), which depends
-// on PropertyType.java, which is a complete mess.
 public interface ReadOnlyPropertyList 
 		extends PropertyListGetters, Sizeable, DataContainer {
-	
-//	@Override
-//	public default boolean isPropertyType(String key, String className) {
-//		try {
-////			String fullClassName = PropertyType.toJavaClassName(className);
-//			String fullClassName = ValidPropertyTypes.getJavaClassName(className);
-//			Object value = getPropertyValue(key);
-//			return fullClassName.equals(value.getClass().getName());
-//		} catch (Exception e) {
-//			return false;
-//		}
-//	}
 
 	public default boolean hasTheSamePropertiesAs(ReadOnlyPropertyList list) {
 		if (size()==list.size())
@@ -66,5 +52,11 @@ public interface ReadOnlyPropertyList
 		return false;
 	}
 	
-	public SimplePropertyList clone();
+	@Override
+	public default DataContainer clear() {
+		// do nothing, this is read-only
+		return this;
+	}
+	
+	public ReadOnlyPropertyList clone();
 }

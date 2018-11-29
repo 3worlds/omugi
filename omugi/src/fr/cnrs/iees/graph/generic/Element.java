@@ -134,6 +134,6 @@ public interface Element extends Textable {
 	 * Getter for the factory that created this element
 	 * @return
 	 */
-	public GraphElementFactory<? extends Node, ? extends Edge> factory();
+	public GraphElementFactory factory();
 	
 }

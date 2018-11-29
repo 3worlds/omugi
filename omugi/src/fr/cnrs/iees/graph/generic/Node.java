@@ -115,20 +115,18 @@ public interface Node extends Element {
 	 */
 	public int degree(Direction direction);
 
-	@SuppressWarnings({ "unchecked" })
 	@Override
 	public default Node addConnectionsLike(Element element) {
 		Node node = (Node) element;
 		for (Edge e:node.getEdges(Direction.IN)) {
-			GraphElementFactory<Node,Edge> f = (GraphElementFactory<Node, Edge>) e.factory();
-			Edge newEdge = f.makeEdge(e.startNode(), this);			
+			GraphElementFactory f = (GraphElementFactory) e.factory();
+			f.makeEdge(e.startNode(), this);			
 		}
 		for (Edge e:node.getEdges(Direction.OUT)) {
-			GraphElementFactory<Node,Edge> f = (GraphElementFactory<Node, Edge>) e.factory();
-			Edge newEdge = f.makeEdge(this, e.endNode());
+			GraphElementFactory f = (GraphElementFactory) e.factory();
+			f.makeEdge(this, e.endNode());
 		}
 		return this;
 	}
-
 	
 }

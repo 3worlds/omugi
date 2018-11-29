@@ -46,4 +46,7 @@ package fr.cnrs.iees.graph.properties;
 public interface SimplePropertyList 
 	extends PropertyListSetters, ReadOnlyPropertyList  {
 	
+	@Override
+	public abstract SimplePropertyList clone();
+	
 }

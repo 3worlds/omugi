@@ -14,7 +14,7 @@ import fr.cnrs.iees.OmugiException;
  */
 public abstract class EdgeAdapter extends ElementAdapter implements Element, Edge {
 	
-	private GraphElementFactory<? extends Node, ? extends Edge> factory;
+	private GraphElementFactory factory;
 	private Node start = null;
 	private Node end = null;
 	
@@ -33,7 +33,7 @@ public abstract class EdgeAdapter extends ElementAdapter implements Element, Edg
 	 * @param end the end Node
 	 */
 	protected EdgeAdapter(Node start, Node end, 
-			GraphElementFactory<? extends Node, ? extends Edge> factory) {
+			GraphElementFactory factory) {
 		super();
 		this.factory = factory;
 		this.start = start;
@@ -84,7 +84,7 @@ public abstract class EdgeAdapter extends ElementAdapter implements Element, Edg
 	}
 
 	@Override
-	public final GraphElementFactory<? extends Node, ? extends Edge> factory() {
+	public final GraphElementFactory factory() {
 		return factory;
 	}
 	

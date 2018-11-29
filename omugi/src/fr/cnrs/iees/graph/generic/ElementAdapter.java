@@ -32,11 +32,19 @@ public abstract class ElementAdapter implements Element {
 	
 	// TEXTABLE
 
-	
+	@Override
+	public String toUniqueString() {
+		return getClass().getSimpleName()+ " id=" + id.toString();
+	}
 
 	@Override
+	public String toShortString() {
+		return getClass().getSimpleName();
+	}
+	
+	@Override
 	public String toDetailedString() {
-		return getClass().getSimpleName()+ " id=" + id.toString();
+		return toUniqueString();
 	}
 	
 	@Override

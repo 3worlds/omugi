@@ -1,12 +1,12 @@
 package fr.cnrs.iees.graph.io.impl;
 
-import fr.cnrs.iees.graph.generic.DataElement;
 import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Element;
 import fr.cnrs.iees.graph.generic.Graph;
 import fr.cnrs.iees.graph.generic.Node;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.graph.io.ValidPropertyTypes;
+import fr.cnrs.iees.graph.properties.ReadOnlyPropertyList;
 
 import java.io.*;
 import java.util.HashMap;
@@ -16,15 +16,17 @@ import au.edu.anu.rscs.aot.collections.tables.Table;
 import au.edu.anu.rscs.aot.util.Uid;
 
 /**
- * Old code refactored.
- * cf. http://graphml.graphdrawing.org/
+ * <p>This class implemented mainly as a workbench. To implement a GraphmlImporter, consider
+ * using that of  <a href="https://jgrapht.org/">JGraphT</a></p>
+ * <p>Old code refactored.
+ * cf. http://graphml.graphdrawing.org/</p>
  * @author gignoux
  *
  * @param <N> Node type
  * @param <E> Edge type
  */
 // tested with version 0.0.1 on a graph of SimpleNodes and Edges (ie no data) OK on 7/11/2018
-// TODO: tests with property lists.
+// tested with version 0.0.1 on a graph of DataNodes and DataEdges OK on 29/11/2018
 public class GraphmlExporter<N extends Node, E extends Edge> implements GraphExporter<N,E> {
 
 	// the output file
@@ -65,26 +67,36 @@ public class GraphmlExporter<N extends Node, E extends Edge> implements GraphExp
 
 	// dirty (but real!) work
 	
+	// mapping of graphml attribute types to omugi property types.
+	// TODO: graphml allows for structured content in attributes
+	// so it should be possible to save any data type using saveableastext and valueOf methods
 	private void initTypes() {
 		// general case: all valid property types map map to a graphml string
 		// including tables but they have  a valueof method
 		for (String key:ValidPropertyTypes.types()) {
-			types.put(key, "string");
-			warnings.put(key, "  <!-- GraphML mapping for type "+key+"-->");
+			if (key.endsWith("Table")) {
+				types.put(key, "string");
+				warnings.put(key, "  <!-- GraphML mapping for type "+key+" -->");
+			}
 		}
 		// particular case: numbers and booleans
 		types.put("Byte", "int");
+		warnings.put("Byte", "  <!-- GraphML mapping for type Byte -->");
+		types.put("Char", "string");
+		warnings.put("Char", "  <!-- GraphML mapping for type Char -->");
 		types.put("Short", "int");
+		warnings.put("Short", "  <!-- GraphML mapping for type Short -->");
 		types.put("Integer", "int");
 		types.put("Long", "long");
 		types.put("Float", "float");
 		types.put("Double", "double");
 		types.put("Boolean", "boolean");
+		types.put("String", "string");
 	}
 	
 	private String writeData(Element e) {
-		if (DataElement.class.isAssignableFrom(e.getClass())) {
-			DataElement de = (DataElement) e;
+		if (ReadOnlyPropertyList.class.isAssignableFrom(e.getClass())) {
+			ReadOnlyPropertyList de = (ReadOnlyPropertyList) e;
 			StringBuilder sb = new StringBuilder();
 			for (String key: de.getKeysAsSet()) {
 				// record element property/attribute name and type
@@ -97,7 +109,11 @@ public class GraphmlExporter<N extends Node, E extends Edge> implements GraphExp
 					.append(key)
 					.append("\">");
 				Object o = de.getPropertyValue(key);
-				if (Table.class.isAssignableFrom(o.getClass())) {
+				if (o==null) {
+					// if type is unknown, put an empty String
+					sb.append("\"\"</data>\n");
+				}
+				else if (Table.class.isAssignableFrom(o.getClass())) {
 					Table t = (Table) o;
 					char[][] bdel = new char[2][2];
 					bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
@@ -105,12 +121,13 @@ public class GraphmlExporter<N extends Node, E extends Edge> implements GraphExp
 					char[] isep = new char[2];
 					isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
 					isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
+					sb.append("\n        ");
 					sb.append(t.toSaveableString(bdel, isep));
+					sb.append("\n      </data>\n");
 				}
 				// TODO: other types of saveable properties ?
 				else 
-					sb.append(de.getPropertyValue(key));
-				sb.append("      </data>\n");
+					sb.append(de.getPropertyValue(key)).append("</data>\n");
 			}
 			return sb.toString();
 		}
@@ -119,34 +136,60 @@ public class GraphmlExporter<N extends Node, E extends Edge> implements GraphExp
 	
 	private void writeKeys(PrintWriter w) {
 		for (String key:nodeKeys.keySet()) {
-			w.println(warnings.get(nodeKeys.get(key)));
+			String warning = warnings.get(nodeKeys.get(key));
+			if (warning!=null)
+				w.println(warning);
+			// key name
 			w.print("  <key id=\"");
 			w.print(key);
+			// key scope ("node", "edge", "all")
 			if (edgeKeys.containsKey(key))
 				w.print("\" for=\"all\" attr.name=\"");
 			else
 				w.print("\" for=\"node\" attr.name=\"");
-			w.print(key);
+			w.print(key); // ??
+			// key type - null value, ie unknown type, mapped to string
 			w.print("\" attr.type=\"");
-			w.print(types.get(nodeKeys.get(key))); 
+			String type = types.get(nodeKeys.get(key));
+			if (type!=null)
+				w.print(type);
+			else
+				w.print("string");
 			w.println("\">");
+			// key default value
 			w.print("    <default>");
-			w.print(ValidPropertyTypes.getDefaultValue(nodeKeys.get(key)));
+			if (type!=null)
+				w.print(ValidPropertyTypes.getDefaultValue(nodeKeys.get(key)));
+			else
+				w.print(ValidPropertyTypes.getDefaultValue("String"));
 			w.println("</default>");
 			w.println("  </key>");
 		}
 		for (String key:edgeKeys.keySet())
 			if (!nodeKeys.containsKey(key)) {
-				w.println(warnings.get(edgeKeys.get(key)));
+				String warning = warnings.get(edgeKeys.get(key));
+				if (warning!=null)
+					w.println(warning);
+				// key name
 				w.print("  <key id=\"");
 				w.print(key);
+				// key scope ("node", "edge", "all")
 				w.print("\" for=\"edge\" attr.name=\"");
 				w.print(key);
+				// key type - null value, ie unknown type, mapped to string
 				w.print("\" attr.type=\"");
-				w.print(types.get(edgeKeys.get(key)));
+				String type = types.get(edgeKeys.get(key));
+				if (type!=null)
+					w.print(type);
+				else
+					w.print("string");
 				w.println("\">");
+				// key default value
 				w.print("    <default>");
-				w.print(ValidPropertyTypes.getDefaultValue(edgeKeys.get(key)));
+				if (type!=null)
+					w.print(ValidPropertyTypes.getDefaultValue(edgeKeys.get(key)));
+				else
+					w.print(ValidPropertyTypes.getDefaultValue("String"));
 				w.println("</default>");
 				w.println("  </key>");
 		}

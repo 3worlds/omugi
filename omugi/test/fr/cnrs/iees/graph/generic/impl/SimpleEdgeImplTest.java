@@ -16,8 +16,8 @@ import fr.cnrs.iees.graph.generic.Node;
 class SimpleEdgeImplTest {
 
 	Node n1;
-	SimpleNodeImpl n2, n3, n4;
-	SimpleEdgeImpl e1, e2, e3, e4, e5;
+	Node n2, n3, n4;
+	Edge e1, e2, e3, e4, e5;
 	Map<Uid,String> nodes;
 	
 	// little test graph:
@@ -30,15 +30,15 @@ class SimpleEdgeImplTest {
 	
 	@BeforeEach
 	private void init() {
-		SimpleGraphFactory f = new SimpleGraphFactory();
+		DefaultGraphFactory f = new DefaultGraphFactory(2);
 		nodes = new HashMap<Uid,String>();
 		n1 = f.makeNode();
 		nodes.put(n1.getId(), "n1");
-		n2 = f.makeNode(2);
+		n2 = f.makeNode();
 		nodes.put(n2.getId(), "n2");
-		n3 = f.makeNode(2);
+		n3 = f.makeNode();
 		nodes.put(n3.getId(), "n3");
-		n4 = f.makeNode(1);
+		n4 = f.makeNode();
 		nodes.put(n4.getId(), "n4");
 		e1 = f.makeEdge(n1,n2);
 		e2 = f.makeEdge(n2,n1);
@@ -54,13 +54,6 @@ class SimpleEdgeImplTest {
 	@Test
 	void testSimpleEdgeImpl() {
 		assertNotNull(e1);
-	}
-
-	@Test
-	void testClone() {
-		Edge e = e2.clone();
-		assertNotNull(e);
-		assertEquals(e.startNode().getId(),e2.startNode().getId());
 	}
 
 	@Test

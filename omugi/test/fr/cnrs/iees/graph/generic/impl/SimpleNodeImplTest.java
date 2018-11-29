@@ -16,7 +16,7 @@ import fr.cnrs.iees.graph.generic.Node;
 class SimpleNodeImplTest {
 
 	Node n1;
-	SimpleNodeImpl n2, n3, n4;
+	Node n2, n3, n4;
 	Edge e1, e2, e3, e4, e5;
 	Map<Uid,String> nodes;
 	
@@ -30,15 +30,15 @@ class SimpleNodeImplTest {
 	
 	@BeforeEach
 	private void init() {
-		SimpleGraphFactory f = new SimpleGraphFactory();
+		DefaultGraphFactory f = new DefaultGraphFactory(2);
 		nodes = new HashMap<Uid,String>();
 		n1 = f.makeNode();
 		nodes.put(n1.getId(), "n1");
-		n2 = f.makeNode(2);
+		n2 = f.makeNode();
 		nodes.put(n2.getId(), "n2");
-		n3 = f.makeNode(2);
+		n3 = f.makeNode();
 		nodes.put(n3.getId(), "n3");
-		n4 = f.makeNode(1);
+		n4 = f.makeNode();
 		nodes.put(n4.getId(), "n4");
 		e1 = f.makeEdge(n1,n2);
 		e2 = f.makeEdge(n2,n1);
@@ -109,13 +109,6 @@ class SimpleNodeImplTest {
 		
 		assertFalse(n2.traversal(2,Direction.IN).contains(n3));
 		assertTrue(n2.traversal(2,Direction.OUT).contains(n3));
-	}
-
-	@Test
-	void testClone() {
-		Node n = n2.clone();
-		show("testClone",n2.toShortString()+" cloned as "+n.toShortString());
-		assertNotNull(n);
 	}
 
 	@Test

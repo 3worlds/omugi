@@ -39,7 +39,7 @@ public class SimpleNodeImpl extends NodeAdapter {
 	/**
 	 * Standard constructor with initial capacity of edge lists of 10
 	 */
-	protected SimpleNodeImpl(GraphElementFactory<? extends Node, ? extends Edge> factory) {
+	protected SimpleNodeImpl(GraphElementFactory factory) {
 		super(factory);
 		edges = new EnumMap<Direction,Collection<Edge>>(Direction.class);
 		// initial capacity is 10 - should be enough for most graphs
@@ -52,7 +52,7 @@ public class SimpleNodeImpl extends NodeAdapter {
 	 * @param capacity
 	 */
 	protected SimpleNodeImpl(int capacity,
-			GraphElementFactory<? extends Node, ? extends Edge> factory) {
+			GraphElementFactory factory) {
 		super(factory);
 		edges = new EnumMap<Direction,Collection<Edge>>(Direction.class);
 		edges.put(Direction.IN,new ArrayList<Edge>(capacity));
@@ -85,10 +85,5 @@ public class SimpleNodeImpl extends NodeAdapter {
 		List<Node> result = new LinkedList<Node>(); 
 		traversal(result,this,distance,direction);
 		return result;
-	}
-
-	@Override
-	public Node clone() {
-		return new SimpleNodeImpl(factory());
 	}
 }

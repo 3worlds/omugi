@@ -1,5 +1,6 @@
 package fr.cnrs.iees.graph.generic;
 
+import fr.cnrs.iees.graph.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.graph.properties.SimplePropertyList;
 
 /**
@@ -23,18 +24,18 @@ import fr.cnrs.iees.graph.properties.SimplePropertyList;
  *
  * @param <N>
  */
-public interface GraphElementFactory<N extends Node, E extends Edge> {
-	
-	public N makeNode();
-	
-	public N makeNode(int capacity);
-	
-	public N makeNode(SimplePropertyList props);
+public interface GraphElementFactory {
 
-	public N makeNode(int capacity, SimplePropertyList props);
+	public Node makeNode();
 	
-	public E makeEdge(Node start, Node end);
+	public ReadOnlyDataNode makeNode(ReadOnlyPropertyList props);
+
+	public DataNode makeNode(SimplePropertyList props);
+
+	public Edge makeEdge(Node start, Node end);
 	
-	public E makeEdge(Node start, Node end, SimplePropertyList props);
+	public ReadOnlyDataEdge makeEdge(Node start, Node end, ReadOnlyPropertyList props);
+	
+	public DataEdge makeEdge(Node start, Node end, SimplePropertyList props);
 	
 }
