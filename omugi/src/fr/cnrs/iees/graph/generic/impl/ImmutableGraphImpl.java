@@ -19,7 +19,9 @@ import fr.ens.biologie.optimisation.QuickListOfLists;
 
 /**
  * Implementation of an immutable Graph (no change in Nodes or Edges lists).
- * Meant to be fast for searching by id
+ * Meant to be fast for searching by id. Edges are not stored in the graph as they
+ * are stored in the nodes. 
+ * 
  * @author gignoux - 6 sept. 2017
  *
  */
@@ -31,7 +33,7 @@ public class ImmutableGraphImpl<N extends Node,E extends Edge>
 	/** for fast searching on node Id */	
 	protected Map<Uid,N> nodes = new HashMap<>();
 	/** for fast iteration on nodes */
-	protected ArrayList<N> nodeList = null; // ArrayList --> comodification error
+	protected ArrayList<N> nodeList = null; // ArrayList --> comodification error but normally one should never remove a node from this class
 	
 	// for descendants only
 	protected ImmutableGraphImpl() {
