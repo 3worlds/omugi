@@ -1,8 +1,39 @@
+/**************************************************************************
+ *  OMUGI - One More Ultimate Graph Implementation                        *
+ *                                                                        *
+ *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *       shayne.flint@anu.edu.au                                          * 
+ *       jacques.gignoux@upmc.fr                                          *
+ *       ian.davies@anu.edu.au                                            * 
+ *                                                                        *
+ *  OMUGI is an API to implement graphs, as described by graph theory,    *
+ *  but also as more commonly used in computing - e.g. dynamic graphs.    *
+ *  It interfaces with JGraphT, an API for mathematical graphs, and       *
+ *  GraphStream, an API for visual graphs.                                *
+ *                                                                        *
+ **************************************************************************                                       
+ *  This file is part of OMUGI (One More Ultimate Graph Implementation).  *
+ *                                                                        *
+ *  OMUGI is free software: you can redistribute it and/or modify         *
+ *  it under the terms of the GNU General Public License as published by  *
+ *  the Free Software Foundation, either version 3 of the License, or     *
+ *  (at your option) any later version.                                   *
+ *                                                                        *
+ *  OMUGI is distributed in the hope that it will be useful,              *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *  GNU General Public License for more details.                          *                         
+ *                                                                        *
+ *  You should have received a copy of the GNU General Public License     *
+ *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
+ *                                                                        *
+ **************************************************************************/
 package fr.cnrs.iees.graph.generic.impl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+import au.edu.anu.rscs.aot.collections.DynamicList;
 import au.edu.anu.rscs.aot.util.Uid;
 import fr.cnrs.iees.graph.generic.Direction;
 import fr.cnrs.iees.graph.generic.DynamicGraph;
@@ -13,6 +44,7 @@ import fr.cnrs.iees.graph.generic.Node;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.ens.biologie.generic.Sizeable;
 import fr.ens.biologie.generic.Textable;
+import fr.ens.biologie.optimisation.QuickListOfLists;
 
 /**
  * A very lightweight implementation of a Mutable graph - it only keeps the root
@@ -22,12 +54,13 @@ import fr.ens.biologie.generic.Textable;
  * @author gignoux - 6 sept. 2017
  *
  */
+// TODO: idea: a sealable graph, dynamic for a while and then immutable -- first using
+// DynamicList, then ArrayList ; use case = configuration in aot.
 public class MutableGraphImpl<N extends Node, E extends Edge> 
 		implements Graph<N,E>, DynamicGraph<N, E>, Sizeable, Textable {
 
-	boolean changed = false;
-	/** for fast searching on node Id */	
-	protected Map<Uid,N> nodes = new HashMap<>();
+	/** for easy dynamics */	
+	private List<N> nodes = new DynamicList<>();
 	
 	// Consider using AotList for comodification problem
 	
@@ -39,36 +72,22 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 
 	public MutableGraphImpl(Iterable<N> list) {
 		super();
-		for (N n:list)
-			nodes.put(n.getId(),n);
+		nodes = new DynamicList<>(list);
 	}
 
 	public MutableGraphImpl(GraphImporter<N, E> gl) {
 		this(gl.getGraph().nodes());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void addEdge(E edge) {
-		N node = (N) edge.startNode();
-		if (nodes.containsKey(node.getId()))
-			node.addEdge(edge, Direction.OUT);
-		else
-			nodes.put(node.getId(), node);
-		node = (N) edge.endNode();
-		if (nodes.containsKey(node.getId()))
-			node.addEdge(edge, Direction.IN);
-		else
-			nodes.put(node.getId(), node);
-		changed = true;
 	}
 
 	// DynamicGraph
 	
 	@Override
 	public void addNode(N node) {
-		nodes.put(node.getId(), node);
-		changed = true;
+		nodes.add(node);
 	}
 
 	// when an edge is removed from the graph, this has no consequences on Nodes
@@ -81,15 +100,13 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 	// Note: the node is NOT disconnected - that's another issue
 	@Override
 	public void removeNode(Node node) {
-		nodes.remove(node.getId(), node);
-		changed = true;
+		nodes.remove(node);
 	}
 
 	@Override
 	public void addNodes(Iterable<N> nodelist) {
-		for (N n : nodelist) {
-			nodes.put(n.getId(), n);
-		}
+		for (N n : nodelist)
+			nodes.add(n);
 	}
 
 	@Override
@@ -105,38 +122,44 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return nodes.size();
 	}
 
 	@Override
 	public Iterable<N> nodes() {
-		// TODO Auto-generated method stub
-		return null;
+		return nodes;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<E> edges() {
-		// TODO Auto-generated method stub
-		return null;
+		QuickListOfLists<E> edges = new QuickListOfLists<>();
+		for (N n:nodes)
+			edges.addList((Iterable<E>) n.getEdges(Direction.OUT));
+		return edges;
 	}
 
 	@Override
 	public Iterable<N> roots() {
-		// TODO Auto-generated method stub
-		return null;
+		List<N> result = new ArrayList<>(nodes.size());
+		for (N n:nodes)
+			if (n.isRoot())
+				result.add(n);
+		return result;
 	}
 
 	@Override
 	public Iterable<N> leaves() {
-		// TODO Auto-generated method stub
-		return null;
+		List<N> result = new ArrayList<>(nodes.size());
+		for (N n:nodes)
+			if (n.isLeaf())
+				result.add(n);
+		return result;
 	}
 
 	@Override
 	public boolean contains(N node) {
-		// TODO Auto-generated method stub
-		return false;
+		return nodes.contains(node);
 	}
 
 	@Override
@@ -153,13 +176,18 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 
 	@Override
 	public N findNode(Uid id) {
-		// TODO Auto-generated method stub
+		for (N node:nodes)
+			if (node.getId().equals(id))
+				return node;
 		return null;
 	}
 
+	// Damn slow and inefficient - never use it !
 	@Override
 	public E findEdge(Uid id) {
-		// TODO Auto-generated method stub
+		for (E e:edges())
+			if (e.getId().equals(id))
+				return e;
 		return null;
 	}
 }
