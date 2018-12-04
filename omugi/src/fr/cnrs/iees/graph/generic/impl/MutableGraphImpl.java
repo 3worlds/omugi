@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import au.edu.anu.rscs.aot.collections.DynamicList;
+import au.edu.anu.rscs.aot.collections.QuickListOfLists;
 import au.edu.anu.rscs.aot.util.Uid;
 import fr.cnrs.iees.graph.generic.Direction;
 import fr.cnrs.iees.graph.generic.DynamicGraph;
@@ -44,7 +45,6 @@ import fr.cnrs.iees.graph.generic.Node;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.ens.biologie.generic.Sizeable;
 import fr.ens.biologie.generic.Textable;
-import fr.ens.biologie.optimisation.QuickListOfLists;
 
 /**
  * A very lightweight implementation of a Mutable graph - it only keeps the root

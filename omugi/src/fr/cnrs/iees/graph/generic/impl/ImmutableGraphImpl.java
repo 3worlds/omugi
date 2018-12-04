@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import au.edu.anu.rscs.aot.collections.QuickListOfLists;
 import au.edu.anu.rscs.aot.util.Uid;
 import fr.cnrs.iees.graph.generic.Direction;
 import fr.cnrs.iees.graph.generic.Edge;
@@ -44,7 +45,6 @@ import fr.cnrs.iees.graph.generic.Node;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.ens.biologie.generic.Sizeable;
 import fr.ens.biologie.generic.Textable;
-import fr.ens.biologie.optimisation.QuickListOfLists;
 
 
 /**
