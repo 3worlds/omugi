@@ -86,7 +86,7 @@ class DataNodeImplTest {
 
 	@Test
 	void testClone() {
-		Node n = n1.clone();
+//		Node n = n1.clone();
 	}
 
 	@Test
