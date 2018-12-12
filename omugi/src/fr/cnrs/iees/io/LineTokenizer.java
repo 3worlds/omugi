@@ -26,5 +26,13 @@ public abstract class LineTokenizer {
 	}
 	
 	public abstract void tokenize();
+	
+	/**
+	 * 
+	 * @return true if this tokenizer has run
+	 */
+	protected boolean tokenized() {
+		return false;
+	}
 
 }

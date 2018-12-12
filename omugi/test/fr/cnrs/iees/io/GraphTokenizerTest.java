@@ -69,4 +69,12 @@ class GraphTokenizerTest {
 				"PROPERTY_VALUE:0\n");
 	}
 
+	@Test
+	void testGetNextToken() {
+		GraphTokenizer tk = new GraphTokenizer(test);
+		tk.tokenize();
+		while (tk.hasNext())
+			System.out.println(tk.getNextToken().toString());
+	}	
+	
 }

@@ -8,23 +8,66 @@ import java.util.List;
 import fr.cnrs.iees.OmugiException;
 
 /**
- * A crude tokenizer for graphs
+ * <p>A crude tokenizer for graphs.</p>
+ * <p>It assumes the following text file syntax to describe graphs:</p>
+ * <pre>
+ * graph = headline {line}
+ * headline = "graph" [comment] NEWLINE
+ * comment = "\\ [TEXT]"
+ * line = [{property|node|edge}] [comment] NEWLINE
+ * node = node_label node_name
+ * node_label = WORD
+ * node_name = TEXT
+ * property = prop_name "=" prop_type "(" prop_value ")"
+ * prop_name = TEXT 
+ * prop_type = JAVACLASS
+ * prop_type = LOADABLETEXT
+ * edge = "[" node_id "]" edge_label edge_name "[" node_id "]" 
+ * edge_label = WORD
+ * edge_name = TEXT
+ * node_id = node_label ":" node_name
+ * </pre> 
+ * <p>where:</p>
+ * <ul>
+ * <li>{@code NEWLINE} = the end-of-line character</li>
+ * <li>{@code TEXT} = any text (including white space)</li>
+ * <li>{@code WORD} = any text with no white space</li>
+ * <li>{@code JAVACLASS} = any java class that has a static valueOf(...) method</li>
+ * <li>{@code LOADABLETEXT} = any text compatible with the matching valueOf(...) method to instantiate the class</li>
+ * </ul>
+ * <p>Properties are attached to the item (graph, node or edge) after which they appear.</p>
+ * <p>The label:name pair is assumed to uniquely represent a node or edge in the graph. 
+ * Depending on implementation, they might represent a class name and instance unique id,
+ * or a real label and name.</p>
+ * <p>Little example of a valid graph text file:</p>
+ * <pre>=====================
+graph // this is a comment
+
+//this is another comment
+
+label1 name1
+  prop1=Integer(1)
+	prop2 =Double(2.0)
+prop3= String("blabla")
+		prop4 = Boolean(true)
+
+label2 name2
+label1 name3
+
+[label1:name1] label4 name1 [label2:name2]
+	[ label1:name1] label4 name2	 [label2:name2 ]
+[ label2:name2 ] label4 name1   [label1:name3]
+label2 name5
+prop1 = Integer(0)
+=====================</pre>
+ * <p>Notice that white space (blanks, tabs) and empty lines are ignored.</p>
  * 
  * @author Jacques Gignoux - 7 déc. 2018
  *
  */
-//token patterns for the parser:
-//	label name = node
-//	noderef label name noderef = edge
-//	propnam proptype propvalue = property
-//	property after node = node prop
-//	property after edge = edge prop
-//	property after nothing = graph property
-//	comment = ignore/skip
-// todo: import	
 public class GraphTokenizer extends LineTokenizer {
 	
-	private class token {
+	protected class token {
 		protected GraphTokens type;
 		protected String value;
 		
@@ -42,6 +85,7 @@ public class GraphTokenizer extends LineTokenizer {
 	
 	private List<token> tokenlist = new ArrayList<token>(1000);
 	private token cttoken = null;
+	private int tokenIndex = -1;
 	
 	public GraphTokenizer(Tokenizer parent) {
 		super(parent);
@@ -49,6 +93,26 @@ public class GraphTokenizer extends LineTokenizer {
 	
 	protected GraphTokenizer(String[] lines) {
 		super(lines);
+	}
+	
+	public boolean hasNext() {
+		if ((tokenIndex==-1)&&(tokenlist.size()>0))
+			return true;
+		else if (tokenIndex<tokenlist.size())
+			return true;
+		return false;
+	}
+	
+	public token getNextToken() {
+		token result = null;
+		if (tokenIndex<tokenlist.size()) {
+			if (tokenIndex == -1)
+				tokenIndex = 0;
+			result = tokenlist.get(tokenIndex);
+			tokenIndex ++;
+		}
+		else result = null;
+		return result;
 	}
 	
 	private String[] trimEmptyWords(String[] list) {
@@ -123,6 +187,11 @@ public class GraphTokenizer extends LineTokenizer {
 			for (String line:lines) {
 				processLine(line);
 			}
+	}
+	
+	@Override
+	protected boolean tokenized() {
+		return !tokenlist.isEmpty();
 	}
 	
 	@Override

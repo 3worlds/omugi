@@ -9,8 +9,8 @@ public enum GraphTokens {
 	LABEL			("","String",""),
 	NAME			("","String",""),
 	NODE_REF		("[","String","]"),
-	IMPORT			("import","filename","");
-	
+//	IMPORT			("import","filename","")
+	;
 	private final String prefix;
 	private final String type;
 	private final String suffix;
