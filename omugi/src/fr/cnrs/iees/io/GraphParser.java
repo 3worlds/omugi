@@ -1,15 +1,22 @@
 package fr.cnrs.iees.io;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Graph;
 import fr.cnrs.iees.graph.generic.GraphElementFactory;
 import fr.cnrs.iees.graph.generic.Node;
-import fr.cnrs.iees.graph.generic.impl.DefaultGraphFactory;
+import fr.cnrs.iees.graph.generic.impl.MutableGraphImpl;
+import fr.cnrs.iees.graph.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.io.GraphTokenizer.token;
+import fr.ens.biologie.generic.Labelled;
+import fr.ens.biologie.generic.Named;
 
 /**
  * 
@@ -17,7 +24,10 @@ import fr.cnrs.iees.io.GraphTokenizer.token;
  *
  */
 //todo: import	
+// add options at graph level for property list types, node types, edge types
 public class GraphParser {
+	
+	private Logger log = Logger.getLogger(GraphParser.class.getName());
 	
 	// which type of item is currently being constructed
 	private enum itemType {
@@ -65,7 +75,7 @@ public class GraphParser {
 	private GraphTokenizer tokenizer = null;
 	
 	// the factory used to build the graph
-	private GraphElementFactory factory = new DefaultGraphFactory();
+	private GraphElementFactory factory = null;
 	
 	// the list of specifications built from the token list
 	private List<propSpec> graphProps = new LinkedList<propSpec>();
@@ -152,7 +162,9 @@ public class GraphParser {
 				case NAME:			
 					switch (lastItem) {
 						case GRAPH:
-							throw new OmugiException("GraphParser: missing node label declaration");
+							log.severe("GraphParser: missing node label declaration");
+							break;
+//							throw new OmugiException("GraphParser: missing node label declaration");
 						case NODE:
 							lastNode.name = tk.value;
 							nodeSpecs.add(lastNode);
@@ -184,11 +196,140 @@ public class GraphParser {
 			}
 		}		
 	}
+
+	// gets a class from the graph properties
+	private Class<?> getClass(GraphProperties gp, String value) {
+		Class<?> result = null;
+		if (value!=null)
+			try {
+				Class<?> c = Class.forName(value);
+				if (Graph.class.isAssignableFrom(c))
+					result = c;
+				else
+					log.severe("GraphParser: graph property \""+ gp.propertyName() +
+						"\" does not refer to a valid type (" + gp.propertyType() +
+						") - using default type (" + gp.defaultValue() +
+						")");
+			} catch (ClassNotFoundException e) {
+				log.severe("GraphParser: graph property \""+ gp.propertyName() +
+					"\" does not refer to a valid java class - using default type (" + gp.defaultValue() +
+					")");
+		}
+		if (result==null)
+			try {
+				result = Class.forName(gp.defaultValue());
+			} catch (ClassNotFoundException e) {
+				// this is an error in GraphProperties.[...].defaultValue - fix code with a correct class name
+				e.printStackTrace();
+			}
+		// this will always return a valid, non null class - if problems, it will throw an exception
+		return result;
+	}
+	
+	// gets a default class from the graph properties
+	private Class<?> getClass(GraphProperties gp) {
+		return getClass(gp,null);
+	}
+	
+	private ReadOnlyPropertyList makePropertyList(List<propSpec> props) {
+		return null;
+	}
 	
 	// builds the graph from the parsed data
+	@SuppressWarnings("unchecked")
 	private void buildGraph() {
+		// parse token if not yet done
 		if (lastItem==null)
 			parse();
+		Class<? extends Graph<? extends Node, ? extends Edge>> graphClass = null;
+		Class<? extends GraphElementFactory> factoryClass = null;
+		// scan graph properties for graph building options
+		for (propSpec p:graphProps) {
+			switch (GraphProperties.propertyForName(p.name))  {
+				case CLASS:
+					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
+						getClass(GraphProperties.CLASS,p.value);
+					break;
+				case FACTORY:
+					factoryClass = (Class<? extends GraphElementFactory>) 
+						getClass(GraphProperties.FACTORY,p.value);
+					break;
+				case DIRECTED:
+					// TODO
+					break;
+				case MUTABLE:
+					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
+						getClass(GraphProperties.CLASS,MutableGraphImpl.class.getName());
+					break;
+				default:
+					// other properties are ignored by the parser
+					break;
+			}
+		}
+		// use default settings if graph properties were absent
+		if (graphClass==null)
+			graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
+				getClass(GraphProperties.CLASS);
+		if (factoryClass==null)
+			factoryClass = (Class<? extends GraphElementFactory>) 
+				getClass(GraphProperties.FACTORY);
+		// setup the factory
+		try {
+			factory = factoryClass.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			// There should not be any problem here given the previous checks
+			// unless the factory class is flawed
+			e.printStackTrace();
+		}
+		// make nodes and edges
+		Map<String,Node> nodes = new HashMap<>();
+		for (nodeSpec ns: nodeSpecs) {
+			Node n = null;
+			if (ns.props.isEmpty())
+				n = factory.makeNode();
+			else
+				n = factory.makeNode(makePropertyList(ns.props));
+			if (Labelled.class.isAssignableFrom(n.getClass())) 
+				((Labelled)n).setLabel(ns.label);
+			if (Named.class.isAssignableFrom(n.getClass())) 
+				((Named)n).setName(ns.name);
+			String nodeId = ns.label.trim()+":"+ns.name.trim();
+			if (nodes.containsKey(nodeId))
+				log.severe("GraphParser: duplicate node found ("+") - ignoring the second one");
+			else
+				nodes.put(nodeId,n);
+		}
+		for (edgeSpec es:edgeSpecs) {
+			Edge e = null;
+			String[] refs = es.start.split(":");
+			String ref = refs[0].trim()+":"+refs[1].trim();
+			Node start = nodes.get(ref);
+			refs = es.end.split(":");
+			ref = refs[0].trim()+":"+refs[1].trim();
+			if (start==null)
+				log.severe("GraphParser: start node not found for edge "+es.label+":"+es.name);
+			Node end = nodes.get(ref);
+			if (end==null)
+				log.severe("GraphParser: end node not found for edge "+es.label+":"+es.name);
+			if ((start!=null)&&(end!=null)) {
+				if (es.props.isEmpty())
+					e = factory.makeEdge(start, end);
+				else 
+					e = factory.makeEdge(start,end,makePropertyList(es.props));
+				if (Labelled.class.isAssignableFrom(e.getClass())) 
+					((Labelled)e).setLabel(es.label);
+				if (Named.class.isAssignableFrom(e.getClass())) 
+					((Named)e).setName(es.name);
+			}
+		}
+		// make graph
+		try {
+			Constructor<?> cons = graphClass.getConstructor(Iterable.class);
+			graph = (Graph<? extends Node, ? extends Edge>) cons.newInstance(nodes.values()); // pbs with non empty constructors
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
