@@ -98,8 +98,12 @@ public class ValidPropertyTypes {
 	 * @param type the type
 	 * @return the class name
 	 */
+	// NOTE:this method is very slow (seconds). Why?
 	static public String getJavaClassName(String type) {
-		return classes.get(typeIndex.get(type));
+		Integer i = typeIndex.get(type);
+		if (i!=null)
+			return classes.get(i);
+		return null;
 	}
 	
 	/**
@@ -108,7 +112,10 @@ public class ValidPropertyTypes {
 	 * @return the value as an instance of Object
 	 */
 	static public Object getDefaultValue(String type) {
-		return defaults.get(typeIndex.get(type));
+		Integer i = typeIndex.get(type);
+		if (i!=null)
+			return defaults.get(i);
+		return null;
 	}
 	
 	/**

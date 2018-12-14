@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph.generic;
 
 import au.edu.anu.rscs.aot.util.Uid;
+import fr.ens.biologie.generic.Sizeable;
 
 /**
  * An immutable graph (no possibility to add or remove elements as it is now unrelated
@@ -38,7 +39,7 @@ import au.edu.anu.rscs.aot.util.Uid;
  * @author gignoux - 16 août 2017
  *
  */
-public interface Graph<N extends Node, E extends Edge> {
+public interface Graph<N extends Node, E extends Edge> extends Sizeable {
 	
 	/**
 	 * Read-only accessor to all Nodes

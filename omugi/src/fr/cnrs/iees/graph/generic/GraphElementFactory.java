@@ -30,6 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.generic;
 
+import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.graph.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.graph.properties.SimplePropertyList;
 
@@ -56,16 +57,78 @@ import fr.cnrs.iees.graph.properties.SimplePropertyList;
  */
 public interface GraphElementFactory {
 
+	/**
+	 * Create a Node with no properties.
+	 * @return 
+	 */
 	public Node makeNode();
 	
+	/**
+	 * Create a node with read-only properties
+	 * @param props
+	 * @return
+	 */
 	public ReadOnlyDataNode makeNode(ReadOnlyPropertyList props);
 
+	/**
+	 * Create a node with read-write properties
+	 * @param props
+	 * @return
+	 */
 	public DataNode makeNode(SimplePropertyList props);
 
+	/**
+	 * Create an edge with no properties.
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	public Edge makeEdge(Node start, Node end);
 	
+	/**
+	 * Create an edge with read-only properties
+	 * @param start
+	 * @param end
+	 * @param props
+	 * @return
+	 */
 	public ReadOnlyDataEdge makeEdge(Node start, Node end, ReadOnlyPropertyList props);
 	
+	/**
+	 * Create an edge with read-write properties
+	 * @param start
+	 * @param end
+	 * @param props
+	 * @return
+	 */
 	public DataEdge makeEdge(Node start, Node end, SimplePropertyList props);
 	
+	/**
+	 * Create a read-only property list with property names and values 
+	 * @param properties
+	 * @return
+	 */
+	public ReadOnlyPropertyList makeReadOnlyPropertyList(Property... properties);
+	
+	/**
+	 * Create a read-only property list with property names, but no values
+	 * @param propertyKeys
+	 * @return
+	 */
+	public ReadOnlyPropertyList makeReadOnlyPropertyList(String... propertyKeys);
+	
+	/**
+	 * Create a read-write property list with property names and values 
+	 * @param properties
+	 * @return
+	 */
+	public SimplePropertyList makePropertyList(Property... properties);
+	
+	/**
+	 * Create a read-write property list with property names, but no values
+	 * @param propertyKeys
+	 * @return
+	 */
+	public SimplePropertyList makePropertyList(String... propertyKeys);
+
 }

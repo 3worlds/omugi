@@ -1,31 +1,55 @@
-package fr.cnrs.iees.io;
+package fr.cnrs.iees.io.graph;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Graph;
 import fr.cnrs.iees.graph.generic.GraphElementFactory;
 import fr.cnrs.iees.graph.generic.Node;
 import fr.cnrs.iees.graph.generic.impl.MutableGraphImpl;
+import fr.cnrs.iees.graph.io.ValidPropertyTypes;
 import fr.cnrs.iees.graph.properties.ReadOnlyPropertyList;
-import fr.cnrs.iees.io.GraphTokenizer.token;
+import fr.cnrs.iees.io.Parser;
+import fr.cnrs.iees.io.graph.GraphTokenizer.token;
 import fr.ens.biologie.generic.Labelled;
 import fr.ens.biologie.generic.Named;
 
 /**
+ * <p>A replacement parser for Shayne's 'UniversalParser'. Simpler. Maybe Faster. 
+ * Who am I to pretend it's better.</p>
+ * 
+ * <p>This parser is initialised with a {@link GraphTokenizer}, i.e. it gobbles a list of
+ * tokens and spits out a {@link Graph} when asked for it. It is lazy, i.e. it will not do anything until
+ * asked for a graph (i.e. invoking the {@code GraphParser.graph()} method, and it will parse only once after
+ * initialisation. Further calls to {@code .graph()} return the already parsed graph.</p>
+ * 
+ * <p>Parsing is done in a single pass on the token list.</p>
+ * 
+ * <p>Options to setup the graph may be passed through graph-level properties in the file. These 
+ * are found in {@link GraphProperties}. The best way to go is to implement a specific {@link GraphElementFactory}
+ * which will implement which flavour of {@link Node}, {@link Edge} and property list
+ * (cf. {@link PropertyListGetters} descendants) should be used to construct
+ * the graph.</p> 
+ * 
+ * <p>Allowed property types are those listed in {@link ValidPropertyTypes}. They can be
+ * specified as fully qualified java class names, or as simple strings as found in {@code ValidPropertyTypes}.</p>
+ * 
+ *  <p>Note that the best use of this class is to hide it inside a {@link GraphImporter}.</p>
  * 
  * @author Jacques Gignoux - 12 déc. 2018
  *
  */
 //todo: import	
-// add options at graph level for property list types, node types, edge types
-public class GraphParser {
+// add options at graph level for property list types, node types, edge types ???
+public class GraphParser extends Parser {
 	
 	private Logger log = Logger.getLogger(GraphParser.class.getName());
 	
@@ -162,9 +186,9 @@ public class GraphParser {
 				case NAME:			
 					switch (lastItem) {
 						case GRAPH:
-							log.severe("GraphParser: missing node label declaration");
+							log.severe("missing node label declaration");
 							break;
-//							throw new OmugiException("GraphParser: missing node label declaration");
+//							throw new OmugiException("missing node label declaration");
 						case NODE:
 							lastNode.name = tk.value;
 							nodeSpecs.add(lastNode);
@@ -206,12 +230,12 @@ public class GraphParser {
 				if (Graph.class.isAssignableFrom(c))
 					result = c;
 				else
-					log.severe("GraphParser: graph property \""+ gp.propertyName() +
+					log.severe("graph property \""+ gp.propertyName() +
 						"\" does not refer to a valid type (" + gp.propertyType() +
 						") - using default type (" + gp.defaultValue() +
 						")");
 			} catch (ClassNotFoundException e) {
-				log.severe("GraphParser: graph property \""+ gp.propertyName() +
+				log.severe("graph property \""+ gp.propertyName() +
 					"\" does not refer to a valid java class - using default type (" + gp.defaultValue() +
 					")");
 		}
@@ -231,8 +255,49 @@ public class GraphParser {
 		return getClass(gp,null);
 	}
 	
+	// builds a propertyList from specs
 	private ReadOnlyPropertyList makePropertyList(List<propSpec> props) {
-		return null;
+		List<Property> pl = new LinkedList<Property>();
+		for (propSpec p:props) {
+			String className = ValidPropertyTypes.getJavaClassName(p.type);
+			if (className==null)
+				log.severe("unknown property type ("+p.type+")");
+			else {
+				Object o = null;
+				try {
+					Class<?> c = Class.forName(className);
+					// if method present, instantiate object with valueOf(String)
+					for (Method m:c.getMethods())
+						if (m.getName().equals("valueOf")) {
+							Class<?>[] pt = m.getParameterTypes();
+							if (pt.length==1)
+								if (pt[0].getSimpleName().equals("String") ) {
+									o = m.invoke(null, p.value);
+									break;
+							}
+					}
+					// else must be a String
+					if (o==null)
+						o = p.value;
+				} catch (ClassNotFoundException e) {
+					// We should reach here only if there is an error in ValidPropertyTypes
+					e.printStackTrace();
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					// this occurs if the value is not of the proper type
+					o=null;
+				}
+				if (o==null)
+					log.severe("could not instantiate property \""
+						+p.name+":"+p.type+"\" with value \""+p.value+"\"");
+				else
+					pl.add(new Property(p.name,o));
+			}
+		}
+		Property[] pp = new Property[pl.size()];
+		int i=0;
+		for (Property p:pl)
+			pp[i++] = p;
+		return factory.makePropertyList(pp);
 	}
 	
 	// builds the graph from the parsed data
@@ -295,7 +360,7 @@ public class GraphParser {
 				((Named)n).setName(ns.name);
 			String nodeId = ns.label.trim()+":"+ns.name.trim();
 			if (nodes.containsKey(nodeId))
-				log.severe("GraphParser: duplicate node found ("+") - ignoring the second one");
+				log.severe("duplicate node found ("+") - ignoring the second one");
 			else
 				nodes.put(nodeId,n);
 		}
@@ -304,13 +369,13 @@ public class GraphParser {
 			String[] refs = es.start.split(":");
 			String ref = refs[0].trim()+":"+refs[1].trim();
 			Node start = nodes.get(ref);
+			if (start==null)
+				log.severe("start node "+ref+" not found for edge "+es.label+":"+es.name);
 			refs = es.end.split(":");
 			ref = refs[0].trim()+":"+refs[1].trim();
-			if (start==null)
-				log.severe("GraphParser: start node not found for edge "+es.label+":"+es.name);
 			Node end = nodes.get(ref);
 			if (end==null)
-				log.severe("GraphParser: end node not found for edge "+es.label+":"+es.name);
+				log.severe("end node "+ref+" not found for edge "+es.label+":"+es.name);
 			if ((start!=null)&&(end!=null)) {
 				if (es.props.isEmpty())
 					e = factory.makeEdge(start, end);

@@ -42,7 +42,6 @@ import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Graph;
 import fr.cnrs.iees.graph.generic.Matrix;
 import fr.cnrs.iees.graph.generic.Node;
-import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.ens.biologie.generic.Sizeable;
 import fr.ens.biologie.generic.Textable;
 
@@ -73,10 +72,6 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 	public MutableGraphImpl(Iterable<N> list) {
 		super();
 		nodes = new DynamicList<>(list);
-	}
-
-	public MutableGraphImpl(GraphImporter<N, E> gl) {
-		this(gl.getGraph().nodes());
 	}
 
 	@Override

@@ -34,5 +34,5 @@ public abstract class LineTokenizer {
 	protected boolean tokenized() {
 		return false;
 	}
-
+	
 }

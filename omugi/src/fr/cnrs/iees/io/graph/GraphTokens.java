@@ -1,4 +1,4 @@
-package fr.cnrs.iees.io;
+package fr.cnrs.iees.io.graph;
 
 public enum GraphTokens {
 

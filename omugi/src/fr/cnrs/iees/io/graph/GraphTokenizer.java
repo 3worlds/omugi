@@ -1,11 +1,13 @@
-package fr.cnrs.iees.io;
+package fr.cnrs.iees.io.graph;
 
-import static fr.cnrs.iees.io.GraphTokens.*;
+import static fr.cnrs.iees.io.graph.GraphTokens.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.io.LineTokenizer;
+import fr.cnrs.iees.io.Tokenizer;
 
 /**
  * <p>A crude tokenizer for graphs.</p>
@@ -65,6 +67,7 @@ prop1 = Integer(0)
  * @author Jacques Gignoux - 7 déc. 2018
  *
  */
+// tested OK with version 0.0.1 on 14/12/2018
 public class GraphTokenizer extends LineTokenizer {
 	
 	protected class token {

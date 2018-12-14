@@ -30,6 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.generic.impl;
 
+import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.generic.DataEdge;
 import fr.cnrs.iees.graph.generic.DataNode;
@@ -40,6 +41,7 @@ import fr.cnrs.iees.graph.generic.ReadOnlyDataEdge;
 import fr.cnrs.iees.graph.generic.ReadOnlyDataNode;
 import fr.cnrs.iees.graph.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.graph.properties.SimplePropertyList;
+import fr.cnrs.iees.graph.properties.impl.SimplePropertyListImpl;
 
 /**
  * A simple factory for graph elements - mainly for testing purposes. Nodes and Edges
@@ -104,6 +106,27 @@ public class DefaultGraphFactory implements GraphElementFactory {
 			throw new OmugiException("makeEdge(Node,Node,ReadOnlyPropertyList): property list cannot be null. Use makeEdge(Node,Node) if you want no properties.");
 		return new ReadOnlyDataEdgeImpl(start,end,props,this);
 	}
+
+	@Override
+	public ReadOnlyPropertyList makeReadOnlyPropertyList(Property... properties) {
+		return new SimplePropertyListImpl(properties);
+	}
+
+	@Override
+	public ReadOnlyPropertyList makeReadOnlyPropertyList(String... propertyKeys) {
+		return new SimplePropertyListImpl(propertyKeys);
+	}
+
+	@Override
+	public SimplePropertyList makePropertyList(Property... properties) {
+		return new SimplePropertyListImpl(properties);
+	}
+
+	@Override
+	public SimplePropertyList makePropertyList(String... propertyKeys) {
+		return new SimplePropertyListImpl(propertyKeys);
+	}
+
 
 
 }

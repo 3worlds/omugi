@@ -42,7 +42,6 @@ import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Graph;
 import fr.cnrs.iees.graph.generic.Matrix;
 import fr.cnrs.iees.graph.generic.Node;
-import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.ens.biologie.generic.Sizeable;
 import fr.ens.biologie.generic.Textable;
 
@@ -81,14 +80,6 @@ public class ImmutableGraphImpl<N extends Node,E extends Edge>
 			nodes.put(n.getId(),n);
 		nodeList = new ArrayList<N>(nodes.size());
 		nodeList.addAll(nodes.values());
-	}
-	
-	/**
-	 * Construction from a Graph importer
-	 * @param gl
-	 */
-	public ImmutableGraphImpl(GraphImporter<N,E> gl) {
-		this(gl.getGraph().nodes());
 	}
 	
 	// LOCAL
@@ -199,8 +190,10 @@ public class ImmutableGraphImpl<N extends Node,E extends Edge>
 			for (Edge e: n.getEdges(Direction.OUT))
 				z += e.toShortString() + ",";
 		}
-		s = s.substring(0, s.length()-1);
-		z = z.substring(0, z.length()-1);
+		if (s.length()>0)
+			s = s.substring(0, s.length()-1);
+		if (z.length()>0)
+			z = z.substring(0, z.length()-1);
 		s += ") ";
 		s += "EDGES=(";
 		s += z;

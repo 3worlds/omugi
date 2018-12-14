@@ -1,4 +1,4 @@
-package fr.cnrs.iees.io;
+package fr.cnrs.iees.io.graph;
 
 /**
  * List of graph properties understood by {@link GraphParser} and their default
