@@ -39,9 +39,9 @@ import fr.cnrs.iees.graph.generic.Node;
  * @author Jacques Gignoux - 01-08-2018 
  *
  */
-public interface GraphExporter<N extends Node, E extends Edge>
+public interface GraphExporter
 	extends TextGrammar {
 	
-	public void exportGraph(Graph<N,E> graph);
+	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
 
 }

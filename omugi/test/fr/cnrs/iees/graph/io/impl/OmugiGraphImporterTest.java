@@ -24,7 +24,7 @@ class OmugiGraphImporterTest {
 		File file = new File(testfile);
 		assertTrue(file.exists());
 		GraphImporter gi = new OmugiGraphImporter(file);
-//		System.out.println(gi.getGraph().toString());
+		System.out.println(gi.getGraph().toString());
 		assertNotNull(gi);
 	}
 

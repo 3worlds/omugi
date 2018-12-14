@@ -27,6 +27,7 @@ class GraphTokenizerTest {
 			"label2 name5\n" ,
 			"prop1 = Integer(0)"};
 
+	// this doesnt cause any problem to the Tokenizer
 	String[] testWithErrors = {"graph // this is a comment\n",
 			"\n",
 			"//this is another comment\n", 
@@ -45,6 +46,43 @@ class GraphTokenizerTest {
 			"[ label2:name2 ] label4 name1   [label1:name7]\n" ,  // non existant end node 
 			"label2 name5\n" ,
 			"prop1 = Integer(0)"};
+	
+	// this text has nothing to do with a graph
+	String[] testWithMoreErrors = {"Murs, ville,\n" + 
+			"Et port,\n" + 
+			"Asile\n" + 
+			"De mort,\n" + 
+			"Mer grise\n" + 
+			"Où brise\n" + 
+			"La brise,\n" + 
+			"Tout dort.\n" + 
+			"\n" + 
+			"Dans la plaine\n" + 
+			"Naît un bruit.\n" + 
+			"C'est l'haleine\n" + 
+			"De la nuit.\n" + 
+			"Elle brame\n" + 
+			"Comme une âme\n" + 
+			"Qu'une flamme\n" + 
+			"Toujours suit !\n" + 
+			"\n" + 
+			"La voix plus haute\n" + 
+			"Semble un grelot.\n" + 
+			"D'un nain qui saute\n" + 
+			"C'est le galop.\n" + 
+			"Il fuit, s'élance,\n" + 
+			"Puis en cadence\n" + 
+			"Sur un pied danse\n" + 
+			"Au bout d'un flot.\n" + 
+			"\n" + 
+			"La rumeur approche.\n" + 
+			"L'écho la redit.\n" + 
+			"C'est comme la cloche\n" + 
+			"D'un couvent maudit ;\n" + 
+			"Comme un bruit de foule,\n" + 
+			"Qui tonne et qui roule,\n" + 
+			"Et tantôt s'écroule,\n" + 
+			"Et tantôt grandit,"};
 
 	@Test
 	void testTokenize() {
@@ -124,6 +162,11 @@ class GraphTokenizerTest {
 				"PROPERTY_NAME:prop1\n" + 
 				"PROPERTY_TYPE:Integer\n" + 
 				"PROPERTY_VALUE:0\n");
+		// this one is read as a label and a name.
+		tk = new GraphTokenizer(testWithMoreErrors);
+		tk.tokenize();
+		assertEquals(tk.toString(),"LABEL:Murs,\n" + 
+				"NAME:ville,Etport,AsileDemort,MergriseOùbriseLabrise,Toutdort.DanslaplaineNaîtunbruit.C'estl'haleineDelanuit.EllebrameCommeuneâmeQu'uneflammeToujourssuit!LavoixplushauteSembleungrelot.D'unnainquisauteC'estlegalop.Ilfuit,s'élance,PuisencadenceSurunpieddanseAuboutd'unflot.Larumeurapproche.L'écholaredit.C'estcommelaclocheD'uncouventmaudit;Commeunbruitdefoule,Quitonneetquiroule,Ettantôts'écroule,Ettantôtgrandit,\n");
 	}
 
 	@Test

@@ -127,26 +127,39 @@ class GraphmlExporterTest {
 
 	@Test
 	void testGraphmlExporterFile() {
-		File f = new File(System.getProperty("user.home")+File.separator+"bidon.xml");
-		GraphmlExporter<Node,Edge> ge = new GraphmlExporter<>(f);
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+				+ File.separator + "test" 
+				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+				+ File.separator + "bidon.xml";
+		File f = new File(testfile);
+		GraphmlExporter ge = new GraphmlExporter(f);
 		assertNotNull(ge);
 	}
 
 	@Test
 	void testGraphmlExporterString() {
-		String s = System.getProperty("user.home")+File.separator+"bidon.xml";
+		String s = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+				+ File.separator + "test" 
+				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+				+ File.separator + "bidon.xml";
 		show("testGraphmlExporterString",s);
-		GraphmlExporter<Node,Edge> ge = new GraphmlExporter<>(s);
+		GraphmlExporter ge = new GraphmlExporter(s);
 		assertNotNull(ge);
 	}
 
 	@Test
 	void testExportGraph() {
-		String s = System.getProperty("user.home")+File.separator+"bidon.xml";
-		GraphmlExporter<Node,Edge> ge = new GraphmlExporter<>(s);
+		String s = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+				+ File.separator + "test" 
+				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+				+ File.separator + "bidon.xml";
+		GraphmlExporter ge = new GraphmlExporter(s);
 		ge.exportGraph(graph);
-		s = System.getProperty("user.home")+File.separator+"bidon2.xml";
-		GraphmlExporter<DataNode,DataEdge> ge2 = new GraphmlExporter<>(s);
+		s = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+				+ File.separator + "test" 
+				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+				+ File.separator + "bidon2.xml";
+		GraphmlExporter ge2 = new GraphmlExporter(s);
 		ge2.exportGraph(graph2);
 
 	}

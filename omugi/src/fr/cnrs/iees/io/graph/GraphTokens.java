@@ -6,7 +6,7 @@ public enum GraphTokens {
 	PROPERTY_NAME	("","String","="),
 	PROPERTY_VALUE	("(","any",")"),
 	PROPERTY_TYPE	("=","java","("),
-	LABEL			("","String",""),
+	LABEL			("","String"," "),
 	NAME			("","String",""),
 	NODE_REF		("[","String","]"),
 //	IMPORT			("import","filename","")

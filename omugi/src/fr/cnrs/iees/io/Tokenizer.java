@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.logging.Logger;
 
 import fr.cnrs.iees.io.graph.GraphParser;
 import fr.cnrs.iees.io.graph.GraphTokenizer;
@@ -15,6 +16,7 @@ import fr.cnrs.iees.io.graph.GraphTokenizer;
  */
 public class Tokenizer {
 	
+	private Logger log = Logger.getLogger(Tokenizer.class.getName());
 	private List<String> lines = null;
 	private LineTokenizer tokenizer = null;
 	
@@ -28,6 +30,9 @@ public class Tokenizer {
 			else if (s.startsWith("tree"))
 //				tokenizer = new TreeTokenizer(this);
 				;
+			else
+				log.severe("unrecognized file format - unable to load file \""+f.getName()+"\"");
+				
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

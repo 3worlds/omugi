@@ -57,7 +57,8 @@ import au.edu.anu.rscs.aot.util.Uid;
  */
 // tested with version 0.0.1 on a graph of SimpleNodes and Edges (ie no data) OK on 7/11/2018
 // tested with version 0.0.1 on a graph of DataNodes and DataEdges OK on 29/11/2018
-public class GraphmlExporter<N extends Node, E extends Edge> implements GraphExporter<N,E> {
+// Problem: keys must be saved BEFORE the graph as per the xml schema
+public class GraphmlExporter implements GraphExporter {
 
 	// the output file
 	private File file;
@@ -87,7 +88,7 @@ public class GraphmlExporter<N extends Node, E extends Edge> implements GraphExp
 	//
 	
 	@Override
-	public void exportGraph(Graph<N, E> graph) {
+	public void exportGraph(Graph<? extends Node, ? extends Edge> graph) {
 		try {
 			exportGraph(graph, new PrintWriter(file));
 		} catch (FileNotFoundException e) {
@@ -233,14 +234,14 @@ public class GraphmlExporter<N extends Node, E extends Edge> implements GraphExp
 		return id;
 	}
 
-	private void exportGraph(Graph<N, E> graph, PrintWriter writer) {
+	private void exportGraph(Graph<? extends Node, ? extends Edge> graph, PrintWriter writer) {
 		writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		writer.println("<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"");  
 		writer.println("    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
 		writer.println("    xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns"); 
 		writer.println("    http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">");
 		writer.println("  <graph id=\"G\" edgedefault=\"directed\">");
-		for (N node : graph.nodes()) {
+		for (Node node : graph.nodes()) {
 			writer.print("    <node id=\"" + localId(node.getId()) + "\"");
 			String s = writeData(node);
 			if (s==null)
@@ -251,7 +252,7 @@ public class GraphmlExporter<N extends Node, E extends Edge> implements GraphExp
 				writer.println("    </node>");
 			}
 		}
-		for (E edge : graph.edges()) {
+		for (Edge edge : graph.edges()) {
 			writer.print("    <edge id=\"" + localId(edge.getId()) 
 				+ "\" source=\"" + localId(edge.startNode().getId()) 
 				+ "\" target=\"" + localId(edge.endNode().getId()) 
