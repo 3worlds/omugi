@@ -1,7 +1,5 @@
 package fr.cnrs.iees.graph.io.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
