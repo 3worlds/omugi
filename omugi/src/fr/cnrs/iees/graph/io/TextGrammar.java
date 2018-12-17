@@ -64,13 +64,5 @@ public interface TextGrammar {
 	
 	/** separator for property (between key and value) */
 	public static char PROPERTY_SEPARATOR = SaveableAsText.EQUAL;
-	
-	// Referenceable (Note: copied from IoConstants.java in au.edu.anu.rscs.aot.graph.io;
-
-    public static final String NODE_MATCH_SEPARATOR     = "/";
-    public static final String PROPERTY_MATCH_SEPARATOR = "+";
-    public static final String LABEL_PROPERTY_PREFIX    = "%";
-    public static final String LABEL_NAME_SEPARATOR     = ":";
-    public static final String KEY_VALUE_SEPARATOR      = "=";
-    
+	    
 }
