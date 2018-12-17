@@ -39,6 +39,9 @@ import fr.ens.biologie.generic.Textable;
  * 
  * 
  */
+//NB: this was previously AotException
+//Policy is to make an exception at least for each library
+//The general advice for exceptions is to throw early and catch late.
 public class OmugiException extends RuntimeException {
 
 	/**
