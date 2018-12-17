@@ -100,6 +100,8 @@ public class ValidPropertyTypes {
 	 */
 	// NOTE:this method is very slow (seconds). Why?
 	static public String getJavaClassName(String type) {
+		if (type.contains("."))
+			return type;
 		Integer i = typeIndex.get(type);
 		if (i!=null)
 			return classes.get(i);

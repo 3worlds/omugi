@@ -1,3 +1,33 @@
+/**************************************************************************
+ *  OMUGI - One More Ultimate Graph Implementation                        *
+ *                                                                        *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
+ *       shayne.flint@anu.edu.au                                          * 
+ *       jacques.gignoux@upmc.fr                                          *
+ *       ian.davies@anu.edu.au                                            * 
+ *                                                                        *
+ *  OMUGI is an API to implement graphs, as described by graph theory,    *
+ *  but also as more commonly used in computing - e.g. dynamic graphs.    *
+ *  It interfaces with JGraphT, an API for mathematical graphs, and       *
+ *  GraphStream, an API for visual graphs.                                *
+ *                                                                        *
+ **************************************************************************                                       
+ *  This file is part of OMUGI (One More Ultimate Graph Implementation).  *
+ *                                                                        *
+ *  OMUGI is free software: you can redistribute it and/or modify         *
+ *  it under the terms of the GNU General Public License as published by  *
+ *  the Free Software Foundation, either version 3 of the License, or     *
+ *  (at your option) any later version.                                   *
+ *                                                                        *
+ *  OMUGI is distributed in the hope that it will be useful,              *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *  GNU General Public License for more details.                          *                         
+ *                                                                        *
+ *  You should have received a copy of the GNU General Public License     *
+ *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
+ *                                                                        *
+ **************************************************************************/
 package fr.cnrs.iees.io.graph;
 
 import java.lang.reflect.Constructor;
@@ -9,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import au.edu.anu.rscs.aot.collections.tables.Table;
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Graph;
@@ -21,6 +52,7 @@ import fr.cnrs.iees.io.Parser;
 import fr.cnrs.iees.io.graph.GraphTokenizer.token;
 import fr.ens.biologie.generic.Labelled;
 import fr.ens.biologie.generic.Named;
+import static fr.cnrs.iees.graph.io.TextGrammar.*;
 
 /**
  * <p>A replacement parser for Shayne's 'UniversalParser'. Simpler. Maybe Faster. 
@@ -49,6 +81,7 @@ import fr.ens.biologie.generic.Named;
  */
 //todo: import	
 // add options at graph level for property list types, node types, edge types ???
+// Tested OK with version 0.0.1 on 17/12/2018
 public class GraphParser extends Parser {
 	
 	private Logger log = Logger.getLogger(GraphParser.class.getName());
@@ -266,19 +299,39 @@ public class GraphParser extends Parser {
 				Object o = null;
 				try {
 					Class<?> c = Class.forName(className);
-					// if method present, instantiate object with valueOf(String)
+					// if method present, instantiate object with valueOf()
 					for (Method m:c.getMethods())
 						if (m.getName().equals("valueOf")) {
 							Class<?>[] pt = m.getParameterTypes();
-							if (pt.length==1)
-								if (pt[0].getSimpleName().equals("String") ) {
+							// first case, valueOf() only has a String argument --> primitive types
+							if (pt.length==1) {
+								if (String.class.isAssignableFrom(pt[0])) {
 									o = m.invoke(null, p.value);
 									break;
+								}
+							}
+							// Second case, value of has 3 arguments --> Table type
+							else if (pt.length==3) {
+								if ((String.class.isAssignableFrom(pt[0])) &&
+										(char[][].class.isAssignableFrom(pt[1])) &&
+										(char[].class.isAssignableFrom(pt[2])) ) {
+									char[][] bdel = new char[2][2];
+									bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
+									bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
+									char[] isep = new char[2];
+									isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
+									isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
+									o = m.invoke(null,p.value,bdel,isep);
+								}
 							}
 					}
 					// else must be a String
-					if (o==null)
-						o = p.value;
+					if (o==null) {
+						if (p.value.equals("null"))
+							o = null;
+						else
+							o = p.value;
+					}
 				} catch (ClassNotFoundException e) {
 					// We should reach here only if there is an error in ValidPropertyTypes
 					e.printStackTrace();
@@ -286,11 +339,7 @@ public class GraphParser extends Parser {
 					// this occurs if the value is not of the proper type
 					o=null;
 				}
-				if (o==null)
-					log.severe("could not instantiate property \""
-						+p.name+":"+p.type+"\" with value \""+p.value+"\"");
-				else
-					pl.add(new Property(p.name,o));
+				pl.add(new Property(p.name,o));
 			}
 		}
 		Property[] pp = new Property[pl.size()];

@@ -1,3 +1,33 @@
+/**************************************************************************
+ *  OMUGI - One More Ultimate Graph Implementation                        *
+ *                                                                        *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
+ *       shayne.flint@anu.edu.au                                          * 
+ *       jacques.gignoux@upmc.fr                                          *
+ *       ian.davies@anu.edu.au                                            * 
+ *                                                                        *
+ *  OMUGI is an API to implement graphs, as described by graph theory,    *
+ *  but also as more commonly used in computing - e.g. dynamic graphs.    *
+ *  It interfaces with JGraphT, an API for mathematical graphs, and       *
+ *  GraphStream, an API for visual graphs.                                *
+ *                                                                        *
+ **************************************************************************                                       
+ *  This file is part of OMUGI (One More Ultimate Graph Implementation).  *
+ *                                                                        *
+ *  OMUGI is free software: you can redistribute it and/or modify         *
+ *  it under the terms of the GNU General Public License as published by  *
+ *  the Free Software Foundation, either version 3 of the License, or     *
+ *  (at your option) any later version.                                   *
+ *                                                                        *
+ *  OMUGI is distributed in the hope that it will be useful,              *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *  GNU General Public License for more details.                          *                         
+ *                                                                        *
+ *  You should have received a copy of the GNU General Public License     *
+ *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
+ *                                                                        *
+ **************************************************************************/
 package fr.cnrs.iees.io.graph;
 
 import static fr.cnrs.iees.io.graph.GraphTokens.*;
@@ -151,10 +181,12 @@ public class GraphTokenizer extends LineTokenizer {
 				throw new OmugiException("GraphTokenizer: malformed property format");
 		}
 		words = line.trim().split("\\(");
-		if (words.length>1)  { // a property type (and value) was found
-			if (words.length==2) {
+		if (words.length>1)  { // a property type (and value) was found (but it may contain more '(')
+			if (line.trim().endsWith(PROPERTY_VALUE.suffix())) {
 				tokenlist.add(new token(PROPERTY_TYPE,words[0].trim()));
-				tokenlist.add(new token(PROPERTY_VALUE,words[1].substring(0,words[1].indexOf(PROPERTY_VALUE.suffix())).trim()));
+				String s = line.trim().substring(line.trim().indexOf('(')+1, line.trim().length()-1);
+//				tokenlist.add(new token(PROPERTY_VALUE,words[1].substring(0,words[1].indexOf(PROPERTY_VALUE.suffix())).trim()));
+				tokenlist.add(new token(PROPERTY_VALUE,s));
 				return;
 			}
 			else
