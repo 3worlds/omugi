@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.generic;
 
-import au.edu.anu.rscs.aot.util.Uid;
 import fr.ens.biologie.generic.Sizeable;
 
 /**
@@ -72,31 +71,20 @@ public interface Graph<N extends Node, E extends Edge> extends Sizeable {
 	 */
 	public boolean contains(N node);
 	
-	/**
-	 * Shows this graph as an adjacency matrix
-	 * @return the adjacency matrix
-	 */
-	public Matrix adjacencyMatrix();
-	
-	/**
-	 * shows this graph as an incidence matrix
-	 * @return the incidence matrix
-	 */
-	public Matrix incidenceMatrix();
 	
 	/**
 	 * finds a Node in the graph based on its ID
 	 * @param id
 	 * @return
 	 */
-	public N findNode(Uid id);
+	public N findNode(String id);
 	
 	/**
 	 * finds an Edge in the graph based on its ID
 	 * @param id
 	 * @return
 	 */
-	public E findEdge(Uid id);
+	public E findEdge(String id);
 	
 	
 }

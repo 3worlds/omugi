@@ -35,12 +35,10 @@ import java.util.List;
 
 import au.edu.anu.rscs.aot.collections.DynamicList;
 import au.edu.anu.rscs.aot.collections.QuickListOfLists;
-import au.edu.anu.rscs.aot.util.Uid;
 import fr.cnrs.iees.graph.generic.Direction;
 import fr.cnrs.iees.graph.generic.DynamicGraph;
 import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Graph;
-import fr.cnrs.iees.graph.generic.Matrix;
 import fr.cnrs.iees.graph.generic.Node;
 import fr.ens.biologie.generic.Sizeable;
 import fr.ens.biologie.generic.Textable;
@@ -158,30 +156,18 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 	}
 
 	@Override
-	public Matrix adjacencyMatrix() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Matrix incidenceMatrix() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public N findNode(Uid id) {
+	public N findNode(String id) {
 		for (N node:nodes)
-			if (node.getId().equals(id))
+			if (node.uniqueId().equals(id))
 				return node;
 		return null;
 	}
 
 	// Damn slow and inefficient - never use it !
 	@Override
-	public E findEdge(Uid id) {
+	public E findEdge(String id) {
 		for (E e:edges())
-			if (e.getId().equals(id))
+			if (e.uniqueId().equals(id))
 				return e;
 		return null;
 	}

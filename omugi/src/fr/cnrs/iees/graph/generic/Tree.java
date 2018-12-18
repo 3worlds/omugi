@@ -37,5 +37,9 @@ public interface Tree<N extends TreeNode> extends Sizeable {
 	public Tree<N> subTree(N node);
 	
 	public N findNode(String reference);
+	
+	public static boolean matchesReference(TreeNode node, String ref) {
+		return false;
+	}
 
 }

@@ -1,41 +1,41 @@
-graph // saved by OmugiGraphExporter on Mon Dec 17 10:57:54 CET 2018
+graph // saved by OmugiGraphExporter on Tue Dec 18 10:13:49 CET 2018
 
 // 4 NODES
-node D89EF3043496-00000167BB998546-0000
+node D89EF3043496-00000167C097C097-0000
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
-node D89EF3043496-00000167BB999084-0000
+node D89EF3043496-00000167C097C096-0000
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
-node D89EF3043496-00000167BB998A5D-0000
+node D89EF3043496-00000167C097C096-0001
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
-node D89EF3043496-00000167BB998E14-0000
+node D89EF3043496-00000167C097C097-0001
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
 
 // 5 EDGES
-[node:D89EF3043496-00000167BB999084-0000] edge D89EF3043496-00000167BB99BDBA-0000 [node:D89EF3043496-00000167BB998E14-0000]
+[node:D89EF3043496-00000167C097C097-0000] edge D89EF3043496-00000167C097C09A-0004 [node:D89EF3043496-00000167C097C097-0001]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[node:D89EF3043496-00000167BB998A5D-0000] edge D89EF3043496-00000167BB9993B6-0000 [node:D89EF3043496-00000167BB998546-0000]
+[node:D89EF3043496-00000167C097C096-0000] edge D89EF3043496-00000167C097C09A-0000 [node:D89EF3043496-00000167C097C096-0001]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[node:D89EF3043496-00000167BB998E14-0000] edge D89EF3043496-00000167BB99974C-0000 [node:D89EF3043496-00000167BB999084-0000]
+[node:D89EF3043496-00000167C097C096-0001] edge D89EF3043496-00000167C097C09A-0001 [node:D89EF3043496-00000167C097C096-0000]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[node:D89EF3043496-00000167BB998E14-0000] edge D89EF3043496-00000167BB999A64-0000 [node:D89EF3043496-00000167BB998E14-0000]
+[node:D89EF3043496-00000167C097C096-0001] edge D89EF3043496-00000167C097C09A-0002 [node:D89EF3043496-00000167C097C096-0001]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[node:D89EF3043496-00000167BB998E14-0000] edge D89EF3043496-00000167BB999CA0-0000 [node:D89EF3043496-00000167BB998A5D-0000]
+[node:D89EF3043496-00000167C097C096-0001] edge D89EF3043496-00000167C097C09A-0003 [node:D89EF3043496-00000167C097C097-0000]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)

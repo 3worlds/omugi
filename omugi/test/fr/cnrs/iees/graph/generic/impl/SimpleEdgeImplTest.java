@@ -38,7 +38,6 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.rscs.aot.util.Uid;
 import fr.cnrs.iees.graph.generic.Direction;
 import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Node;
@@ -48,7 +47,7 @@ class SimpleEdgeImplTest {
 	Node n1;
 	Node n2, n3, n4;
 	Edge e1, e2, e3, e4, e5;
-	Map<Uid,String> nodes;
+	Map<String,String> nodes;
 	
 	// little test graph:
 	//
@@ -61,15 +60,15 @@ class SimpleEdgeImplTest {
 	@BeforeEach
 	private void init() {
 		DefaultGraphFactory f = new DefaultGraphFactory(2);
-		nodes = new HashMap<Uid,String>();
+		nodes = new HashMap<String,String>();
 		n1 = f.makeNode();
-		nodes.put(n1.getId(), "n1");
+		nodes.put(n1.uniqueId(), "n1");
 		n2 = f.makeNode();
-		nodes.put(n2.getId(), "n2");
+		nodes.put(n2.uniqueId(), "n2");
 		n3 = f.makeNode();
-		nodes.put(n3.getId(), "n3");
+		nodes.put(n3.uniqueId(), "n3");
 		n4 = f.makeNode();
-		nodes.put(n4.getId(), "n4");
+		nodes.put(n4.uniqueId(), "n4");
 		e1 = f.makeEdge(n1,n2);
 		e2 = f.makeEdge(n2,n1);
 		e3 = f.makeEdge(n2,n2);
@@ -89,7 +88,7 @@ class SimpleEdgeImplTest {
 	@Test
 	void testToDetailedString() {
 		show("testToDetailedString",e5.toDetailedString());
-		assertTrue(e5.toDetailedString().contains(n4.getId().toString()));
+		assertTrue(e5.toDetailedString().contains(n4.uniqueId().toString()));
 	}
 
 	@Test
@@ -161,27 +160,13 @@ class SimpleEdgeImplTest {
 	@Test
 	void testToShortString() {
 		show("testToShortString",e2.toShortString());
-		assertTrue(e2.toShortString().contains(e2.getId().toString()));
-	}
-
-	@Test
-	void testSetId() {
-		e1.setId(Uid.nullUid());
-		show("testSetId",e1.getId().toString());
-		assertEquals(e1.getId().toString(),"000000000000-0000000000000000-0000");
-	}
-
-	@Test
-	void testGetId() {
-		show("testGetId",e1.getId().toString());
-		e1.setId(Uid.nullUid());
-		assertEquals(e1.getId().toString(),"000000000000-0000000000000000-0000");
+		assertTrue(e2.toShortString().contains(e2.uniqueId().toString()));
 	}
 
 	@Test
 	void testToString() {
 		show("testToString",e2.toString());
-		assertTrue(e2.toString().contains(n2.getId().toString()));
+		assertTrue(e2.toString().contains(n2.uniqueId().toString()));
 	}
 
 }

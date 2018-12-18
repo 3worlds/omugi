@@ -49,14 +49,8 @@ public abstract class ElementAdapter implements Element {
 	// ELEMENT
 
 	@Override
-	public Element setId(Uid id) {
-		this.id = id;
-		return this;
-	}
-
-	@Override
-	public final Uid getId() {
-		return id;
+	public final String uniqueId() {
+		return id.toString();
 	}
 	
 	

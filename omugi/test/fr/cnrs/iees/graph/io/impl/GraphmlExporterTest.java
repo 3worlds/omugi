@@ -44,7 +44,6 @@ import org.junit.jupiter.api.Test;
 import au.edu.anu.rscs.aot.collections.tables.BooleanTable;
 import au.edu.anu.rscs.aot.collections.tables.Dimensioner;
 import au.edu.anu.rscs.aot.collections.tables.Table;
-import au.edu.anu.rscs.aot.util.Uid;
 import fr.cnrs.iees.graph.generic.DataEdge;
 import fr.cnrs.iees.graph.generic.DataNode;
 import fr.cnrs.iees.graph.generic.Edge;
@@ -54,6 +53,14 @@ import fr.cnrs.iees.graph.properties.SimplePropertyList;
 import fr.cnrs.iees.graph.properties.impl.SimplePropertyListImpl;
 import fr.cnrs.iees.graph.generic.impl.DefaultGraphFactory;
 
+/**
+ * An exporter to test we can save as GraphML.
+ * 
+ * NOTE: wrong export format - the keys must appear before the graph nodes
+ * 
+ * @author Jacques Gignoux - 18 déc. 2018
+ *
+ */
 class GraphmlExporterTest {
 
 	DefaultGraphFactory f = new DefaultGraphFactory(2);
@@ -61,7 +68,7 @@ class GraphmlExporterTest {
 	Node n1;
 	Node n2, n3, n4;
 	Edge e1, e2, e3, e4, e5;
-	Map<Uid,String> nodes;
+	Map<String,String> nodes;
 	ImmutableGraphImpl<Node,Edge> graph;
 	// second, a graph with properties
 	DataNode dn1, dn2, dn3, dn4;
@@ -81,15 +88,15 @@ class GraphmlExporterTest {
 	@BeforeEach
 	private void init() {
 		// simple graph
-		nodes = new HashMap<Uid,String>();
+		nodes = new HashMap<String,String>();
 		n1 = f.makeNode();
-		nodes.put(n1.getId(), "n1");
+		nodes.put(n1.uniqueId(), "n1");
 		n2 = f.makeNode();
-		nodes.put(n2.getId(), "n2");
+		nodes.put(n2.uniqueId(), "n2");
 		n3 = f.makeNode();
-		nodes.put(n3.getId(), "n3");
+		nodes.put(n3.uniqueId(), "n3");
 		n4 = f.makeNode();
-		nodes.put(n4.getId(), "n4");
+		nodes.put(n4.uniqueId(), "n4");
 		e1 = f.makeEdge(n1,n2);
 		e2 = f.makeEdge(n2,n1);
 		e3 = f.makeEdge(n2,n2);

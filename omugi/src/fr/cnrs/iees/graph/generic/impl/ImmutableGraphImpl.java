@@ -36,11 +36,9 @@ import java.util.List;
 import java.util.Map;
 
 import au.edu.anu.rscs.aot.collections.QuickListOfLists;
-import au.edu.anu.rscs.aot.util.Uid;
 import fr.cnrs.iees.graph.generic.Direction;
 import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Graph;
-import fr.cnrs.iees.graph.generic.Matrix;
 import fr.cnrs.iees.graph.generic.Node;
 import fr.ens.biologie.generic.Sizeable;
 import fr.ens.biologie.generic.Textable;
@@ -55,12 +53,11 @@ import fr.ens.biologie.generic.Textable;
  *
  */
 // Tested OK with version 0.0.1 on 7/11/2018
-// except 3 unimplemented methods (adjacencymatrix(), incidencematrix() and constructor from graphImporter)
 public class ImmutableGraphImpl<N extends Node,E extends Edge> 
 		implements Graph<N,E>, Sizeable, Textable {
 
 	/** for fast searching on node Id */	
-	private Map<Uid,N> nodes = new HashMap<>();
+	private Map<String,N> nodes = new HashMap<>();
 	/** for fast iteration on nodes */
 	private ArrayList<N> nodeList = null; // ArrayList --> comodification error but normally one should never remove a node from this class
 	
@@ -77,7 +74,7 @@ public class ImmutableGraphImpl<N extends Node,E extends Edge>
 	public ImmutableGraphImpl(Iterable<N> list) {
 		super();
 		for (N n:list)
-			nodes.put(n.getId(),n);
+			nodes.put(n.uniqueId(),n);
 		nodeList = new ArrayList<N>(nodes.size());
 		nodeList.addAll(nodes.values());
 	}
@@ -127,31 +124,19 @@ public class ImmutableGraphImpl<N extends Node,E extends Edge>
 
 	@Override
 	public boolean contains(N node) {
-		return nodes.containsKey(node.getId());
+		return nodes.containsKey(node.uniqueId());
 	}
 
 	@Override
-	public Matrix adjacencyMatrix() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Matrix incidenceMatrix() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public N findNode(Uid id) {
+	public N findNode(String id) {
 		return nodes.get(id);
 	}
 
 	// Damn slow and inefficient - never use it !
 	@Override
-	public E findEdge(Uid id) {
+	public E findEdge(String id) {
 		for (E e:edges())
-			if (e.getId().equals(id))
+			if (e.uniqueId().equals(id))
 				return e;
 		return null;
 	}

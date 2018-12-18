@@ -133,7 +133,7 @@ public class OmugiGraphExporter implements GraphExporter {
 		if (NamedAndLabelled.class.isAssignableFrom(n.getClass()))
 			return ((NamedAndLabelled)n).getName();
 		else
-			return n.getId().toString();
+			return n.uniqueId().toString();
 	}
 	
 	// returns a reference for a node

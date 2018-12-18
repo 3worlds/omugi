@@ -43,7 +43,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
-import au.edu.anu.rscs.aot.util.Uid;
 
 /**
  * <p>This class implemented mainly as a workbench. To implement a GraphmlImporter, consider
@@ -67,7 +66,7 @@ public class GraphmlExporter implements GraphExporter {
 	private Map<String,String> edgeKeys = new HashMap<>();
 	// the management of ids to save - we dont want big ugly ids when it's relative to a single graph
 	private int id = 0;
-	private Map<Uid,Integer> ids = new HashMap<>();
+	private Map<String,Integer> ids = new HashMap<>();
 	// type conversions between graph properties and graphml attribute types
 	private Map<String,String> types = new HashMap<>();
 	private Map<String,String> warnings = new HashMap<>();
@@ -226,7 +225,7 @@ public class GraphmlExporter implements GraphExporter {
 		}
 	}
 	
-	private int localId(Uid uid) {
+	private int localId(String uid) {
 		if (ids.containsKey(uid))
 			return ids.get(uid);
 		id++;
@@ -242,7 +241,7 @@ public class GraphmlExporter implements GraphExporter {
 		writer.println("    http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">");
 		writer.println("  <graph id=\"G\" edgedefault=\"directed\">");
 		for (Node node : graph.nodes()) {
-			writer.print("    <node id=\"" + localId(node.getId()) + "\"");
+			writer.print("    <node id=\"" + localId(node.uniqueId()) + "\"");
 			String s = writeData(node);
 			if (s==null)
 				writer.println("/>");
@@ -253,9 +252,9 @@ public class GraphmlExporter implements GraphExporter {
 			}
 		}
 		for (Edge edge : graph.edges()) {
-			writer.print("    <edge id=\"" + localId(edge.getId()) 
-				+ "\" source=\"" + localId(edge.startNode().getId()) 
-				+ "\" target=\"" + localId(edge.endNode().getId()) 
+			writer.print("    <edge id=\"" + localId(edge.uniqueId()) 
+				+ "\" source=\"" + localId(edge.startNode().uniqueId()) 
+				+ "\" target=\"" + localId(edge.endNode().uniqueId()) 
 				+ "\"");
 			String s = writeData(edge);
 			if (s==null)

@@ -75,5 +75,7 @@ public interface TreeNode extends Node {
 	public void setChildren(TreeNode... children);
 	public void setChildren(Iterable<TreeNode> children);
 	public void setChildren(Collection<TreeNode> children);
+	
+	public boolean hasChildren();
 
 }

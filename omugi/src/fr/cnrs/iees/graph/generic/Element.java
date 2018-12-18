@@ -33,7 +33,6 @@ package fr.cnrs.iees.graph.generic;
 import java.util.Collection;
 
 import fr.ens.biologie.generic.Textable;
-import au.edu.anu.rscs.aot.util.Uid;
 
 /**
  * The base features common to Edges and Nodes of a graph. NB: all elements must be cloneable
@@ -116,19 +115,12 @@ public interface Element extends Textable {
 	 * @return the connected Graph containing this instance
 	 */
 	public Collection<? extends Node> traversal(int distance, Direction direction);
-	
-	/**
-	 * Setter for 
-	 * @param id this element unique identifier
-	 * <p>CAUTION: no check that the id is actually unique - this is just a plain setter.</p>
-	 */
-	public Element setId(Uid id);
-	
+		
 	/**
 	 * Getter for
 	 * @return this element's unique identifier
 	 */
-	public Uid getId();
+	public String uniqueId();
 
 	/**
 	 * Getter for the factory that created this element

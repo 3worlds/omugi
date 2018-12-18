@@ -50,7 +50,7 @@ class ImmutableGraphImplTest {
 	Node n1;
 	Node n2, n3, n4;
 	Edge e1, e2, e3, e4, e5;
-	Map<Uid,String> nodes;
+	Map<String,String> nodes;
 	ImmutableGraphImpl<Node,Edge> graph;
 	
 	// little test graph:
@@ -63,15 +63,15 @@ class ImmutableGraphImplTest {
 	
 	@BeforeEach
 	private void init() {
-		nodes = new HashMap<Uid,String>();
+		nodes = new HashMap<String,String>();
 		n1 = f.makeNode();
-		nodes.put(n1.getId(), "n1");
+		nodes.put(n1.uniqueId(), "n1");
 		n2 = f.makeNode();
-		nodes.put(n2.getId(), "n2");
+		nodes.put(n2.uniqueId(), "n2");
 		n3 = f.makeNode();
-		nodes.put(n3.getId(), "n3");
+		nodes.put(n3.uniqueId(), "n3");
 		n4 = f.makeNode();
-		nodes.put(n4.getId(), "n4");
+		nodes.put(n4.uniqueId(), "n4");
 		e1 = f.makeEdge(n1,n2);
 		e2 = f.makeEdge(n2,n1);
 		e3 = f.makeEdge(n2,n2);
@@ -93,15 +93,10 @@ class ImmutableGraphImplTest {
 	}
 
 	@Test
-	void testImmutableGraphImplGraphImporterOfNE() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	void testNodes() {
 		int i=0;
 		for (Node n:graph.nodes()) {
-			show("testNodes",nodes.get(n.getId()));
+			show("testNodes",nodes.get(n.uniqueId()));
 			i++;
 		}
 		assertEquals(i,4);
@@ -111,7 +106,7 @@ class ImmutableGraphImplTest {
 	void testEdges() {
 		int i=0;
 		for (Edge e:graph.edges()) {
-			show("testEdges",e.getId().toString());
+			show("testEdges",e.uniqueId().toString());
 			i++;
 		}
 		assertEquals(i,5);
@@ -143,28 +138,18 @@ class ImmutableGraphImplTest {
 	}
 
 	@Test
-	void testAdjacencyMatrix() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testIncidenceMatrix() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	void testFindNode() {
-		Node n = graph.findNode(n2.getId());
-		assertEquals(n.getId(),n2.getId());
-		n = graph.findNode(Uid.nullUid());
+		Node n = graph.findNode(n2.uniqueId());
+		assertEquals(n.uniqueId(),n2.uniqueId());
+		n = graph.findNode(Uid.nullUid().toString());
 		assertNull(n);
 	}
 
 	@Test
 	void testFindEdge() {
-		Edge e = graph.findEdge(e5.getId());
-		assertEquals(e.getId(),e5.getId());
-		e = graph.findEdge(Uid.nullUid());
+		Edge e = graph.findEdge(e5.uniqueId());
+		assertEquals(e.uniqueId(),e5.uniqueId());
+		e = graph.findEdge(Uid.nullUid().toString());
 		assertNull(e);
 	}
 

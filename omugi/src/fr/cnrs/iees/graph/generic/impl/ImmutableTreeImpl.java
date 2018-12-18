@@ -6,11 +6,21 @@ import java.util.List;
 import fr.cnrs.iees.graph.generic.Tree;
 import fr.cnrs.iees.graph.generic.TreeNode;
 
+/**
+ * An immutable strict tree (not changeable after construction).
+ * 
+ * @author Jacques Gignoux - 18 déc. 2018
+ *
+ * @param <N>
+ */
 public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 	
 	private N root = null;
 	/** for fast iteration on nodes */
 	private ArrayList<N> nodeList = null; // ArrayList --> comodification error but normally one should never remove a node from this class
+	
+	private int minDepth = 0;
+	private int maxDepth = 0;
 
 	// for descendants only
 	protected ImmutableTreeImpl() {
@@ -21,6 +31,7 @@ public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 	/**
 	 * Construction from a list of free floating nodes.
 	 * The first node found without a parent is assumed to be the root
+	 * CAUTION: no check that the nodes are properly linked
 	 * @param list
 	 */
 	public ImmutableTreeImpl(Iterable<N> list) {
@@ -32,6 +43,7 @@ public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 				if (node.getParent()==null)
 					root = node;
 		}
+		computeDepths(root);
 	}
 	
 	// recursive to insert a whole tree into the node list
@@ -51,6 +63,7 @@ public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 		super();
 		this.root = root;
 		insertAllChildren(root,nodeList);
+		computeDepths(root);
 	}
 	
 	@Override
@@ -68,33 +81,45 @@ public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 		return root;
 	}
 
+	
 	@Override
 	public Iterable<N> leaves() {
-		// TODO Auto-generated method stub
-		return null;
+		List<N> result = new ArrayList<N>(nodeList.size());
+		for (N n:nodeList)
+			if (!n.hasChildren())
+				result.add(n);
+		return result;
+	}
+	
+	protected void computeDepths(N parent) {
+		if (parent!=null) {
+			// TODO !
+			// will do it if it's really useful...
+		}
 	}
 
 	@Override
 	public int maxDepth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return maxDepth;
 	}
 
 	@Override
 	public int minDepth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return minDepth;
 	}
 
 	@Override
 	public Tree<N> subTree(N node) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ImmutableTreeImpl<N>(node);
 	}
 
 	@Override
 	public N findNode(String reference) {
-		// TODO Auto-generated method stub
+		// Note: maybe recursing from the top of the tree is more efficient than
+		// scanning the whole list?
+		for (N n:nodeList)
+			if (Tree.matchesReference(n,reference))
+				return n;
 		return null;
 	}
 
