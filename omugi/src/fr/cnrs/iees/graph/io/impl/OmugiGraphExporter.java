@@ -41,7 +41,6 @@ import fr.cnrs.iees.graph.generic.DataEdge;
 import fr.cnrs.iees.graph.generic.DataNode;
 import fr.cnrs.iees.graph.generic.Direction;
 import fr.cnrs.iees.graph.generic.Edge;
-import fr.cnrs.iees.graph.generic.Element;
 import fr.cnrs.iees.graph.generic.Graph;
 import fr.cnrs.iees.graph.generic.Node;
 import fr.cnrs.iees.graph.generic.ReadOnlyDataEdge;
@@ -49,7 +48,6 @@ import fr.cnrs.iees.graph.generic.ReadOnlyDataNode;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.graph.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.graph.properties.SimplePropertyList;
-import fr.ens.biologie.generic.NamedAndLabelled;
 import fr.ens.biologie.generic.SaveableAsText;
 
 import static fr.cnrs.iees.io.graph.GraphTokens.*;
@@ -63,9 +61,6 @@ import static fr.cnrs.iees.io.graph.GraphTokens.*;
 public class OmugiGraphExporter implements GraphExporter {
 
 	private Logger log = Logger.getLogger(OmugiGraphExporter.class.getName());
-	
-	private static String defaultNodeLabel = "node";
-	private static String defaultEdgeLabel = "edge";
 	
 	// the output file
 	private File file;
@@ -117,29 +112,29 @@ public class OmugiGraphExporter implements GraphExporter {
 		}
 	}
 	
-	// returns the label, if it exists, or "node"
-	private String getLabel(Element n) {
-		if (NamedAndLabelled.class.isAssignableFrom(n.getClass()))
-			return ((NamedAndLabelled)n).getLabel();
-		else
-			if (Node.class.isAssignableFrom(n.getClass()))
-				return defaultNodeLabel;
-			else
-				return defaultEdgeLabel;
-	}
-	
-	// returns the name, if it exists, or the uid
-	private String getName(Element n) {
-		if (NamedAndLabelled.class.isAssignableFrom(n.getClass()))
-			return ((NamedAndLabelled)n).getName();
-		else
-			return n.uniqueId().toString();
-	}
-	
-	// returns a reference for a node
-	private String getNodeRef(Node n) {
-		return getLabel(n)+":"+getName(n);
-	}
+//	// returns the label, if it exists, or "node"
+//	private String getLabel(Element n) {
+//		if (NamedAndLabelled.class.isAssignableFrom(n.getClass()))
+//			return ((NamedAndLabelled)n).getLabel();
+//		else
+//			if (Node.class.isAssignableFrom(n.getClass()))
+//				return defaultNodeLabel;
+//			else
+//				return defaultEdgeLabel;
+//	}
+//	
+//	// returns the name, if it exists, or the uid
+//	private String getName(Element n) {
+//		if (NamedAndLabelled.class.isAssignableFrom(n.getClass()))
+//			return ((NamedAndLabelled)n).getName();
+//		else
+//			return n.uniqueId().toString();
+//	}
+//	
+//	// returns a reference for a node
+//	private String getNodeRef(Node n) {
+//		return getLabel(n)+":"+getName(n);
+//	}
 	
 	@Override
 	public void exportGraph(Graph<? extends Node, ? extends Edge> graph) {
@@ -155,9 +150,9 @@ public class OmugiGraphExporter implements GraphExporter {
 			writer.println(" NODES");
 			int nedges = 0;
 			for (Node n:graph.nodes()) {
-				writer.print(getLabel(n));
+				writer.print(n.classId());
 				writer.print(LABEL.suffix());
-				writer.println(getName(n));
+				writer.println(n.instanceId());
 				// node properties
 				if (ReadOnlyDataNode.class.isAssignableFrom(n.getClass()))
 					writeProperties((ReadOnlyPropertyList)n,writer);
@@ -172,15 +167,15 @@ public class OmugiGraphExporter implements GraphExporter {
 			writer.println(" EDGES");
 			for (Edge e:graph.edges()) {
 				writer.print(NODE_REF.prefix());
-				writer.print(getNodeRef(e.startNode()));
+				writer.print(e.startNode().uniqueId());
 				writer.print(NODE_REF.suffix());
 				writer.print(' ');
-				writer.print(getLabel(e));
+				writer.print(e.classId());
 				writer.print(LABEL.suffix());
-				writer.print(getName(e));
+				writer.print(e.instanceId());
 				writer.print(' ');
 				writer.print(NODE_REF.prefix());
-				writer.print(getNodeRef(e.endNode()));
+				writer.print(e.endNode().uniqueId());
 				writer.println(NODE_REF.suffix());
 				if (ReadOnlyDataEdge.class.isAssignableFrom(e.getClass()))
 					writeProperties((ReadOnlyPropertyList)e,writer);

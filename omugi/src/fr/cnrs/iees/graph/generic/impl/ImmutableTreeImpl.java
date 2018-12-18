@@ -84,7 +84,7 @@ public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 	
 	@Override
 	public Iterable<N> leaves() {
-		List<N> result = new ArrayList<N>(nodeList.size());
+		List<N> result = new ArrayList<N>(nodeList.size()); // this may be a bad idea for big graphs
 		for (N n:nodeList)
 			if (!n.hasChildren())
 				result.add(n);
@@ -114,13 +114,12 @@ public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 	}
 
 	@Override
-	public N findNodeByReference(String reference) {
-		// Note: maybe recursing from the top of the tree is more efficient than
-		// scanning the whole list?
+	public Iterable<N> findNodesByReference(String reference) {
+		List<N> found = new ArrayList<N>(nodeList.size()); // this may be a bad idea for big graphs
 		for (N n:nodeList)
 			if (Tree.matchesReference(n,reference))
-				return n;
-		return null;
+				found.add(n);
+		return found;
 	}
 
 }

@@ -38,6 +38,8 @@ package fr.cnrs.iees.graph.generic;
  */
 public interface Edge extends Element {
 	
+	public static String EDGE_LABEL = "edge";
+	
 	/**
 	 * Getter for
 	 * @return the start Node of this edge
@@ -78,6 +80,11 @@ public interface Edge extends Element {
 		setStartNode(start);
 		setEndNode(end);
 		return this;
+	}
+
+	@Override
+	public default String classId() {
+		return EDGE_LABEL;
 	}
 
 	

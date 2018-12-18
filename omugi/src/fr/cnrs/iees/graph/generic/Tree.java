@@ -1,5 +1,8 @@
 package fr.cnrs.iees.graph.generic;
 
+import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.io.tree.ReferenceParser;
+import fr.cnrs.iees.io.tree.ReferenceTokenizer;
 import fr.ens.biologie.generic.Sizeable;
 
 /**
@@ -10,7 +13,6 @@ import fr.ens.biologie.generic.Sizeable;
  *
  */
 public interface Tree<N extends TreeNode> extends Sizeable {
-	
 	/**
 	 * Read-only accessor to all Nodes
 	 * @return an Iterable of all Nodes
@@ -36,9 +38,44 @@ public interface Tree<N extends TreeNode> extends Sizeable {
 	
 	public Tree<N> subTree(N node);
 	
-	public N findNodeByReference(String reference);
+	/**
+	 * Finds the node matching a reference - will issue an Exception if more than one node match
+	 * @param reference
+	 * @return the matching node, or null if nothing found
+	 */
+	public default N findNodeByReference(String reference) {
+		Iterable<N> list = findNodesByReference(reference);
+		int i=0;
+		N found = null;
+		for (N n:list) {
+			found = n;
+			i++;
+		}
+		if (i<=1)
+			return found;
+		else
+			throw new OmugiException("more than one Node matching ["+reference+"] found");
+	}
 	
+	/**
+	 * Finds all the nodes matching a reference.
+	 * @param reference
+	 * @return a read-only list of matching nodes
+	 */
+	public Iterable<N> findNodesByReference(String reference);
+
+	/**
+	 * <p>Checks that the node passed as argument matches the String reference passed as 
+	 * argument. The reference is a locator referring to at most one node in a tree.
+	 * 
+	 * @param node the node to check
+	 * @param ref the String reference
+	 * @return
+	 */
 	public static boolean matchesReference(TreeNode node, String ref) {
+		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
+		ReferenceParser p = tk.parser();
+		p.parse();
 		return false;
 	}
 

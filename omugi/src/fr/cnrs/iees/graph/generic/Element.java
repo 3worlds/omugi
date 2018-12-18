@@ -33,6 +33,7 @@ package fr.cnrs.iees.graph.generic;
 import java.util.Collection;
 
 import fr.ens.biologie.generic.Textable;
+import fr.ens.biologie.generic.SaveableAsText;
 
 /**
  * The base features common to Edges and Nodes of a graph. NB: all elements must be cloneable
@@ -45,6 +46,8 @@ import fr.ens.biologie.generic.Textable;
  */
 public interface Element extends Textable {
 	
+    public static final char LABEL_NAME_SEPARATOR = SaveableAsText.COLON;
+
 	/**
 	 * Safely disconnects this Element from the Graph (by taking care of references to it by
 	 * neighbouring Graph Elements)
@@ -80,7 +83,8 @@ public interface Element extends Textable {
 	 */
 	public Element addConnectionsLike(Element element);
 	
-	/**
+	/**    public static final String LABEL_NAME_SEPARATOR     = ":";
+
 	 * Fetches all the Elements connected to this one and returns the result as a Graph. Use
 	 * with caution in unconnected Graphs (will not find subgraphs unconnected to this element).
 	 * @return the connected Graph containing this instance
@@ -120,12 +124,28 @@ public interface Element extends Textable {
 	 * Getter for
 	 * @return this element's unique identifier
 	 */
-	public String uniqueId();
+	public default String uniqueId() {
+		return classId()+LABEL_NAME_SEPARATOR+instanceId();
+	}
 
 	/**
 	 * Getter for the factory that created this element
 	 * @return
 	 */
 	public GraphElementFactory factory();
+	
+	/**
+	 * Getter for
+	 * @return this element's class id (eg 'node' or 'edge')
+	 * <p>formerly known as <em>label</em></p>
+	 */
+	public String classId();
+	
+	/**
+	 * Getter for
+	 * @return this element's instance id
+	 * <p>formerly known as <em>name</em></p>
+	 */
+	public String instanceId();
 	
 }

@@ -37,7 +37,7 @@ import java.util.List;
 
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.io.LineTokenizer;
-import fr.cnrs.iees.io.Tokenizer;
+import fr.cnrs.iees.io.FileTokenizer;
 
 /**
  * <p>A crude tokenizer for graphs.</p>
@@ -120,7 +120,7 @@ public class GraphTokenizer extends LineTokenizer {
 	private token cttoken = null;
 	private int tokenIndex = -1;
 	
-	public GraphTokenizer(Tokenizer parent) {
+	public GraphTokenizer(FileTokenizer parent) {
 		super(parent);
 	}
 	
@@ -225,7 +225,7 @@ public class GraphTokenizer extends LineTokenizer {
 	}
 	
 	@Override
-	protected boolean tokenized() {
+	public boolean tokenized() {
 		return !tokenlist.isEmpty();
 	}
 	

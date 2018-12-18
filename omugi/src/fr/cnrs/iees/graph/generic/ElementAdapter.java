@@ -49,10 +49,9 @@ public abstract class ElementAdapter implements Element {
 	// ELEMENT
 
 	@Override
-	public final String uniqueId() {
+	public String instanceId() {
 		return id.toString();
 	}
-	
 	
 	// TEXTABLE
 

@@ -29,16 +29,27 @@
  *                                                                        *
  **************************************************************************/
 package fr.cnrs.iees.io.graph;
+import fr.ens.biologie.generic.SaveableAsText;
 
+/**
+ * Token types used in graph text files.
+ * 
+ * @author Jacques Gignoux - 18 déc. 2018
+ *
+ */
 public enum GraphTokens {
 
-	COMMENT			("//","String","eol"),
-	PROPERTY_NAME	("","String","="),
-	PROPERTY_VALUE	("(","any",")"),
-	PROPERTY_TYPE	("=","java","("),
-	LABEL			("","String"," "),
-	NAME			("","String",""),
-	NODE_REF		("[","String","]"),
+	// token type	prefix		content type	suffix
+	COMMENT			("//",		"String",		"eol"),
+	PROPERTY_NAME	("",		"String",		String.valueOf(SaveableAsText.EQUAL)),
+	PROPERTY_VALUE	(String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_OPEN]),
+								"any",			String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_CLOSE])),
+	PROPERTY_TYPE	(String.valueOf(SaveableAsText.EQUAL),
+								"java",			String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_OPEN])),
+	LABEL			("",		"String",		String.valueOf(SaveableAsText.BLANK)),
+	NAME			("",		"String",		""),
+	NODE_REF		(String.valueOf(SaveableAsText.SQUARE_BRACKETS[SaveableAsText.BLOCK_OPEN]),
+								"String",		String.valueOf(SaveableAsText.SQUARE_BRACKETS[SaveableAsText.BLOCK_CLOSE])),
 //	IMPORT			("import","filename","")
 	;
 	private final String prefix;

@@ -167,6 +167,7 @@ public class GraphParser extends Parser {
 	 * <li>Comments are skipped</li>
 	 * </ul>
 	 */
+	@Override
 	protected void parse() {
 		if (!tokenizer.tokenized())
 			tokenizer.tokenize();

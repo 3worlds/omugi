@@ -28,37 +28,64 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io.impl;
+package fr.cnrs.iees.io;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
+import java.util.logging.Logger;
 
-import fr.cnrs.iees.graph.generic.Edge;
-import fr.cnrs.iees.graph.generic.Graph;
-import fr.cnrs.iees.graph.generic.Node;
-import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.io.graph.GraphParser;
-import fr.cnrs.iees.io.FileTokenizer;
+import fr.cnrs.iees.io.graph.GraphTokenizer;
 
 /**
- * Importer for graphs / trees in the omugi simple text format.
- * @author Jacques Gignoux - 14 déc. 2018
+ * 
+ * @author Jacques Gignoux - 7 déc. 2018
  *
  */
-// tested OK with version 0.0.1 on 17/12/2018
-public class OmugiGraphImporter implements GraphImporter {
-
-	private FileTokenizer tokenizer = null;
-	private GraphParser parser = null;
+public class FileTokenizer implements Tokenizer {
 	
-	public OmugiGraphImporter(File infile) {
+	private Logger log = Logger.getLogger(FileTokenizer.class.getName());
+	private List<String> lines = null;
+	private LineTokenizer tokenizer = null;
+	
+	public FileTokenizer(File f) {
 		super();
-		tokenizer = new FileTokenizer(infile);
-		parser = (GraphParser) tokenizer.parser();
+		try {
+			lines = Files.readAllLines(f.toPath());
+			String s = lines.get(0).trim();
+			if (s.startsWith("graph"))
+				tokenizer = new GraphTokenizer(this);
+			else if (s.startsWith("tree"))
+//				tokenizer = new TreeTokenizer(this);
+				;
+			else
+				log.severe("unrecognized file format - unable to load file \""+f.getName()+"\"");
+				
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	@Override
-	public Graph<? extends Node, ? extends Edge> getGraph() {
-		return parser.graph();
+	protected List<String> lines() {
+		return lines;
+	}
+	
+	public void tokenize() {
+		tokenizer.tokenize();
 	}
 
+	/**
+	 * Create an instance of {@link Parser} adapted for this tokenizer
+	 * @return a new instance of Parser
+	 */
+	public Parser parser() {
+		if (GraphTokenizer.class.isAssignableFrom(tokenizer.getClass()))
+			return new GraphParser((GraphTokenizer) tokenizer);
+//		if (TreeTokenizer.class.isAssignableFrom(tokenizer.getClass()))
+//			return new TreeParser((TreeTokenizer) tokenizer);
+		return null;
+	}
+	
 }

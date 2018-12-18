@@ -77,5 +77,5 @@ public interface TreeNode extends Node {
 	public void setChildren(Collection<TreeNode> children);
 	
 	public boolean hasChildren();
-
+	
 }

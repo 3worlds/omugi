@@ -38,11 +38,11 @@ import java.util.List;
  * @author Jacques Gignoux - 7 déc. 2018
  *
  */
-public abstract class LineTokenizer {
+public abstract class LineTokenizer implements Tokenizer {
 	
 	protected List<String> lines;
 		
-	public LineTokenizer(Tokenizer parent) {
+	public LineTokenizer(FileTokenizer parent) {
 		super();
 		lines = parent.lines();
 	}
@@ -53,16 +53,6 @@ public abstract class LineTokenizer {
 		this.lines = new ArrayList<>(lines.length);
 		for (int i=0; i<lines.length; i++)
 			this.lines.add(lines[i]);
-	}
-	
-	public abstract void tokenize();
-	
-	/**
-	 * 
-	 * @return true if this tokenizer has run
-	 */
-	protected boolean tokenized() {
-		return false;
 	}
 	
 }

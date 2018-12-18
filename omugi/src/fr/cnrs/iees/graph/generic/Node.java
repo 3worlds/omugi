@@ -36,6 +36,8 @@ package fr.cnrs.iees.graph.generic;
  *
  */
 public interface Node extends Element {
+	
+	public static String NODE_LABEL = "node";
 
 	/**
 	 * Adds an edge to this Node, in the appropriate direction
@@ -128,5 +130,10 @@ public interface Node extends Element {
 		}
 		return this;
 	}
-	
+
+	@Override
+	public default String classId() {
+		return NODE_LABEL;
+	}
+
 }
