@@ -40,7 +40,6 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.rscs.aot.util.Uid;
 import fr.cnrs.iees.graph.generic.Edge;
 import fr.cnrs.iees.graph.generic.Node;
 
@@ -135,22 +134,6 @@ class ImmutableGraphImplTest {
 		assertTrue(graph.contains(n3));
 		Node n = f.makeNode();
 		assertFalse(graph.contains(n));
-	}
-
-	@Test
-	void testFindNode() {
-		Node n = graph.findNode(n2.uniqueId());
-		assertEquals(n.uniqueId(),n2.uniqueId());
-		n = graph.findNode(Uid.nullUid().toString());
-		assertNull(n);
-	}
-
-	@Test
-	void testFindEdge() {
-		Edge e = graph.findEdge(e5.uniqueId());
-		assertEquals(e.uniqueId(),e5.uniqueId());
-		e = graph.findEdge(Uid.nullUid().toString());
-		assertNull(e);
 	}
 
 	@Test

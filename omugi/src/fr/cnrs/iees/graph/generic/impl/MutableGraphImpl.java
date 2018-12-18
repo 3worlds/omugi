@@ -59,8 +59,6 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 	/** for easy dynamics */	
 	private List<N> nodes = new DynamicList<>();
 	
-	// Consider using AotList for comodification problem
-	
 	// Constructors
 
 	public MutableGraphImpl() {
@@ -74,6 +72,7 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 
 	@Override
 	public void addEdge(E edge) {
+		// do nothing since this is handled by Node at Edge creation
 	}
 
 	// DynamicGraph
@@ -155,20 +154,4 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 		return nodes.contains(node);
 	}
 
-	@Override
-	public N findNode(String id) {
-		for (N node:nodes)
-			if (node.uniqueId().equals(id))
-				return node;
-		return null;
-	}
-
-	// Damn slow and inefficient - never use it !
-	@Override
-	public E findEdge(String id) {
-		for (E e:edges())
-			if (e.uniqueId().equals(id))
-				return e;
-		return null;
-	}
 }

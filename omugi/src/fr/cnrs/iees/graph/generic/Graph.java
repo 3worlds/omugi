@@ -70,21 +70,5 @@ public interface Graph<N extends Node, E extends Edge> extends Sizeable {
 	 * @return true if node was found in the graph
 	 */
 	public boolean contains(N node);
-	
-	
-	/**
-	 * finds a Node in the graph based on its ID
-	 * @param id
-	 * @return
-	 */
-	public N findNode(String id);
-	
-	/**
-	 * finds an Edge in the graph based on its ID
-	 * @param id
-	 * @return
-	 */
-	public E findEdge(String id);
-	
-	
+		
 }

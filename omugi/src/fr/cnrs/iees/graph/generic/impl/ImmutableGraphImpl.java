@@ -126,20 +126,6 @@ public class ImmutableGraphImpl<N extends Node,E extends Edge>
 	public boolean contains(N node) {
 		return nodes.containsKey(node.uniqueId());
 	}
-
-	@Override
-	public N findNode(String id) {
-		return nodes.get(id);
-	}
-
-	// Damn slow and inefficient - never use it !
-	@Override
-	public E findEdge(String id) {
-		for (E e:edges())
-			if (e.uniqueId().equals(id))
-				return e;
-		return null;
-	}
 	
 	// SIZEABLE
 

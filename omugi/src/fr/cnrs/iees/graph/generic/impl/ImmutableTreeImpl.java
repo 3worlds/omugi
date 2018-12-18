@@ -114,7 +114,7 @@ public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 	}
 
 	@Override
-	public N findNode(String reference) {
+	public N findNodeByReference(String reference) {
 		// Note: maybe recursing from the top of the tree is more efficient than
 		// scanning the whole list?
 		for (N n:nodeList)
