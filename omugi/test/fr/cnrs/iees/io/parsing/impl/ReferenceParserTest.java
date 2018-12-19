@@ -42,13 +42,13 @@ class ReferenceParserTest {
 
 	@Test
 	void testMatches() {
-		ref = "label1:name1+prop1=3.4";
+		ref = "+prop1=3.4";
 		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
 		ReferenceParser p = tk.parser();
 		Property prop = new Property("prop1",3.4);
 		props = new SimplePropertyListImpl(prop);
 		node = new DataTreeNodeImpl(props);
-		p.matches(node);
+		assertTrue(p.matches(node));
 	}
 
 }

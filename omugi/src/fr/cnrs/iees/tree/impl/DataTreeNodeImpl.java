@@ -20,7 +20,7 @@ public class DataTreeNodeImpl extends SimpleTreeNodeImpl
 
 	// Constructors
 	
-	protected DataTreeNodeImpl(SimplePropertyList props) {
+	public DataTreeNodeImpl(SimplePropertyList props) {
 		super();
 		propertyList = props;
 	}

@@ -126,14 +126,8 @@ public class ReferenceParser extends Parser {
 						return false;
 				}
 				// match Primitive type property values
-				else if (pl.getPropertyClass(pm.name).isPrimitive()) {
-					if (!pl.getPropertyValue(pm.name).toString().equals(pm.value))
-						return false;
-				}
-				else {
-					// This should never be reached - it means the node has an invalid property type
-					throw new OmugiException("wrong property type for TreNode "+pl.getPropertyClassName(pm.name));
-				}
+				else if (!pl.getPropertyValue(pm.name).toString().equals(pm.value))
+					return false;
 			}
 			testNode = testNode.getParent();
 		}
