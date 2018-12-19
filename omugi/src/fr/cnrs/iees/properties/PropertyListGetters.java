@@ -28,21 +28,92 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.properties;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+import java.util.Set;
+
+import au.edu.anu.rscs.aot.graph.property.Property;
 
 /**
+ * This interface isolates the generic getters for properties. 
  * 
- * @author Jacques Gignoux - 01-08-2018 
+ * 
+ * @author J. Gignoux - 13 févr. 2017
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+
+public interface PropertyListGetters {
+
+	/**
+	 * Contract: efficiency - do not raise an exception if key is not found
+	 * @param key the property name
+	 * @return the property as a (key, value) pair
+	 */
+	public default Property getProperty(String key) {
+		return new Property(key, getPropertyValue(key));
+	}
+
+	/**
+	 * Contract: efficiency - do not raise an exception if key is not found
+	 * @param key the property name
+	 * @return the property value
+	 */
+	public Object getPropertyValue(String key);
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+	/**
+	 * check if a property exists in this object
+	 * @param key the property name to check
+	 * @return true if found
+	 */
+	public boolean hasProperty(String key);
+
+	// refactored 
+//	public String   getString(String key);
+	public default String propertyToString(String key) {
+		Object value = getPropertyValue(key);
+		if (value != null)
+			return value.toString();
+		else
+			return "null";
+	}
+
+	// refactored
+//	public String getClassName(String key);
+	// TODO: change name to getPropertyJavaClassName() 
+	public default String getPropertyClassName(String key) {
+		return getPropertyClass(key).getName();
+	}
+	
+	// refactored
+//	public String toSimpleClassName(String key);
+	// TODO: remove. This isnt part of property types
+//	public default String getPropertySimpleClassName(String key) {
+////		return PropertyType.toPropertyType(getPropertyClassName(key));
+//		return ValidPropertyTypes.getType(key);
+//	}
+
+	// refactored
+//	public boolean isType(String key, String className);
+	// TODO: remove. This isnt part of property types
+//	public boolean isPropertyType(String key, String className);
+	
+	// safe - returns Object if value is null
+	public default Class<?> getPropertyClass(String key) {
+		Object o = getPropertyValue(key);
+		if (o!=null)
+			return o.getClass();
+		else
+			return Object.class;
+	}
+
+	// refactored
+//	public Set<String> getKeys();
+	public Set<String> getKeysAsSet();
+	
+	public default String[] getKeysAsArray() {
+		Set<String> keySet = getKeysAsSet();
+		String[] keys = new String[keySet.size()];		
+		return keySet.toArray(keys);
+	}
 
 }

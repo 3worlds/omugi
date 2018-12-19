@@ -28,21 +28,35 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.properties;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+import fr.ens.biologie.generic.DataContainer;
+import fr.ens.biologie.generic.Sizeable;
 
 /**
- * 
- * @author Jacques Gignoux - 01-08-2018 
+ * A read-only property list, ie with a size and getters but no setters.
+ * @author gignoux - 15 juin 2017
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
-	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+public interface ReadOnlyPropertyList 
+		extends PropertyListGetters, Sizeable, DataContainer {
 
+	public default boolean hasTheSamePropertiesAs(ReadOnlyPropertyList list) {
+		if (size()==list.size())
+			if (getKeysAsSet().equals(list.getKeysAsSet())) {
+				for (String key:getKeysAsSet()) 
+					if (!getPropertyClass(key).equals(list.getPropertyClass(key)))
+						return false;
+				return true;
+			}
+		return false;
+	}
+	
+	@Override
+	public default DataContainer clear() {
+		// do nothing, this is read-only
+		return this;
+	}
+	
+	public ReadOnlyPropertyList clone();
 }

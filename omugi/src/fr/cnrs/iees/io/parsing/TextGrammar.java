@@ -28,21 +28,41 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.io.parsing;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+import fr.ens.biologie.generic.SaveableAsText;
 
 /**
+ * This interface defines the conventions used to save graph elements as text. 
+ * For example, which delimiter for which kind of token, etc.
+ * <p>CAUTION: change in this file will corrupt ALL SAVED configuration files.</p>
  * 
- * @author Jacques Gignoux - 01-08-2018 
+ * @author gignoux
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
-	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+public interface TextGrammar {
 
+	// Tables
+	
+	/** delimiter for dimensions */
+	public static char[] DIM_BLOCK_DELIMITERS = SaveableAsText.SQUARE_BRACKETS;
+	/** separator for dimensions */
+	public static char DIM_ITEM_SEPARATOR = SaveableAsText.COMMA;
+	/** delimiter for tables */
+	public static char[] TABLE_BLOCK_DELIMITERS = SaveableAsText.BRACKETS;
+	/** separator for table items */
+	public static char TABLE_ITEM_SEPARATOR = SaveableAsText.COMMA;
+
+	// Property lists
+	
+	/** delimiter for property lists */
+	public static char[] PROPERTY_LIST_DELIMITERS = SaveableAsText.BRACES;
+	/** separator for property lists */
+	public static char PROPERTY_LIST_SEPARATOR = SaveableAsText.BLANK;
+	
+	// Properties
+	
+	/** separator for property (between key and value) */
+	public static char PROPERTY_SEPARATOR = SaveableAsText.EQUAL;
+	    
 }

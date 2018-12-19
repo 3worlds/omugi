@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,21 +28,49 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
-
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+package fr.cnrs.iees.io.parsing.impl;
+import fr.ens.biologie.generic.SaveableAsText;
 
 /**
+ * Token types used in graph text files.
  * 
- * @author Jacques Gignoux - 01-08-2018 
+ * @author Jacques Gignoux - 18 déc. 2018
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
-	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+public enum GraphTokens {
 
+	// token type	prefix		content type	suffix
+	COMMENT			("//",		"String",		"eol"),
+	PROPERTY_NAME	("",		"String",		String.valueOf(SaveableAsText.EQUAL)),
+	PROPERTY_VALUE	(String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_OPEN]),
+								"any",			String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_CLOSE])),
+	PROPERTY_TYPE	(String.valueOf(SaveableAsText.EQUAL),
+								"java",			String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_OPEN])),
+	LABEL			("",		"String",		String.valueOf(SaveableAsText.BLANK)),
+	NAME			("",		"String",		""),
+	NODE_REF		(String.valueOf(SaveableAsText.SQUARE_BRACKETS[SaveableAsText.BLOCK_OPEN]),
+								"String",		String.valueOf(SaveableAsText.SQUARE_BRACKETS[SaveableAsText.BLOCK_CLOSE])),
+//	IMPORT			("import","filename","")
+	;
+	private final String prefix;
+	private final String type;
+	private final String suffix;
+
+	private GraphTokens(String prefix, String type, String suffix) {
+		this.prefix = prefix;
+		this.suffix = suffix;
+		this.type = type;
+	}
+	
+	public String tokenType() {
+		return type;
+	}
+
+	public String suffix() {
+		return suffix;
+	}
+
+	public String prefix() {
+		return prefix;
+	}
 }

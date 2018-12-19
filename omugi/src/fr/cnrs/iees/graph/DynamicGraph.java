@@ -28,21 +28,27 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
-
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+package fr.cnrs.iees.graph;
 
 /**
- * 
- * @author Jacques Gignoux - 01-08-2018 
+ * A mutable graph, with the possibility to add or remove Elements
+ * @author gignoux - 25 août 2017
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+public interface DynamicGraph<N extends Node, E extends Edge> {
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+	public void addEdge(E edge);
+	
+	public void addNode(N node);
+	
+	public void removeEdge(E edge);
+	
+	public void removeNode(N node);
+	
+	public void addNodes(Iterable<N> nodelist);
+	
+	public void removeNodes(Iterable<N> nodelist);
+	
+	public void clear();
 
 }

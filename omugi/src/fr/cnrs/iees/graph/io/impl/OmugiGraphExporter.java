@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.io.impl;
 
+import static fr.cnrs.iees.io.parsing.impl.GraphTokens.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -37,20 +39,18 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
-import fr.cnrs.iees.graph.generic.DataEdge;
-import fr.cnrs.iees.graph.generic.DataNode;
-import fr.cnrs.iees.graph.generic.Direction;
-import fr.cnrs.iees.graph.generic.Edge;
-import fr.cnrs.iees.graph.generic.Graph;
-import fr.cnrs.iees.graph.generic.Node;
-import fr.cnrs.iees.graph.generic.ReadOnlyDataEdge;
-import fr.cnrs.iees.graph.generic.ReadOnlyDataNode;
+import fr.cnrs.iees.graph.DataEdge;
+import fr.cnrs.iees.graph.DataNode;
+import fr.cnrs.iees.graph.Direction;
+import fr.cnrs.iees.graph.Edge;
+import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.ReadOnlyDataEdge;
+import fr.cnrs.iees.graph.ReadOnlyDataNode;
 import fr.cnrs.iees.graph.io.GraphExporter;
-import fr.cnrs.iees.graph.properties.ReadOnlyPropertyList;
-import fr.cnrs.iees.graph.properties.SimplePropertyList;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.SaveableAsText;
-
-import static fr.cnrs.iees.io.graph.GraphTokens.*;
 
 /**
  * An exporter into text format for graphs. 

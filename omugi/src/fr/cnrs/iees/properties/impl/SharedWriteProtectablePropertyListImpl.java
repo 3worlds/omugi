@@ -28,21 +28,82 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.properties.impl;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+import au.edu.anu.rscs.aot.graph.property.PropertyKeys;
+import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.properties.SimpleWriteProtectablePropertyList;
 
 /**
+ * <p>Implementation of {@linkplain SimplePropertyList}.</p>
+ * <ol>
+ * <li>Storage of properties: keys are shared (and stored outside this class), values
+ * are stored locally.</li>
+ * <li>Optimisation: memory and speed. No checks on dimensions, names or anything else.</li>
+ * <li>Use case: For large numbers of objects sharing the same set of properties and
+ * when a fine control of property list edition capability is needed.</li>
+ * </ol>
+ * <p>Properties and keys are stored in arrays so that property keys always come in the same order.</p>
+ * <p>The value of a property can only be changed if the list is in the 'writeEnable' state.
+ * The current state of the list is known by calling {@code isReadOnly()}. The state can be
+ * changed using {@code writeEnable()} and  {@code writeDisable()}.</p>
  * 
- * @author Jacques Gignoux - 01-08-2018 
+ * @author J. Gignoux - 14 févr. 2017
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+// Tested OK with version 0.0.1 on 26-10-2018
+public class SharedWriteProtectablePropertyListImpl extends SharedPropertyListImpl
+		implements SimpleWriteProtectablePropertyList {
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+	private boolean readOnly = false;
+
+	
+	// Constructors
+	// 
+	
+	public SharedWriteProtectablePropertyListImpl(PropertyKeys keys) {
+		super(keys);
+	}
+	
+	public SharedWriteProtectablePropertyListImpl(SimplePropertyList sharedProperties) {
+		super(sharedProperties);
+	}
+
+	public SharedWriteProtectablePropertyListImpl(String... keys) {
+		super(keys);
+	}
+
+	// PropertyListSetters methods
+	// 
+
+	@Override
+	public SimpleWriteProtectablePropertyList setProperty(String key, Object value) {
+		if (!readOnly) super.setProperty(key, value);
+		return this;
+	}
+	
+	// Cloneable methods
+	//	
+
+	
+	// WriteProtectable methods
+	//
+	
+	@Override
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	@Override
+	public SimpleWriteProtectablePropertyList writeEnable() {
+		readOnly = false;
+		return this;
+	}
+
+	@Override
+	public SimpleWriteProtectablePropertyList writeDisable() {
+		readOnly = true;
+		return this;
+	}
 
 }

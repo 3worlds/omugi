@@ -28,37 +28,88 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io.impl;
+package fr.cnrs.iees.io.parsing.impl;
 
-import java.io.File;
+import static org.junit.jupiter.api.Assertions.*;
 
-import fr.cnrs.iees.graph.Edge;
+import org.junit.jupiter.api.Test;
+
 import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.io.GraphImporter;
-import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.impl.GraphParser;
+import fr.cnrs.iees.io.parsing.impl.GraphTokenizer;
 
-/**
- * Importer for graphs / trees in the omugi simple text format.
- * @author Jacques Gignoux - 14 déc. 2018
- *
- */
-// tested OK with version 0.0.1 on 17/12/2018
-public class OmugiGraphImporter implements GraphImporter {
+class GraphParserTest {
 
-	private FileTokenizer tokenizer = null;
-	private GraphParser parser = null;
+	String[] test = {"graph // this is a comment\n",
+			"\n",
+			"//this is another comment\n", 
+			"\n" ,
+			"label1 name1\n" , 
+			"  prop1=Integer(1)\n" , 
+			"	prop2 =Double(2.0)\n" , 
+			"prop3= String(\"blabla\")\n" , 
+			"		prop4 = Boolean(true)\n" , 
+			"\n" ,
+			"label2 name2\n" , 
+			"label1 name3\n" , 
+			"\n" ,
+			"[label1:name1] label4 name1 [label2:name2]\n" , 
+			"	[ label1:name1] label4 name2	 [label2:name2 ]\n" , 
+			"[ label2:name2 ] label4 name1   [label1:name3]\n" ,
+			"label2 name5\n" ,
+			"prop1 = Integer(0)"};
+
+	String[] testWithErrors = {"graph // this is a comment\n",
+			"\n",
+			"//this is another comment\n", 
+			"\n" ,
+			"label1 name1\n" , 
+			"  prop1=Integer(1.0)\n" , 			// property value incompatible with type
+			"	prop2 =Double(2.0)\n" , 
+			"prop3= String(\"blabla\")\n" , 
+			"		prop4 = Boolkean(true)\n" ,  // wrong property type
+			"\n" ,
+			" name2\n" ,  					// missing label here
+			"label1 name3\n" , 
+			"\n" ,
+			"[label1:name1] label4 name1 [label2:name2]\n" , 
+			"	[ label1:name11] label4 name2	 [label2:name2 ]\n" ,  // non existant start node
+			"[ label2:name2 ] label4 name1   [label1:name7]\n" ,  // non existant end node 
+			"label2 name5\n" ,
+			"prop1 = Integer(0)"};
+
 	
-	public OmugiGraphImporter(File infile) {
-		super();
-		tokenizer = new FileTokenizer(infile);
-		parser = (GraphParser) tokenizer.parser();
+	@Test
+	void testParse() {
+		GraphParser gp = new GraphParser(new GraphTokenizer(test));
+		gp.parse();
+		assertEquals(gp.toString(),"Graph specification\n" + 
+				"Nodes:\n" + 
+				"	label1:name1\n" + 
+				"		prop1:Integer=1\n" + 
+				"		prop2:Double=2.0\n" + 
+				"		prop3:String=\"blabla\"\n" + 
+				"		prop4:Boolean=true\n" + 
+				"	label2:name2\n" + 
+				"	label1:name3\n" + 
+				"	label2:name5\n" + 
+				"		prop1:Integer=0\n" + 
+				"Edges:\n" + 
+				"	label4:name1 [label1:name1-->label2:name2]\n" + 
+				"	label4:name2 [label1:name1-->label2:name2]\n" + 
+				"	label4:name1 [label2:name2-->label1:name3]\n");
 	}
-	
-	@Override
-	public Graph<? extends Node, ? extends Edge> getGraph() {
-		return parser.graph();
+
+	@Test
+	void testGraph() {
+		GraphParser gp = new GraphParser(new GraphTokenizer(test));
+		Graph<?,?> g = gp.graph();
+//		System.out.println(g.toString());
+		assertEquals(g.size(),4);
+		gp = new GraphParser(new GraphTokenizer(testWithErrors));
+		g = gp.graph();
+//		System.out.println(g.toString());
+		assertEquals(g.size(),3);
 	}
 
 }

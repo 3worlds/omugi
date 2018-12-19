@@ -28,21 +28,28 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.graph.impl;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.EdgeAdapter;
+import fr.cnrs.iees.graph.GraphElementFactory;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
 
 /**
- * 
- * @author Jacques Gignoux - 01-08-2018 
+ * <p>The simplest possible Edge implementation. This class only has:</p>
+ * <ul>
+ * <li>a unique id</li>
+ * <li>a start Node</li> 
+ * <li>an end Node</li>
+ * </ul>
+ * <p> Constructor is protected
+ * and accessible only through EdgeFactory.</p>
+  * @author gignoux - 30 août 2017
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
-	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+public class SimpleEdgeImpl extends EdgeAdapter {
 
+	protected SimpleEdgeImpl(Node start, Node end, GraphElementFactory factory) {
+		super(start,end,factory);
+	}
+		
 }

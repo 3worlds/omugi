@@ -35,11 +35,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.graph.generic.DataNode;
-import fr.cnrs.iees.graph.generic.GraphElementFactory;
-import fr.cnrs.iees.graph.generic.Node;
-import fr.cnrs.iees.graph.properties.SimplePropertyList;
-import fr.cnrs.iees.graph.properties.impl.SimplePropertyListImpl;
+import fr.cnrs.iees.graph.DataNode;
+import fr.cnrs.iees.graph.GraphElementFactory;
+import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.impl.DataNodeImpl;
+import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
+import fr.cnrs.iees.graph.impl.SimpleNodeImpl;
+import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 class DataNodeImplTest {
 	

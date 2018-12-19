@@ -30,9 +30,9 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.io;
 
-import fr.cnrs.iees.graph.generic.Edge;
-import fr.cnrs.iees.graph.generic.Graph;
-import fr.cnrs.iees.graph.generic.Node;
+import fr.cnrs.iees.graph.Edge;
+import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.Node;
 
 /**
  * 

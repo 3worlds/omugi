@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import au.edu.anu.rscs.aot.util.Uid;
-import fr.cnrs.iees.graph.io.ValidPropertyTypes;
+import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 
 class ValidPropertyTypesTest {
 

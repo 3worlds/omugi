@@ -28,21 +28,47 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+import fr.ens.biologie.generic.Sizeable;
 
 /**
- * 
- * @author Jacques Gignoux - 01-08-2018 
+ * An immutable graph (no possibility to add or remove elements as it is now unrelated
+ * to List).
+ * @author gignoux - 16 août 2017
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+public interface Graph<N extends Node, E extends Edge> extends Sizeable {
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
-
+	/**
+	 * Read-only accessor to all Nodes
+	 * @return an Iterable of all Nodes
+	 */
+	public Iterable<N> nodes();
+	
+	/**
+	 * Read-only accessor to all Edges
+	 * @return an Iterable of all Edges
+	 */
+	public Iterable<E> edges();
+	
+	/**
+	 * Read-only accessor to all root Nodes (if any)
+	 * @return an Iterable on all root Nodes
+	 */
+	public Iterable<N> roots();
+	
+	/**
+	 * Read-only accessor to all leaf Nodes (if any)
+	 * @return an Iterable on all leaf Nodes
+	 */
+	public Iterable<N> leaves();
+	
+	/**
+	 * Checks if this graph contains a particular Node
+	 * @param node the Node to search for
+	 * @return true if node was found in the graph
+	 */
+	public boolean contains(N node);
+		
 }

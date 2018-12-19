@@ -28,139 +28,117 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.generic.impl;
+package fr.cnrs.iees.properties.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
-import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
+import au.edu.anu.rscs.aot.graph.property.PropertyKeys;
+import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.properties.impl.SharedPropertyListImpl;
 
-class ImmutableGraphImplTest {
-
-	DefaultGraphFactory f = new DefaultGraphFactory(2);
-	Node n1;
-	Node n2, n3, n4;
-	Edge e1, e2, e3, e4, e5;
-	Map<String,String> nodes;
-	ImmutableGraphImpl<Node,Edge> graph;
+class SharedPropertyListImplTest {
 	
-	// little test graph:
-	//
-	//              e3
-	//              ||
-	//              v|
-	//  n1 ---e1--> n2 ---e4--> n3 ---e5--> n4
-	//     <--e2--- 
+	private SimplePropertyList sp1=null, sp2=null, sp3=null;
 	
-	@BeforeEach
-	private void init() {
-		nodes = new HashMap<String,String>();
-		n1 = f.makeNode();
-		nodes.put(n1.uniqueId(), "n1");
-		n2 = f.makeNode();
-		nodes.put(n2.uniqueId(), "n2");
-		n3 = f.makeNode();
-		nodes.put(n3.uniqueId(), "n3");
-		n4 = f.makeNode();
-		nodes.put(n4.uniqueId(), "n4");
-		e1 = f.makeEdge(n1,n2);
-		e2 = f.makeEdge(n2,n1);
-		e3 = f.makeEdge(n2,n2);
-		e4 = f.makeEdge(n2,n3);
-		e5 = f.makeEdge(n3,n4);
-		List<Node> l = new LinkedList<Node>();
-		l.add(n1); l.add(n2);
-		l.add(n3); l.add(n4);
-		graph = new ImmutableGraphImpl<Node,Edge>(l);
-	}
-
 	private void show(String method,String text) {
 		System.out.println(method+": "+text);
 	}
 	
-	@Test
-	void testImmutableGraphImplIterableOfN() {
-		assertNotNull(graph);
+	@BeforeEach
+	private void init() {
+		PropertyKeys keys = new PropertyKeys("int1","double2","triple3");
+		sp1 = new SharedPropertyListImpl(keys);
+		sp2 = new SharedPropertyListImpl("int1","double2","triple3");
+		sp3 = new SharedPropertyListImpl(keys);
 	}
 
 	@Test
-	void testNodes() {
-		int i=0;
-		for (Node n:graph.nodes()) {
-			show("testNodes",nodes.get(n.uniqueId()));
-			i++;
+	void testSharedPropertyListImplPropertyKeys() {
+		show("testSharedPropertyListImplPropertyKeys",sp1.toString());
+		assertNotNull(sp1);
+	}
+
+	@Test
+	void testSharedPropertyListImplSimplePropertyList() {
+		sp3 = new SharedPropertyListImpl(sp1);
+		show("testSharedPropertyListImplSimplePropertyList",sp3.toString());
+		assertNotNull(sp3);
+	}
+
+	@Test
+	void testSharedPropertyListImplStringArray() {
+		show("testSharedPropertyListImplStringArray",sp2.toString());
+		assertNotNull(sp2);
+	}
+
+	@Test
+	void testSetProperty() {
+		sp1.setProperty("int1", 1);
+		assertEquals(sp1.getPropertyValue("int1"),1);
+		try {
+			sp1.setProperty("int3",67);
+			fail("Key not found exception not raised");
 		}
-		assertEquals(i,4);
-	}
-
-	@Test
-	void testEdges() {
-		int i=0;
-		for (Edge e:graph.edges()) {
-			show("testEdges",e.uniqueId().toString());
-			i++;
+		catch (Exception e) {
+			// test OK
 		}
-		assertEquals(i,5);
-	}
-
-	@SuppressWarnings("unused")
-	@Test
-	void testRoots() {
-		int i=0;
-		for (Node n:graph.roots()) 
-			i++;
-		assertEquals(i,0);
-	}
-
-	@SuppressWarnings("unused")
-	@Test
-	void testLeaves() {
-		int i=0;
-		for (Node n:graph.leaves()) 
-			i++;
-		assertEquals(i,1);
 	}
 
 	@Test
-	void testContains() {
-		assertTrue(graph.contains(n3));
-		Node n = f.makeNode();
-		assertFalse(graph.contains(n));
+	void testGetPropertyValue() {
+		sp1.setProperty("triple3", false);
+		assertEquals(sp1.getPropertyValue("triple3"),false);
+		try {
+			sp1.getProperty("notThere");
+			fail("Key not found exception not raised");
+		}
+		catch (Exception e) {
+			// test OK
+		}
+	}
+
+	@Test
+	void testHasProperty() {
+		assertTrue(sp1.hasProperty("double2"));
+		assertFalse(sp2.hasProperty("notThere"));
+	}
+
+	@Test
+	void testGetKeysAsSet() {
+		assertEquals(sp1.getKeysAsSet(),sp2.getKeysAsSet());
+	}
+
+	@Test
+	void testGetKeysAsArray() {
+		assertFalse(sp1.getKeysAsArray()==sp2.getKeysAsArray());
+		assertTrue(sp1.getKeysAsArray()==sp3.getKeysAsArray());
+	}
+
+	
+	@Test
+	void testClone() {
+		SimplePropertyList sp4 = sp1.clone();
+		show("testClone",sp4.toString());
+		assertTrue(sp1.getKeysAsArray()==sp4.getKeysAsArray());
+	}
+
+	@Test
+	void testClear() {
+		String[] keys = {"int1","double2","triple3"};
+		Object[] values = {1,12.8,false};
+		sp2.setProperties(keys, values);
+		show("testClear",sp2.toString());
+		sp2.clear();
+		show("testClear",sp2.toString());
+		assertEquals(sp2.getPropertyValue("triple3"),null);
 	}
 
 	@Test
 	void testSize() {
-		assertEquals(graph.size(),4);
-	}
-
-	@Test
-	void testToUniqueString() {
-		show("testToUniqueString",graph.toUniqueString());
-	}
-
-	@Test
-	void testToShortString() {
-		show("testToShortString",graph.toShortString());
-	}
-
-	@Test
-	void testToDetailedString() {
-		show("testToDetailedString",graph.toDetailedString());
-	}
-
-	@Test
-	void testToString() {
-		show("testToString",graph.toString());
+		assertEquals(sp3.size(),3);
 	}
 
 }

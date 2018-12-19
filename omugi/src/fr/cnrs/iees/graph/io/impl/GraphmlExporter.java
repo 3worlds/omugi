@@ -30,13 +30,13 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.io.impl;
 
-import fr.cnrs.iees.graph.generic.Edge;
-import fr.cnrs.iees.graph.generic.Element;
-import fr.cnrs.iees.graph.generic.Graph;
-import fr.cnrs.iees.graph.generic.Node;
+import fr.cnrs.iees.graph.Edge;
+import fr.cnrs.iees.graph.Element;
+import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.io.GraphExporter;
-import fr.cnrs.iees.graph.io.ValidPropertyTypes;
-import fr.cnrs.iees.graph.properties.ReadOnlyPropertyList;
+import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 import java.io.*;
 import java.util.HashMap;

@@ -28,21 +28,51 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+import au.edu.anu.rscs.aot.util.Uid;
 
 /**
- * 
- * @author Jacques Gignoux - 01-08-2018 
+ * A base implementation of Element with the methods that should be universal in all descendants
+ * @author gignoux - 16 août 2017
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+public abstract class ElementAdapter implements Element {
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+	private Uid id = null;
+
+	public ElementAdapter() {
+		super();
+		id = new Uid();
+	}
+	
+	// ELEMENT
+
+	@Override
+	public String instanceId() {
+		return id.toString();
+	}
+	
+	// TEXTABLE
+
+	@Override
+	public String toUniqueString() {
+		return getClass().getSimpleName()+ " id=" + id.toString();
+	}
+
+	@Override
+	public String toShortString() {
+		return getClass().getSimpleName();
+	}
+	
+	@Override
+	public String toDetailedString() {
+		return toUniqueString();
+	}
+	
+	@Override
+	public final String toString() {
+		return "["+toDetailedString()+"]";
+	}
 
 }

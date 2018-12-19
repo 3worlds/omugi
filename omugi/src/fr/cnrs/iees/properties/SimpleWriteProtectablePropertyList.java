@@ -28,21 +28,21 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.properties;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+import fr.ens.biologie.generic.WriteProtectable;
 
 /**
+ * <p>A property list for graph {@linkplain Element}s that can be made read-only on demand.</p> 
+ * <ol>
+ * <li>Immutable, i.e. the list of properties does not change after construction.</li> 
+ * <li>Default properties: none.</li>
+ * </ol>
  * 
- * @author Jacques Gignoux - 01-08-2018 
+ * @author Jacques Gignoux - 29-8-2017
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
-	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+public interface SimpleWriteProtectablePropertyList 
+	extends SimplePropertyList, WriteProtectable {
 
 }

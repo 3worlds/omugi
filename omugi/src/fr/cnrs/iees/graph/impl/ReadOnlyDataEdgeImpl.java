@@ -28,21 +28,56 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.graph.impl;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
+import java.util.Set;
+
+import fr.cnrs.iees.graph.GraphElementFactory;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+import fr.cnrs.iees.graph.ReadOnlyDataEdge;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
- * 
- * @author Jacques Gignoux - 01-08-2018 
+ * Straightforward implementation of {@linkplain ReadOnlyDataEdge} 
+ * @author Jacques Gignoux - 29 nov. 2018
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+public class ReadOnlyDataEdgeImpl extends SimpleEdgeImpl implements ReadOnlyDataEdge {
+
+	private ReadOnlyPropertyList propertyList = null;
+
+	// SimpleEdgeImpl
+
+	protected ReadOnlyDataEdgeImpl(Node start, Node end, ReadOnlyPropertyList props, GraphElementFactory factory) {
+		super(start, end, factory);
+		propertyList = props;
+	}
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+	// SimplePropertyList
+
+	@Override
+	public ReadOnlyDataEdgeImpl clone() {
+		return new ReadOnlyDataEdgeImpl(startNode(),endNode(),propertyList.clone(),factory());
+	}
+
+	@Override
+	public Object getPropertyValue(String key) {
+		return propertyList.getPropertyValue(key);
+	}
+
+	@Override
+	public boolean hasProperty(String key) {
+		return propertyList.hasProperty(key);
+	}
+
+	@Override
+	public Set<String> getKeysAsSet() {
+		return propertyList.getKeysAsSet();
+	}
+
+	@Override
+	public int size() {
+		return propertyList.size();
+	}
 
 }

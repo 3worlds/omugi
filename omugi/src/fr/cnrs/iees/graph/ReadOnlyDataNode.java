@@ -28,21 +28,20 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
+ * A Node with properties that can only be read, not set. Use this interface for 
+ * nodes with internally generated property values (like age, number of items, etc.)
  * 
- * @author Jacques Gignoux - 01-08-2018 
+ * @author Jacques Gignoux - 29 nov. 2018
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+public interface ReadOnlyDataNode extends Node, ReadOnlyPropertyList {
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+	@Override
+	public ReadOnlyDataNode clone();
 
 }

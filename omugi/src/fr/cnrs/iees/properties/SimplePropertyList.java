@@ -28,21 +28,25 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
-
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+package fr.cnrs.iees.properties;
 
 /**
+ * <p>Simple, straightforward read-write property list for graph {@linkplain Element}s.
+ * A property list is just a list of (<em>name,value</em>) pairs, where <em>name</em> is a 
+ * {@linkplain String} and <em>value</em> is any descendant of {@linkplain Object} 
+ * (including primitive types).</p> 
+ * <ol>
+ * <li>Immutable.</li> 
+ * <li>Default properties: none.</li>
+ * </ol>
  * 
- * @author Jacques Gignoux - 01-08-2018 
+ * @author Jacques Gignoux - 23-10-2018
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+public interface SimplePropertyList 
+	extends PropertyListSetters, ReadOnlyPropertyList  {
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
-
+	@Override
+	public abstract SimplePropertyList clone();
+	
 }

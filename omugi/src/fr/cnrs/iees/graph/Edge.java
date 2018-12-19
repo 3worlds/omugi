@@ -28,21 +28,64 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
-
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+package fr.cnrs.iees.graph;
 
 /**
- * 
- * @author Jacques Gignoux - 01-08-2018 
+ * The basic features any edge in any graph should have
+ * @author gignoux - 17 août 2017
+ * <p>Setters make sure the graph stays valid, ie they update the Node edge lists if needed</p>
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+public interface Edge extends Element {
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+	public static String EDGE_LABEL = "edge";
+	
+	/**
+	 * Getter for
+	 * @return the start Node of this edge
+	 */
+	public Node startNode();
+	
+	/**
+	 * Getter for
+	 * @return the end Node of this edge
+	 */
+	public Node endNode();
 
+	/**
+	 * Getter for 
+	 * @param other a node at one of the two ends of this edge
+	 * @return the opposite end of this edge - null if the argument is not found in this edge
+	 */
+	public Node otherNode(Node other);
+	
+	/**
+	 * Setter for
+	 * @param node the start Node of this edge
+	 */
+	public Edge setStartNode(Node node);
+	
+	/**
+	 * Setter for
+	 * @param node the end Node of this edge
+	 */
+	public Edge setEndNode(Node node);
+	
+	/**
+	 * Setter for both start and end Nodes
+	 * @param start the new start node
+	 * @param end the new end node
+	 */
+	public default Edge setNodes (Node start, Node end) {
+		setStartNode(start);
+		setEndNode(end);
+		return this;
+	}
+
+	@Override
+	public default String classId() {
+		return EDGE_LABEL;
+	}
+
+	
 }

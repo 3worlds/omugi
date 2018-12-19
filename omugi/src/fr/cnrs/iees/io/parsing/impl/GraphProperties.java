@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,21 +28,50 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
-
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+package fr.cnrs.iees.io.parsing.impl;
 
 /**
+ * List of graph properties understood by {@link GraphParser} and their default
+ * values.
  * 
- * @author Jacques Gignoux - 01-08-2018 
+ * @author Jacques Gignoux - 13 déc. 2018
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+public enum GraphProperties {
+	// name		property name	property class										property default value
+	CLASS		("type",		"fr.cnrs.iees.graph.generic.Graph",					"fr.cnrs.iees.graph.generic.impl.ImmutableGraphImpl"),
+	FACTORY		("factory",		"fr.cnrs.iees.graph.generic.GraphElementFactory",	"fr.cnrs.iees.graph.generic.impl.DefaultGraphFactory"),
+	DIRECTED	("directed",	"java.lang.Boolean",								"true"),
+	MUTABLE		("mutable",		"java.lang.Boolean",								"false"),
+	// others to come ?
+	;
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
-
+	private final String propertyName;
+	private final String propertyType;
+	private final String defaultValue;
+	
+	private GraphProperties(String propertyName, String propertyType, String defaultValue) {
+		this.propertyName = propertyName;
+		this.propertyType = propertyType;
+		this.defaultValue = defaultValue;
+	}
+	
+	public String defaultValue() {
+		return defaultValue;
+	}
+	
+	public String propertyName() {
+		return propertyName;
+	}
+	
+	public String propertyType() {
+		return propertyType;
+	}
+	
+	public static GraphProperties propertyForName(String name) {
+		for (GraphProperties p: GraphProperties.values())
+			if (p.propertyName.equals(name))
+				return p;
+		return null;
+	}
 }

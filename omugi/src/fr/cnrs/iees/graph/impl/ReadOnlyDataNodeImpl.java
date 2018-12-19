@@ -28,21 +28,62 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.graph.impl;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+import java.util.Set;
 
-/**
- * 
- * @author Jacques Gignoux - 01-08-2018 
- *
- */
-public interface GraphExporter
-	extends TextGrammar {
+import fr.cnrs.iees.graph.GraphElementFactory;
+import fr.cnrs.iees.graph.ReadOnlyDataNode;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+import fr.ens.biologie.generic.DataContainer;
+
+public class ReadOnlyDataNodeImpl extends SimpleNodeImpl implements ReadOnlyDataNode {
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+	private ReadOnlyPropertyList propertyList = null;
+	
+	// SimpleNodeImpl
+	
+	protected ReadOnlyDataNodeImpl(ReadOnlyPropertyList props, GraphElementFactory factory) {
+		super(factory);
+		propertyList = props;
+	}
+
+	public ReadOnlyDataNodeImpl(int capacity, ReadOnlyPropertyList props, GraphElementFactory factory) {
+		super(capacity, factory);
+		propertyList = props;
+	}
+	
+	// ReadOnlyPropertyList
+	
+	@Override
+	public Object getPropertyValue(String key) {
+		return propertyList.getPropertyValue(key);
+	}
+
+	@Override
+	public boolean hasProperty(String key) {
+		return propertyList.hasProperty(key);
+	}
+
+	@Override
+	public Set<String> getKeysAsSet() {
+		return propertyList.getKeysAsSet();
+	}
+
+	@Override
+	public int size() {
+		return propertyList.size();
+	}
+
+	@Override
+	public ReadOnlyDataNodeImpl clone() {
+		return new ReadOnlyDataNodeImpl(propertyList.clone(),factory());
+	}
+
+	@Override
+	public DataContainer clear() {
+		// do nothing, this is read-only
+		return this;
+	}
 
 }

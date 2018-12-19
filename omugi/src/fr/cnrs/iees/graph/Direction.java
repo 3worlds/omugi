@@ -28,21 +28,16 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
-
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.io.parsing.TextGrammar;
+package fr.cnrs.iees.graph;
 
 /**
- * 
- * @author Jacques Gignoux - 01-08-2018 
+ * Directions of edges for directed graphs. Caution: used to index edge lists in Nodes
+ * @author gignoux - 17 août 2017
  *
  */
-public interface GraphExporter
-	extends TextGrammar {
+public enum Direction {
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+	IN,
+	OUT
 
 }

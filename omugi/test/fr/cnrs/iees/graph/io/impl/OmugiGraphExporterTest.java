@@ -44,16 +44,16 @@ import org.junit.jupiter.api.Test;
 import au.edu.anu.rscs.aot.collections.tables.BooleanTable;
 import au.edu.anu.rscs.aot.collections.tables.Dimensioner;
 import au.edu.anu.rscs.aot.collections.tables.Table;
-import fr.cnrs.iees.graph.generic.DataEdge;
-import fr.cnrs.iees.graph.generic.DataNode;
-import fr.cnrs.iees.graph.generic.Edge;
-import fr.cnrs.iees.graph.generic.Graph;
-import fr.cnrs.iees.graph.generic.Node;
-import fr.cnrs.iees.graph.generic.impl.DefaultGraphFactory;
-import fr.cnrs.iees.graph.generic.impl.ImmutableGraphImpl;
+import fr.cnrs.iees.graph.DataEdge;
+import fr.cnrs.iees.graph.DataNode;
+import fr.cnrs.iees.graph.Edge;
+import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
+import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
 import fr.cnrs.iees.graph.io.GraphImporter;
-import fr.cnrs.iees.graph.properties.SimplePropertyList;
-import fr.cnrs.iees.graph.properties.impl.SimplePropertyListImpl;
+import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 class OmugiGraphExporterTest {
 
