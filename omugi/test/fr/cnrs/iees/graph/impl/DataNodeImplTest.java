@@ -28,139 +28,97 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.generic.impl;
+package fr.cnrs.iees.graph.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.graph.Edge;
+import fr.cnrs.iees.graph.DataNode;
+import fr.cnrs.iees.graph.GraphElementFactory;
 import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.impl.DataNodeImpl;
 import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
-import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
+import fr.cnrs.iees.graph.impl.SimpleNodeImpl;
+import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
-class ImmutableGraphImplTest {
-
-	DefaultGraphFactory f = new DefaultGraphFactory(2);
-	Node n1;
-	Node n2, n3, n4;
-	Edge e1, e2, e3, e4, e5;
-	Map<String,String> nodes;
-	ImmutableGraphImpl<Node,Edge> graph;
+class DataNodeImplTest {
 	
-	// little test graph:
-	//
-	//              e3
-	//              ||
-	//              v|
-	//  n1 ---e1--> n2 ---e4--> n3 ---e5--> n4
-	//     <--e2--- 
+	private DataNode n1, n3;
+	private Node n2;
+	private SimplePropertyList p;
+	private GraphElementFactory f = new DefaultGraphFactory(3);
 	
 	@BeforeEach
 	private void init() {
-		nodes = new HashMap<String,String>();
-		n1 = f.makeNode();
-		nodes.put(n1.uniqueId(), "n1");
+		p = new SimplePropertyListImpl("prop1","prop2");
+		p.setProperty("prop1", "coucou");
+		n1 = f.makeNode(p);
 		n2 = f.makeNode();
-		nodes.put(n2.uniqueId(), "n2");
-		n3 = f.makeNode();
-		nodes.put(n3.uniqueId(), "n3");
-		n4 = f.makeNode();
-		nodes.put(n4.uniqueId(), "n4");
-		e1 = f.makeEdge(n1,n2);
-		e2 = f.makeEdge(n2,n1);
-		e3 = f.makeEdge(n2,n2);
-		e4 = f.makeEdge(n2,n3);
-		e5 = f.makeEdge(n3,n4);
-		List<Node> l = new LinkedList<Node>();
-		l.add(n1); l.add(n2);
-		l.add(n3); l.add(n4);
-		graph = new ImmutableGraphImpl<Node,Edge>(l);
+		n3 = f.makeNode(p);
 	}
-
+	
 	private void show(String method,String text) {
 		System.out.println(method+": "+text);
 	}
-	
+
 	@Test
-	void testImmutableGraphImplIterableOfN() {
-		assertNotNull(graph);
+	void testDataNodeImplGraphElementFactorySimplePropertyList() {
+		assertNotNull(n1);
+		assertEquals(n1.getClass(),DataNodeImpl.class);		
 	}
 
 	@Test
-	void testNodes() {
-		int i=0;
-		for (Node n:graph.nodes()) {
-			show("testNodes",nodes.get(n.uniqueId()));
-			i++;
-		}
-		assertEquals(i,4);
+	void testDataNodeImplIntGraphElementFactorySimplePropertyList() {
+		assertNotNull(n2);
+		assertNotNull(n3);
+		assertEquals(n2.getClass(),SimpleNodeImpl.class);
+		assertEquals(n3.getClass(),DataNodeImpl.class);
 	}
 
 	@Test
-	void testEdges() {
-		int i=0;
-		for (Edge e:graph.edges()) {
-			show("testEdges",e.uniqueId().toString());
-			i++;
-		}
-		assertEquals(i,5);
-	}
-
-	@SuppressWarnings("unused")
-	@Test
-	void testRoots() {
-		int i=0;
-		for (Node n:graph.roots()) 
-			i++;
-		assertEquals(i,0);
-	}
-
-	@SuppressWarnings("unused")
-	@Test
-	void testLeaves() {
-		int i=0;
-		for (Node n:graph.leaves()) 
-			i++;
-		assertEquals(i,1);
+	void testSetProperty() {
+		n1.setProperty("prop1", 12);
+		n1.setProperty("prop2",25.34);
+		show("testSetProperty",n1.toDetailedString());
+		assertEquals(n1.getPropertyValue("prop1"),12);
+		assertEquals(n1.getPropertyValue("prop2"),25.34);
 	}
 
 	@Test
-	void testContains() {
-		assertTrue(graph.contains(n3));
-		Node n = f.makeNode();
-		assertFalse(graph.contains(n));
+	void testClone() {
+//		Node n = n1.clone();
+	}
+
+	@Test
+	void testGetPropertyValue() {
+		assertEquals(n3.getPropertyValue("prop1"),"coucou");
+	}
+
+	@Test
+	void testHasProperty() {
+		assertTrue(n3.hasProperty("prop1"));
+		assertFalse(n3.hasProperty("prop3"));
+	}
+
+	@Test
+	void testGetKeysAsSet() {
+		show("testGetKeysAsSet",n1.getKeysAsSet().toString());
+		assertEquals(n1.getKeysAsSet().toString(),"[prop1, prop2]");
 	}
 
 	@Test
 	void testSize() {
-		assertEquals(graph.size(),4);
+		assertEquals(n1.size(),2);
 	}
 
 	@Test
-	void testToUniqueString() {
-		show("testToUniqueString",graph.toUniqueString());
-	}
-
-	@Test
-	void testToShortString() {
-		show("testToShortString",graph.toShortString());
-	}
-
-	@Test
-	void testToDetailedString() {
-		show("testToDetailedString",graph.toDetailedString());
-	}
-
-	@Test
-	void testToString() {
-		show("testToString",graph.toString());
+	void testClear() {
+		assertEquals(n3.getPropertyValue("prop1"),"coucou");
+		n3.clear();
+		assertEquals(n3.getPropertyValue("prop1"),null);
 	}
 
 }
