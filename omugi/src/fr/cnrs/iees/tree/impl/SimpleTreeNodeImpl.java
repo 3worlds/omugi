@@ -102,8 +102,8 @@ public class SimpleTreeNodeImpl implements TreeNode {
 
 	@Override
 	public String instanceId() {
-		// uses Object.toString() to generate a unique id
-		return super.toString();
+		// cf. Object.toString() doc for this code
+		return Integer.toHexString(hashCode());
 	}
 
 	// Textable

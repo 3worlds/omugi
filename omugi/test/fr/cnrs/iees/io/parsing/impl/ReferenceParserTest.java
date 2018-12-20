@@ -47,6 +47,7 @@ import fr.cnrs.iees.tree.impl.DataTreeNodeImpl;
  * @author Jacques Gignoux - 19 déc. 2018
  *
  */
+// TODO: more tests, with real names and labels
 class ReferenceParserTest {
 	
 	String ref;
@@ -66,18 +67,33 @@ class ReferenceParserTest {
 				"labelDeCadix:\n" + 
 				"label12:node15\n" + 
 				":\n" + 
-				"	prop4=\"blabla\"\n" + 
+				"	prop4=blabla\n" + 
 				"	prop5=28.96542\n");
 	}
 
 	@Test
-	void testMatches() {
+	void testMatches1() {
 		ref = "+prop1=3.4";
 		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
 		ReferenceParser p = tk.parser();
 		Property prop = new Property("prop1",3.4);
 		props = new SimplePropertyListImpl(prop);
 		node = new DataTreeNodeImpl(props);
+		assertTrue(p.matches(node));
+	}
+
+	@Test
+	void testMatches2() {
+		ref = "+prop1=3.4/+prop8=false+prop4=\"blabla\"";
+		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
+		ReferenceParser p = tk.parser();
+		props = new SimplePropertyListImpl(
+			new Property("prop8",false),
+			new Property("prop4","blabla"));
+		node = new DataTreeNodeImpl(props);
+		props = new SimplePropertyListImpl(
+			new Property("prop1",3.4));
+		node.setParent(new DataTreeNodeImpl(props));
 		assertTrue(p.matches(node));
 	}
 

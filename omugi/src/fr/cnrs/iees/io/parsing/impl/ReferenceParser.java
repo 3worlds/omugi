@@ -39,13 +39,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer.token;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.tree.TreeNode;
 import fr.ens.biologie.generic.SaveableAsText;
 
+/**
+ * 
+ * @author Jacques Gignoux - 19 déc. 2018
+ *
+ */
+// Tested OK but without label:name with version 0.0.4 on 20/12/2018
 public class ReferenceParser extends Parser {
 	
 	//----------------------------------------------------
@@ -105,7 +110,10 @@ public class ReferenceParser extends Parser {
 					lastPropMatch.name = tk.value;
 					break;
 				case PROPERTY_VALUE:
-					lastPropMatch.value = tk.value;
+					if (tk.value.startsWith("\"") && tk.value.endsWith("\""))
+						lastPropMatch.value = tk.value.substring(1, tk.value.length()-1);
+					else
+						lastPropMatch.value = tk.value;
 					lastNodeMatch.props.add(lastPropMatch);
 					break;
 			}
