@@ -28,63 +28,49 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.io.parsing;
+package fr.cnrs.iees.io.parsing.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
-import java.util.logging.Logger;
-
-import fr.cnrs.iees.io.parsing.impl.GraphParser;
-import fr.cnrs.iees.io.parsing.impl.GraphTokenizer;
-import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
+import fr.ens.biologie.generic.SaveableAsText;
 
 /**
+ * Token types used in tree text files
  * 
- * @author Jacques Gignoux - 7 déc. 2018
+ * @author Jacques Gignoux - 20 déc. 2018
  *
  */
-public class FileTokenizer implements Tokenizer {
-	
-	private Logger log = Logger.getLogger(FileTokenizer.class.getName());
-	private List<String> lines = null;
-	private LineTokenizer tokenizer = null;
-	
-	public FileTokenizer(File f) {
-		super();
-		try {
-			lines = Files.readAllLines(f.toPath());
-			String s = lines.get(0).trim();
-			if (s.startsWith("graph"))
-				tokenizer = new GraphTokenizer(this);
-			else if (s.startsWith("tree"))
-				tokenizer = new TreeTokenizer(this);
-			else
-				log.severe("unrecognized file format - unable to load file \""+f.getName()+"\"");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+public enum TreeTokens {
+
+	// token type	prefix		content type	suffix
+	COMMENT			("//",		"String",		"eol"),
+	PROPERTY_NAME	("",		"String",		String.valueOf(SaveableAsText.EQUAL)),
+	PROPERTY_VALUE	(String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_OPEN]),
+								"any",			String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_CLOSE])),
+	PROPERTY_TYPE	(String.valueOf(SaveableAsText.EQUAL),
+								"java",			String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_OPEN])),
+	LABEL			("",		"String",		String.valueOf(SaveableAsText.BLANK)),
+	NAME			("",		"String",		""),
+	LEVEL			("\t", 		"Integer",		""),
+	;
+	private final String prefix;
+	private final String type;
+	private final String suffix;
+
+	private TreeTokens(String prefix, String type, String suffix) {
+		this.prefix = prefix;
+		this.suffix = suffix;
+		this.type = type;
 	}
 	
-	protected List<String> lines() {
-		return lines;
-	}
-	
-	public void tokenize() {
-		tokenizer.tokenize();
+	public String tokenType() {
+		return type;
 	}
 
-	/**
-	 * Create an instance of {@link Parser} adapted for this tokenizer
-	 * @return a new instance of Parser
-	 */
-	public Parser parser() {
-		if (GraphTokenizer.class.isAssignableFrom(tokenizer.getClass()))
-			return new GraphParser((GraphTokenizer) tokenizer);
-//		if (TreeTokenizer.class.isAssignableFrom(tokenizer.getClass()))
-//			return new TreeParser((TreeTokenizer) tokenizer);
-		return null;
+	public String suffix() {
+		return suffix;
+	}
+
+	public String prefix() {
+		return prefix;
 	}
 	
 }
