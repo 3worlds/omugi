@@ -57,6 +57,7 @@ import au.edu.anu.rscs.aot.collections.tables.Table;
 // tested with version 0.0.1 on a graph of SimpleNodes and Edges (ie no data) OK on 7/11/2018
 // tested with version 0.0.1 on a graph of DataNodes and DataEdges OK on 29/11/2018
 // Problem: keys must be saved BEFORE the graph as per the xml schema
+// tested with version 0.0.4 OK on 20/12/2018 (fixed previous bug)
 public class GraphmlExporter implements GraphExporter {
 
 	// the output file
@@ -164,64 +165,64 @@ public class GraphmlExporter implements GraphExporter {
 		return null;
 	}
 	
-	private void writeKeys(PrintWriter w) {
+	private void writeKeys(StringBuilder sb) {
 		for (String key:nodeKeys.keySet()) {
 			String warning = warnings.get(nodeKeys.get(key));
 			if (warning!=null)
-				w.println(warning);
+				sb.append(warning).append('\n');
 			// key name
-			w.print("  <key id=\"");
-			w.print(key);
+			sb.append("  <key id=\"");
+			sb.append(key);
 			// key scope ("node", "edge", "all")
 			if (edgeKeys.containsKey(key))
-				w.print("\" for=\"all\" attr.name=\"");
+				sb.append("\" for=\"all\" attr.name=\"");
 			else
-				w.print("\" for=\"node\" attr.name=\"");
-			w.print(key); // ??
+				sb.append("\" for=\"node\" attr.name=\"");
+			sb.append(key); // ??
 			// key type - null value, ie unknown type, mapped to string
-			w.print("\" attr.type=\"");
+			sb.append("\" attr.type=\"");
 			String type = types.get(nodeKeys.get(key));
 			if (type!=null)
-				w.print(type);
+				sb.append(type);
 			else
-				w.print("string");
-			w.println("\">");
+				sb.append("string");
+			sb.append("\">\n");
 			// key default value
-			w.print("    <default>");
+			sb.append("    <default>");
 			if (type!=null)
-				w.print(ValidPropertyTypes.getDefaultValue(nodeKeys.get(key)));
+				sb.append(ValidPropertyTypes.getDefaultValue(nodeKeys.get(key)));
 			else
-				w.print(ValidPropertyTypes.getDefaultValue("String"));
-			w.println("</default>");
-			w.println("  </key>");
+				sb.append(ValidPropertyTypes.getDefaultValue("String"));
+			sb.append("</default>\n");
+			sb.append("  </key>\n");
 		}
 		for (String key:edgeKeys.keySet())
 			if (!nodeKeys.containsKey(key)) {
 				String warning = warnings.get(edgeKeys.get(key));
 				if (warning!=null)
-					w.println(warning);
+					sb.append(warning).append('\n');
 				// key name
-				w.print("  <key id=\"");
-				w.print(key);
+				sb.append("  <key id=\"");
+				sb.append(key);
 				// key scope ("node", "edge", "all")
-				w.print("\" for=\"edge\" attr.name=\"");
-				w.print(key);
+				sb.append("\" for=\"edge\" attr.name=\"");
+				sb.append(key);
 				// key type - null value, ie unknown type, mapped to string
-				w.print("\" attr.type=\"");
+				sb.append("\" attr.type=\"");
 				String type = types.get(edgeKeys.get(key));
 				if (type!=null)
-					w.print(type);
+					sb.append(type);
 				else
-					w.print("string");
-				w.println("\">");
+					sb.append("string");
+				sb.append("\">\n");
 				// key default value
-				w.print("    <default>");
+				sb.append("    <default>");
 				if (type!=null)
-					w.print(ValidPropertyTypes.getDefaultValue(edgeKeys.get(key)));
+					sb.append(ValidPropertyTypes.getDefaultValue(edgeKeys.get(key)));
 				else
-					w.print(ValidPropertyTypes.getDefaultValue("String"));
-				w.println("</default>");
-				w.println("  </key>");
+					sb.append(ValidPropertyTypes.getDefaultValue("String"));
+				sb.append("</default>\n");
+				sb.append("  </key>\n");
 		}
 	}
 	
@@ -232,41 +233,53 @@ public class GraphmlExporter implements GraphExporter {
 		ids.put(uid, id);
 		return id;
 	}
-
-	private void exportGraph(Graph<? extends Node, ? extends Edge> graph, PrintWriter writer) {
-		writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-		writer.println("<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"");  
-		writer.println("    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-		writer.println("    xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns"); 
-		writer.println("    http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">");
-		writer.println("  <graph id=\"G\" edgedefault=\"directed\">");
+	
+	private void writeGraph(StringBuilder sb,Graph<? extends Node, ? extends Edge> graph) {
+		sb.append("  <graph id=\"G\" edgedefault=\"directed\">\n");
 		for (Node node : graph.nodes()) {
-			writer.print("    <node id=\"" + localId(node.uniqueId()) + "\"");
+			sb.append("    <node id=\"" + localId(node.uniqueId()) + "\"");
 			String s = writeData(node);
 			if (s==null)
-				writer.println("/>");
+				sb.append("/>\n");
 			else {
-				writer.println(">");
-				writer.print(s);
-				writer.println("    </node>");
+				sb.append(">\n");
+				sb.append(s);
+				sb.append("    </node>\n");
 			}
 		}
 		for (Edge edge : graph.edges()) {
-			writer.print("    <edge id=\"" + localId(edge.uniqueId()) 
+			sb.append("    <edge id=\"" + localId(edge.uniqueId()) 
 				+ "\" source=\"" + localId(edge.startNode().uniqueId()) 
 				+ "\" target=\"" + localId(edge.endNode().uniqueId()) 
 				+ "\"");
 			String s = writeData(edge);
 			if (s==null)
-				writer.println("/>");
+				sb.append("/>\n");
 			else {
-				writer.println(">");
-				writer.print(s);
-				writer.println("    </edge>");
+				sb.append(">\n");
+				sb.append(s);
+				sb.append("    </edge>\n");
 			}
 		}
-		writer.println("  </graph>");
-		writeKeys(writer);
+		sb.append("  </graph>\n");
+	}
+
+	private void exportGraph(Graph<? extends Node, ? extends Edge> graph, PrintWriter writer) {
+		StringBuilder graphLines = new StringBuilder();
+		StringBuilder keyLines = new StringBuilder(); 
+		
+		writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		writer.println("<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"");  
+		writer.println("    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
+		writer.println("    xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns"); 
+		writer.println("    http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">");
+
+		writeGraph(graphLines,graph);
+		writeKeys(keyLines);
+		
+		writer.print(keyLines.toString());
+		writer.print(graphLines.toString());
+		
 		writer.println("</graphml>");
 		writer.close();
 	}
