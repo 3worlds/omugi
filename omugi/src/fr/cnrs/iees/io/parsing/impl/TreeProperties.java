@@ -28,64 +28,52 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.io.parsing;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
-import java.util.logging.Logger;
-
-import fr.cnrs.iees.io.parsing.impl.GraphParser;
-import fr.cnrs.iees.io.parsing.impl.GraphTokenizer;
-import fr.cnrs.iees.io.parsing.impl.TreeParser;
-import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
+package fr.cnrs.iees.io.parsing.impl;
 
 /**
+ * List of tree properties understood by {@link TreeParser} and their default
+ * values.
  * 
- * @author Jacques Gignoux - 7 déc. 2018
+ * @author Jacques Gignoux - 20 déc. 2018
  *
  */
-public class FileTokenizer implements Tokenizer {
-	
-	private Logger log = Logger.getLogger(FileTokenizer.class.getName());
-	private List<String> lines = null;
-	private LineTokenizer tokenizer = null;
-	
-	public FileTokenizer(File f) {
-		super();
-		try {
-			lines = Files.readAllLines(f.toPath());
-			String s = lines.get(0).trim();
-			if (s.startsWith("graph"))
-				tokenizer = new GraphTokenizer(this);
-			else if (s.startsWith("tree"))
-				tokenizer = new TreeTokenizer(this);
-			else
-				log.severe("unrecognized file format - unable to load file \""+f.getName()+"\"");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	protected List<String> lines() {
-		return lines;
-	}
-	
-	public void tokenize() {
-		tokenizer.tokenize();
-	}
+public enum TreeProperties {
 
-	/**
-	 * Create an instance of {@link Parser} adapted for this tokenizer
-	 * @return a new instance of Parser
-	 */
-	public Parser parser() {
-		if (GraphTokenizer.class.isAssignableFrom(tokenizer.getClass()))
-			return new GraphParser((GraphTokenizer) tokenizer);
-		if (TreeTokenizer.class.isAssignableFrom(tokenizer.getClass()))
-			return new TreeParser((TreeTokenizer) tokenizer);
+	// name			property name				property class				property default value
+	CLASS			("type",					"fr.cnrs.iees.tree.Tree",	"fr.cnrs.iees.tree.impl.ImmutableTreeImpl"),
+	TREE_FACTORY	("tree_factory",			"fr.cnrs.iees.tree.TreeNodeFactory",	"fr.cnrs.iees.tree.impl.DefaultTreeFactory"),
+	PROP_FACTORY	("property_list_factory",	"fr.cnrs.iees.properties.PropertyListFactory",	"fr.cnrs.iees.tree.impl.DefaultTreeFactory"),
+	MUTABLE			("mutable",					"java.lang.Boolean",		"false"),
+	// others to come ?
+	;
+	
+	private final String propertyName;
+	private final String propertyType;
+	private final String defaultValue;
+	
+	private TreeProperties(String propertyName, String propertyType, String defaultValue) {
+		this.propertyName = propertyName;
+		this.propertyType = propertyType;
+		this.defaultValue = defaultValue;
+	}
+	
+	public String defaultValue() {
+		return defaultValue;
+	}
+	
+	public String propertyName() {
+		return propertyName;
+	}
+	
+	public String propertyType() {
+		return propertyType;
+	}
+	
+	public static TreeProperties propertyForName(String name) {
+		for (TreeProperties p: TreeProperties.values())
+			if (p.propertyName.equals(name))
+				return p;
 		return null;
 	}
-	
+
 }

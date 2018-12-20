@@ -51,6 +51,7 @@ import fr.cnrs.iees.graph.impl.MutableGraphImpl;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.token;
+import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.ens.biologie.generic.Labelled;
 import fr.ens.biologie.generic.Named;
@@ -134,8 +135,9 @@ public class GraphParser extends Parser {
 	// the tokenizer used to read the file
 	private GraphTokenizer tokenizer = null;
 	
-	// the factory used to build the graph
-	private GraphElementFactory factory = null;
+	// the factories used to build the graph
+	private GraphElementFactory graphFactory = null;
+	private PropertyListFactory propertyListFactory = null;
 	
 	// the list of specifications built from the token list
 	private List<propSpec> graphProps = new LinkedList<propSpec>();
@@ -350,7 +352,7 @@ public class GraphParser extends Parser {
 		int i=0;
 		for (Property p:pl)
 			pp[i++] = p;
-		return factory.makePropertyList(pp);
+		return propertyListFactory.makePropertyList(pp);
 	}
 	
 	// builds the graph from the parsed data
@@ -360,7 +362,8 @@ public class GraphParser extends Parser {
 		if (lastItem==null)
 			parse();
 		Class<? extends Graph<? extends Node, ? extends Edge>> graphClass = null;
-		Class<? extends GraphElementFactory> factoryClass = null;
+		Class<? extends GraphElementFactory> gFactoryClass = null;
+		Class<? extends PropertyListFactory> plFactoryClass = null;
 		// scan graph properties for graph building options
 		for (propSpec p:graphProps) {
 			switch (GraphProperties.propertyForName(p.name))  {
@@ -368,9 +371,13 @@ public class GraphParser extends Parser {
 					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
 						getClass(GraphProperties.CLASS,p.value);
 					break;
-				case FACTORY:
-					factoryClass = (Class<? extends GraphElementFactory>) 
-						getClass(GraphProperties.FACTORY,p.value);
+				case GRAPH_FACTORY:
+					gFactoryClass = (Class<? extends GraphElementFactory>) 
+						getClass(GraphProperties.GRAPH_FACTORY,p.value);
+					break;
+				case PROP_FACTORY:
+					plFactoryClass = (Class<? extends PropertyListFactory>) 
+						getClass(GraphProperties.PROP_FACTORY,p.value);
 					break;
 				case DIRECTED:
 					// TODO
@@ -388,12 +395,16 @@ public class GraphParser extends Parser {
 		if (graphClass==null)
 			graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
 				getClass(GraphProperties.CLASS);
-		if (factoryClass==null)
-			factoryClass = (Class<? extends GraphElementFactory>) 
-				getClass(GraphProperties.FACTORY);
-		// setup the factory
+		if (gFactoryClass==null)
+			gFactoryClass = (Class<? extends GraphElementFactory>) 
+				getClass(GraphProperties.GRAPH_FACTORY);
+		if (plFactoryClass==null)
+			plFactoryClass = (Class<? extends PropertyListFactory>) 
+				getClass(GraphProperties.PROP_FACTORY);
+		// setup the factories
 		try {
-			factory = factoryClass.newInstance();
+			graphFactory = gFactoryClass.newInstance();
+			propertyListFactory = plFactoryClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			// There should not be any problem here given the previous checks
 			// unless the factory class is flawed
@@ -404,9 +415,9 @@ public class GraphParser extends Parser {
 		for (nodeSpec ns: nodeSpecs) {
 			Node n = null;
 			if (ns.props.isEmpty())
-				n = factory.makeNode();
+				n = graphFactory.makeNode();
 			else
-				n = factory.makeNode(makePropertyList(ns.props));
+				n = graphFactory.makeNode(makePropertyList(ns.props));
 			if (Labelled.class.isAssignableFrom(n.getClass())) 
 				((Labelled)n).setLabel(ns.label);
 			if (Named.class.isAssignableFrom(n.getClass())) 
@@ -431,9 +442,9 @@ public class GraphParser extends Parser {
 				log.severe("end node "+ref+" not found for edge "+es.label+":"+es.name);
 			if ((start!=null)&&(end!=null)) {
 				if (es.props.isEmpty())
-					e = factory.makeEdge(start, end);
+					e = graphFactory.makeEdge(start, end);
 				else 
-					e = factory.makeEdge(start,end,makePropertyList(es.props));
+					e = graphFactory.makeEdge(start,end,makePropertyList(es.props));
 				if (Labelled.class.isAssignableFrom(e.getClass())) 
 					((Labelled)e).setLabel(es.label);
 				if (Named.class.isAssignableFrom(e.getClass())) 

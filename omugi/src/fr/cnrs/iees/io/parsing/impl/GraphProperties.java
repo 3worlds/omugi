@@ -38,11 +38,12 @@ package fr.cnrs.iees.io.parsing.impl;
  *
  */
 public enum GraphProperties {
-	// name		property name	property class										property default value
-	CLASS		("type",		"fr.cnrs.iees.graph.generic.Graph",					"fr.cnrs.iees.graph.generic.impl.ImmutableGraphImpl"),
-	FACTORY		("factory",		"fr.cnrs.iees.graph.generic.GraphElementFactory",	"fr.cnrs.iees.graph.generic.impl.DefaultGraphFactory"),
-	DIRECTED	("directed",	"java.lang.Boolean",								"true"),
-	MUTABLE		("mutable",		"java.lang.Boolean",								"false"),
+	// name			property name				property class								property default value
+	CLASS			("type",					"fr.cnrs.iees.graph.Graph",					"fr.cnrs.iees.graph.impl.ImmutableGraphImpl"),
+	GRAPH_FACTORY	("graph_factory",			"fr.cnrs.iees.graph.GraphElementFactory",	"fr.cnrs.iees.graph.impl.DefaultGraphFactory"),
+	PROP_FACTORY	("property_list_factory",	"fr.cnrs.iees.properties.PropertyListFactory",	"fr.cnrs.iees.graph.impl.DefaultGraphFactory"),
+	DIRECTED		("directed",				"java.lang.Boolean",						"true"),
+	MUTABLE			("mutable",					"java.lang.Boolean",						"false"),
 	// others to come ?
 	;
 	

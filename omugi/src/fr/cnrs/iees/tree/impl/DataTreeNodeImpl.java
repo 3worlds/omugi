@@ -35,6 +35,7 @@ import java.util.Set;
 import fr.cnrs.iees.properties.PropertyListSetters;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.tree.DataTreeNode;
+import fr.cnrs.iees.tree.TreeNodeFactory;
 import fr.ens.biologie.generic.DataContainer;
 
 /**
@@ -45,18 +46,18 @@ import fr.ens.biologie.generic.DataContainer;
  */
 public class DataTreeNodeImpl extends SimpleTreeNodeImpl 
 		implements DataTreeNode {
-	
+		
 	private SimplePropertyList propertyList = null;
 
 	// Constructors
 	
-	public DataTreeNodeImpl(SimplePropertyList props) {
-		super();
+	protected DataTreeNodeImpl(SimplePropertyList props, TreeNodeFactory factory) {
+		super(factory);
 		propertyList = props;
 	}
 	
-	protected DataTreeNodeImpl(int capacity, SimplePropertyList props) {
-		super(capacity);
+	protected DataTreeNodeImpl(int capacity, SimplePropertyList props, TreeNodeFactory factory) {
+		super(capacity,factory);
 		propertyList = props;
 	}
 
@@ -94,7 +95,7 @@ public class DataTreeNodeImpl extends SimpleTreeNodeImpl
 
 	@Override
 	public DataTreeNode clone() {
-		return new DataTreeNodeImpl(propertyList.clone());
+		return new DataTreeNodeImpl(propertyList.clone(),factory());
 	}
 
 	// Textable

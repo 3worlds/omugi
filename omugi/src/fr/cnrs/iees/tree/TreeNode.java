@@ -84,5 +84,6 @@ public interface TreeNode extends Identifiable, Textable {
 		return TREE_NODE_LABEL;
 	}
 
+	public TreeNodeFactory factory();
 	
 }

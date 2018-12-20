@@ -73,6 +73,7 @@ public class TreeTokenizer extends LineTokenizer {
 	private token cttoken = null;
 	private int tokenIndex = -1;
 	private int ctDepth = 0;
+	private int maxDepth = 0;
 
 	public TreeTokenizer(FileTokenizer parent) {
 		super(parent);
@@ -125,6 +126,7 @@ public class TreeTokenizer extends LineTokenizer {
 				c = line.charAt(indentLevel);
 			}
 			ctDepth = indentLevel;
+			maxDepth = Math.max(maxDepth, ctDepth);
 		}
 		// get other tokens - remember: no edges in this format
 		words = line.trim().split(PROPERTY_NAME.suffix());
@@ -159,6 +161,10 @@ public class TreeTokenizer extends LineTokenizer {
 			tokenlist.add(cttoken);
 			return;
 		}		
+	}
+	
+	public int maxDepth() {
+		return maxDepth;
 	}
 	
 	@Override

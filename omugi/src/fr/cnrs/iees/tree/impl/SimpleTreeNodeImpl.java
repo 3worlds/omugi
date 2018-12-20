@@ -36,6 +36,7 @@ import java.util.Set;
 
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.tree.TreeNode;
+import fr.cnrs.iees.tree.TreeNodeFactory;
 
 /**
  * Basic implementation of {@link TreeNode} without data
@@ -45,17 +46,20 @@ import fr.cnrs.iees.tree.TreeNode;
  */
 public class SimpleTreeNodeImpl implements TreeNode {
 	
+	private TreeNodeFactory factory = null;
 	private TreeNode parent = null;
 	private Set<TreeNode> children = null;
 
-	protected SimpleTreeNodeImpl() {
+	protected SimpleTreeNodeImpl(TreeNodeFactory factory) {
 		super();
 		children = new HashSet<TreeNode>();
+		this.factory = factory;
 	}
 	
-	protected SimpleTreeNodeImpl(int capacity) {
+	protected SimpleTreeNodeImpl(int capacity,TreeNodeFactory factory) {
 		super();
 		children = new HashSet<TreeNode>(capacity);
+		this.factory = factory;
 	}
 	
 	@Override
@@ -141,6 +145,11 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	@Override
 	public final String toString() {
 		return "["+toDetailedString()+"]";
+	}
+
+	@Override
+	public TreeNodeFactory factory() {
+		return factory;
 	}
 
 }

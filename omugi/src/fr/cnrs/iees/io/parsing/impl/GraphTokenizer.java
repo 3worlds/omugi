@@ -92,7 +92,9 @@ label1 name3
 label2 name5
 prop1 = Integer(0)
 =====================</pre>
- * <p>Notice that white space (blanks, tabs) and empty lines are ignored.</p>
+ * <p>Notice that white space (blanks, tabs) and empty lines are ignored. And that, different
+ * to Shayne's version, there must be a name whenever a label appears (otherwise the label
+ * is simply ignored).</p>
  * 
  * @author Jacques Gignoux - 7 déc. 2018
  *

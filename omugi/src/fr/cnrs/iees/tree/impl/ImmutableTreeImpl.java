@@ -33,8 +33,11 @@ package fr.cnrs.iees.tree.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.cnrs.iees.graph.Direction;
+import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.tree.Tree;
 import fr.cnrs.iees.tree.TreeNode;
+import fr.ens.biologie.generic.Textable;
 
 /**
  * An immutable strict tree (not changeable after construction).
@@ -43,7 +46,8 @@ import fr.cnrs.iees.tree.TreeNode;
  *
  * @param <N>
  */
-public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
+public class ImmutableTreeImpl<N extends TreeNode> 
+		implements Tree<N>, Textable {
 	
 	private N root = null;
 	/** for fast iteration on nodes */
@@ -52,6 +56,8 @@ public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 	private int minDepth = 0;
 	private int maxDepth = 0;
 
+	// Constructors
+	
 	// for descendants only
 	protected ImmutableTreeImpl() {
 		super();
@@ -95,6 +101,8 @@ public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 		insertAllChildren(root,nodeList);
 		computeDepths(root);
 	}
+	
+	// Tree
 	
 	@Override
 	public int size() {
@@ -150,6 +158,43 @@ public class ImmutableTreeImpl<N extends TreeNode> implements Tree<N> {
 			if (Tree.matchesReference(n,reference))
 				found.add(n);
 		return found;
+	}
+	
+	// Textable
+	
+	@Override
+	public String toUniqueString() {
+		String ptr = super.toString();
+		ptr = ptr.substring(ptr.indexOf('@'));
+		return getClass().getSimpleName()+ptr; 
+	}
+
+	@Override
+	public String toShortString() {
+		return toUniqueString() + "(" + size() + " nodes)"; 
+	}
+
+	// TODO: rewrite this - the tree structure is lost
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(toShortString());
+		sb.append(" NODES=(");
+		N last = nodeList.get(nodeList.size()-1);
+		for (N n:nodeList) {
+			if (n==last)
+				sb.append(n.toShortString());
+			else
+				sb.append(n.toShortString()).append(',');
+		}
+		sb.append(')');
+		return sb.toString();
+	}
+
+	// Object
+	
+	@Override
+	public final String toString() {
+		return "["+toDetailedString()+"]";
 	}
 
 }

@@ -40,7 +40,7 @@ import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 import fr.cnrs.iees.tree.DataTreeNode;
-import fr.cnrs.iees.tree.impl.DataTreeNodeImpl;
+import fr.cnrs.iees.tree.impl.DefaultTreeFactory;
 
 /**
  * 
@@ -53,6 +53,7 @@ class ReferenceParserTest {
 	String ref;
 	DataTreeNode node;
 	SimplePropertyList props;
+	DefaultTreeFactory factory = new DefaultTreeFactory(); 
 
 	@Test
 	void testParse() {
@@ -78,7 +79,7 @@ class ReferenceParserTest {
 		ReferenceParser p = tk.parser();
 		Property prop = new Property("prop1",3.4);
 		props = new SimplePropertyListImpl(prop);
-		node = new DataTreeNodeImpl(props);
+		node = factory.makeDataTreeNode(props);
 		assertTrue(p.matches(node));
 	}
 
@@ -90,10 +91,10 @@ class ReferenceParserTest {
 		props = new SimplePropertyListImpl(
 			new Property("prop8",false),
 			new Property("prop4","blabla"));
-		node = new DataTreeNodeImpl(props);
+		node = factory.makeDataTreeNode(props);
 		props = new SimplePropertyListImpl(
 			new Property("prop1",3.4));
-		node.setParent(new DataTreeNodeImpl(props));
+		node.setParent(factory.makeDataTreeNode(props));
 		assertTrue(p.matches(node));
 	}
 

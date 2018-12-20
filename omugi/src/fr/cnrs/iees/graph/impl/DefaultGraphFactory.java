@@ -39,6 +39,7 @@ import fr.cnrs.iees.graph.GraphElementFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.ReadOnlyDataEdge;
 import fr.cnrs.iees.graph.ReadOnlyDataNode;
+import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
@@ -52,7 +53,8 @@ import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
  * @author Jacques Gignoux - 7 nov. 2018
  *
  */
-public class DefaultGraphFactory implements GraphElementFactory {
+public class DefaultGraphFactory 
+	implements GraphElementFactory, PropertyListFactory {
 	
 	private int capacity = 2;
 	
@@ -126,7 +128,5 @@ public class DefaultGraphFactory implements GraphElementFactory {
 	public SimplePropertyList makePropertyList(String... propertyKeys) {
 		return new SimplePropertyListImpl(propertyKeys);
 	}
-
-
 
 }

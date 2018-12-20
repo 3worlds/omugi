@@ -46,7 +46,6 @@ class TreeTokenizerTest {
 			"	label2 node2\n",
 			"		label3 node3\n", 
 			"			prop4 = String(\"coucou\")\n", 
-			"		label4\n",
 			"	label5 node5\n", 
 			"		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))\n", 
 			"\n", 
@@ -65,7 +64,52 @@ class TreeTokenizerTest {
 	void testTokenize() {
 		TreeTokenizer tk = new TreeTokenizer(test);
 		tk.tokenize();
-		System.out.println(tk.toString());
+		assertEquals(tk.toString(),"0 COMMENT: this is a STUPID comment\n" + 
+				"\n" + 
+				"0 COMMENT: This is a VERY STUPID comment\n" + 
+				"\n" + 
+				"0 LABEL:label1\n" + 
+				"0 NAME:node1\n" + 
+				"1 PROPERTY_NAME:prop1\n" + 
+				"1 PROPERTY_TYPE:Integer\n" + 
+				"1 PROPERTY_VALUE:3\n" + 
+				"1 PROPERTY_NAME:prop2\n" + 
+				"1 PROPERTY_TYPE:Double\n" + 
+				"1 PROPERTY_VALUE:4.2\n" + 
+				"1 LABEL:label2\n" + 
+				"1 NAME:node2\n" + 
+				"2 LABEL:label3\n" + 
+				"2 NAME:node3\n" + 
+				"3 PROPERTY_NAME:prop4\n" + 
+				"3 PROPERTY_TYPE:String\n" + 
+				"3 PROPERTY_VALUE:\"coucou\"\n" + 
+				"1 LABEL:label5\n" + 
+				"1 NAME:node5\n" + 
+				"2 PROPERTY_NAME:table\n" + 
+				"2 PROPERTY_TYPE:au.edu.anu.rscs.aot.collections.tables.BooleanTable\n" + 
+				"2 PROPERTY_VALUE:([3,2]false,false,false,false,false,false)\n" + 
+				"1 LABEL:label6\n" + 
+				"1 NAME:node6\n" + 
+				"2 LABEL:label7\n" + 
+				"2 NAME:node7\n" + 
+				"3 LABEL:label8\n" + 
+				"3 NAME:node8\n" + 
+				"4 LABEL:label9\n" + 
+				"4 NAME:node9\n" + 
+				"2 LABEL:label10\n" + 
+				"2 NAME:node10\n" + 
+				"0 COMMENT: This is one more comment\n" + 
+				"\n" + 
+				"2 LABEL:label11\n" + 
+				"2 NAME:node11\n" + 
+				"3 LABEL:label12\n" + 
+				"3 NAME:node12\n" + 
+				"3 PROPERTY_NAME:truc\n" + 
+				"3 PROPERTY_TYPE:String\n" + 
+				"3 PROPERTY_VALUE:\"machin\"\n" + 
+				"4 PROPERTY_NAME:plop\n" + 
+				"4 PROPERTY_TYPE:Integer\n" + 
+				"4 PROPERTY_VALUE:12\n");
 	}
 
 }
