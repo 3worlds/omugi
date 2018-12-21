@@ -118,15 +118,16 @@ public class TreeTokenizer extends LineTokenizer {
 		}
 		// analyse indentation
 		int indentLevel=0;
-		if (line.startsWith(LEVEL.prefix())) {
-			char indentChar = LEVEL.prefix().charAt(0); // means '\t'
-			char c = line.charAt(0);
-			while ((c==indentChar) & (indentLevel<line.length()-1)) {
-				indentLevel++;
-				c = line.charAt(indentLevel);
-			}
-			ctDepth = indentLevel;
-			maxDepth = Math.max(maxDepth, ctDepth);
+		if (line.trim().length()>0)
+			if (line.startsWith(LEVEL.prefix())) {
+				char indentChar = LEVEL.prefix().charAt(0); // means '\t'
+				char c = line.charAt(0);
+				while ((c==indentChar) & (indentLevel<line.length()-1)) {
+					indentLevel++;
+					c = line.charAt(indentLevel);
+				}
+				ctDepth = indentLevel;
+				maxDepth = Math.max(maxDepth, ctDepth);
 		}
 		// get other tokens - remember: no edges in this format
 		words = line.trim().split(PROPERTY_NAME.suffix());

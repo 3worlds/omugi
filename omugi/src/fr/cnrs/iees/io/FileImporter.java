@@ -28,35 +28,76 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io.impl;
+package fr.cnrs.iees.io;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
+import java.util.logging.Logger;
 
 import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.graph.io.GraphImporter;
-import fr.cnrs.iees.io.parsing.FileTokenizer;
-import fr.cnrs.iees.io.parsing.Parser;
+
+import static fr.cnrs.iees.io.GraphFileFormats.*;
 
 /**
- * Importer for graphs / trees in the omugi simple text format.
- * @author Jacques Gignoux - 14 déc. 2018
+ * A class to read any text file containing graph or tree data. This should be the entry point to
+ * any graph-related file reading.
+ * 
+ * @author Jacques Gignoux - 21 déc. 2018
  *
  */
-// tested OK with version 0.0.1 on 17/12/2018
-public class OmugiGraphImporter implements GraphImporter {
-
-	private FileTokenizer tokenizer = null;
-	private Parser parser = null;
+// Tested OK with version 0.0.4 on 21/12/2018
+public class FileImporter {
 	
-	public OmugiGraphImporter(File infile) {
+	private GraphImporter importer = null;
+	private static Logger log = Logger.getLogger(FileImporter.class.getName());
+	
+	public FileImporter(File infile) {
 		super();
-		tokenizer = new FileTokenizer(infile);
-		parser = tokenizer.parser();
+		if (infile.exists()) {
+			String graphPath = infile.getName();
+			String extension = graphPath.substring(graphPath.indexOf('.')+1,graphPath.length());
+			GraphFileFormats fileFormat = null;
+			importer = getFileImporter(format(extension),infile);
+			if (importer==null) {
+				fileFormat = guessFileFormat(infile);
+				if (fileFormat==null)
+					log.warning("Cannot load files with extension \"" + extension + "\"");
+				else {
+					log.info("File \""+graphPath+"\" found to be of the "+fileFormat.toString());
+					importer = getFileImporter(fileFormat,infile);
+				}
+			}
+		}
+		else
+			log.warning("file \""+infile.getName()+"\" not found");			
 	}
 	
-	@Override
+	// utility to infer the file format by peeking into it
+	private GraphFileFormats guessFileFormat(File infile) {
+		try {
+			List<String> lines = Files.readAllLines(infile.toPath());
+			String s = lines.get(0).trim();
+			if (s.startsWith("graph"))
+				return GOMUGI;
+			if (s.startsWith("tree"))
+				return TOMUGI;
+			for (String l:lines)
+				if (l.contains("http://graphml.graphdrawing.org/xmlns"))
+					return GRAPHML;
+		} catch (IOException e) {
+			// Reaching here probably means the file is not a text file
+			log.severe("cannot read file \""+infile.getName()+"\" as text");
+		}
+		return null;
+	}
+	
 	public MinimalGraph<?> getGraph() {
-		return parser.graph();
+		if (importer!=null)
+			return importer.getGraph();
+		return null;
 	}
 
 }

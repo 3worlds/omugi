@@ -28,35 +28,60 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io.impl;
+package fr.cnrs.iees.io;
 
+import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
-
+import org.junit.jupiter.api.Test;
 import fr.cnrs.iees.graph.MinimalGraph;
-import fr.cnrs.iees.graph.io.GraphImporter;
-import fr.cnrs.iees.io.parsing.FileTokenizer;
-import fr.cnrs.iees.io.parsing.Parser;
 
 /**
- * Importer for graphs / trees in the omugi simple text format.
- * @author Jacques Gignoux - 14 déc. 2018
+ * 
+ * @author Jacques Gignoux - 21 déc. 2018
  *
  */
-// tested OK with version 0.0.1 on 17/12/2018
-public class OmugiGraphImporter implements GraphImporter {
+class FileImporterTest {
 
-	private FileTokenizer tokenizer = null;
-	private Parser parser = null;
-	
-	public OmugiGraphImporter(File infile) {
-		super();
-		tokenizer = new FileTokenizer(infile);
-		parser = tokenizer.parser();
+	@Test
+	void testGetGraph1() {
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+			+ File.separator + "test" 
+			+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+			+ File.separator + "testGraph.txt";
+		File file = new File(testfile);
+		assertTrue(file.exists());
+		FileImporter fi = new FileImporter(file);
+		MinimalGraph<?> g = fi.getGraph();
+		assertNotNull(g);
+		assertEquals(g.size(),4);
 	}
-	
-	@Override
-	public MinimalGraph<?> getGraph() {
-		return parser.graph();
+
+	@Test
+	void testGetGraph2() {
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+			+ File.separator + "test" 
+			+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+			+ File.separator + "bidon3.ugg";
+		File file = new File(testfile);
+		assertTrue(file.exists());
+		FileImporter fi = new FileImporter(file);
+		MinimalGraph<?> g = fi.getGraph();
+		assertNotNull(g);
+		assertEquals(g.size(),4);
+	}
+
+	@Test
+	void testGetGraph3() {
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+			+ File.separator + "test" 
+			+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+			+ File.separator + "bidon.ugt";
+		File file = new File(testfile);
+		assertTrue(file.exists());
+		FileImporter fi = new FileImporter(file);
+		MinimalGraph<?> g = fi.getGraph();
+		assertNotNull(g);
+		assertEquals(g.size(),11);
 	}
 
 }

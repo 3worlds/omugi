@@ -1,0 +1,18 @@
+graph // this is a comment
+
+//this is another comment
+
+label1 name1
+  prop1=Integer(1)
+	prop2 =Double(2.0)
+prop3= String("blabla")
+		prop4 = Boolean(true)
+
+label2 name2
+label1 name3
+
+[label1:name1] label4 name1 [label2:name2]
+	[ label1:name1] label4 name2	 [label2:name2 ]
+[ label2:name2 ] label4 name1   [label1:name3]
+label2 name5
+prop1 = Integer(0)

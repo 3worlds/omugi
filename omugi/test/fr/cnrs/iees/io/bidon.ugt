@@ -1,0 +1,25 @@
+tree // this is a STUPID comment 
+
+// This is a VERY STUPID comment 
+		
+label1 node1 
+	prop1 = Integer(3) 
+	prop2 = Double(4.2) 
+	label2 node2
+		label3 node3 
+			prop4 = String("coucou") 
+		label4
+	label5 node5 
+		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false)) 
+		 
+	label6 node6 
+		label7 node7 
+			label8 node8 
+				label9 node9 
+		label10 node10
+	// This is one more comment 
+		label11 node11
+			label12 node12 
+			truc=String("machin") 
+				plop = Integer(12)
+

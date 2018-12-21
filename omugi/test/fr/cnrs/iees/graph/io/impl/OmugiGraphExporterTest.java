@@ -139,7 +139,7 @@ class OmugiGraphExporterTest {
 		ge.exportGraph(graph2);
 		// attempt to reimport graph
 		GraphImporter gi = new OmugiGraphImporter(f);
-		Graph<?,?> g = gi.getGraph();
+		Graph<?,?> g = (Graph<?, ?>) gi.getGraph();
 		assertEquals(graph.size(),4);
 //		System.out.println(gi.getGraph().toString());
 		// re-save to bidon3.ugg - should contain the same thing as bidon2.ugg

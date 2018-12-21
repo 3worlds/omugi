@@ -42,6 +42,7 @@ import fr.cnrs.iees.io.parsing.impl.TreeParser;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
 
 /**
+ * A Tokenizer for text files in the omugi format.
  * 
  * @author Jacques Gignoux - 7 déc. 2018
  *

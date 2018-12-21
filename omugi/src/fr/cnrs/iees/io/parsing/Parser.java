@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing;
 
+import fr.cnrs.iees.graph.MinimalGraph;
+
 /**
  * 
  * @author Jacques Gignoux - 14 déc. 2018
@@ -38,5 +40,7 @@ package fr.cnrs.iees.io.parsing;
 public abstract class Parser {
 	
 	protected abstract void parse();
+	
+	public abstract MinimalGraph<?> graph();
 
 }

@@ -30,9 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.io;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.MinimalGraph;
 
 /**
  * 
@@ -46,6 +44,6 @@ public interface GraphImporter {
 	 * A GraphImporter returns a Graph (JGraphT type) read from any kind of source (stream, file, String...)
 	 * @return a Graph build from the previous list of Nodes
 	 */
-    public Graph<? extends Node, ? extends Edge> getGraph();
+    public MinimalGraph<?> getGraph();
     
 }

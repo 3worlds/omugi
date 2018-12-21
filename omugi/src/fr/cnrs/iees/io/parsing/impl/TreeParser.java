@@ -348,7 +348,7 @@ public class TreeParser extends Parser {
 	 * 
 	 * @return the tree built from this parser
 	 */
-	public Tree<? extends TreeNode> tree() {
+	public Tree<? extends TreeNode> graph() {
 		if (tree==null)
 			buildTree();
 		return tree;

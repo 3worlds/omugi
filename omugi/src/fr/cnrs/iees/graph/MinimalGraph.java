@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,57 +28,30 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.io;
+package fr.cnrs.iees.graph;
+
+import fr.ens.biologie.generic.Sizeable;
 
 /**
- * List of all supported graph file formats for import / export 
- * @author Jacques Gignoux - 24/11/2017
+ * An interface to represent the most generic properties of any graph. Meant to be the
+ * root ancestor of the graph interface hierarchy
+ * 
+ * @author Jacques Gignoux - 21 déc. 2018
  *
  */
-public enum GraphFileFormats {
-	//FileChooser.ExtensionFilter
-	/*-	format      file extensions     format description*/
-		XML			(".xml",			"xml AOT graph format with cross-references"),
-		AOT			(".dsl .aot",		"S. Flint's AOT DSL graph format with cross-references (formerly known as 'dsl')"),
-		TWG			(".dsl .twg",		"S. Flint's AOT DSL graph format with cross-references and 3Worlds compliance (formerly known as 'dsl')"),
-		UML			(".xmi .uml",		"UML graph format with cross-references"),
-		TRE         (".tre",            "Hierachical graph")
-	// others to come:
-//		GML
-//		DOT
-//		CSV/GEPHI
-//		GRAPH6 SPARSE6
-//		MATRIX
-//		GRAPHML
-//		DIMACS2 & 9
-		;
+public interface MinimalGraph<N> extends Sizeable {
 
-		private final String extension;
-		private final String description;
+	/**
+	 * Read-only accessor to all Nodes
+	 * @return an Iterable of all Nodes
+	 */
+	public Iterable<N> nodes();
 
-		private GraphFileFormats(String extension, String description) {
-			this.extension = extension;
-			this.description = description;
-		}
+	/**
+	 * Read-only accessor to all leaf Nodes (if any)
+	 * @return an Iterable on all leaf Nodes
+	 */
+	public Iterable<N> leaves();
 
-		public String toString() {
-			return description;
-		}
-
-		public String extension() {
-			return extension;
-		}
-		
-		public String[] extensions() {
-			return extension.split(" ");
-		}
-		
-		public static GraphFileFormats format(String ext) {
-			for (GraphFileFormats f: GraphFileFormats.values()) {
-				if (f.extension.indexOf(ext)>=0)
-					return f;
-			}
-			return null;
-		}
-
+	
 }

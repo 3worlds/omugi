@@ -39,6 +39,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
+import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer.token;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
@@ -183,6 +184,12 @@ public class ReferenceParser extends Parser {
 				sb.append('\t').append(pm.toString()).append('\n');
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public MinimalGraph<?> graph() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

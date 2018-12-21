@@ -31,9 +31,9 @@
 package fr.cnrs.iees.tree;
 
 import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.io.parsing.impl.ReferenceParser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
-import fr.ens.biologie.generic.Sizeable;
 
 /**
  * <p>A tree, i.e. a graph with a hierarchical structure. Its nodes must implement the TreeNode
@@ -42,12 +42,7 @@ import fr.ens.biologie.generic.Sizeable;
  * @author Jacques Gignoux - 17 déc. 2018
  *
  */
-public interface Tree<N extends TreeNode> extends Sizeable {
-	/**
-	 * Read-only accessor to all Nodes
-	 * @return an Iterable of all Nodes
-	 */
-	public Iterable<N> nodes();
+public interface Tree<N extends TreeNode> extends MinimalGraph<N> {
 
 	/**
 	 * Accessor to the tree root (a tree has 0 or 1 root).
@@ -55,12 +50,6 @@ public interface Tree<N extends TreeNode> extends Sizeable {
 	 * @return the Node at the root of the tree
 	 */
 	public N root();
-	
-	/**
-	 * Read-only accessor to all leaf Nodes
-	 * @return an Iterable on all leaf Nodes
-	 */
-	public Iterable<N> leaves();
 	
 	public int maxDepth();
 	

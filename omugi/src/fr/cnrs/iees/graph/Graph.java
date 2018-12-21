@@ -30,21 +30,13 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import fr.ens.biologie.generic.Sizeable;
-
 /**
  * An immutable graph (no possibility to add or remove elements as it is now unrelated
  * to List).
  * @author gignoux - 16 août 2017
  *
  */
-public interface Graph<N extends Node, E extends Edge> extends Sizeable {
-	
-	/**
-	 * Read-only accessor to all Nodes
-	 * @return an Iterable of all Nodes
-	 */
-	public Iterable<N> nodes();
+public interface Graph<N extends Node, E extends Edge> extends MinimalGraph<N> {
 	
 	/**
 	 * Read-only accessor to all Edges
@@ -57,12 +49,6 @@ public interface Graph<N extends Node, E extends Edge> extends Sizeable {
 	 * @return an Iterable on all root Nodes
 	 */
 	public Iterable<N> roots();
-	
-	/**
-	 * Read-only accessor to all leaf Nodes (if any)
-	 * @return an Iterable on all leaf Nodes
-	 */
-	public Iterable<N> leaves();
 	
 	/**
 	 * Checks if this graph contains a particular Node

@@ -105,7 +105,7 @@ class TreeParserTest {
 	@Test
 	void testTree() {
 		TreeParser tp = new TreeParser(new TreeTokenizer(test));
-		System.out.println(tp.tree().toString());
+		System.out.println(tp.graph().toString());
 	}
 
 }

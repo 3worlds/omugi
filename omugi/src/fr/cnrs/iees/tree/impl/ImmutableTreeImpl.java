@@ -33,8 +33,6 @@ package fr.cnrs.iees.tree.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.cnrs.iees.graph.Direction;
-import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.tree.Tree;
 import fr.cnrs.iees.tree.TreeNode;
 import fr.ens.biologie.generic.Textable;
