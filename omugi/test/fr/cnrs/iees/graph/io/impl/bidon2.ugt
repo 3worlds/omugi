@@ -1,0 +1,20 @@
+tree // saved by OmugiGraphExporter on Fri Dec 21 14:36:59 CET 2018
+
+// 11 NODES
+tree_node 17d677df
+	prop1 = java.lang.Integer(3)
+	prop2 = java.lang.Double(4.2)
+	tree_node 1563da5
+		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	tree_node 2bbf4b8b
+		tree_node 7a765367
+			truc = java.lang.String("machin")
+			tree_node 76b0bfab
+				plop = java.lang.Integer(12)
+		tree_node 30a3107a
+			tree_node 33c7e1bb
+				tree_node 34c4973
+		tree_node 52feb982
+	tree_node 528931cf
+		tree_node ea1a8d5
+			prop4 = java.lang.String("coucou")

@@ -30,9 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.io;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.io.parsing.TextGrammar;
 
 /**
@@ -43,6 +41,6 @@ import fr.cnrs.iees.io.parsing.TextGrammar;
 public interface GraphExporter
 	extends TextGrammar {
 	
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph);
+	public void exportGraph(MinimalGraph<?> graph);
 
 }

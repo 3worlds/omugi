@@ -33,6 +33,7 @@ package fr.cnrs.iees.graph.io.impl;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Element;
 import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
@@ -87,10 +88,12 @@ public class GraphmlExporter implements GraphExporter {
 	// GraphExporter
 	//
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void exportGraph(Graph<? extends Node, ? extends Edge> graph) {
+	public void exportGraph(MinimalGraph<?> graph) {
 		try {
-			exportGraph(graph, new PrintWriter(file));
+			if (Graph.class.isAssignableFrom(graph.getClass()))
+				exportGraph((Graph<? extends Node, ? extends Edge>) graph, new PrintWriter(file));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

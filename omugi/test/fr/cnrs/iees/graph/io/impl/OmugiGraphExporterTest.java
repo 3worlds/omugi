@@ -48,10 +48,12 @@ import fr.cnrs.iees.graph.DataEdge;
 import fr.cnrs.iees.graph.DataNode;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
 import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
 import fr.cnrs.iees.graph.io.GraphImporter;
+import fr.cnrs.iees.io.FileImporter;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
@@ -122,7 +124,7 @@ class OmugiGraphExporterTest {
 	}
 	
 	@Test
-	void testExportGraph() {
+	void testExportGraph1() {
 		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
 				+ File.separator + "test" 
 				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
@@ -130,11 +132,16 @@ class OmugiGraphExporterTest {
 		File f = new File(testfile);
 		OmugiGraphExporter ge = new OmugiGraphExporter(f);
 		ge.exportGraph(graph);
-		testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+	}
+	
+	@Test
+	void testExportGraph2() {
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
 				+ File.separator + "test" 
 				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
 				+ File.separator + "bidon2.ugg";
-		f = new File(testfile);
+		File f = new File(testfile);
+		OmugiGraphExporter ge = new OmugiGraphExporter(f);
 		ge = new OmugiGraphExporter(f);
 		ge.exportGraph(graph2);
 		// attempt to reimport graph
@@ -151,6 +158,25 @@ class OmugiGraphExporterTest {
 		ge = new OmugiGraphExporter(f);
 		ge.exportGraph(g);
 	}
-	
 
+	@Test
+	void testExportGraph3() {
+		// tree loading / saving
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+				+ File.separator + "test" 
+				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+				+ File.separator + "bidon.ugt";
+		File f = new File(testfile);
+		FileImporter gi = new FileImporter(f);
+		MinimalGraph<?> tree = gi.getGraph();
+		testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+				+ File.separator + "test" 
+				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+				+ File.separator + "bidon2.ugt";
+		f = new File(testfile);
+		OmugiGraphExporter ge = new OmugiGraphExporter(f);
+		ge.exportGraph(tree);
+	}
+
+	
 }
