@@ -56,11 +56,12 @@ import fr.cnrs.iees.tree.TreeNode;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**
- * An exporter into text format for graphs. 
+ * An exporter into omugi text format for graphs and trees
+ *  
  * @author Jacques Gignoux - 14 déc. 2018
  *
  */
-// NOTE: for trees, another exporter should be written (eg TreeExporter ?)
+// tested OK with version 0.0.4 on 21/12/2018
 public class OmugiGraphExporter implements GraphExporter {
 
 	private Logger log = Logger.getLogger(OmugiGraphExporter.class.getName());
