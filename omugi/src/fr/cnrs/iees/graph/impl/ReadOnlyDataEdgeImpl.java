@@ -57,7 +57,7 @@ public class ReadOnlyDataEdgeImpl extends SimpleEdgeImpl implements ReadOnlyData
 
 	@Override
 	public ReadOnlyDataEdgeImpl clone() {
-		return new ReadOnlyDataEdgeImpl(startNode(),endNode(),propertyList.clone(),factory());
+		return new ReadOnlyDataEdgeImpl(startNode(),endNode(),propertyList.clone(),graphElementFactory());
 	}
 
 	@Override

@@ -121,11 +121,11 @@ public interface Node extends Element {
 	public default Node addConnectionsLike(Element element) {
 		Node node = (Node) element;
 		for (Edge e:node.getEdges(Direction.IN)) {
-			GraphElementFactory f = (GraphElementFactory) e.factory();
+			GraphElementFactory f = (GraphElementFactory) e.graphElementFactory();
 			f.makeEdge(e.startNode(), this);			
 		}
 		for (Edge e:node.getEdges(Direction.OUT)) {
-			GraphElementFactory f = (GraphElementFactory) e.factory();
+			GraphElementFactory f = (GraphElementFactory) e.graphElementFactory();
 			f.makeEdge(this, e.endNode());
 		}
 		return this;

@@ -148,7 +148,7 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	}
 
 	@Override
-	public TreeNodeFactory factory() {
+	public TreeNodeFactory treeNodeFactory() {
 		return factory;
 	}
 

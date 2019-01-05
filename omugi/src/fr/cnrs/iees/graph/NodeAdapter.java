@@ -39,7 +39,7 @@ import java.util.EnumMap;
  *
  */
 // Tested through descendant SimpleNodeImpl
-public abstract class NodeAdapter extends ElementAdapter implements Node, Element {
+public abstract class NodeAdapter extends ElementAdapter implements Node/*, Element - redundant?*/ {
 	
 	private GraphElementFactory factory;
 	protected EnumMap<Direction,Collection<Edge>> edges = null;
@@ -168,7 +168,7 @@ public abstract class NodeAdapter extends ElementAdapter implements Node, Elemen
 	}
 
 	@Override
-	public final GraphElementFactory factory() {
+	public final GraphElementFactory graphElementFactory() {
 		return factory;
 	}
 

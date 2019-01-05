@@ -56,10 +56,10 @@ import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 public class DefaultGraphFactory 
 	implements GraphElementFactory, PropertyListFactory {
 	
-	private int capacity = 2;
+	private int capacity;
 	
 	public DefaultGraphFactory() {
-		super();
+		this(2);
 	}
 
 	/**

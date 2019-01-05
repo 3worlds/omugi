@@ -114,7 +114,7 @@ public abstract class EdgeAdapter extends ElementAdapter implements Element, Edg
 	}
 
 	@Override
-	public final GraphElementFactory factory() {
+	public final GraphElementFactory graphElementFactory() {
 		return factory;
 	}
 	

@@ -122,7 +122,7 @@ public interface Element extends Textable, Identifiable {
 	 * Getter for the factory that created this element
 	 * @return
 	 */
-	public GraphElementFactory factory();
+	public GraphElementFactory graphElementFactory();
 	
 	
 }

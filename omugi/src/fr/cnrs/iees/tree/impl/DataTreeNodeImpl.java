@@ -95,7 +95,7 @@ public class DataTreeNodeImpl extends SimpleTreeNodeImpl
 
 	@Override
 	public DataTreeNode clone() {
-		return new DataTreeNodeImpl(propertyList.clone(),factory());
+		return new DataTreeNodeImpl(propertyList.clone(),treeNodeFactory());
 	}
 
 	// Textable

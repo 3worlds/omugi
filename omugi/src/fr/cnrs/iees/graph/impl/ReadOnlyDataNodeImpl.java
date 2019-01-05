@@ -77,7 +77,7 @@ public class ReadOnlyDataNodeImpl extends SimpleNodeImpl implements ReadOnlyData
 
 	@Override
 	public ReadOnlyDataNodeImpl clone() {
-		return new ReadOnlyDataNodeImpl(propertyList.clone(),factory());
+		return new ReadOnlyDataNodeImpl(propertyList.clone(),graphElementFactory());
 	}
 
 	@Override

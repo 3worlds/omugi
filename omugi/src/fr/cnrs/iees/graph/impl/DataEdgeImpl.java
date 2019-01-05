@@ -54,7 +54,7 @@ public class DataEdgeImpl extends SimpleEdgeImpl implements DataEdge {
 	
 	@Override
 	public DataEdgeImpl clone() {
-		return new DataEdgeImpl(startNode(),endNode(),propertyList.clone(),factory());
+		return new DataEdgeImpl(startNode(),endNode(),propertyList.clone(),graphElementFactory());
 	}
 
 	@Override

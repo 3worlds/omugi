@@ -69,7 +69,7 @@ public class DataNodeImpl extends SimpleNodeImpl
 
 	@Override
 	public DataNodeImpl clone() {
-		return new DataNodeImpl(propertyList.clone(),factory());
+		return new DataNodeImpl(propertyList.clone(),graphElementFactory());
 	}
 
 	@Override
