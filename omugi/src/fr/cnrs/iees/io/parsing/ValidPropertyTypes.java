@@ -32,6 +32,7 @@ package fr.cnrs.iees.io.parsing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import au.edu.anu.rscs.aot.collections.tables.BooleanTable;
@@ -65,9 +66,9 @@ public class ValidPropertyTypes {
 	/** map of type names giving indexes in other arrays */
 	private static Map<String,Integer> typeIndex = new HashMap<>();
 	/** array of java class names (indices in typeIndex) */
-	private static ArrayList<String> classes = new ArrayList<>();
+	private static List<String> classes = new ArrayList<>();
 	/** array of default values (indices in typeIndex) */
-	private static ArrayList<Object> defaults = new ArrayList<>();
+	private static List<Object> defaults = new ArrayList<>();
 	/** map of java class names giving types (for reverse searches) */
 	private static Map<String,String> classTypes = new HashMap<>();
 	

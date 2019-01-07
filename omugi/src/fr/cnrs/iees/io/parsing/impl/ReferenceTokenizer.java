@@ -77,7 +77,7 @@ public class ReferenceTokenizer implements Tokenizer {
 	//----------------------------------------------------
 	
 	private String reference = null;
-	private List<token> tokenlist = new ArrayList<token>(100);
+	private List<token> tokenlist = new ArrayList<>(100);
 	private int tokenIndex = -1;
 	
 	// constructor

@@ -59,8 +59,8 @@ public class CompoundPropertyListImpl implements SimplePropertyList {
 	
 	public static final String SEP = ":";
 
-	private Map<String,ReadOnlyPropertyList> readOnlyProps = new HashMap<String,ReadOnlyPropertyList>();
-	private Map<String,SimplePropertyList> readWriteProps = new HashMap<String,SimplePropertyList>();
+	private Map<String,ReadOnlyPropertyList> readOnlyProps = new HashMap<>();
+	private Map<String,SimplePropertyList> readWriteProps = new HashMap<>();
 	
 	public CompoundPropertyListImpl(ReadOnlyPropertyList[] props, String[] names) {
 		super();

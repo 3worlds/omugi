@@ -59,7 +59,7 @@ public class ImmutableGraphImpl<N extends Node,E extends Edge>
 	/** for fast searching on node Id */	
 	private Map<String,N> nodes = new HashMap<>();
 	/** for fast iteration on nodes */
-	private ArrayList<N> nodeList = null; // ArrayList --> comodification error but normally one should never remove a node from this class
+	private List<N> nodeList = null; // ArrayList --> comodification error but normally one should never remove a node from this class
 	
 	// for descendants only
 	protected ImmutableGraphImpl() {

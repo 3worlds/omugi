@@ -49,7 +49,7 @@ public class ImmutableTreeImpl<N extends TreeNode>
 	
 	private N root = null;
 	/** for fast iteration on nodes */
-	private ArrayList<N> nodeList = null; // ArrayList --> comodification error but normally one should never remove a node from this class
+	private List<N> nodeList = null; // ArrayList --> comodification error but normally one should never remove a node from this class
 	
 	private int minDepth = 0;
 	private int maxDepth = 0;
@@ -120,7 +120,7 @@ public class ImmutableTreeImpl<N extends TreeNode>
 	
 	@Override
 	public Iterable<N> leaves() {
-		List<N> result = new ArrayList<N>(nodeList.size()); // this may be a bad idea for big graphs
+		List<N> result = new ArrayList<>(nodeList.size()); // this may be a bad idea for big graphs
 		for (N n:nodeList)
 			if (!n.hasChildren())
 				result.add(n);
@@ -151,7 +151,7 @@ public class ImmutableTreeImpl<N extends TreeNode>
 
 	@Override
 	public Iterable<N> findNodesByReference(String reference) {
-		List<N> found = new ArrayList<N>(nodeList.size()); // this may be a bad idea for big graphs
+		List<N> found = new ArrayList<>(nodeList.size()); // this may be a bad idea for big graphs
 		for (N n:nodeList)
 			if (Tree.matchesReference(n,reference))
 				found.add(n);

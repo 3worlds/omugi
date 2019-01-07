@@ -42,7 +42,7 @@ import fr.cnrs.iees.OmugiException;
  * @author gignoux - 16 août 2017
  *
  */
-public abstract class EdgeAdapter extends ElementAdapter implements Element, Edge {
+public abstract class EdgeAdapter extends ElementAdapter implements /*Element,*/ Edge {
 	
 	private GraphElementFactory factory;
 	private Node start = null;

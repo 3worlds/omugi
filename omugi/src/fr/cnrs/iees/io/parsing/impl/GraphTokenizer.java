@@ -119,7 +119,7 @@ public class GraphTokenizer extends LineTokenizer {
 	}
 	//----------------------------------------------------
 	
-	private List<token> tokenlist = new ArrayList<token>(1000);
+	private List<token> tokenlist = new ArrayList<>(1000);
 	private token cttoken = null;
 	private int tokenIndex = -1;
 	
