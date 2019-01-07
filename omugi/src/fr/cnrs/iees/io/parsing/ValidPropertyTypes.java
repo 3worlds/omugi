@@ -72,10 +72,8 @@ public class ValidPropertyTypes {
 	/** map of java class names giving types (for reverse searches) */
 	private static Map<String,String> classTypes = new HashMap<>();
 	
-	/** default constructor raises an Exception to prevent instantiation */
-	public ValidPropertyTypes() {
-		throw new OmugiException("ValidPropertyTypes: This class should never be instantiated");
-	}
+	/** default constructor is private to prevent instantiation */
+	private ValidPropertyTypes() {};
 	
 	/**
 	 * records a property type as valid. "Valid" means suitable for later use in
