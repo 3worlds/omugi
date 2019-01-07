@@ -45,8 +45,6 @@ import au.edu.anu.rscs.aot.collections.tables.IntTable;
 import au.edu.anu.rscs.aot.collections.tables.LongTable;
 import au.edu.anu.rscs.aot.collections.tables.ShortTable;
 import au.edu.anu.rscs.aot.collections.tables.StringTable;
-import fr.cnrs.iees.OmugiException;
-
 /**
  * This class records the property types which are compatible with a given application
  * using SimplePropertyList descendants

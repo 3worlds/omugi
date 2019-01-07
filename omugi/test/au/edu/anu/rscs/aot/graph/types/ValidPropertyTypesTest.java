@@ -40,18 +40,6 @@ import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 class ValidPropertyTypesTest {
 
 	@Test
-	@SuppressWarnings("unused")
-	void testValidPropertyTypes() {
-		try {			
-			ValidPropertyTypes vpt = new ValidPropertyTypes();
-			fail("Forbidden instantiation exception not raised");
-		}
-		catch (Exception e) {
-			// test OK
-		}
-	}
-
-	@Test
 	void testRecordPropertyType() {
 		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.rscs.aot.util", Uid.nullUid());
 		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.rscs.aot.util");
