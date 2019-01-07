@@ -67,14 +67,14 @@ public interface GraphElementFactory {
 	 * @param props
 	 * @return
 	 */
-	public ReadOnlyDataNode makeNode(ReadOnlyPropertyList props);
+	public Node makeNode(ReadOnlyPropertyList props);
 
 	/**
 	 * Create a node with read-write properties
 	 * @param props
 	 * @return
 	 */
-	public DataNode makeNode(SimplePropertyList props);
+	public Node makeNode(SimplePropertyList props);
 
 	/**
 	 * Create an edge with no properties.
@@ -91,7 +91,7 @@ public interface GraphElementFactory {
 	 * @param props
 	 * @return
 	 */
-	public ReadOnlyDataEdge makeEdge(Node start, Node end, ReadOnlyPropertyList props);
+	public Edge makeEdge(Node start, Node end, ReadOnlyPropertyList props);
 	
 	/**
 	 * Create an edge with read-write properties
@@ -100,6 +100,6 @@ public interface GraphElementFactory {
 	 * @param props
 	 * @return
 	 */
-	public DataEdge makeEdge(Node start, Node end, SimplePropertyList props);
+	public Edge makeEdge(Node start, Node end, SimplePropertyList props);
 	
 }

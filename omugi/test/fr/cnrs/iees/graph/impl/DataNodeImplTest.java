@@ -55,9 +55,9 @@ class DataNodeImplTest {
 	private void init() {
 		p = new SimplePropertyListImpl("prop1","prop2");
 		p.setProperty("prop1", "coucou");
-		n1 = f.makeNode(p);
+		n1 = (DataNode) f.makeNode(p);
 		n2 = f.makeNode();
-		n3 = f.makeNode(p);
+		n3 = (DataNode) f.makeNode(p);
 	}
 	
 	private void show(String method,String text) {

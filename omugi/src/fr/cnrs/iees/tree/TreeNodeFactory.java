@@ -41,6 +41,6 @@ public interface TreeNodeFactory {
 	
 	public TreeNode makeTreeNode();
 	
-	public DataTreeNode makeDataTreeNode(SimplePropertyList properties);
+	public TreeNode makeDataTreeNode(SimplePropertyList properties);
 
 }
