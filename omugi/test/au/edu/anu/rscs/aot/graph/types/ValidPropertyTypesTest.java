@@ -39,17 +39,19 @@ import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 
 class ValidPropertyTypesTest {
 
-	@Test
-	@SuppressWarnings("unused")
-	void testValidPropertyTypes() {
-		try {			
-			ValidPropertyTypes vpt = new ValidPropertyTypes();
-			fail("Forbidden instantiation exception not raised");
-		}
-		catch (Exception e) {
-			// test OK
-		}
-	}
+	// not needed. No longer possible
+//	@Test
+//	@SuppressWarnings("unused")
+//	void testValidPropertyTypes() {
+		
+//		try {			
+//			ValidPropertyTypes vpt = new ValidPropertyTypes();
+//			fail("Forbidden instantiation exception not raised");
+//		}
+//		catch (Exception e) {
+//			// test OK
+//		}
+//	}
 
 	@Test
 	void testRecordPropertyType() {
