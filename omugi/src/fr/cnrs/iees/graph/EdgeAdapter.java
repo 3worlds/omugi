@@ -52,10 +52,10 @@ public abstract class EdgeAdapter extends ElementAdapter implements /*Element,*/
 	 * This constructor never to be called: an Edge without a start and end at construction
 	 * is invalid
 	 */
-	protected EdgeAdapter() {
-		super();
-		throw new OmugiException("An Edge must be created with a start and an end node");
-	}
+	private EdgeAdapter() {};
+//		super();
+//		throw new OmugiException("An Edge must be created with a start and an end node");
+//	}
 	
 	/**
 	 * The only valid constructor for an Edge: an Edge cannot exist without a start and end node
