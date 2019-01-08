@@ -70,6 +70,11 @@ public class DefaultTreeFactory implements TreeNodeFactory, PropertyListFactory 
 	public TreeNode makeTreeNode() {
 		return new SimpleTreeNodeImpl(this);
 	}
+	
+	// this is used in AotNode to instantiate a simple node within the AotNode
+	public static TreeNode makeSimpleTreeNode(TreeNodeFactory factory) {
+		return new SimpleTreeNodeImpl(factory);
+	}
 
 	@Override
 	public DataTreeNode makeDataTreeNode(SimplePropertyList properties) {

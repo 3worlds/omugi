@@ -75,6 +75,11 @@ public class DefaultGraphFactory
 	public Node makeNode() {
 		return new SimpleNodeImpl(capacity,this);
 	}
+	
+	// this is used in AotNode to instantiate a simple node within the AotNode
+	public static Node makeSimpleNode(GraphElementFactory factory) {
+		return new SimpleNodeImpl(factory);
+	}
 
 	@Override
 	public Edge makeEdge(Node start, Node end) {
