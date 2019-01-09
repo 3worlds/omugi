@@ -99,5 +99,9 @@ public class FileImporter {
 			return importer.getGraph();
 		return null;
 	}
+	
+	public static MinimalGraph<?> loadGraphFromFile(File f){
+		return new FileImporter(f).getGraph();
+	}
 
 }
