@@ -76,7 +76,7 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	public Iterable<TreeNode> getChildren() {
 		return children;
 	}
-
+	
 	@Override
 	public void addChild(TreeNode child) {
 		children.add(child);
@@ -102,6 +102,11 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	@Override
 	public boolean hasChildren() {
 		return !children.isEmpty();
+	}
+	
+	@Override
+	public boolean hasChild(TreeNode child) {
+		return children.contains(child);
 	}
 
 	@Override
@@ -141,6 +146,13 @@ public class SimpleTreeNodeImpl implements TreeNode {
 		}
 		return sb.toString();
 	}
+
+	@Override
+	public TreeNodeFactory treeNodeFactory() {
+		return factory;
+	}
+	
+	// Object
 	
 	@Override
 	public final String toString() {
@@ -148,8 +160,32 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	}
 
 	@Override
-	public TreeNodeFactory treeNodeFactory() {
-		return factory;
+	public boolean equals(Object obj) {
+		if (!TreeNode.class.isAssignableFrom(obj.getClass()))
+			return false;
+		// this should be most efficient, but not always possible
+		if (SimpleTreeNodeImpl.class.isAssignableFrom(obj.getClass())) {
+			SimpleTreeNodeImpl stn = (SimpleTreeNodeImpl) obj;
+			return (((stn.parent==null) & (parent==null)) &&
+					stn.parent.equals(parent) &&
+					stn.factory.equals(factory) &&
+					stn.children.equals(children));
+		}
+		// this is the general case
+		TreeNode tn = (TreeNode) obj;
+		if (!tn.treeNodeFactory().equals(factory))
+			return false;
+		if (!tn.getParent().equals(parent))
+			return false;
+		int count = 0;
+		for (TreeNode child:tn.getChildren()) {
+			if (!children.contains(child))
+				return false;
+			count++;
+		}
+		if (count!=children.size())
+			return false;
+		return true;
 	}
 
 }

@@ -52,7 +52,9 @@ public interface TreeNode extends Identifiable, Textable {
 	public TreeNode getParent();
 	
 	/**
-	 * Set the argument as this node's parent.
+	 * Set the argument as this node's parent. CAUTION: no consistency checks! this is the
+	 * tree's job.
+	 * 
 	 * @param parent the parent node
 	 */
 	public void setParent(TreeNode parent);
@@ -64,7 +66,9 @@ public interface TreeNode extends Identifiable, Textable {
 	public Iterable<TreeNode> getChildren();
 	
 	/**
-	 * Adds a node as a child.
+	 * Adds a node as a child. CAUTION: no consistency checks! this is the
+	 * tree's job.
+	 * 
 	 * @param child the node to add
 	 */
 	public void addChild(TreeNode child);
@@ -78,6 +82,18 @@ public interface TreeNode extends Identifiable, Textable {
 	public void setChildren(Collection<TreeNode> children);
 	
 	public boolean hasChildren();
+	
+	/**
+	 * Checks that a child is in a node. NOT efficient - should be overloaded in descendants
+	 * @param child the child to check
+	 * @return true if the child was found;
+	 */
+	public default boolean hasChild(TreeNode child) {
+		for (TreeNode c:getChildren())
+			if (c==child)
+				return true;
+		return false;
+	}
 	
 	@Override
 	public default String classId() {

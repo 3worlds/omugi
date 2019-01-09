@@ -30,95 +30,115 @@
  **************************************************************************/
 package fr.cnrs.iees.tree.impl;
 
-import java.util.Set;
+import static org.junit.jupiter.api.Assertions.*;
 
-import fr.cnrs.iees.properties.PropertyListSetters;
-import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.tree.DataTreeNode;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import fr.cnrs.iees.tree.TreeNode;
-import fr.cnrs.iees.tree.TreeNodeFactory;
-import fr.ens.biologie.generic.DataContainer;
 
 /**
- * Basic implementation of {@link TreeNode} with read-write properties.
+ * TODO: implement all tests
  * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * @author Jacques Gignoux - 9 janv. 2019
  *
  */
-public class DataTreeNodeImpl extends SimpleTreeNodeImpl 
-		implements DataTreeNode {
-		
-	private SimplePropertyList propertyList = null;
-
-	// Constructors
+class SimpleTreeNodeImplTest {
 	
-	protected DataTreeNodeImpl(SimplePropertyList props, TreeNodeFactory factory) {
-		super(factory);
-		propertyList = props;
+	private TreeNode tn1, tn2, tn3, tn4;
+	
+	private void show(String method,String text) {
+		System.out.println(method+": "+text);
 	}
 	
-	protected DataTreeNodeImpl(int capacity, SimplePropertyList props, TreeNodeFactory factory) {
-		super(capacity,factory);
-		propertyList = props;
+	@BeforeEach
+	private void init() {
+		DefaultTreeFactory f = new DefaultTreeFactory();
+		tn1 = f.makeTreeNode();
+		tn2 = f.makeTreeNode();
+		tn3 = f.makeTreeNode();
+		tn4 = f.makeTreeNode();
+		tn2.setParent(tn1);
+		tn3.setParent(tn1);
+		tn4.setParent(tn2);
 	}
 
-	// SimplePropertyList
+	@Test
+	void testGetParent() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSetParent() {
 	
-	@Override
-	public PropertyListSetters setProperty(String key, Object value) {
-		return propertyList.setProperty(key,value);
+		fail("Not yet implemented");
 	}
 
-	@Override
-	public Object getPropertyValue(String key) {
-		return propertyList.getPropertyValue(key);
+	@Test
+	void testGetChildren() {
+		fail("Not yet implemented");
 	}
 
-	@Override
-	public boolean hasProperty(String key) {
-		return propertyList.hasProperty(key);
+	@Test
+	void testAddChild() {
+		fail("Not yet implemented");
 	}
 
-	@Override
-	public Set<String> getKeysAsSet() {
-		return propertyList.getKeysAsSet();
+	@Test
+	void testSetChildrenTreeNodeArray() {
+		fail("Not yet implemented");
 	}
 
-	@Override
-	public DataContainer clear() {
-		return propertyList.clear();
-	}
-	
-	@Override
-	public int size() {
-		return propertyList.size();
+	@Test
+	void testSetChildrenIterableOfTreeNode() {
+		fail("Not yet implemented");
 	}
 
-	@Override
-	public DataTreeNode clone() {
-		return new DataTreeNodeImpl(propertyList.clone(),treeNodeFactory());
+	@Test
+	void testSetChildrenCollectionOfTreeNode() {
+		fail("Not yet implemented");
 	}
 
-	// Textable
-
-	@Override
-	public String toDetailedString() {
-		StringBuilder sb = new StringBuilder(super.toDetailedString());
-		sb.append(' ');
-		sb.append(propertyList.toString());
-		return sb.toString();
+	@Test
+	void testHasChildren() {
+		fail("Not yet implemented");
 	}
 
-	// TODO: implement toString()
-	@Override
-	public boolean equals(Object obj) {
-		if (!TreeNode.class.isAssignableFrom(obj.getClass()))
-			return false;
-		if (!SimplePropertyList.class.isAssignableFrom(obj.getClass()))
-			return false;
-		TreeNode tn = (TreeNode) obj;
-		SimplePropertyList p = (SimplePropertyList) obj;
-		return (tn.equals(this) && p.equals(this));
+	@Test
+	void testInstanceId() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testToUniqueString() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testToShortString() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testToDetailedString() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testTreeNodeFactory() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testToString() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testEqualsObject() {
+		show("testEqualsObject",tn2.toDetailedString());
+		show("testEqualsObject",tn3.toDetailedString());
+		assertFalse(tn2.equals(tn3));
 	}
 
 }

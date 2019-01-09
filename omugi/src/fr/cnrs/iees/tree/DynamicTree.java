@@ -28,97 +28,16 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.tree.impl;
+package fr.cnrs.iees.tree;
 
-import java.util.Set;
+public interface DynamicTree {
 
-import fr.cnrs.iees.properties.PropertyListSetters;
-import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.tree.DataTreeNode;
-import fr.cnrs.iees.tree.TreeNode;
-import fr.cnrs.iees.tree.TreeNodeFactory;
-import fr.ens.biologie.generic.DataContainer;
-
-/**
- * Basic implementation of {@link TreeNode} with read-write properties.
- * 
- * @author Jacques Gignoux - 19 déc. 2018
- *
- */
-public class DataTreeNodeImpl extends SimpleTreeNodeImpl 
-		implements DataTreeNode {
-		
-	private SimplePropertyList propertyList = null;
-
-	// Constructors
-	
-	protected DataTreeNodeImpl(SimplePropertyList props, TreeNodeFactory factory) {
-		super(factory);
-		propertyList = props;
-	}
-	
-	protected DataTreeNodeImpl(int capacity, SimplePropertyList props, TreeNodeFactory factory) {
-		super(capacity,factory);
-		propertyList = props;
-	}
-
-	// SimplePropertyList
-	
-	@Override
-	public PropertyListSetters setProperty(String key, Object value) {
-		return propertyList.setProperty(key,value);
-	}
-
-	@Override
-	public Object getPropertyValue(String key) {
-		return propertyList.getPropertyValue(key);
-	}
-
-	@Override
-	public boolean hasProperty(String key) {
-		return propertyList.hasProperty(key);
-	}
-
-	@Override
-	public Set<String> getKeysAsSet() {
-		return propertyList.getKeysAsSet();
-	}
-
-	@Override
-	public DataContainer clear() {
-		return propertyList.clear();
-	}
-	
-	@Override
-	public int size() {
-		return propertyList.size();
-	}
-
-	@Override
-	public DataTreeNode clone() {
-		return new DataTreeNodeImpl(propertyList.clone(),treeNodeFactory());
-	}
-
-	// Textable
-
-	@Override
-	public String toDetailedString() {
-		StringBuilder sb = new StringBuilder(super.toDetailedString());
-		sb.append(' ');
-		sb.append(propertyList.toString());
-		return sb.toString();
-	}
-
-	// TODO: implement toString()
-	@Override
-	public boolean equals(Object obj) {
-		if (!TreeNode.class.isAssignableFrom(obj.getClass()))
-			return false;
-		if (!SimplePropertyList.class.isAssignableFrom(obj.getClass()))
-			return false;
-		TreeNode tn = (TreeNode) obj;
-		SimplePropertyList p = (SimplePropertyList) obj;
-		return (tn.equals(this) && p.equals(this));
-	}
+	/**
+	 * Connects two tree nodes as parent and child, checking for tree consistency (no loops,
+	 * no replicates)
+	 * @param parent
+	 * @param child
+	 */
+	public void connect(TreeNode parent,TreeNode child);
 
 }

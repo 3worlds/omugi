@@ -233,8 +233,9 @@ class ExtendablePropertyListImplTest {
 
 	@Test
 	void testGetPropertyValueStringObject() {
-		assertEquals(ep1.getPropertyValue("int1"),12);
-		assertEquals(ep1.getPropertyValue("string1"),"parrot");
+		int x = (int) ep1.getPropertyValue("int1",12);
+		assertEquals(x,12);
+		assertEquals(ep1.getPropertyValue("string1","birdy"),"parrot");
 	}
 
 	@Test

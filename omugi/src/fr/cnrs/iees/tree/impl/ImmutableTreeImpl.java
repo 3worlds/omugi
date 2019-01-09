@@ -117,7 +117,6 @@ public class ImmutableTreeImpl<N extends TreeNode>
 		return root;
 	}
 
-	
 	@Override
 	public Iterable<N> leaves() {
 		List<N> result = new ArrayList<>(nodeList.size()); // this may be a bad idea for big graphs

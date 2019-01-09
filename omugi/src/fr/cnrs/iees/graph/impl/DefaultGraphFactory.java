@@ -80,6 +80,11 @@ public class DefaultGraphFactory
 	public static Node makeSimpleNode(GraphElementFactory factory) {
 		return new SimpleNodeImpl(factory);
 	}
+	
+	// this is used in AotEdge to instantiate a simple edge within the AotEdge
+	public static Edge makeSimpleEdge(Node start, Node end, GraphElementFactory factory) {
+		return new SimpleEdgeImpl(start,end,factory);
+	}
 
 	@Override
 	public Edge makeEdge(Node start, Node end) {
