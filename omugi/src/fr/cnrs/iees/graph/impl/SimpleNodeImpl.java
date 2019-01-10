@@ -73,8 +73,9 @@ public class SimpleNodeImpl extends NodeAdapter {
 		super(factory);
 		edges = new EnumMap<Direction,Collection<Edge>>(Direction.class);
 		// initial capacity is 10 - should be enough for most graphs
-		edges.put(Direction.IN,new ArrayList<>());
-		edges.put(Direction.OUT,new ArrayList<>());
+		// Now using sets to prevent accidental insertion of duplicate edges (duplicates sensu .equals())
+		edges.put(Direction.IN,new HashSet<>());
+		edges.put(Direction.OUT,new HashSet<>());
 	}
 
 	/**
@@ -85,8 +86,8 @@ public class SimpleNodeImpl extends NodeAdapter {
 			GraphElementFactory factory) {
 		super(factory);
 		edges = new EnumMap<Direction,Collection<Edge>>(Direction.class);
-		edges.put(Direction.IN,new ArrayList<>(capacity));
-		edges.put(Direction.OUT,new ArrayList<>(capacity));
+		edges.put(Direction.IN,new HashSet<>(capacity));
+		edges.put(Direction.OUT,new HashSet<>(capacity));
 	}
 	
 	// NODE
