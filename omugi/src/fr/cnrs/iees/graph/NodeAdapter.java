@@ -39,7 +39,7 @@ import java.util.EnumMap;
  *
  */
 // Tested through descendant SimpleNodeImpl
-public abstract class NodeAdapter extends ElementAdapter implements Node/*, Element - redundant?*/ {
+public abstract class NodeAdapter extends ElementAdapter implements Node {
 	
 	private GraphElementFactory factory;
 	protected EnumMap<Direction,Collection<Edge>> edges = null;
@@ -171,34 +171,5 @@ public abstract class NodeAdapter extends ElementAdapter implements Node/*, Elem
 	public GraphElementFactory graphElementFactory() {
 		return factory;
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (!Node.class.isAssignableFrom(obj.getClass()))
-			return false;
-		// faster if obj is a NodeAdapter
-		if (NodeAdapter.class.isAssignableFrom(obj.getClass())) {
-			NodeAdapter na = (NodeAdapter) obj;
-			return (na.factory.equals(factory) &&
-					na.edges.equals(edges));
-		}
-		// slow general case
-		Node n = (Node) obj;
-		if (!n.graphElementFactory().equals(factory))
-			return false;
-		for (Direction d:Direction.values()) {
-			int count = 0;
-			for (Edge e:n.getEdges(d)) {
-				if (!edges.get(d).contains(e))
-					return false;
-				count++;
-			}
-			if (count!=edges.get(d).size())
-				return false;
-		}
-		return true;
-	}
-
-
 
 }

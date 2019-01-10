@@ -46,7 +46,7 @@ public abstract class ElementAdapter implements Element {
 		id = new Uid();
 	}
 	
-	// ELEMENT
+	// Identifiable
 
 	@Override
 	public String instanceId() {
@@ -70,9 +70,25 @@ public abstract class ElementAdapter implements Element {
 		return toUniqueString();
 	}
 	
+	// OBJECT
+	
 	@Override
 	public final String toString() {
 		return "["+toDetailedString()+"]";
 	}
+
+	// Two elements are equal if they have the same classId and instanceId
+	@Override
+	public boolean equals(Object obj) {
+		if (obj==null)
+			return false;
+		if (!Element.class.isAssignableFrom(obj.getClass()))
+			return false;
+		Element e = (Element) obj;
+		return (instanceId().equals(e.instanceId()) &&
+				classId().equals(e.classId()));
+	}
+	
+	
 
 }
