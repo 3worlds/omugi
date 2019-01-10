@@ -1,20 +1,20 @@
-tree // saved by OmugiGraphExporter on Fri Dec 21 14:36:59 CET 2018
+tree // saved by OmugiGraphExporter on Thu Jan 10 15:03:19 CET 2019
 
 // 11 NODES
-tree_node 17d677df
+tree_node 436e852b
 	prop1 = java.lang.Integer(3)
 	prop2 = java.lang.Double(4.2)
-	tree_node 1563da5
+	tree_node c46bcd4
 		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
-	tree_node 2bbf4b8b
-		tree_node 7a765367
-			truc = java.lang.String("machin")
-			tree_node 76b0bfab
-				plop = java.lang.Integer(12)
-		tree_node 30a3107a
-			tree_node 33c7e1bb
-				tree_node 34c4973
-		tree_node 52feb982
-	tree_node 528931cf
-		tree_node ea1a8d5
+	tree_node 631330c
+		tree_node 42f93a98
 			prop4 = java.lang.String("coucou")
+	tree_node 3234e239
+		tree_node 3d921e20
+			tree_node 36b4cef0
+				tree_node fad74ee
+		tree_node 1a1d6a08
+		tree_node 37d31475
+			truc = java.lang.String("machin")
+			tree_node 27808f31
+				plop = java.lang.Integer(12)

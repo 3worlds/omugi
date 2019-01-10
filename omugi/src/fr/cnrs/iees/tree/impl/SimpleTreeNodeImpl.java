@@ -49,6 +49,8 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	private TreeNodeFactory factory = null;
 	private TreeNode parent = null;
 	private Set<TreeNode> children = null;
+	
+	// --- Constructors
 
 	protected SimpleTreeNodeImpl(TreeNodeFactory factory) {
 		super();
@@ -61,6 +63,8 @@ public class SimpleTreeNodeImpl implements TreeNode {
 		children = new HashSet<TreeNode>(capacity);
 		this.factory = factory;
 	}
+	
+	// --- TreeNode
 	
 	@Override
 	public TreeNode getParent() {
@@ -113,6 +117,11 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	public String instanceId() {
 		// cf. Object.toString() doc for this code
 		return Integer.toHexString(hashCode());
+	}
+
+	@Override
+	public int nChildren() {
+		return children.size();
 	}
 
 	// Textable

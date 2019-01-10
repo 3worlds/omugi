@@ -102,4 +102,10 @@ public interface TreeNode extends Identifiable, Textable {
 
 	public TreeNodeFactory treeNodeFactory();
 	
+	/**
+	 * Gets the number of children of this TreeNode
+	 * @return the number of child nodes
+	 */
+	public int nChildren();
+	
 }
