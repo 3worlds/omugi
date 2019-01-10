@@ -39,8 +39,20 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  */
 public interface TreeNodeFactory {
 	
-	public TreeNode makeTreeNode();
+	/**
+	 * Creates a new instance of a {@link TreeNode}, with the argument as its
+	 * parent. No data.
+	 * @param parent the parent of the newly created {@code TreeNode}
+	 * @return
+	 */
+	public TreeNode makeTreeNode(TreeNode parent);
 	
-	public TreeNode makeDataTreeNode(SimplePropertyList properties);
+	/**
+	 * Creates a new instance of a {@link TreeNode}, with the argument as its
+	 * parent, and properties.
+	 * @param parent the parent of the newly created {@code TreeNode}
+	 * @return
+	 */
+	public TreeNode makeDataTreeNode(TreeNode parent,SimplePropertyList properties);
 
 }

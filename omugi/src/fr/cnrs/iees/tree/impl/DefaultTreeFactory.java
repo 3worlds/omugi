@@ -67,18 +67,30 @@ public class DefaultTreeFactory implements TreeNodeFactory, PropertyListFactory 
 	}
 
 	@Override
-	public TreeNode makeTreeNode() {
-		return new SimpleTreeNodeImpl(this);
+	public TreeNode makeTreeNode(TreeNode parent) {
+		TreeNode result = new SimpleTreeNodeImpl(this);
+		result.setParent(parent);
+		if (parent!=null)
+			parent.addChild(result);
+		return result;
 	}
 	
 	// this is used in AotNode to instantiate a simple node within the AotNode
-	public static TreeNode makeSimpleTreeNode(TreeNodeFactory factory) {
-		return new SimpleTreeNodeImpl(factory);
+	public static TreeNode makeSimpleTreeNode(TreeNode parent, TreeNodeFactory factory) {
+		TreeNode result = new SimpleTreeNodeImpl(factory);
+		result.setParent(parent);
+		if (parent!=null)
+			parent.addChild(result);
+		return result;
 	}
 
 	@Override
-	public DataTreeNode makeDataTreeNode(SimplePropertyList properties) {
-		return new DataTreeNodeImpl(properties,this);
+	public DataTreeNode makeDataTreeNode(TreeNode parent, SimplePropertyList properties) {
+		DataTreeNode result = new DataTreeNodeImpl(properties,this);
+		result.setParent(parent);
+		if (parent!=null)
+			parent.addChild(result);
+		return result;
 	}
 
 }

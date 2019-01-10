@@ -54,13 +54,10 @@ class SimpleTreeNodeImplTest {
 	@BeforeEach
 	private void init() {
 		DefaultTreeFactory f = new DefaultTreeFactory();
-		tn1 = f.makeTreeNode();
-		tn2 = f.makeTreeNode();
-		tn3 = f.makeTreeNode();
-		tn4 = f.makeTreeNode();
-		tn2.setParent(tn1);
-		tn3.setParent(tn1);
-		tn4.setParent(tn2);
+		tn1 = f.makeTreeNode(null);
+		tn2 = f.makeTreeNode(tn1);
+		tn3 = f.makeTreeNode(tn1);
+		tn4 = f.makeTreeNode(tn2);
 	}
 
 	@Test

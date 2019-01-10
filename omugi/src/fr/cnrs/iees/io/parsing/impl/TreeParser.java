@@ -315,9 +315,9 @@ public class TreeParser extends Parser {
 		for (nodeSpec ns:nodeSpecs) {
 			TreeNode n = null;
 			if (ns.props.isEmpty())
-				n = treeFactory.makeTreeNode();
+				n = treeFactory.makeTreeNode(null);
 			else
-				n = treeFactory.makeDataTreeNode(makePropertyList(ns.props));
+				n = treeFactory.makeDataTreeNode(null,makePropertyList(ns.props));
 			if (Labelled.class.isAssignableFrom(n.getClass())) 
 				((Labelled)n).setLabel(ns.label);
 			if (Named.class.isAssignableFrom(n.getClass())) 
