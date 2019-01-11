@@ -37,32 +37,47 @@ import au.edu.anu.rscs.aot.util.Uid;
  * @author gignoux - 16 août 2017
  *
  */
-public abstract class ElementAdapter implements Element {
+public abstract class GraphElementAdapter implements GraphElement {
 	
-	private Uid id = null;
+	private String id = null;
 
-	public ElementAdapter() {
+	// Constructors
+	
+	/**
+	 * Default constructor: initialises an Element with a unique ID.
+	 */
+	public GraphElementAdapter() {
 		super();
-		id = new Uid();
+		id = (new Uid()).toString();
+	}
+	
+	/**
+	 * Use this constructor with caution: there is no guarantee that the ID passed as argument
+	 * is unique.
+	 * @param instanceId
+	 */
+	public GraphElementAdapter(String instanceId) {
+		super();
+		id = instanceId;
 	}
 	
 	// Identifiable
 
 	@Override
 	public String instanceId() {
-		return id.toString();
+		return id;
 	}
 	
 	// TEXTABLE
 
 	@Override
 	public String toUniqueString() {
-		return getClass().getSimpleName()+ " id=" + id.toString();
+		return uniqueId();
 	}
 
 	@Override
 	public String toShortString() {
-		return getClass().getSimpleName();
+		return classId();
 	}
 	
 	@Override
@@ -82,9 +97,9 @@ public abstract class ElementAdapter implements Element {
 	public boolean equals(Object obj) {
 		if (obj==null)
 			return false;
-		if (!Element.class.isAssignableFrom(obj.getClass()))
+		if (!GraphElement.class.isAssignableFrom(obj.getClass()))
 			return false;
-		Element e = (Element) obj;
+		GraphElement e = (GraphElement) obj;
 		return (instanceId().equals(e.instanceId()) &&
 				classId().equals(e.classId()));
 	}

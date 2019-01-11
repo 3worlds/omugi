@@ -39,7 +39,8 @@ import fr.cnrs.iees.tree.TreeNode;
 import fr.cnrs.iees.tree.TreeNodeFactory;
 
 /**
- * Basic implementation of {@link TreeNode} without data
+ * Basic implementation of {@link TreeNode} without data and no possibility to set
+ * the instance ID (it's entirely automatic).
  * 
  * @author Jacques Gignoux - 19 déc. 2018
  *
@@ -55,12 +56,6 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	protected SimpleTreeNodeImpl(TreeNodeFactory factory) {
 		super();
 		children = new HashSet<TreeNode>();
-		this.factory = factory;
-	}
-	
-	protected SimpleTreeNodeImpl(int capacity,TreeNodeFactory factory) {
-		super();
-		children = new HashSet<TreeNode>(capacity);
 		this.factory = factory;
 	}
 	
@@ -111,12 +106,6 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	@Override
 	public boolean hasChild(TreeNode child) {
 		return children.contains(child);
-	}
-
-	@Override
-	public String instanceId() {
-		// cf. Object.toString() doc for this code
-		return Integer.toHexString(hashCode());
 	}
 
 	@Override

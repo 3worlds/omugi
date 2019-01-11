@@ -40,7 +40,7 @@ import java.util.Set;
 
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.GraphElementFactory;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeAdapter;
 
@@ -67,29 +67,24 @@ public class SimpleNodeImpl extends NodeAdapter {
 	// Constructors
 
 	/**
-	 * Standard constructor with initial capacity of edge lists of 10
+	 * Standard constructor
 	 */
-	protected SimpleNodeImpl(GraphElementFactory factory) {
+	protected SimpleNodeImpl(NodeFactory factory) {
 		super(factory);
 		edges = new EnumMap<Direction,Collection<Edge>>(Direction.class);
-		// initial capacity is 10 - should be enough for most graphs
+		// Now using sets to prevent accidental insertion of duplicate edges (duplicates sensu .equals())
+		edges.put(Direction.IN,new HashSet<>());
+		edges.put(Direction.OUT,new HashSet<>());
+	}
+	
+	protected SimpleNodeImpl(String instanceId, NodeFactory factory) {
+		super(instanceId,factory);
+		edges = new EnumMap<Direction,Collection<Edge>>(Direction.class);
 		// Now using sets to prevent accidental insertion of duplicate edges (duplicates sensu .equals())
 		edges.put(Direction.IN,new HashSet<>());
 		edges.put(Direction.OUT,new HashSet<>());
 	}
 
-	/**
-	 * Constructor with settable capacity to optimize code (eg when memory must be spared)
-	 * @param capacity
-	 */
-	protected SimpleNodeImpl(int capacity,
-			GraphElementFactory factory) {
-		super(factory);
-		edges = new EnumMap<Direction,Collection<Edge>>(Direction.class);
-		edges.put(Direction.IN,new HashSet<>(capacity));
-		edges.put(Direction.OUT,new HashSet<>(capacity));
-	}
-	
 	// NODE
 
 	@Override

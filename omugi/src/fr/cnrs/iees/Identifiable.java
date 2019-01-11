@@ -45,16 +45,21 @@ public interface Identifiable {
 	/**
 	 * Getter for
 	 * @return this element's class id (eg 'node' or 'edge')
-	 * <p>formerly known as <em>label</em></p>
+	 * <p>formerly known as <em>label</em>. By default, this is the java class name.</p>
 	 */
-	public String classId();
+	public default String classId() {
+		return this.getClass().getSimpleName();
+	}
 	
 	/**
 	 * Getter for
 	 * @return this element's instance id
-	 * <p>formerly known as <em>name</em></p>
+	 * <p>formerly known as <em>name</em>. By default, this is the java instance hash code
+	 * (i.e. the value returned by {@code Object.hashCode()}.</p>
 	 */
-	public String instanceId();
+	public default String instanceId() {
+		return Integer.toHexString(hashCode());
+	}
 
 	/**
 	 * Getter for

@@ -32,7 +32,7 @@ package fr.cnrs.iees.graph.impl;
 
 import java.util.Set;
 
-import fr.cnrs.iees.graph.GraphElementFactory;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.ReadOnlyDataNode;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.ens.biologie.generic.DataContainer;
@@ -43,16 +43,16 @@ public class ReadOnlyDataNodeImpl extends SimpleNodeImpl implements ReadOnlyData
 	
 	// SimpleNodeImpl
 	
-	protected ReadOnlyDataNodeImpl(ReadOnlyPropertyList props, GraphElementFactory factory) {
+	protected ReadOnlyDataNodeImpl(ReadOnlyPropertyList props, NodeFactory factory) {
 		super(factory);
 		propertyList = props;
 	}
 
-	public ReadOnlyDataNodeImpl(int capacity, ReadOnlyPropertyList props, GraphElementFactory factory) {
-		super(capacity, factory);
+	protected ReadOnlyDataNodeImpl(String instanceId, ReadOnlyPropertyList props, NodeFactory factory) {
+		super(instanceId,factory);
 		propertyList = props;
 	}
-	
+
 	// ReadOnlyPropertyList
 	
 	@Override
@@ -77,7 +77,7 @@ public class ReadOnlyDataNodeImpl extends SimpleNodeImpl implements ReadOnlyData
 
 	@Override
 	public ReadOnlyDataNodeImpl clone() {
-		return new ReadOnlyDataNodeImpl(propertyList.clone(),graphElementFactory());
+		return new ReadOnlyDataNodeImpl(propertyList.clone(),nodeFactory());
 	}
 
 	@Override

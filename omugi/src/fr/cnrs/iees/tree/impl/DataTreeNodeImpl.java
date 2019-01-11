@@ -56,11 +56,6 @@ public class DataTreeNodeImpl extends SimpleTreeNodeImpl
 		super(factory);
 		propertyList = props;
 	}
-	
-	protected DataTreeNodeImpl(int capacity, SimplePropertyList props, TreeNodeFactory factory) {
-		super(capacity,factory);
-		propertyList = props;
-	}
 
 	// SimplePropertyList
 	

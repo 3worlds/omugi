@@ -85,12 +85,18 @@ public class DefaultTreeFactory implements TreeNodeFactory, PropertyListFactory 
 	}
 
 	@Override
-	public DataTreeNode makeDataTreeNode(TreeNode parent, SimplePropertyList properties) {
+	public DataTreeNode makeTreeNode(TreeNode parent, SimplePropertyList properties) {
 		DataTreeNode result = new DataTreeNodeImpl(properties,this);
 		result.setParent(parent);
 		if (parent!=null)
 			parent.addChild(result);
 		return result;
+	}
+
+	@Override
+	public TreeNode makeTreeNode(TreeNode parent, String classId, String instanceId, SimplePropertyList properties) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

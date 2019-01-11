@@ -31,7 +31,7 @@
 package fr.cnrs.iees.graph.io.impl;
 
 import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Element;
+import fr.cnrs.iees.graph.GraphElement;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.graph.Node;
@@ -128,7 +128,7 @@ public class GraphmlExporter implements GraphExporter {
 		types.put("String", "string");
 	}
 	
-	private String writeData(Element e) {
+	private String writeData(GraphElement e) {
 		if (ReadOnlyPropertyList.class.isAssignableFrom(e.getClass())) {
 			ReadOnlyPropertyList de = (ReadOnlyPropertyList) e;
 			StringBuilder sb = new StringBuilder();

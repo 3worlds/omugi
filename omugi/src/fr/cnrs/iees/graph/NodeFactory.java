@@ -31,10 +31,9 @@
 package fr.cnrs.iees.graph;
 
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
- * <p>An interface to give a Graph the ability to create Nodes and Edges in an appropriate way.</p>
+ * <p>An interface to give a Graph the ability to create Nodes in an appropriate way.</p>
  * 
  * <p>Although nodes and edges could in theory exist without the context of a graph, as soon as
  * one starts to instantiate them a graph starts to exist. If we want to put some constraints on this graph 
@@ -49,57 +48,84 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  * which factory created it, but not which graphs it belongs to. This way, other instances of the
  * same type can be made by calling the initial factory.</p> 
  * 
+ * <p>All graph elements (nodes and edges) are uniquely identified by a class ID / instance ID
+ * pair. This pair is used for deciding if nodes / edges are equal (Object.equals(...) method).</p>
+ * 
+ * <p>Typically, a NodeFactory should have a constructor taking a {@link Graph} as a parameter
+ * so that Node creation is consistent with the current graph context.</p> 
  * 
  * @author Jacques Gignoux 7-11-2018
  *
- * @param <N>
  */
-public interface GraphElementFactory {
+public interface NodeFactory {
 
 	/**
-	 * Create a Node with no properties.
+	 * Create a Node with no properties. The class ID is set to the default (= the implementing
+	 * class name). The instance ID is automatically generated and is unique.
+	 * 
 	 * @return 
 	 */
-	public Node makeNode();
+	public default Node makeNode() {
+		return makeNode(null,null,null);
+	}
 	
 	/**
-	 * Create a node with read-only properties
-	 * @param props
+	 * Create a node with properties. The class ID is set to the default (= the implementing
+	 * class name). The instance ID is automatically generated and is unique.
+	 * 
+	 * @param props properties
 	 * @return
 	 */
-	public Node makeNode(ReadOnlyPropertyList props);
+	public default Node makeNode(ReadOnlyPropertyList props) {
+		return makeNode(null,null,props);
+	}
+	
+	/**
+	 * Create a node with no properties and a particular class ID. The instance ID is 
+	 * automatically generated and is unique.
+	 * 
+	 * @param classId the class identifier
+	 * @return
+	 */
+	public default Node makeNode(String classId) {
+		return makeNode(classId,null,null);
+	}
 
 	/**
-	 * Create a node with read-write properties
-	 * @param props
+	 * Create a node with no properties, a particular class ID and instance ID. Implementing
+	 * classes should make sure the (classId,instanceId) pair enables to uniquely identify
+	 * the instance returned.
+	 * 
+	 * @param classId the class identifier
+	 * @param instanceId the instance identifier
 	 * @return
 	 */
-	public Node makeNode(SimplePropertyList props);
-
-	/**
-	 * Create an edge with no properties.
-	 * @param start
-	 * @param end
-	 * @return
-	 */
-	public Edge makeEdge(Node start, Node end);
+	public default Node makeNode(String classId, String instanceId) {
+		return makeNode(classId,instanceId,null);
+	}
 	
 	/**
-	 * Create an edge with read-only properties
-	 * @param start
-	 * @param end
-	 * @param props
+	 * Create a node with a particular class ID and properties. The instance ID is automatically 
+	 * generated and is unique.
+	 * 
+	 * @param classId the class identifier
+	 * @param props properties
 	 * @return
 	 */
-	public Edge makeEdge(Node start, Node end, ReadOnlyPropertyList props);
+	public default Node makeNode(String classId, ReadOnlyPropertyList props) {
+		return makeNode(classId,null,props);
+	}
 	
 	/**
-	 * Create an edge with read-write properties
-	 * @param start
-	 * @param end
-	 * @param props
+	 * Create a node with a particular class ID and instance ID and properties. Implementing
+	 * classes should make sure the (classId,instanceId) pair enables to uniquely identify
+	 * the instance returned.
+	 * 
+	 * @param classId the class identifier
+	 * @param instanceId the instance identifier
+	 * @param props properties
 	 * @return
 	 */
-	public Edge makeEdge(Node start, Node end, SimplePropertyList props);
+	public Node makeNode(String classId, String instanceId, ReadOnlyPropertyList props);
 	
 }

@@ -44,20 +44,20 @@ import fr.ens.biologie.generic.Textable;
  * TODO: remove all the fluency I added before
  *
  */
-public interface Element extends Textable, Identifiable {
+public interface GraphElement extends Textable, Identifiable {
 	
 	/**
 	 * Safely disconnects this Element from the Graph (by taking care of references to it by
 	 * neighbouring Graph Elements)
 	 */
-	public Element disconnect();
+	public GraphElement disconnect();
 	
 	/**
 	 * Connects this Element <em>exactly</em> like the argument, i.e by losing its former connections.
 	 * (= a call to disconnect() followed by addConnectionsLike(element)) 
 	 * @param element the element to copy connections from
 	 */
-	public default Element connectLike(Element element) {
+	public default GraphElement connectLike(GraphElement element) {
 		disconnect();
 		addConnectionsLike(element);
 		return this;
@@ -69,7 +69,7 @@ public interface Element extends Textable, Identifiable {
 	 * This instance keeps its former connections.
 	 * @param element the Element to replace
 	 */
-	public default Element replace(Element element) {
+	public default GraphElement replace(GraphElement element) {
 		addConnectionsLike(element);
 		element.disconnect();
 		return this;
@@ -79,7 +79,7 @@ public interface Element extends Textable, Identifiable {
 	 * Add to this Element the connections found in the argument element. 
 	 * @param element the element to copy connections from.
 	 */
-	public Element addConnectionsLike(Element element);
+	public GraphElement addConnectionsLike(GraphElement element);
 	
 	/**    public static final String LABEL_NAME_SEPARATOR     = ":";
 
@@ -116,13 +116,6 @@ public interface Element extends Textable, Identifiable {
 	 * @param direction the direction in which to search 
 	 * @return the connected Graph containing this instance
 	 */
-	public Collection<? extends Node> traversal(int distance, Direction direction);
-		
-	/**
-	 * Getter for the factory that created this element
-	 * @return
-	 */
-	public GraphElementFactory graphElementFactory();
-	
+	public Collection<? extends Node> traversal(int distance, Direction direction);			
 	
 }

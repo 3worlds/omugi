@@ -32,7 +32,7 @@ package fr.cnrs.iees.graph.impl;
 
 import java.util.Set;
 
-import fr.cnrs.iees.graph.GraphElementFactory;
+import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.ReadOnlyDataEdge;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
@@ -48,16 +48,23 @@ public class ReadOnlyDataEdgeImpl extends SimpleEdgeImpl implements ReadOnlyData
 
 	// SimpleEdgeImpl
 
-	protected ReadOnlyDataEdgeImpl(Node start, Node end, ReadOnlyPropertyList props, GraphElementFactory factory) {
+	protected ReadOnlyDataEdgeImpl(Node start, Node end, ReadOnlyPropertyList props, EdgeFactory factory) {
 		super(start, end, factory);
 		propertyList = props;
 	}
+
+	protected ReadOnlyDataEdgeImpl(String instanceId, Node start, Node end, 
+			ReadOnlyPropertyList props, EdgeFactory factory) {
+		super(instanceId, start, end, factory);
+		propertyList = props;
+	}
+
 	
 	// SimplePropertyList
 
 	@Override
 	public ReadOnlyDataEdgeImpl clone() {
-		return new ReadOnlyDataEdgeImpl(startNode(),endNode(),propertyList.clone(),graphElementFactory());
+		return new ReadOnlyDataEdgeImpl(startNode(),endNode(),propertyList.clone(),edgeFactory());
 	}
 
 	@Override

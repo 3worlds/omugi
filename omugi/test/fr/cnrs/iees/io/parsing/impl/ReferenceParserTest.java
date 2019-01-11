@@ -79,7 +79,7 @@ class ReferenceParserTest {
 		ReferenceParser p = tk.parser();
 		Property prop = new Property("prop1",3.4);
 		props = new SimplePropertyListImpl(prop);
-		node = factory.makeDataTreeNode(null,props);
+		node = factory.makeTreeNode(null,props);
 		assertTrue(p.matches(node));
 	}
 
@@ -91,10 +91,10 @@ class ReferenceParserTest {
 		props = new SimplePropertyListImpl(
 			new Property("prop8",false),
 			new Property("prop4","blabla"));
-		node = factory.makeDataTreeNode(null,props);
+		node = factory.makeTreeNode(null,props);
 		props = new SimplePropertyListImpl(
 			new Property("prop1",3.4));
-		node.setParent(factory.makeDataTreeNode(null,props));
+		node.setParent(factory.makeTreeNode(null,props));
 		assertTrue(p.matches(node));
 	}
 

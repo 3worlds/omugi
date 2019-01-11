@@ -43,8 +43,6 @@ import fr.ens.biologie.generic.Textable;
  */
 public interface TreeNode extends Identifiable, Textable {
 	
-	public static String TREE_NODE_LABEL = "tree_node";
-
 	/**
 	 * Gets the parent node. Returns null if this is the tree root.
 	 * @return the parent of this node
@@ -93,11 +91,6 @@ public interface TreeNode extends Identifiable, Textable {
 			if (c==child)
 				return true;
 		return false;
-	}
-	
-	@Override
-	public default String classId() {
-		return TREE_NODE_LABEL;
 	}
 
 	public TreeNodeFactory treeNodeFactory();

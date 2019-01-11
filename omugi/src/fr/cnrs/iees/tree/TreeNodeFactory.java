@@ -45,7 +45,9 @@ public interface TreeNodeFactory {
 	 * @param parent the parent of the newly created {@code TreeNode}
 	 * @return
 	 */
-	public TreeNode makeTreeNode(TreeNode parent);
+	public default TreeNode makeTreeNode(TreeNode parent) {
+		return makeTreeNode(parent,null,null,null);
+	}
 	
 	/**
 	 * Creates a new instance of a {@link TreeNode}, with the argument as its
@@ -53,6 +55,22 @@ public interface TreeNodeFactory {
 	 * @param parent the parent of the newly created {@code TreeNode}
 	 * @return
 	 */
-	public TreeNode makeDataTreeNode(TreeNode parent,SimplePropertyList properties);
+	public default TreeNode makeTreeNode(TreeNode parent,SimplePropertyList properties) {
+		return makeTreeNode(parent,null,null,properties);
+	}
+	
+	public default TreeNode makeTreeNode(TreeNode parent, String classId) {
+		return makeTreeNode(parent,classId,null,null);
+	}
+	
+	public default TreeNode makeTreeNode(TreeNode parent, String classId, String instanceId) {
+		return makeTreeNode(parent,classId,instanceId,null);
+	}
+	
+	public default TreeNode makeTreeNode(TreeNode parent, String classId,SimplePropertyList properties) {
+		return makeTreeNode(parent,classId,null,properties);
+	}
+	
+	public TreeNode makeTreeNode(TreeNode parent, String classId, String instanceId,SimplePropertyList properties);
 
 }

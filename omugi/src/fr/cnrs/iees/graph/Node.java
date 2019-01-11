@@ -35,7 +35,7 @@ package fr.cnrs.iees.graph;
  * @author gignoux - 17 août 2017
  *
  */
-public interface Node extends Element {
+public interface Node extends GraphElement {
 	
 	public static String NODE_LABEL = "node";
 
@@ -112,20 +112,26 @@ public interface Node extends Element {
 	
 	/**
 	 * 
+	 * @return the Nodefactory with which this Node was instantiated
+	 */
+	public NodeFactory nodeFactory();
+	
+	/**
+	 * 
 	 * @param direction the direction (IN or OUT)
 	 * @return the degree of this node (=the number of edges) in requested direction
 	 */
 	public int degree(Direction direction);
 
 	@Override
-	public default Node addConnectionsLike(Element element) {
+	public default Node addConnectionsLike(GraphElement element) {
 		Node node = (Node) element;
 		for (Edge e:node.getEdges(Direction.IN)) {
-			GraphElementFactory f = (GraphElementFactory) e.graphElementFactory();
+			EdgeFactory f = (EdgeFactory) e.edgeFactory();
 			f.makeEdge(e.startNode(), this);			
 		}
 		for (Edge e:node.getEdges(Direction.OUT)) {
-			GraphElementFactory f = (GraphElementFactory) e.graphElementFactory();
+			EdgeFactory f = (EdgeFactory) e.edgeFactory();
 			f.makeEdge(this, e.endNode());
 		}
 		return this;

@@ -33,7 +33,7 @@ package fr.cnrs.iees.graph.impl;
 import java.util.Set;
 
 import fr.cnrs.iees.graph.DataEdge;
-import fr.cnrs.iees.graph.GraphElementFactory;
+import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.properties.PropertyListSetters;
 import fr.cnrs.iees.properties.SimplePropertyList;
@@ -45,8 +45,14 @@ public class DataEdgeImpl extends SimpleEdgeImpl implements DataEdge {
 
 	// SimpleEdgeImpl
 
-	protected DataEdgeImpl(Node start, Node end, SimplePropertyList props, GraphElementFactory factory) {
+	protected DataEdgeImpl(Node start, Node end, SimplePropertyList props, EdgeFactory factory) {
 		super(start, end, factory);
+		propertyList = props;
+	}
+
+	protected DataEdgeImpl(String instanceId, Node start, Node end, 
+			SimplePropertyList props, EdgeFactory factory) {
+		super(instanceId, start, end, factory);
 		propertyList = props;
 	}
 	
@@ -54,7 +60,7 @@ public class DataEdgeImpl extends SimpleEdgeImpl implements DataEdge {
 	
 	@Override
 	public DataEdgeImpl clone() {
-		return new DataEdgeImpl(startNode(),endNode(),propertyList.clone(),graphElementFactory());
+		return new DataEdgeImpl(startNode(),endNode(),propertyList.clone(),edgeFactory());
 	}
 
 	@Override

@@ -32,57 +32,41 @@ package fr.cnrs.iees.graph.impl;
 
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.OmugiException;
-import fr.cnrs.iees.graph.DataEdge;
-import fr.cnrs.iees.graph.DataNode;
 import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.GraphElementFactory;
+import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.ReadOnlyDataEdge;
-import fr.cnrs.iees.graph.ReadOnlyDataNode;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 /**
- * A simple factory for graph elements - mainly for testing purposes. Nodes and Edges
- * have no properties.
- * Ideally this should be grouped with the Graph interface in a graph implementation (to
- * make node and edge creation consistent with graph constraints).
+ * A simple factory for graph elements - mainly for testing purposes. 
  * 
  * @author Jacques Gignoux - 7 nov. 2018
  *
  */
 public class DefaultGraphFactory 
-	implements GraphElementFactory, PropertyListFactory {
+	implements NodeFactory, EdgeFactory, PropertyListFactory {
 	
-	private int capacity;
 	
 	public DefaultGraphFactory() {
-		this(2);
-	}
-
-	/**
-	 * 
-	 * @param cap the initial storage capacity for edge lists (inner and outer edges)
-	 */
-	public DefaultGraphFactory(int cap) {
 		super();
-		capacity = cap;
 	}
 
 	@Override
 	public Node makeNode() {
-		return new SimpleNodeImpl(capacity,this);
+		return new SimpleNodeImpl(this);
 	}
 	
 	// this is used in AotNode to instantiate a simple node within the AotNode
-	public static Node makeSimpleNode(GraphElementFactory factory) {
+	public static Node makeSimpleNode(NodeFactory factory) {
 		return new SimpleNodeImpl(factory);
 	}
 	
 	// this is used in AotEdge to instantiate a simple edge within the AotEdge
-	public static Edge makeSimpleEdge(Node start, Node end, GraphElementFactory factory) {
+	public static Edge makeSimpleEdge(Node start, Node end, EdgeFactory factory) {
 		return new SimpleEdgeImpl(start,end,factory);
 	}
 
@@ -92,30 +76,20 @@ public class DefaultGraphFactory
 	}
 
 	@Override
-	public DataNode makeNode(SimplePropertyList props) {
-		if (props==null)
-			throw new OmugiException("makeNode(SimplePropertyList): property list cannot be null. Use makeNode() if you want no properties.");
-		return new DataNodeImpl(capacity,props,this);
-	}
-
-	@Override
-	public DataEdge makeEdge(Node start, Node end, SimplePropertyList props) {
-		if (props==null)
-			throw new OmugiException("makeEdge(Node,Node,SimplePropertyList): property list cannot be null. Use makeEdge(Node,Node) if you want no properties.");
-		return new DataEdgeImpl(start,end,props,this);
-	}
-
-	@Override
-	public ReadOnlyDataNode makeNode(ReadOnlyPropertyList props) {
+	public Node makeNode(ReadOnlyPropertyList props) {
 		if (props==null)
 			throw new OmugiException("makeNode(ReadOnlyPropertyList): property list cannot be null. Use makeNode() if you want no properties.");
-		return new ReadOnlyDataNodeImpl(capacity,props,this);
+		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
+			return new DataNodeImpl((SimplePropertyList) props,this);
+		return new ReadOnlyDataNodeImpl(props,this);
 	}
 
 	@Override
-	public ReadOnlyDataEdge makeEdge(Node start, Node end, ReadOnlyPropertyList props) {
+	public Edge makeEdge(Node start, Node end, ReadOnlyPropertyList props) {
 		if (props==null)
 			throw new OmugiException("makeEdge(Node,Node,ReadOnlyPropertyList): property list cannot be null. Use makeEdge(Node,Node) if you want no properties.");
+		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
+			return new DataEdgeImpl(start,end,(SimplePropertyList) props,this);
 		return new ReadOnlyDataEdgeImpl(start,end,props,this);
 	}
 
@@ -137,6 +111,25 @@ public class DefaultGraphFactory
 	@Override
 	public SimplePropertyList makePropertyList(String... propertyKeys) {
 		return new SimplePropertyListImpl(propertyKeys);
+	}
+
+	@Override
+	public Edge makeEdge(Node start, Node end, String classId, String instanceId, 
+			ReadOnlyPropertyList props) {
+		if (props==null)
+			return new SimpleEdgeImpl(instanceId,start,end,this);
+		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
+			return new DataEdgeImpl(instanceId,start,end,(SimplePropertyList) props,this);
+		return new ReadOnlyDataEdgeImpl(instanceId,start,end,props,this);
+	}
+
+	@Override
+	public Node makeNode(String classId, String instanceId, ReadOnlyPropertyList props) {
+		if (props==null)
+			return new SimpleNodeImpl(instanceId,this);
+		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
+			return new DataNodeImpl(instanceId,(SimplePropertyList) props,this);
+		return new ReadOnlyDataNodeImpl(instanceId,props,this);
 	}
 
 }

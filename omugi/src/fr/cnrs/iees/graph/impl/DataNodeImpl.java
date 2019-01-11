@@ -33,7 +33,7 @@ package fr.cnrs.iees.graph.impl;
 import java.util.Set;
 
 import fr.cnrs.iees.graph.DataNode;
-import fr.cnrs.iees.graph.GraphElementFactory;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.properties.PropertyListSetters;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.DataContainer;
@@ -50,15 +50,16 @@ public class DataNodeImpl extends SimpleNodeImpl
 
 	// SimpleNodeImpl
 	
-	protected DataNodeImpl(SimplePropertyList props, GraphElementFactory factory) {
+	protected DataNodeImpl(SimplePropertyList props, NodeFactory factory) {
 		super(factory);
 		propertyList = props;
 	}
-
-	public DataNodeImpl(int capacity, SimplePropertyList props, GraphElementFactory factory) {
-		super(capacity, factory);
+	
+	protected DataNodeImpl(String instanceId, SimplePropertyList props, NodeFactory factory) {
+		super(instanceId,factory);
 		propertyList = props;
 	}
+
 
 	// SimplePropertyList
 	
@@ -69,7 +70,7 @@ public class DataNodeImpl extends SimpleNodeImpl
 
 	@Override
 	public DataNodeImpl clone() {
-		return new DataNodeImpl(propertyList.clone(),graphElementFactory());
+		return new DataNodeImpl(propertyList.clone(),nodeFactory());
 	}
 
 	@Override

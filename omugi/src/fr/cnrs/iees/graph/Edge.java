@@ -36,7 +36,7 @@ package fr.cnrs.iees.graph;
  * <p>Setters make sure the graph stays valid, ie they update the Node edge lists if needed</p>
  *
  */
-public interface Edge extends Element {
+public interface Edge extends GraphElement {
 	
 	public static String EDGE_LABEL = "edge";
 	
@@ -87,5 +87,10 @@ public interface Edge extends Element {
 		return EDGE_LABEL;
 	}
 
+	/**
+	 * 
+	 * @return the EdgeFactory with which this Edge was instantiated
+	 */
+	public EdgeFactory edgeFactory();
 	
 }
