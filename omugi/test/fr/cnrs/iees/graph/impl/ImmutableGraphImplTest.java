@@ -47,7 +47,7 @@ import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
 
 class ImmutableGraphImplTest {
 
-	DefaultGraphFactory f = new DefaultGraphFactory(2);
+	DefaultGraphFactory f = new DefaultGraphFactory();
 	Node n1;
 	Node n2, n3, n4;
 	Edge e1, e2, e3, e4, e5;

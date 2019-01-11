@@ -44,8 +44,6 @@ import org.junit.jupiter.api.Test;
 import au.edu.anu.rscs.aot.collections.tables.BooleanTable;
 import au.edu.anu.rscs.aot.collections.tables.Dimensioner;
 import au.edu.anu.rscs.aot.collections.tables.Table;
-import fr.cnrs.iees.graph.DataEdge;
-import fr.cnrs.iees.graph.DataNode;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.MinimalGraph;
@@ -59,7 +57,7 @@ import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 class OmugiGraphExporterTest {
 
-	DefaultGraphFactory f = new DefaultGraphFactory(2);
+	DefaultGraphFactory f = new DefaultGraphFactory();
 	// first, a simple graph with no properties
 	Node n1;
 	Node n2, n3, n4;
@@ -67,11 +65,11 @@ class OmugiGraphExporterTest {
 	Map<String,String> nodes;
 	ImmutableGraphImpl<Node,Edge> graph;
 	// second, a graph with properties
-	DataNode dn1, dn2, dn3, dn4;
-	DataEdge de1, de2, de3, de4, de5;
+	Node dn1, dn2, dn3, dn4;
+	Edge de1, de2, de3, de4, de5;
 	SimplePropertyList props = new SimplePropertyListImpl("one","two","three");
 	SimplePropertyList prop2 = new SimplePropertyListImpl("four","five","one");
-	ImmutableGraphImpl<DataNode,DataEdge> graph2;
+	ImmutableGraphImpl<Node,Edge> graph2;
 	
 	// little test graph:
 	//
@@ -117,10 +115,10 @@ class OmugiGraphExporterTest {
 		de3 = f.makeEdge(dn2,dn2,prop2);
 		de4 = f.makeEdge(dn2,dn3,prop2);
 		de5 = f.makeEdge(dn3,dn4,prop2);
-		List<DataNode> l2 = new LinkedList<DataNode>();
+		List<Node> l2 = new LinkedList<Node>();
 		l2.add(dn1); l2.add(dn2);
 		l2.add(dn3); l2.add(dn4);
-		graph2 = new ImmutableGraphImpl<DataNode,DataEdge>(l2);
+		graph2 = new ImmutableGraphImpl<Node,Edge>(l2);
 	}
 	
 	@Test
@@ -133,6 +131,25 @@ class OmugiGraphExporterTest {
 		OmugiGraphExporter ge = new OmugiGraphExporter(f);
 		ge.exportGraph(graph);
 	}
+	
+/* bidon.ugg should look like this:
+
+graph // saved by OmugiGraphExporter on Fri Jan 11 15:35:55 CET 2019
+
+// 4 NODES
+node D89EF3043496-000001683D5742F9-0000
+node D89EF3043496-000001683D5742F9-0001
+node D89EF3043496-000001683D5742F7-0001
+node D89EF3043496-000001683D5742F8-0000
+
+// 5 EDGES
+[node:D89EF3043496-000001683D5742F9-0000] edge D89EF3043496-000001683D5742FB-0002 [node:D89EF3043496-000001683D5742F9-0001]
+[node:D89EF3043496-000001683D5742F7-0001] edge D89EF3043496-000001683D5742FA-0000 [node:D89EF3043496-000001683D5742F8-0000]
+[node:D89EF3043496-000001683D5742F8-0000] edge D89EF3043496-000001683D5742FB-0001 [node:D89EF3043496-000001683D5742F9-0000]
+[node:D89EF3043496-000001683D5742F8-0000] edge D89EF3043496-000001683D5742FA-0001 [node:D89EF3043496-000001683D5742F7-0001]
+[node:D89EF3043496-000001683D5742F8-0000] edge D89EF3043496-000001683D5742FB-0000 [node:D89EF3043496-000001683D5742F8-0000]
+
+*/
 	
 	@Test
 	void testExportGraph2() {
@@ -158,7 +175,55 @@ class OmugiGraphExporterTest {
 		ge = new OmugiGraphExporter(f);
 		ge.exportGraph(g);
 	}
+	
+/* 	bidon2.ugg should look like this:
 
+graph // saved by OmugiGraphExporter on Fri Jan 11 15:35:55 CET 2019
+
+// 4 NODES
+node D89EF3043496-000001683D574316-0003
+	one = java.lang.Float(1.0)
+	three = java.lang.Object(null)
+	two = java.lang.Long(2000)
+node D89EF3043496-000001683D574317-0000
+	one = java.lang.Float(1.0)
+	three = java.lang.Object(null)
+	two = java.lang.Long(2000)
+node D89EF3043496-000001683D574316-0001
+	one = java.lang.Float(1.0)
+	three = java.lang.Object(null)
+	two = java.lang.Long(2000)
+node D89EF3043496-000001683D574316-0002
+	one = java.lang.Float(1.0)
+	three = java.lang.Object(null)
+	two = java.lang.Long(2000)
+
+// 5 EDGES
+[node:D89EF3043496-000001683D574316-0003] edge D89EF3043496-000001683D574318-0003 [node:D89EF3043496-000001683D574317-0000]
+	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	four = java.lang.Short(4)
+	one = java.lang.Object(null)
+[node:D89EF3043496-000001683D574316-0001] edge D89EF3043496-000001683D574317-0001 [node:D89EF3043496-000001683D574316-0002]
+	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	four = java.lang.Short(4)
+	one = java.lang.Object(null)
+[node:D89EF3043496-000001683D574316-0002] edge D89EF3043496-000001683D574318-0001 [node:D89EF3043496-000001683D574316-0002]
+	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	four = java.lang.Short(4)
+	one = java.lang.Object(null)
+[node:D89EF3043496-000001683D574316-0002] edge D89EF3043496-000001683D574318-0000 [node:D89EF3043496-000001683D574316-0001]
+	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	four = java.lang.Short(4)
+	one = java.lang.Object(null)
+[node:D89EF3043496-000001683D574316-0002] edge D89EF3043496-000001683D574318-0002 [node:D89EF3043496-000001683D574316-0003]
+	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	four = java.lang.Short(4)
+	one = java.lang.Object(null)
+ 
+ */
+
+/* 	bidon3.ugg should be exactly like bidon2.ugg except the ids are different
+*/
 	@Test
 	void testExportGraph3() {
 		// tree loading / saving
@@ -177,6 +242,29 @@ class OmugiGraphExporterTest {
 		OmugiGraphExporter ge = new OmugiGraphExporter(f);
 		ge.exportGraph(tree);
 	}
-
 	
+/* 	bidon2.ugt should look like this:
+
+tree // saved by OmugiGraphExporter on Fri Jan 11 15:35:55 CET 2019
+
+// 11 NODES
+DataTreeNodeImpl 436e852b
+	prop1 = java.lang.Integer(3)
+	prop2 = java.lang.Double(4.2)
+	DataTreeNodeImpl c46bcd4
+		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	SimpleTreeNodeImpl 631330c
+		DataTreeNodeImpl 42f93a98
+			prop4 = java.lang.String("coucou")
+	SimpleTreeNodeImpl 3234e239
+		SimpleTreeNodeImpl 3d921e20
+			SimpleTreeNodeImpl 36b4cef0
+				SimpleTreeNodeImpl fad74ee
+		SimpleTreeNodeImpl 1a1d6a08
+		DataTreeNodeImpl 37d31475
+			truc = java.lang.String("machin")
+			DataTreeNodeImpl 27808f31
+				plop = java.lang.Integer(12)
+	
+*/	
 }

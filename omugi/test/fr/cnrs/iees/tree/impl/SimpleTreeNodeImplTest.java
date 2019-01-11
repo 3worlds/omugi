@@ -45,6 +45,7 @@ import fr.cnrs.iees.tree.TreeNode;
  */
 class SimpleTreeNodeImplTest {
 	
+	@SuppressWarnings("unused")
 	private TreeNode tn1, tn2, tn3, tn4;
 	
 	private void show(String method,String text) {

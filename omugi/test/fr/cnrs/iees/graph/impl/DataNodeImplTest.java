@@ -36,8 +36,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.graph.DataNode;
-import fr.cnrs.iees.graph.GraphElementFactory;
 import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.impl.DataNodeImpl;
 import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
 import fr.cnrs.iees.graph.impl.SimpleNodeImpl;
@@ -49,7 +49,7 @@ class DataNodeImplTest {
 	private DataNode n1, n3;
 	private Node n2;
 	private SimplePropertyList p;
-	private GraphElementFactory f = new DefaultGraphFactory(3);
+	private NodeFactory f = new DefaultGraphFactory();
 	
 	@BeforeEach
 	private void init() {

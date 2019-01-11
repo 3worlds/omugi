@@ -46,8 +46,6 @@ import au.edu.anu.rscs.aot.collections.tables.Dimensioner;
 import au.edu.anu.rscs.aot.collections.tables.Table;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
-import fr.cnrs.iees.graph.DataEdge;
-import fr.cnrs.iees.graph.DataNode;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
@@ -63,7 +61,7 @@ import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
  */
 class GraphmlExporterTest {
 
-	DefaultGraphFactory f = new DefaultGraphFactory(2);
+	DefaultGraphFactory f = new DefaultGraphFactory();
 	// first, a simple graph with no properties
 	Node n1;
 	Node n2, n3, n4;
@@ -71,11 +69,11 @@ class GraphmlExporterTest {
 	Map<String,String> nodes;
 	ImmutableGraphImpl<Node,Edge> graph;
 	// second, a graph with properties
-	DataNode dn1, dn2, dn3, dn4;
-	DataEdge de1, de2, de3, de4, de5;
+	Node dn1, dn2, dn3, dn4;
+	Edge de1, de2, de3, de4, de5;
 	SimplePropertyList props = new SimplePropertyListImpl("one","two","three");
 	SimplePropertyList prop2 = new SimplePropertyListImpl("four","five","one");
-	ImmutableGraphImpl<DataNode,DataEdge> graph2;
+	ImmutableGraphImpl<Node,Edge> graph2;
 	
 	// little test graph:
 	//
@@ -121,10 +119,10 @@ class GraphmlExporterTest {
 		de3 = f.makeEdge(dn2,dn2,prop2);
 		de4 = f.makeEdge(dn2,dn3,prop2);
 		de5 = f.makeEdge(dn3,dn4,prop2);
-		List<DataNode> l2 = new LinkedList<DataNode>();
+		List<Node> l2 = new LinkedList<Node>();
 		l2.add(dn1); l2.add(dn2);
 		l2.add(dn3); l2.add(dn4);
-		graph2 = new ImmutableGraphImpl<DataNode,DataEdge>(l2);
+		graph2 = new ImmutableGraphImpl<Node,Edge>(l2);
 	}
 
 	private void show(String method,String text) {
@@ -199,6 +197,23 @@ class GraphmlExporterTest {
 //	    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 //	    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
 //	    http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+//  <key id="one" for="all" attr.name="one" attr.type="float">
+//    <default>0.0</default>
+//  </key>
+//  <key id="three" for="node" attr.name="three" attr.type="string">
+//    <default></default>
+//  </key>
+//  <key id="two" for="node" attr.name="two" attr.type="long">
+//    <default>0</default>
+//  </key>
+//  <!-- GraphML mapping for type Short -->
+//  <key id="four" for="edge" attr.name="four" attr.type="int">
+//    <default>0</default>
+//  </key>
+//  <!-- GraphML mapping for type BooleanTable -->
+//  <key id="five" for="edge" attr.name="five" attr.type="string">
+//    <default>{[1],false}</default>
+//  </key>
 //	  <graph id="G" edgedefault="directed">
 //	    <node id="1">
 //	      <data key="one">1.0</data>
@@ -256,23 +271,6 @@ class GraphmlExporterTest {
 //	      <data key="one">""</data>
 //	    </edge>
 //	  </graph>
-//	  <key id="one" for="all" attr.name="one" attr.type="float">
-//	    <default>0.0</default>
-//	  </key>
-//	  <key id="three" for="node" attr.name="three" attr.type="string">
-//	    <default></default>
-//	  </key>
-//	  <key id="two" for="node" attr.name="two" attr.type="long">
-//	    <default>0</default>
-//	  </key>
-//	  <!-- GraphML mapping for type Short -->
-//	  <key id="four" for="edge" attr.name="four" attr.type="int">
-//	    <default>0</default>
-//	  </key>
-//	  <!-- GraphML mapping for type BooleanTable -->
-//	  <key id="five" for="edge" attr.name="five" attr.type="string">
-//	    <default>{[1],false}</default>
-//	  </key>
 //	</graphml>		
 
 }

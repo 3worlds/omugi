@@ -48,6 +48,7 @@ import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
 import fr.cnrs.iees.graph.impl.MutableGraphImpl;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
@@ -414,6 +415,10 @@ public class GraphParser extends Parser {
 		// setup the factories
 		try {
 			nodeFactory = nFactoryClass.newInstance();
+			edgeFactory = eFactoryClass.newInstance();
+			if (eFactoryClass.equals(nFactoryClass))
+				if (nodeFactory instanceof DefaultGraphFactory)
+					edgeFactory = (EdgeFactory) nodeFactory;
 			propertyListFactory = plFactoryClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			// There should not be any problem here given the previous checks

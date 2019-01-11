@@ -60,7 +60,7 @@ class SimpleEdgeImplTest {
 	
 	@BeforeEach
 	private void init() {
-		DefaultGraphFactory f = new DefaultGraphFactory(2);
+		DefaultGraphFactory f = new DefaultGraphFactory();
 		nodes = new HashMap<String,String>();
 		n1 = f.makeNode();
 		nodes.put(n1.uniqueId(), "n1");
