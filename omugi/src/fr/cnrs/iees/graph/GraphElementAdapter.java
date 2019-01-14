@@ -104,6 +104,16 @@ public abstract class GraphElementAdapter implements GraphElement {
 				classId().equals(e.classId()));
 	}
 	
-	
+	// This is important when using HashSets or HahsMaps: to make sure graph elements are only
+	// considered different if they differ by classId+UniqueId, their hashCode must be computed
+	// based on classId+UniqueId. Otherwise Object.hashCode() is called to compute the Hash
+	// for the Map/Set and no subsequent call to .equals() is made, so elements with other
+	// differences than classId+uniqueId will be considereed different even if they have the 
+	// same classId+instanceId.
+	@Override
+	public int hashCode() {
+		return uniqueId().hashCode();
+	}
+
 
 }

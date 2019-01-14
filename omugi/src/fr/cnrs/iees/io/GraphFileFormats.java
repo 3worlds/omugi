@@ -31,6 +31,7 @@
 package fr.cnrs.iees.io;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.util.logging.Logger;
 
 import fr.cnrs.iees.graph.io.GraphExporter;
@@ -111,6 +112,15 @@ public enum GraphFileFormats {
 		if (gf!=null)
 			switch (gf) {
 				case AOT:
+				try {
+					Class<?> c = Class.forName("fr.cnrs.iees.graph.io.impl.AotGraphImporter");
+					Constructor<?> cc = c.getConstructor(File.class);
+					GraphImporter gi = (GraphImporter) cc.newInstance(f);
+					return gi;
+				} catch (Exception e) {
+					log.warning("Unable to load AOT format - file cannot be loaded");
+					return null;
+				}
 				case TRE:
 				case TWG:
 				case UML:

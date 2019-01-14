@@ -84,6 +84,8 @@ public class FileImporter {
 				return GOMUGI;
 			if (s.startsWith("tree"))
 				return TOMUGI;
+			if (s.startsWith("aot"))
+				return AOT;
 			for (String l:lines)
 				if (l.contains("http://graphml.graphdrawing.org/xmlns"))
 					return GRAPHML;

@@ -66,7 +66,7 @@ public interface Identifiable {
 	 * @return this element's unique identifier
 	 */
 	public default String uniqueId() {
-		return classId()+LABEL_NAME_SEPARATOR+instanceId();
+		return new StringBuilder().append(classId()+LABEL_NAME_SEPARATOR+instanceId()).toString();
 	}
 
 }
