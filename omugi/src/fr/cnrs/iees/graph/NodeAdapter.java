@@ -155,7 +155,8 @@ public abstract class NodeAdapter extends GraphElementAdapter implements Node {
 		}
 		return list;
 	}
-	
+	// Please- I would like to override this 
+	// Anyway, shouldn't this call toShortString for edges?
 	@Override
 	public final String toShortString() {
 		return super.toDetailedString();
