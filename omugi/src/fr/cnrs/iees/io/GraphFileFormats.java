@@ -48,15 +48,19 @@ import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
  *
  */
 public enum GraphFileFormats {
+	// NOTE: Long descriptions are no good in a file dialog box
+//	AOT			(".dsl .aot",		"S. Flint's AOT DSL graph format with cross-references (formerly known as 'dsl')", ""),
+// Strictly speaking, this is no longer Shayne's format is it?? - add cf if you disagree
 	/*-	format      file extensions     format description				url*/
-	XML			(".xml",			"xml AOT graph format with cross-references", ""),
-	AOT			(".dsl .aot",		"S. Flint's AOT DSL graph format with cross-references (formerly known as 'dsl')", ""),
-	TWG			(".dsl .twg",		"S. Flint's AOT DSL graph format with cross-references and 3Worlds compliance (formerly known as 'dsl')", ""),
-	UML			(".xmi .uml",		"UML graph format with cross-references", ""),
-	TRE         (".tre",            "3Worlds hierachical graph", ""),
-	GOMUGI      (".ugg",            "omugi 'any graph' format", ""),
-	TOMUGI      (".ugt",            "omugi tree format", ""),
-	GRAPHML		(".graphml .xml",	"GraphML file format", 	"http://graphml.graphdrawing.org/")
+	XML			(".xml",/*             */"3Worlds graph (Tree with cross-references)", ""),
+	AOT			(".aot",/*             */"3Worlds graph (Tree with cross-references)", ""),
+// remove TWG before first release
+	TWG			(".dsl .twg",/*        */"S. Flint's AOT DSL graph format with cross-references and 3Worlds compliance (formerly known as 'dsl')", ""),
+	UML			(".xmi .uml",/*        */"UML graph format with cross-references", ""),
+	TRE         (".tre", /*            */"3Worlds hierachical graph", ""),
+	GOMUGI      (".ugg", /*            */"omugi 'any graph' format", ""),
+	TOMUGI      (".ugt", /*            */"omugi tree format", ""),
+	GRAPHML		(".graphml .xml",/*    */"GraphML file format", 	"http://graphml.graphdrawing.org/")
 // others to come:
 //		GML
 //		DOT
