@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.io.impl;
 
-import static fr.cnrs.iees.io.parsing.impl.GraphTokens.*;
+import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;

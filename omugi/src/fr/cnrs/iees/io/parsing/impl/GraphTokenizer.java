@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing.impl;
 
-import static fr.cnrs.iees.io.parsing.impl.GraphTokens.*;
+import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,25 +102,18 @@ prop1 = Integer(0)
 // tested OK with version 0.0.1 on 14/12/2018
 public class GraphTokenizer extends LineTokenizer {
 	//----------------------------------------------------
-	protected class token {
-		protected GraphTokens type;
-		protected String value;
+	protected class graphToken extends token {
 		
-		protected token(GraphTokens type, String value) {
-			super();
-			this.type = type;
-			this.value = value;
-		}
-		
-		@Override
-		public String toString() {
-			return type+":"+value;
+		protected graphToken(TreeGraphTokens type, String value) {
+			super(type,value);
+			if (!TreeGraphTokens.graphTokens().contains(type))
+				throw new OmugiException("Error: "+type+" is not a valid graph token type");
 		}
 	}
 	//----------------------------------------------------
 	
-	private List<token> tokenlist = new ArrayList<>(1000);
-	private token cttoken = null;
+	private List<graphToken> tokenlist = new ArrayList<>(1000);
+	private graphToken cttoken = null;
 	private int tokenIndex = -1;
 	
 	public GraphTokenizer(FileTokenizer parent) {
@@ -139,8 +132,8 @@ public class GraphTokenizer extends LineTokenizer {
 		return false;
 	}
 	
-	public token getNextToken() {
-		token result = null;
+	public graphToken getNextToken() {
+		graphToken result = null;
 		if (tokenIndex<tokenlist.size()) {
 			if (tokenIndex == -1)
 				tokenIndex = 0;
@@ -166,7 +159,7 @@ public class GraphTokenizer extends LineTokenizer {
 			// process the beginning of the line
 			processLine(words[0].trim());
 			// end of the line is comment text that may include more '//'s
-			cttoken = new token(COMMENT,"");
+			cttoken = new graphToken(COMMENT,"");
 			for (int i=1; i<words.length; i++)
 				cttoken.value += words[i];
 			tokenlist.add(cttoken);
@@ -176,7 +169,7 @@ public class GraphTokenizer extends LineTokenizer {
 		words = line.trim().split(PROPERTY_NAME.suffix());
 		if (words.length>1)  { // a property name was found
 			if (words.length==2) {
-				tokenlist.add(new token(PROPERTY_NAME,words[0].trim()));
+				tokenlist.add(new graphToken(PROPERTY_NAME,words[0].trim()));
 				processLine(words[1]);
 				return;
 			}
@@ -186,10 +179,10 @@ public class GraphTokenizer extends LineTokenizer {
 		words = line.trim().split("\\(");
 		if (words.length>1)  { // a property type (and value) was found (but it may contain more '(')
 			if (line.trim().endsWith(PROPERTY_VALUE.suffix())) {
-				tokenlist.add(new token(PROPERTY_TYPE,words[0].trim()));
+				tokenlist.add(new graphToken(PROPERTY_TYPE,words[0].trim()));
 				String s = line.trim().substring(line.trim().indexOf('(')+1, line.trim().length()-1);
 //				tokenlist.add(new token(PROPERTY_VALUE,words[1].substring(0,words[1].indexOf(PROPERTY_VALUE.suffix())).trim()));
-				tokenlist.add(new token(PROPERTY_VALUE,s));
+				tokenlist.add(new graphToken(PROPERTY_VALUE,s));
 				return;
 			}
 			else
@@ -199,9 +192,9 @@ public class GraphTokenizer extends LineTokenizer {
 		if (words.length>1) { // an edge definition was found
 			words = trimEmptyWords(words);
 			if (words.length==3) {
-				tokenlist.add(new token(NODE_REF,words[0].trim()));
+				tokenlist.add(new graphToken(NODE_REF,words[0].trim()));
 				processLine(words[1]);
-				tokenlist.add(new token(NODE_REF,words[2].trim()));
+				tokenlist.add(new graphToken(NODE_REF,words[2].trim()));
 				return;
 			}
 			else
@@ -209,8 +202,8 @@ public class GraphTokenizer extends LineTokenizer {
 		}
 		words = line.trim().split("\\s"); // matches any whitespace character
 		if (words.length>1) { 
-			tokenlist.add(new token(LABEL,words[0].trim())); // first word is label
-			cttoken = new token(NAME,"");
+			tokenlist.add(new graphToken(LABEL,words[0].trim())); // first word is label
+			cttoken = new graphToken(NAME,"");
 			for (int i=1; i<words.length; i++) { // anything else is name
 				cttoken.value += words[i];
 			}
@@ -235,7 +228,7 @@ public class GraphTokenizer extends LineTokenizer {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (token t:tokenlist)
+		for (graphToken t:tokenlist)
 			sb.append(t.toString()).append('\n');
 		return sb.toString();
 	}

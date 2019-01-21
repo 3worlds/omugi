@@ -30,19 +30,14 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing.impl;
 
-import static fr.cnrs.iees.io.parsing.TextGrammar.*;
-
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import au.edu.anu.rscs.aot.collections.tables.Table;
-import au.edu.anu.rscs.aot.graph.property.Property;
+import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Graph;
@@ -50,11 +45,9 @@ import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
 import fr.cnrs.iees.graph.impl.MutableGraphImpl;
-import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
-import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.token;
+import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.ens.biologie.generic.Labelled;
 import fr.ens.biologie.generic.Named;
 
@@ -86,7 +79,7 @@ import fr.ens.biologie.generic.Named;
 //todo: import	
 // add options at graph level for property list types, node types, edge types ???
 // Tested OK with version 0.0.1 on 17/12/2018
-public class GraphParser extends Parser {
+public class GraphParser extends MinimalGraphParser {
 	
 	private Logger log = Logger.getLogger(GraphParser.class.getName());
 
@@ -98,41 +91,6 @@ public class GraphParser extends Parser {
 		EDGE
 	}
 	//----------------------------------------------------
-	// specifications for a property
-	private class propSpec {
-		protected String name;
-		protected String type;
-		protected String value;
-		@Override // for debugging only
-		public String toString() {
-			return name+":"+type+"="+value;
-		}
-	}
-	//----------------------------------------------------
-	// specifications for a node
-	private class nodeSpec {
-		protected String label;
-		protected String name;
-		protected List<propSpec> props = new LinkedList<propSpec>();
-		@Override // for debugging only
-		public String toString() {
-			return label+":"+name;
-		}
-	}
-	//----------------------------------------------------
-	// specifications for an edge
-	private class edgeSpec {
-		protected String label;
-		protected String name;
-		protected String start;
-		protected String end;
-		protected List<propSpec> props = new LinkedList<propSpec>();
-		@Override // for debugging only
-		public String toString() {
-			return label+":"+name+" ["+start+"-->"+end+"]";
-		}
-	}
-	//----------------------------------------------------
 	
 	// the tokenizer used to read the file
 	private GraphTokenizer tokenizer = null;
@@ -140,7 +98,6 @@ public class GraphParser extends Parser {
 	// the factories used to build the graph
 	private NodeFactory nodeFactory = null;
 	private EdgeFactory edgeFactory = null;
-	private PropertyListFactory propertyListFactory = null;
 	
 	// the list of specifications built from the token list
 	private List<propSpec> graphProps = new LinkedList<propSpec>();
@@ -181,7 +138,7 @@ public class GraphParser extends Parser {
 			tokenizer.tokenize();
 		lastItem = itemType.GRAPH;
 		while (tokenizer.hasNext()) {
-			token tk = tokenizer.getNextToken();
+			graphToken tk = tokenizer.getNextToken();
 			switch (tk.type) {
 				case COMMENT:
 					break;
@@ -259,6 +216,10 @@ public class GraphParser extends Parser {
 							break;
 					}
 					break;
+			case LEVEL:
+				throw new OmugiException("Invalid token type for a graph");
+			default:
+				break;
 			}
 		}		
 	}
@@ -296,68 +257,7 @@ public class GraphParser extends Parser {
 	private Class<?> getClass(GraphProperties gp) {
 		return getClass(gp,null);
 	}
-	
-	// builds a propertyList from specs
-	private ReadOnlyPropertyList makePropertyList(List<propSpec> props) {
-		List<Property> pl = new LinkedList<Property>();
-		for (propSpec p:props) {
-			String className = ValidPropertyTypes.getJavaClassName(p.type);
-			if (className==null)
-				log.severe("unknown property type ("+p.type+")");
-			else {
-				Object o = null;
-				try {
-					Class<?> c = Class.forName(className);
-					// if method present, instantiate object with valueOf()
-					for (Method m:c.getMethods())
-						if (m.getName().equals("valueOf")) {
-							Class<?>[] pt = m.getParameterTypes();
-							// first case, valueOf() only has a String argument --> primitive types
-							if (pt.length==1) {
-								if (String.class.isAssignableFrom(pt[0])) {
-									o = m.invoke(null, p.value);
-									break;
-								}
-							}
-							// Second case, value of has 3 arguments --> Table type
-							else if (pt.length==3) {
-								if ((String.class.isAssignableFrom(pt[0])) &&
-										(char[][].class.isAssignableFrom(pt[1])) &&
-										(char[].class.isAssignableFrom(pt[2])) ) {
-									char[][] bdel = new char[2][2];
-									bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
-									bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
-									char[] isep = new char[2];
-									isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
-									isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
-									o = m.invoke(null,p.value,bdel,isep);
-								}
-							}
-					}
-					// else must be a String
-					if (o==null) {
-						if (p.value.equals("null"))
-							o = null;
-						else
-							o = p.value;
-					}
-				} catch (ClassNotFoundException e) {
-					// We should reach here only if there is an error in ValidPropertyTypes
-					e.printStackTrace();
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					// this occurs if the value is not of the proper type
-					o=null;
-				}
-				pl.add(new Property(p.name,o));
-			}
-		}
-		Property[] pp = new Property[pl.size()];
-		int i=0;
-		for (Property p:pl)
-			pp[i++] = p;
-		return propertyListFactory.makePropertyList(pp);
-	}
-	
+
 	// builds the graph from the parsed data
 	@SuppressWarnings("unchecked")
 	private void buildGraph() {
@@ -432,7 +332,7 @@ public class GraphParser extends Parser {
 			if (ns.props.isEmpty())
 				n = nodeFactory.makeNode();
 			else
-				n = nodeFactory.makeNode(makePropertyList(ns.props));
+				n = nodeFactory.makeNode(makePropertyList(ns.props,log));
 			if (Labelled.class.isAssignableFrom(n.getClass())) 
 				((Labelled)n).setLabel(ns.label);
 			if (Named.class.isAssignableFrom(n.getClass())) 
@@ -459,7 +359,7 @@ public class GraphParser extends Parser {
 				if (es.props.isEmpty())
 					e = edgeFactory.makeEdge(start, end);
 				else 
-					e = edgeFactory.makeEdge(start,end,makePropertyList(es.props));
+					e = edgeFactory.makeEdge(start,end,makePropertyList(es.props,log));
 				if (Labelled.class.isAssignableFrom(e.getClass())) 
 					((Labelled)e).setLabel(es.label);
 				if (Named.class.isAssignableFrom(e.getClass())) 

@@ -30,24 +30,16 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing.impl;
 
-import static fr.cnrs.iees.io.parsing.TextGrammar.*;
-
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import au.edu.anu.rscs.aot.collections.tables.Table;
-import au.edu.anu.rscs.aot.graph.property.Property;
-import fr.cnrs.iees.io.parsing.Parser;
-import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
-import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.token;
+import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
-import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.tree.Tree;
 import fr.cnrs.iees.tree.TreeNode;
 import fr.cnrs.iees.tree.TreeNodeFactory;
@@ -60,7 +52,7 @@ import fr.ens.biologie.generic.Named;
  * @author Jacques Gignoux - 20 déc. 2018
  *
  */
-public class TreeParser extends Parser {
+public class TreeParser extends MinimalGraphParser {
 
 	private Logger log = Logger.getLogger(TreeParser.class.getName());
 
@@ -69,29 +61,6 @@ public class TreeParser extends Parser {
 	private enum itemType {
 		TREE,
 		NODE,
-	}
-	//----------------------------------------------------
-	// specifications for a property
-	private class propSpec {
-		protected String name;
-		protected String type;
-		protected String value;
-		@Override // for debugging only
-		public String toString() {
-			return name+":"+type+"="+value;
-		}
-	}
-	//----------------------------------------------------
-	// specifications for a tree node
-	private class nodeSpec {
-		protected nodeSpec parent = null;
-		protected String label;
-		protected String name;
-		protected List<propSpec> props = new LinkedList<propSpec>();
-		@Override // for debugging only
-		public String toString() {
-			return label+":"+name;
-		}
 	}
 
 	// the tokenizer used to read the file
@@ -102,16 +71,16 @@ public class TreeParser extends Parser {
 
 	// the list of specifications built from the token list
 	private List<propSpec> treeProps = new LinkedList<propSpec>();
-	private List<nodeSpec> nodeSpecs =  new LinkedList<nodeSpec>();
+	private List<treeNodeSpec> nodeSpecs =  new LinkedList<treeNodeSpec>();
 	
 	// the last processed item
 	private itemType lastItem = null;
-	private nodeSpec[] lastNodes = null;
+	private treeNodeSpec[] lastNodes = null;
 	private propSpec lastProp = null;
 
 	// factories for treenodes and properties
 	private TreeNodeFactory treeFactory = null;
-	private PropertyListFactory propFactory = null;
+	
 
 	public TreeParser(TreeTokenizer tokenizer) {
 		super();
@@ -122,16 +91,16 @@ public class TreeParser extends Parser {
 	protected void parse() {
 		if (!tokenizer.tokenized())
 			tokenizer.tokenize();
-		lastNodes = new nodeSpec[tokenizer.maxDepth()+1];
+		lastNodes = new treeNodeSpec[tokenizer.maxDepth()+1];
 		lastItem = itemType.TREE;
 		while (tokenizer.hasNext()) {
-			token tk = tokenizer.getNextToken();
+			treeToken tk = tokenizer.getNextToken();
 			switch (tk.type) {
 				case COMMENT:
 					break;
 				case LABEL:
 					int level = tk.level;
-					lastNodes[level] = new nodeSpec();
+					lastNodes[level] = new treeNodeSpec();
 					lastNodes[level].label = tk.value;
 					if (level>0)
 						lastNodes[level].parent = lastNodes[level-1];
@@ -159,6 +128,10 @@ public class TreeParser extends Parser {
 					else
 						lastNodes[tk.level-1].props.add(lastProp);
 					break;
+			case NODE_REF:
+				throw new OmugiException("Invalid token type for a tree");
+			default:
+				break;
 			}
 		}
 	}
@@ -195,67 +168,6 @@ public class TreeParser extends Parser {
 	// gets a default class from the graph properties
 	private Class<?> getClass(TreeProperties gp) {
 		return getClass(gp,null);
-	}
-
-	// builds a propertyList from specs
-	private SimplePropertyList makePropertyList(List<propSpec> props) {
-		List<Property> pl = new LinkedList<Property>();
-		for (propSpec p:props) {
-			String className = ValidPropertyTypes.getJavaClassName(p.type);
-			if (className==null)
-				log.severe("unknown property type ("+p.type+")");
-			else {
-				Object o = null;
-				try {
-					Class<?> c = Class.forName(className);
-					// if method present, instantiate object with valueOf()
-					for (Method m:c.getMethods())
-						if (m.getName().equals("valueOf")) {
-							Class<?>[] pt = m.getParameterTypes();
-							// first case, valueOf() only has a String argument --> primitive types
-							if (pt.length==1) {
-								if (String.class.isAssignableFrom(pt[0])) {
-									o = m.invoke(null, p.value);
-									break;
-								}
-							}
-							// Second case, value of has 3 arguments --> Table type
-							else if (pt.length==3) {
-								if ((String.class.isAssignableFrom(pt[0])) &&
-										(char[][].class.isAssignableFrom(pt[1])) &&
-										(char[].class.isAssignableFrom(pt[2])) ) {
-									char[][] bdel = new char[2][2];
-									bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
-									bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
-									char[] isep = new char[2];
-									isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
-									isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
-									o = m.invoke(null,p.value,bdel,isep);
-								}
-							}
-					}
-					// else must be a String
-					if (o==null) {
-						if (p.value.equals("null"))
-							o = null;
-						else
-							o = p.value;
-					}
-				} catch (ClassNotFoundException e) {
-					// We should reach here only if there is an error in ValidPropertyTypes
-					e.printStackTrace();
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					// this occurs if the value is not of the proper type
-					o=null;
-				}
-				pl.add(new Property(p.name,o));
-			}
-		}
-		Property[] pp = new Property[pl.size()];
-		int i=0;
-		for (Property p:pl)
-			pp[i++] = p;
-		return propFactory.makePropertyList(pp);
 	}
 
 	
@@ -304,7 +216,7 @@ public class TreeParser extends Parser {
 		// setup the factories
 		try {
 			treeFactory = tFactoryClass.newInstance();
-			propFactory = plFactoryClass.newInstance();
+			propertyListFactory = plFactoryClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			// There should not be any problem here given the previous checks
 			// unless the factory class is flawed
@@ -312,12 +224,12 @@ public class TreeParser extends Parser {
 		}
 		// make tree nodes
 		Map<String,TreeNode> nodes = new HashMap<>();
-		for (nodeSpec ns:nodeSpecs) {
+		for (treeNodeSpec ns:nodeSpecs) {
 			TreeNode n = null;
 			if (ns.props.isEmpty())
 				n = treeFactory.makeTreeNode(null);
 			else
-				n = treeFactory.makeTreeNode(null,makePropertyList(ns.props));
+				n = treeFactory.makeTreeNode(null,makePropertyList(ns.props,log));
 			if (Labelled.class.isAssignableFrom(n.getClass())) 
 				((Labelled)n).setLabel(ns.label);
 			if (Named.class.isAssignableFrom(n.getClass())) 
@@ -363,7 +275,7 @@ public class TreeParser extends Parser {
 			sb.append("Graph properties:\n");
 		for (propSpec p:treeProps)
 			sb.append('\t').append(p.toString()).append('\n');
-		for (nodeSpec n:nodeSpecs) {
+		for (treeNodeSpec n:nodeSpecs) {
 			sb.append(n.toString()).append('\n');
 			for (propSpec p:n.props)
 				sb.append("\t").append(p.toString()).append('\n');

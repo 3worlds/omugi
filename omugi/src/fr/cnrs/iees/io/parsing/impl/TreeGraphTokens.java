@@ -29,16 +29,19 @@
  *                                                                        *
  **************************************************************************/
 package fr.cnrs.iees.io.parsing.impl;
+
+import java.util.EnumSet;
+
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**
- * Token types used in graph text files.
+ * Token types used in graph and tree text files
  * 
- * @author Jacques Gignoux - 18 déc. 2018
+ * @author Jacques Gignoux - 21 janv. 2019
  *
  */
-public enum GraphTokens {
-
+public enum TreeGraphTokens {
+	
 	// token type	prefix		content type	suffix
 	COMMENT			("//",		"String",		"eol"),
 	PROPERTY_NAME	("",		"String",		String.valueOf(SaveableAsText.EQUAL)),
@@ -50,13 +53,14 @@ public enum GraphTokens {
 	NAME			("",		"String",		""),
 	NODE_REF		(String.valueOf(SaveableAsText.SQUARE_BRACKETS[SaveableAsText.BLOCK_OPEN]),
 								"String",		String.valueOf(SaveableAsText.SQUARE_BRACKETS[SaveableAsText.BLOCK_CLOSE])),
+	LEVEL			("\t", 		"Integer",		""),
 //	IMPORT			("import","filename","")
 	;
 	private final String prefix;
 	private final String type;
 	private final String suffix;
 
-	private GraphTokens(String prefix, String type, String suffix) {
+	private TreeGraphTokens(String prefix, String type, String suffix) {
 		this.prefix = prefix;
 		this.suffix = suffix;
 		this.type = type;
@@ -73,4 +77,21 @@ public enum GraphTokens {
 	public String prefix() {
 		return prefix;
 	}
+
+	/**
+	 * returns 
+	 * @return the list of valid tokens for trees
+	 */
+	public static EnumSet<TreeGraphTokens> treeTokens() {
+		return EnumSet.of(COMMENT,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_TYPE,LABEL,NAME,LEVEL);
+	}
+	
+	/**
+	 * returns 
+	 * @return the list of valid tokens for graphs
+	 */
+	public static EnumSet<TreeGraphTokens> graphTokens() {
+		return EnumSet.of(COMMENT,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_TYPE,LABEL,NAME,NODE_REF);
+	}
+
 }

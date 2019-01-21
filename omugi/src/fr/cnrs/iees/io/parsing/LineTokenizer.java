@@ -33,12 +33,35 @@ package fr.cnrs.iees.io.parsing;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.cnrs.iees.io.parsing.impl.TreeGraphTokens;
+
 /**
+ * An abstract ancestor for tokenizers based on multi-line text. This class assumes that
+ * the token come in a list of Strings (lines), and that a token is always fully contained
+ * in a single line String.
  * 
  * @author Jacques Gignoux - 7 déc. 2018
  *
  */
 public abstract class LineTokenizer implements Tokenizer {
+	
+	//----------------------------------------------------
+	protected class token {
+		public TreeGraphTokens type;
+		public String value;
+		
+		protected token(TreeGraphTokens type, String value) {
+			super();
+			this.type = type;
+			this.value = value;
+		}
+		
+		@Override
+		public String toString() {
+			return type+":"+value;
+		}
+	}
+	//----------------------------------------------------
 	
 	protected List<String> lines;
 		
