@@ -53,8 +53,8 @@ public enum GraphFileFormats {
 // Strictly speaking, this is no longer Shayne's format is it?? - add cf if you disagree
 	/*-	format      file extensions     format description				url*/
 	XML			(".xml",/*             */"3Worlds graph (Tree with cross-references)", ""),
-	AOT			(".aot",/*             */"3Worlds graph (Tree with cross-references)", ""),
-// remove TWG before first release
+ 	AOT			(".aot",/*             */"3Worlds graph (Tree with cross-references)", ""),
+    // remove TWG before first release
 	TWG			(".dsl .twg",/*        */"S. Flint's AOT DSL graph format with cross-references and 3Worlds compliance (formerly known as 'dsl')", ""),
 	UML			(".xmi .uml",/*        */"UML graph format with cross-references", ""),
 	TRE         (".tre", /*            */"3Worlds hierachical graph", ""),
