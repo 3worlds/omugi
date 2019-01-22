@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
+import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 
 /**
  * A crude tokenizer for trees
@@ -51,15 +52,20 @@ public class TreeTokenizer extends LineTokenizer {
 	private Logger log = Logger.getLogger(TreeTokenizer.class.getName());
 			
 	//----------------------------------------------------
-	protected class treeToken extends token {
-		protected int level;
+	public class treeToken extends token {
+		public int level;
 		
-		protected treeToken(TreeGraphTokens type, String value, int level) {
+		public treeToken(TreeGraphTokens type, String value, int level) {
 			super(type,value);
 			if (!TreeGraphTokens.treeTokens().contains(type))
 				throw new OmugiException("Error: "+type+" is not a valid tree token type");
 			this.level = level;
 		}
+		@Override
+		public String toString() {
+			return level+" "+type+":"+value;
+		}
+
 	}
 	//----------------------------------------------------
 	
@@ -73,10 +79,10 @@ public class TreeTokenizer extends LineTokenizer {
 		super(parent);
 	}
 
-	protected TreeTokenizer(String[] lines) {
+	public TreeTokenizer(String[] lines) {
 		super(lines);
 	}
-
+	
 	public boolean hasNext() {
 		if ((tokenIndex==-1)&&(tokenlist.size()>0))
 			return true;
@@ -156,6 +162,13 @@ public class TreeTokenizer extends LineTokenizer {
 			tokenlist.add(cttoken);
 			return;
 		}		
+		else if (words.length==1) // there is only one label in this case
+			if (!words[0].trim().isEmpty()) 
+				if (!words[0].trim().equals("tree")) { // I hate this - it's a flaw !
+					tokenlist.add(new treeToken(LABEL,words[0].trim(),ctDepth)); 
+					tokenlist.add(new treeToken(NAME,"",ctDepth));
+					return;
+		}
 	}
 	
 	public int maxDepth() {

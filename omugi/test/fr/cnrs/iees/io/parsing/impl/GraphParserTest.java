@@ -83,6 +83,7 @@ class GraphParserTest {
 	void testParse() {
 		GraphParser gp = new GraphParser(new GraphTokenizer(test));
 		gp.parse();
+		System.out.println(gp.toString());
 		assertEquals(gp.toString(),"Graph specification\n" + 
 				"Nodes:\n" + 
 				"	label1:name1\n" + 

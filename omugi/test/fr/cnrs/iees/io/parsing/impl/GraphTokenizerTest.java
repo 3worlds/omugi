@@ -118,6 +118,7 @@ class GraphTokenizerTest {
 	void testTokenize() {
 		GraphTokenizer tk = new GraphTokenizer(test);
 		tk.tokenize();
+		System.out.println(tk.toString());
 		assertEquals(tk.toString(),"COMMENT: this is a comment\n" + 
 				"COMMENT:this is another comment\n" + 
 				"LABEL:label1\n" + 
@@ -157,6 +158,7 @@ class GraphTokenizerTest {
 				"PROPERTY_VALUE:0\n");
 		tk = new GraphTokenizer(testWithErrors);
 		tk.tokenize();
+//		System.out.println(tk.toString());
 		assertEquals(tk.toString(),"COMMENT: this is a comment\n" + 
 				"COMMENT:this is another comment\n" + 
 				"LABEL:label1\n" + 
@@ -173,6 +175,8 @@ class GraphTokenizerTest {
 				"PROPERTY_NAME:prop4\n" + 
 				"PROPERTY_TYPE:Boolkean\n" + 
 				"PROPERTY_VALUE:true\n" + 
+				"LABEL:name2\n" + 
+				"NAME:\n" + 
 				"LABEL:label1\n" + 
 				"NAME:name3\n" + 
 				"NODE_REF:label1:name1\n" + 
@@ -245,5 +249,24 @@ class GraphTokenizerTest {
 				"PROPERTY_TYPE:Integer\n" + 
 				"PROPERTY_VALUE:0\n");
 	}	
+	
+	String[] test2 = {"[system:entity] belongsTo random name [category:animal]",
+			"[process:growth] appliesTo  [category:animal]"
+	};
+	
+	@Test
+	void testTokenize2() {
+		GraphTokenizer tk = new GraphTokenizer(test2);
+		tk.tokenize();
+//		System.out.println(tk.toString());
+		assertEquals(tk.toString(),"NODE_REF:system:entity\n" + 
+				"LABEL:belongsTo\n" + 
+				"NAME:randomname\n" + 
+				"NODE_REF:category:animal\n" + 
+				"NODE_REF:process:growth\n" + 
+				"LABEL:appliesTo\n" + 
+				"NAME:\n" + 
+				"NODE_REF:category:animal\n");
+	}
 	
 }

@@ -54,42 +54,54 @@ public abstract class MinimalGraphParser extends Parser {
 
 	//----------------------------------------------------
 	// specifications for a property
-	protected class propSpec {
-		protected String name;
-		protected String type;
-		protected String value;
+	public class propSpec {
+		public String name;
+		public String type;
+		public String value;
 		@Override // for debugging only
 		public String toString() {
 			return name+":"+type+"="+value;
 		}
+		public propSpec() {
+			super();
+		}
 	}
 	//----------------------------------------------------
 	// specifications for a node
-	protected class nodeSpec {
-		protected String label;
-		protected String name;
-		protected List<propSpec> props = new LinkedList<propSpec>();
+	public class nodeSpec {
+		public String label;
+		public String name;
+		public List<propSpec> props = new LinkedList<propSpec>();
 		@Override // for debugging only
 		public String toString() {
 			return label+":"+name;
 		}
+		public nodeSpec() {
+			super();
+		}
 	}
 	//----------------------------------------------------
 	// specifications for a tree node
-	protected class treeNodeSpec extends nodeSpec{
-		protected treeNodeSpec parent = null;
+	public class treeNodeSpec extends nodeSpec{
+		public treeNodeSpec parent = null;
+		public treeNodeSpec() {
+			super();
+		}
 	}
 	//----------------------------------------------------
 	// specifications for an edge
-	protected class edgeSpec {
-		protected String label;
-		protected String name;
-		protected String start;
-		protected String end;
-		protected List<propSpec> props = new LinkedList<propSpec>();
+	public class edgeSpec {
+		public String label;
+		public String name;
+		public String start;
+		public String end;
+		public List<propSpec> props = new LinkedList<propSpec>();
 		@Override // for debugging only
 		public String toString() {
 			return label+":"+name+" ["+start+"-->"+end+"]";
+		}
+		public edgeSpec() {
+			super();
 		}
 	}
 	//----------------------------------------------------

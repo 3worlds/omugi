@@ -46,11 +46,11 @@ import fr.cnrs.iees.io.parsing.impl.TreeGraphTokens;
 public abstract class LineTokenizer implements Tokenizer {
 	
 	//----------------------------------------------------
-	protected class token {
+	public class token {
 		public TreeGraphTokens type;
 		public String value;
 		
-		protected token(TreeGraphTokens type, String value) {
+		public token(TreeGraphTokens type, String value) {
 			super();
 			this.type = type;
 			this.value = value;

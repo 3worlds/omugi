@@ -64,6 +64,7 @@ class TreeTokenizerTest {
 	void testTokenize() {
 		TreeTokenizer tk = new TreeTokenizer(test);
 		tk.tokenize();
+		System.out.println(tk.toString());
 		assertEquals(tk.toString(),"0 COMMENT: this is a STUPID comment\n" + 
 				"\n" + 
 				"0 COMMENT: This is a VERY STUPID comment\n" + 

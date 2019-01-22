@@ -102,9 +102,9 @@ prop1 = Integer(0)
 // tested OK with version 0.0.1 on 14/12/2018
 public class GraphTokenizer extends LineTokenizer {
 	//----------------------------------------------------
-	protected class graphToken extends token {
+	public class graphToken extends token {
 		
-		protected graphToken(TreeGraphTokens type, String value) {
+		public graphToken(TreeGraphTokens type, String value) {
 			super(type,value);
 			if (!TreeGraphTokens.graphTokens().contains(type))
 				throw new OmugiException("Error: "+type+" is not a valid graph token type");
@@ -120,7 +120,7 @@ public class GraphTokenizer extends LineTokenizer {
 		super(parent);
 	}
 	
-	protected GraphTokenizer(String[] lines) {
+	public GraphTokenizer(String[] lines) {
 		super(lines);
 	}
 	
@@ -209,7 +209,14 @@ public class GraphTokenizer extends LineTokenizer {
 			}
 			tokenlist.add(cttoken);
 			return;
-		}		
+		}	
+		else if (words.length==1) // there is only one label in this case
+			if (!words[0].trim().isEmpty()) 
+				if (!words[0].trim().equals("graph")) { // I hate this - it's a flaw !
+					tokenlist.add(new graphToken(LABEL,words[0].trim())); 
+					tokenlist.add(new graphToken(NAME,""));
+					return;
+		}
 	}
 
 	@Override
