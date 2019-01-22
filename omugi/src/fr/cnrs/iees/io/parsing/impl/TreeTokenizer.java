@@ -164,10 +164,11 @@ public class TreeTokenizer extends LineTokenizer {
 		}		
 		else if (words.length==1) // there is only one label in this case
 			if (!words[0].trim().isEmpty()) 
-				if (!words[0].trim().equals("tree")) { // I hate this - it's a flaw !
-					tokenlist.add(new treeToken(LABEL,words[0].trim(),ctDepth)); 
-					tokenlist.add(new treeToken(NAME,"",ctDepth));
-					return;
+				if (!words[0].trim().equals("tree")) 		// I hate this - it's a flaw !
+					if (!words[0].trim().equals("aot"))	{ 	// I hate this - it's a flaw !
+			tokenlist.add(new treeToken(LABEL,words[0].trim(),ctDepth)); 
+			tokenlist.add(new treeToken(NAME,"",ctDepth));
+			return;
 		}
 	}
 	
