@@ -41,6 +41,7 @@ import fr.ens.biologie.generic.SaveableAsText;
 public interface Identifiable {
 	
     public static final char LABEL_NAME_SEPARATOR = SaveableAsText.COLON;
+    public static final String LABEL_NAME_STR_SEPARATOR = ""+LABEL_NAME_SEPARATOR;
 
 	/**
 	 * Getter for
