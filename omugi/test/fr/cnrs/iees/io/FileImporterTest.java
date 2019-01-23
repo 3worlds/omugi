@@ -81,7 +81,7 @@ class FileImporterTest {
 		FileImporter fi = new FileImporter(file);
 		MinimalGraph<?> g = fi.getGraph();
 		assertNotNull(g);
-		assertEquals(g.size(),11);
+		assertEquals(g.size(),12);
 	}
 
 }

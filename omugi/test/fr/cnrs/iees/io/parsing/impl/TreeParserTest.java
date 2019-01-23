@@ -81,6 +81,8 @@ class TreeParserTest {
 				"label3:node3\n" + 
 				"	prop4:String=\"coucou\"\n" + 
 				"	parent label2:node2\n" + 
+				"label4:\n" + 
+				"	parent label2:node2\n" + 
 				"label5:node5\n" + 
 				"	table:au.edu.anu.rscs.aot.collections.tables.BooleanTable=([3,2]false,false,false,false,false,false)\n" + 
 				"	parent label1:node1\n" + 

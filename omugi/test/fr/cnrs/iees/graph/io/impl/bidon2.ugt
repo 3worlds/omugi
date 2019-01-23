@@ -1,20 +1,21 @@
-tree // saved by OmugiGraphExporter on Fri Jan 11 15:35:55 CET 2019
+tree // saved by OmugiGraphExporter on Wed Jan 23 09:12:47 CET 2019
 
-// 11 NODES
-DataTreeNodeImpl 436e852b
+// 12 NODES
+DataTreeNodeImpl 78e67e0a
 	prop1 = java.lang.Integer(3)
 	prop2 = java.lang.Double(4.2)
-	DataTreeNodeImpl c46bcd4
-		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
-	SimpleTreeNodeImpl 631330c
-		DataTreeNodeImpl 42f93a98
+	SimpleTreeNodeImpl ea1a8d5
+		DataTreeNodeImpl 1563da5
 			prop4 = java.lang.String("coucou")
-	SimpleTreeNodeImpl 3234e239
-		SimpleTreeNodeImpl 3d921e20
-			SimpleTreeNodeImpl 36b4cef0
-				SimpleTreeNodeImpl fad74ee
-		SimpleTreeNodeImpl 1a1d6a08
-		DataTreeNodeImpl 37d31475
+		SimpleTreeNodeImpl 2bbf4b8b
+	DataTreeNodeImpl 30a3107a
+		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	SimpleTreeNodeImpl 33c7e1bb
+		DataTreeNodeImpl 17d677df
 			truc = java.lang.String("machin")
-			DataTreeNodeImpl 27808f31
+			DataTreeNodeImpl 3043fe0e
 				plop = java.lang.Integer(12)
+		SimpleTreeNodeImpl 76b0bfab
+		SimpleTreeNodeImpl 34c4973
+			SimpleTreeNodeImpl 52feb982
+				SimpleTreeNodeImpl 7a765367

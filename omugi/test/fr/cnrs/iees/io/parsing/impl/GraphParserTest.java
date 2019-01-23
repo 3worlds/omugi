@@ -83,7 +83,7 @@ class GraphParserTest {
 	void testParse() {
 		GraphParser gp = new GraphParser(new GraphTokenizer(test));
 		gp.parse();
-		System.out.println(gp.toString());
+//		System.out.println(gp.toString());
 		assertEquals(gp.toString(),"Graph specification\n" + 
 				"Nodes:\n" + 
 				"	label1:name1\n" + 
@@ -110,7 +110,7 @@ class GraphParserTest {
 		gp = new GraphParser(new GraphTokenizer(testWithErrors));
 		g = gp.graph();
 //		System.out.println(g.toString());
-		assertEquals(g.size(),3);
+		assertEquals(g.size(),4);
 	}
 
 }

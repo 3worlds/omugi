@@ -157,8 +157,9 @@ public class TreeTokenizer extends LineTokenizer {
 			tokenlist.add(new treeToken(LABEL,words[0].trim(),ctDepth)); // first word is label
 			cttoken = new treeToken(NAME,"",ctDepth);
 			for (int i=1; i<words.length; i++) { // anything else is name
-				cttoken.value += words[i];
+				cttoken.value += words[i]+" ";
 			}
+			cttoken.value = cttoken.value.trim();
 			tokenlist.add(cttoken);
 			return;
 		}		

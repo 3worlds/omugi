@@ -205,8 +205,9 @@ public class GraphTokenizer extends LineTokenizer {
 			tokenlist.add(new graphToken(LABEL,words[0].trim())); // first word is label
 			cttoken = new graphToken(NAME,"");
 			for (int i=1; i<words.length; i++) { // anything else is name
-				cttoken.value += words[i];
+				cttoken.value += words[i]+" ";
 			}
+			cttoken.value = cttoken.value.trim();
 			tokenlist.add(cttoken);
 			return;
 		}	

@@ -118,7 +118,7 @@ class GraphTokenizerTest {
 	void testTokenize() {
 		GraphTokenizer tk = new GraphTokenizer(test);
 		tk.tokenize();
-		System.out.println(tk.toString());
+//		System.out.println(tk.toString());
 		assertEquals(tk.toString(),"COMMENT: this is a comment\n" + 
 				"COMMENT:this is another comment\n" + 
 				"LABEL:label1\n" + 
@@ -199,8 +199,9 @@ class GraphTokenizerTest {
 		// this one is read as a label and a name.
 		tk = new GraphTokenizer(testWithMoreErrors);
 		tk.tokenize();
+//		System.out.println(tk.toString());
 		assertEquals(tk.toString(),"LABEL:Murs,\n" + 
-				"NAME:ville,Etport,AsileDemort,MergriseOùbriseLabrise,Toutdort.DanslaplaineNaîtunbruit.C'estl'haleineDelanuit.EllebrameCommeuneâmeQu'uneflammeToujourssuit!LavoixplushauteSembleungrelot.D'unnainquisauteC'estlegalop.Ilfuit,s'élance,PuisencadenceSurunpieddanseAuboutd'unflot.Larumeurapproche.L'écholaredit.C'estcommelaclocheD'uncouventmaudit;Commeunbruitdefoule,Quitonneetquiroule,Ettantôts'écroule,Ettantôtgrandit,\n");
+				"NAME:ville, Et port, Asile De mort, Mer grise Où brise La brise, Tout dort.  Dans la plaine Naît un bruit. C'est l'haleine De la nuit. Elle brame Comme une âme Qu'une flamme Toujours suit !  La voix plus haute Semble un grelot. D'un nain qui saute C'est le galop. Il fuit, s'élance, Puis en cadence Sur un pied danse Au bout d'un flot.  La rumeur approche. L'écho la redit. C'est comme la cloche D'un couvent maudit ; Comme un bruit de foule, Qui tonne et qui roule, Et tantôt s'écroule, Et tantôt grandit,\n"); 
 	}
 
 	@Test
@@ -261,7 +262,7 @@ class GraphTokenizerTest {
 //		System.out.println(tk.toString());
 		assertEquals(tk.toString(),"NODE_REF:system:entity\n" + 
 				"LABEL:belongsTo\n" + 
-				"NAME:randomname\n" + 
+				"NAME:random name\n" + 
 				"NODE_REF:category:animal\n" + 
 				"NODE_REF:process:growth\n" + 
 				"LABEL:appliesTo\n" + 
