@@ -117,7 +117,6 @@ public enum GraphFileFormats {
 			switch (gf) {
 				case AOT:
 				try {
-//					Class<?> c = Class.forName("fr.cnrs.iees.graph.io.impl.AotGraphImporter");
 					Class<?> c = Class.forName("au.edu.anu.rscs.aot.graph.io.AotGraphImporter");
 					Constructor<?> cc = c.getConstructor(File.class);
 					GraphImporter gi = (GraphImporter) cc.newInstance(f);

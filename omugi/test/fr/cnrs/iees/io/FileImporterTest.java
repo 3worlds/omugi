@@ -84,4 +84,19 @@ class FileImporterTest {
 		assertEquals(g.size(),12);
 	}
 
+	@Test
+	void testGetGraph4() {
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+				+ File.separator + "test" 
+				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+				+ File.separator + "bidon.aot";
+			File file = new File(testfile);
+			assertTrue(file.exists());
+			// this doesnt work because the graphImporter cannot be found by the classLoader in this library
+			FileImporter fi = new FileImporter(file);
+			MinimalGraph<?> g = fi.getGraph();
+			assertNotNull(g);
+			assertEquals(g.size(),11);
+	}
+	
 }

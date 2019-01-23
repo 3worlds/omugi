@@ -236,7 +236,7 @@ public class TreeParser extends MinimalGraphParser {
 				((Named)n).setName(ns.name);
 			String nodeId = ns.label.trim()+":"+ns.name.trim();
 			if (nodes.containsKey(nodeId))
-				log.severe("duplicate node found ("+") - ignoring the second one");
+				log.severe("duplicate node found ("+nodeId+") - ignoring the second one");
 			else
 				nodes.put(nodeId,n);
 			if (ns.parent!=null) {
