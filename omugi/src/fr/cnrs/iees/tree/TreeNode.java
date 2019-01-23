@@ -47,6 +47,7 @@ public interface TreeNode extends Identifiable, Textable {
 	 * Gets the parent node. Returns null if this is the tree root.
 	 * @return the parent of this node
 	 */
+//	public  <T extends TreeNode> T getParent();
 	public TreeNode getParent();
 	
 	/**
@@ -61,6 +62,8 @@ public interface TreeNode extends Identifiable, Textable {
 	 * Gets the children nodes.
 	 * @return the list of children nodes.
 	 */
+	//	public Iterable<? extends TreeNode> getChildren();
+
 	public Iterable<TreeNode> getChildren();
 	
 	/**
@@ -92,6 +95,7 @@ public interface TreeNode extends Identifiable, Textable {
 				return true;
 		return false;
 	}
+//	public  <T extends treeNodeFactory> T treeNodeFactory();
 
 	public TreeNodeFactory treeNodeFactory();
 	
