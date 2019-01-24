@@ -125,10 +125,9 @@ public class GraphTokenizer extends LineTokenizer {
 	}
 	
 	public boolean hasNext() {
-		if ((tokenIndex==-1)&&(tokenlist.size()>0))
-			return true;
-		else if (tokenIndex<tokenlist.size())
-			return true;
+		if (tokenlist.size()>0)
+			if (tokenIndex<tokenlist.size())
+				return true;
 		return false;
 	}
 	
