@@ -39,10 +39,81 @@ import java.util.logging.Logger;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
-import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 
 /**
- * A crude tokenizer for trees
+ * <p>A crude tokenizer for trees.</p>
+ * <p>It assumes the following text file syntax to describe trees:</p>
+ * <pre>
+tree = headline {line}
+headline = "tree" [comment] NEWLINE
+comment = "// [TEXT]"
+line = [{INDENT}] [{node|property}] [comment] NEWLINE
+node = node_label [node_name]
+node_label = WORD
+node_name = TEXT
+property = prop_name "=" prop_type "(" prop_value ")"
+prop_name = TEXT 
+prop_type = JAVACLASS
+prop_type = LOADABLETEXT
+ * </pre>
+* <p>where:</p>
+ * <ul>
+ * <li>{@code NEWLINE} = the end-of-line character</li>
+ * <li>{@code TEXT} = any text (including white space)</li>
+ * <li>{@code INDENT} = indentation using 0..* tab characters</li>
+ * <li>{@code WORD} = any text with no white space</li>
+ * <li>{@code JAVACLASS} = any java class that has a static valueOf(...) method</li>
+ * <li>{@code LOADABLETEXT} = any text compatible with the matching valueOf(...) method to instantiate the class</li>
+ * </ul>
+ * <p>Indentation gives the level of a node in the tree hierarchy: the root node must have zero
+ * indentation; increase of indentation of one tab indicates the node is a child of the immediate previous node
+ * with one less tab, eg:</p>
+ * <pre>
+node A
+	node B
+		node C
+	node D
+   </pre>
+ * <p>means that A is the root node, B is a child of A, C is a child of B, and D is a child of A,
+ * sibling of B as it has the same indentation level.</p>
+ * <p>The same rule applies to properties: they must be indented 1 level more than their owner node.</p>
+ * <p>The label:name pair is assumed to uniquely represent a node in the graph. 
+ * Depending on implementation, they might represent a class name and instance unique id,
+ * or a real label and name.</p>
+ * 
+ * <p>Little example of a valid tree text file:</p>
+ * <pre>=====================
+tree // this is a STUPID comment 
+
+// This is a VERY STUPID comment 
+		
+label1 node1 
+	prop1 = Integer(3) 
+	prop2 = Double(4.2) 
+	label2 node2
+		label3 node3 
+			prop4 = String("coucou") 
+		label4
+	label5 node5 
+		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false)) 
+		 
+	label6 node6 
+		label7 node7 
+			label8 node8 
+				label9 node9 
+		label10 node10
+	// This is one more comment 
+		label11 node11
+			label12 node12 
+			truc=String("machin") 
+				plop = Integer(12)
+ =====================</pre>
+ * <p>Notice that, contrary to the format for graphs, leading tabs are used to describe the
+ * hierarchy of nodes and are thus of utmost importance. Other white space (empty lines, trailing
+ * white space) are ignored.</p>
+ * <p>In the above example, the application of the indentation rule will attach property 
+ * {@code truc} to node {@code label11:node11} and property {@code plop} to node {@code label12:node12}.  
+ * 
  * @author Jacques Gignoux - 20 déc. 2018
  *
  */

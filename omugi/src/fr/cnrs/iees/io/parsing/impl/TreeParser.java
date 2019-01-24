@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.tree.Tree;
@@ -47,7 +48,26 @@ import fr.ens.biologie.generic.Labelled;
 import fr.ens.biologie.generic.Named;
 
 /**
- * <p>A parser for tree data</p>
+ * <p>A parser for tree data.</p>
+ * 
+ * <p>This parser is initialised with a {@link TreeTokenizer}, i.e. it gobbles a list of
+ * tokens and spits out a {@link Tree} when asked for it. It is lazy, i.e. it will not do anything until
+ * asked for a graph, i.e. invoking the {@code TreeParser.graph()} method, and it will parse only once after
+ * initialisation. Further calls to {@code .graph()} return the already parsed tree.</p>
+ *
+ * <p>Parsing is done in a single pass on the token list.</p>
+ * 
+ * <p>Options to setup the tree may be passed through tree-level properties in the file. These 
+ * are found in {@link TreeProperties}. The best way to go is to implement specific {@link TreeNodeFactory}
+ * and {@link PropertyListFactory}
+ * which will implement which flavour of {@link TreeNode} and property list
+ * (cf. {@link PropertyListGetters} descendants) should be used to construct
+ * the tree.</p> 
+ * 
+ * <p>Allowed property types are those listed in {@link ValidPropertyTypes}. They can be
+ * specified as fully qualified java class names, or as simple strings as found in {@code ValidPropertyTypes}.</p>
+ * 
+ *  <p>Note that the best use of this class is to hide it inside a {@link GraphImporter}.</p>
  * 
  * @author Jacques Gignoux - 20 déc. 2018
  *

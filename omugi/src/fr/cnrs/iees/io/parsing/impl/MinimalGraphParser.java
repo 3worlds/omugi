@@ -45,7 +45,8 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
- * Common grounds for graph and tree parsers. 
+ * <p>This class groups the common grounds for graph and tree parsers. See {@link GraphParser}
+ * and {@link TreeParser} for details.</p> 
  * 
  * @author Jacques Gignoux - 21 janv. 2019
  *

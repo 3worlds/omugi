@@ -1,0 +1,14 @@
+au.edu.anu.rscs.aot.collections.tables
+au.edu.anu.rscs.aot.graph.property
+fr.cnrs.iees
+fr.cnrs.iees.graph
+fr.cnrs.iees.graph.impl
+fr.cnrs.iees.graph.io
+fr.cnrs.iees.graph.io.impl
+fr.cnrs.iees.io
+fr.cnrs.iees.io.parsing
+fr.cnrs.iees.io.parsing.impl
+fr.cnrs.iees.properties
+fr.cnrs.iees.properties.impl
+fr.cnrs.iees.tree
+fr.cnrs.iees.tree.impl

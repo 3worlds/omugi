@@ -31,19 +31,26 @@
 package fr.cnrs.iees.io.parsing.impl;
 
 /**
- * List of graph properties understood by {@link GraphParser} and their default
- * values.
+ * <p>List of graph properties understood by {@link GraphParser} and their default
+ * values. Graph properties are properties that apply to the whole graph, and can be used to
+ * specify particular implementation details.</p>
  * 
  * @author Jacques Gignoux - 13 déc. 2018
  *
  */
 public enum GraphProperties {
 	// name			property name				property class								property default value
+	/** The name of the java {@link Graph} class to instantiate as the graph that will be the result of the parsing */
 	CLASS			("type",					"fr.cnrs.iees.graph.Graph",					"fr.cnrs.iees.graph.impl.ImmutableGraphImpl"),
+	/** The name of the {@link NodeFactory} to use to instantiate the graph nodes */
 	NODE_FACTORY	("node_factory",			"fr.cnrs.iees.graph.NodeFactory",			"fr.cnrs.iees.graph.impl.DefaultGraphFactory"),
+	/** The name of the {@link EdgeFactory} to use to instantiate the graph edges */
 	EDGE_FACTORY	("edge_factory",			"fr.cnrs.iees.graph.EdgeFactory",			"fr.cnrs.iees.graph.impl.DefaultGraphFactory"),
+	/** The name of the {@link PropertyListFactory} to use to instantiate the property lists used in the graph nodes and edges */
 	PROP_FACTORY	("property_list_factory",	"fr.cnrs.iees.properties.PropertyListFactory",	"fr.cnrs.iees.graph.impl.DefaultGraphFactory"),
+	/** {@code true} if the graph is directed */
 	DIRECTED		("directed",				"java.lang.Boolean",						"true"),
+	/** {@code true} if the graph is mutable */
 	MUTABLE			("mutable",					"java.lang.Boolean",						"false"),
 	// others to come ?
 	;

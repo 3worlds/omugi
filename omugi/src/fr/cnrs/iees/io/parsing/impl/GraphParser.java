@@ -57,13 +57,14 @@ import fr.ens.biologie.generic.Named;
  * 
  * <p>This parser is initialised with a {@link GraphTokenizer}, i.e. it gobbles a list of
  * tokens and spits out a {@link Graph} when asked for it. It is lazy, i.e. it will not do anything until
- * asked for a graph (i.e. invoking the {@code GraphParser.graph()} method, and it will parse only once after
+ * asked for a graph, i.e. invoking the {@code GraphParser.graph()} method, and it will parse only once after
  * initialisation. Further calls to {@code .graph()} return the already parsed graph.</p>
  * 
  * <p>Parsing is done in a single pass on the token list.</p>
  * 
  * <p>Options to setup the graph may be passed through graph-level properties in the file. These 
- * are found in {@link GraphProperties}. The best way to go is to implement a specific {@link GraphElementFactory}
+ * are found in {@link GraphProperties}. The best way to go is to implement specific {@link NodeFactory},
+ * {@link EdgeFactory} and {@link PropertyListFactory}
  * which will implement which flavour of {@link Node}, {@link Edge} and property list
  * (cf. {@link PropertyListGetters} descendants) should be used to construct
  * the graph.</p> 
