@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph;
 
 import au.edu.anu.rscs.aot.util.Uid;
+import fr.cnrs.iees.OmugiException;
 
 /**
  * A base implementation of Element with the methods that should be universal in all descendants
@@ -58,6 +59,8 @@ public abstract class GraphElementAdapter implements GraphElement {
 	 */
 	public GraphElementAdapter(String instanceId) {
 		super();
+		if (instanceId==null)
+			throw new OmugiException("Attempt to instantiate a graph element with a null id.");
 		id = instanceId;
 	}
 	
