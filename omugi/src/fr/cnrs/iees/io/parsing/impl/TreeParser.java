@@ -44,8 +44,8 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.tree.Tree;
 import fr.cnrs.iees.tree.TreeNode;
 import fr.cnrs.iees.tree.TreeNodeFactory;
-import fr.ens.biologie.generic.Labelled;
-import fr.ens.biologie.generic.Named;
+//import fr.ens.biologie.generic.Labelled;
+//import fr.ens.biologie.generic.Named;
 
 /**
  * <p>A parser for tree data.</p>
@@ -250,10 +250,10 @@ public class TreeParser extends MinimalGraphParser {
 				n = treeFactory.makeTreeNode(null);
 			else
 				n = treeFactory.makeTreeNode(null,makePropertyList(ns.props,log));
-			if (Labelled.class.isAssignableFrom(n.getClass())) 
-				((Labelled)n).setLabel(ns.label);
-			if (Named.class.isAssignableFrom(n.getClass())) 
-				((Named)n).setName(ns.name);
+//			if (Labelled.class.isAssignableFrom(n.getClass())) 
+//				((Labelled)n).setLabel(ns.label);
+//			if (Named.class.isAssignableFrom(n.getClass())) 
+//				((Named)n).setName(ns.name);
 			String nodeId = ns.label.trim()+":"+ns.name.trim();
 			if (nodes.containsKey(nodeId))
 				log.severe("duplicate node found ("+nodeId+") - ignoring the second one");

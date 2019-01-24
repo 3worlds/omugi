@@ -48,8 +48,8 @@ import fr.cnrs.iees.graph.impl.MutableGraphImpl;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
-import fr.ens.biologie.generic.Labelled;
-import fr.ens.biologie.generic.Named;
+//import fr.ens.biologie.generic.Labelled;
+//import fr.ens.biologie.generic.Named;
 
 /**
  * <p>A replacement parser for Shayne's 'UniversalParser'. Simpler. Maybe Faster. 
@@ -334,10 +334,10 @@ public class GraphParser extends MinimalGraphParser {
 				n = nodeFactory.makeNode();
 			else
 				n = nodeFactory.makeNode(makePropertyList(ns.props,log));
-			if (Labelled.class.isAssignableFrom(n.getClass())) 
-				((Labelled)n).setLabel(ns.label);
-			if (Named.class.isAssignableFrom(n.getClass())) 
-				((Named)n).setName(ns.name);
+//			if (Labelled.class.isAssignableFrom(n.getClass())) 
+//				((Labelled)n).setLabel(ns.label);
+//			if (Named.class.isAssignableFrom(n.getClass())) 
+//				((Named)n).setName(ns.name);
 			String nodeId = ns.label.trim()+":"+ns.name.trim();
 			if (nodes.containsKey(nodeId))
 				log.severe("duplicate node found ("+") - ignoring the second one");
@@ -361,10 +361,10 @@ public class GraphParser extends MinimalGraphParser {
 					e = edgeFactory.makeEdge(start, end);
 				else 
 					e = edgeFactory.makeEdge(start,end,makePropertyList(es.props,log));
-				if (Labelled.class.isAssignableFrom(e.getClass())) 
-					((Labelled)e).setLabel(es.label);
-				if (Named.class.isAssignableFrom(e.getClass())) 
-					((Named)e).setName(es.name);
+//				if (Labelled.class.isAssignableFrom(e.getClass())) 
+//					((Labelled)e).setLabel(es.label);
+//				if (Named.class.isAssignableFrom(e.getClass())) 
+//					((Named)e).setName(es.name);
 			}
 		}
 		// make graph
