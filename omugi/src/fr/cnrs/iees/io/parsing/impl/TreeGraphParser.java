@@ -79,25 +79,31 @@ public class TreeGraphParser extends MinimalGraphParser {
 	private edgeSpec lastEdge = null;
 	
 	// factories for treenodes and edges
-	private TreeGraphFactory graphFactory = null;
+	protected TreeGraphFactory graphFactory = null;
 	
 	// the result of this parsing
 	// remind that an TreeGraph is its own Node, Edge and TreeNode factory
 	private TreeGraph<? extends TreeGraphNode,? extends Edge> graph = null;
 	
 	// lazy init: nothing is done before it's needed
+	/**
+	 * Default constructor.
+	 * NB: to use other factories for nodes and edges, just make a descendant and write 
+	 * the appropriate constructor (as this one, initialising the factories to whatever you want).
+	 * @param tokenizer
+	 */
 	public TreeGraphParser(TreeGraphTokenizer tokenizer) {
 		super();
 		this.tokenizer =tokenizer;
+		// setup the factories
+		propertyListFactory = new DefaultGraphFactory();
+		graphFactory = new TreeGraphFactory();
 	}
 		
 	private void buildGraph() {
 		// parse token if not yet done
 		if (lastItem==null)
 			parse();
-		// setup the factories
-		propertyListFactory = new DefaultGraphFactory();
-		graphFactory = new TreeGraphFactory();
 		// make tree nodes
 		Map<String,TreeGraphNode> nodes = new HashMap<>();
 		for (treeNodeSpec ns:nodeSpecs) {
