@@ -56,5 +56,8 @@ public class SimpleEdgeImpl extends EdgeAdapter {
 		super(instanceId,start,end,factory);
 	}
 
+	protected SimpleEdgeImpl(String classId, String instanceId, Node start, Node end, EdgeFactory factory) {
+		super(classId,instanceId,start,end,factory);
+	}
 		
 }

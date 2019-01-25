@@ -40,7 +40,8 @@ import fr.cnrs.iees.OmugiException;
  */
 public abstract class GraphElementAdapter implements GraphElement {
 	
-	private String id = null;
+	private String instanceId = null;
+	private String classId = null;
 
 	// Constructors
 	
@@ -49,7 +50,8 @@ public abstract class GraphElementAdapter implements GraphElement {
 	 */
 	public GraphElementAdapter() {
 		super();
-		id = (new Uid()).toString();
+		instanceId = (new Uid()).toString();
+		classId = this.getClass().getSimpleName();
 	}
 	
 	/**
@@ -61,14 +63,26 @@ public abstract class GraphElementAdapter implements GraphElement {
 		super();
 		if (instanceId==null)
 			throw new OmugiException("Attempt to instantiate a graph element with a null id.");
-		id = instanceId;
+		this.instanceId = instanceId;
+		classId = this.getClass().getSimpleName();
+	}
+	
+	public GraphElementAdapter(String classId, String instanceId) {
+		this(instanceId);
+		if (classId!=null)
+			this.classId = classId;
 	}
 	
 	// Identifiable
 
 	@Override
 	public String instanceId() {
-		return id;
+		return instanceId;
+	}
+
+	@Override
+	public String classId() {
+		return classId;
 	}
 	
 	// TEXTABLE

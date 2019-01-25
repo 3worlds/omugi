@@ -83,6 +83,16 @@ public abstract class EdgeAdapter extends GraphElementAdapter implements Edge {
 		end.addEdge(this, Direction.IN);
 	}
 
+	protected EdgeAdapter(String classId, String instanceId, Node start, Node end, 
+			EdgeFactory factory) {
+		super(classId,instanceId);
+		this.factory = factory;
+		this.start = start;
+		this.end = end;
+		start.addEdge(this, Direction.OUT);
+		end.addEdge(this, Direction.IN);
+	}
+
 	
 	// ELEMENT ==================================================================
 
@@ -175,5 +185,27 @@ public abstract class EdgeAdapter extends GraphElementAdapter implements Edge {
 		return super.toDetailedString()+ " ["+start.toShortString()+ "]-->[" + end.toShortString()+"]";
 	}
 
+	// Object
+	// Important: unicity of edges not only depends on their uniqueId, but also on their end and start
+	// nodes
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj==null)
+			return false;
+		if (!Edge.class.isAssignableFrom(obj.getClass()))
+			return false;
+		Edge e = (Edge) obj;
+		return (instanceId().equals(e.instanceId()) &&
+			classId().equals(e.classId()) &&
+			(startNode()==e.startNode()) && // identity of node objects, not equality
+			(endNode()==e.endNode())); // identity of node objects, not equality
+	}
+	
+	@Override
+	public int hashCode() {
+		return (uniqueId()+startNode().uniqueId()+endNode().uniqueId()).hashCode();
+	}
+
+
 }

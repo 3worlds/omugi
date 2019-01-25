@@ -56,6 +56,16 @@ public class DataTreeNodeImpl extends SimpleTreeNodeImpl
 		super(factory);
 		propertyList = props;
 	}
+	
+	protected DataTreeNodeImpl(String instanceId, SimplePropertyList props, TreeNodeFactory factory) {
+		super(instanceId,factory);
+		propertyList = props;
+	}
+
+	protected DataTreeNodeImpl(String classId, String instanceId, SimplePropertyList props, TreeNodeFactory factory) {
+		super(classId,instanceId,factory);
+		propertyList = props;
+	}
 
 	// SimplePropertyList
 	

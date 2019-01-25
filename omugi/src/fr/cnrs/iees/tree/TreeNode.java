@@ -64,7 +64,7 @@ public interface TreeNode extends Identifiable, Textable {
 	 */
 	//	public Iterable<? extends TreeNode> getChildren();
 
-	public Iterable<TreeNode> getChildren();
+	public Iterable<? extends TreeNode> getChildren();
 	
 	/**
 	 * Adds a node as a child. CAUTION: no consistency checks! this is the

@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -30,64 +30,40 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import java.util.Set;
-
+import fr.cnrs.iees.graph.Edge;
+import fr.cnrs.iees.graph.EdgeFactory;
+import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
-import fr.cnrs.iees.graph.ReadOnlyDataNode;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.ens.biologie.generic.DataContainer;
+import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.tree.TreeNode;
+import fr.cnrs.iees.tree.TreeNodeFactory;
 
-public class ReadOnlyDataNodeImpl extends SimpleNodeImpl implements ReadOnlyDataNode {
-	
-	private ReadOnlyPropertyList propertyList = null;
-	
-	// SimpleNodeImpl
-	
-	protected ReadOnlyDataNodeImpl(ReadOnlyPropertyList props, NodeFactory factory) {
-		super(factory);
-		propertyList = props;
-	}
+/**
+ * A default factory for TreeGraphs
+ * 
+ * @author Jacques Gignoux - 25 janv. 2019
+ *
+ */
+public class TreeGraphFactory implements TreeNodeFactory, NodeFactory, EdgeFactory {
 
-	protected ReadOnlyDataNodeImpl(String instanceId, ReadOnlyPropertyList props, NodeFactory factory) {
-		super(instanceId,factory);
-		propertyList = props;
-	}
-
-	protected ReadOnlyDataNodeImpl(String classId, String instanceId, ReadOnlyPropertyList props, NodeFactory factory) {
-		super(classId,instanceId,factory);
-		propertyList = props;
-	}
-	// ReadOnlyPropertyList
-	
 	@Override
-	public Object getPropertyValue(String key) {
-		return propertyList.getPropertyValue(key);
+	public Edge makeEdge(Node start, Node end, String classId, String instanceId, ReadOnlyPropertyList props) {
+		if (props==null)
+			return new SimpleEdgeImpl(classId,instanceId,start,end,this);
+		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
+			return new DataEdgeImpl(classId,instanceId,start,end,(SimplePropertyList) props,this);
+		return new ReadOnlyDataEdgeImpl(classId,instanceId,start,end,props,this);
 	}
 
 	@Override
-	public boolean hasProperty(String key) {
-		return propertyList.hasProperty(key);
+	public TreeGraphNode makeTreeNode(TreeNode parent, String classId, String instanceId, SimplePropertyList properties) {
+		return new TreeGraphNode(classId,instanceId,this,this,properties);
 	}
 
 	@Override
-	public Set<String> getKeysAsSet() {
-		return propertyList.getKeysAsSet();
-	}
-
-	@Override
-	public int size() {
-		return propertyList.size();
-	}
-
-	@Override
-	public ReadOnlyDataNodeImpl clone() {
-		return new ReadOnlyDataNodeImpl(propertyList.clone(),nodeFactory());
-	}
-
-	@Override
-	public DataContainer clear() {
-		// do nothing, this is read-only
-		return this;
+	public TreeGraphNode makeNode(String classId, String instanceId, ReadOnlyPropertyList props) {
+		return new TreeGraphNode(classId,instanceId,this,this,props);
 	}
 
 }

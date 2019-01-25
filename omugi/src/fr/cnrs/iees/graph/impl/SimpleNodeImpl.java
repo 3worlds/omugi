@@ -85,6 +85,15 @@ public class SimpleNodeImpl extends NodeAdapter {
 		edges.put(Direction.OUT,new HashSet<>());
 	}
 
+	protected SimpleNodeImpl(String classId, String instanceId, NodeFactory factory) {
+		super(classId,instanceId,factory);
+		edges = new EnumMap<Direction,Collection<Edge>>(Direction.class);
+		// Now using sets to prevent accidental insertion of duplicate edges (duplicates sensu .equals())
+		edges.put(Direction.IN,new HashSet<>());
+		edges.put(Direction.OUT,new HashSet<>());
+	}
+
+	
 	// NODE
 
 	@Override

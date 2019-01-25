@@ -156,41 +156,6 @@ public class TreeParser extends MinimalGraphParser {
 		}
 	}
 	
-	// gets a class from the tree properties
-	private Class<?> getClass(TreeProperties gp, String value) {
-		Class<?> result = null;
-		if (value!=null)
-			try {
-				Class<?> c = Class.forName(value);
-				if (Tree.class.isAssignableFrom(c))
-					result = c;
-				else
-					log.severe("graph property \""+ gp.propertyName() +
-						"\" does not refer to a valid type (" + gp.propertyType() +
-						") - using default type (" + gp.defaultValue() +
-						")");
-			} catch (ClassNotFoundException e) {
-				log.severe("graph property \""+ gp.propertyName() +
-					"\" does not refer to a valid java class - using default type (" + gp.defaultValue() +
-					")");
-		}
-		if (result==null)
-			try {
-				result = Class.forName(gp.defaultValue());
-			} catch (ClassNotFoundException e) {
-				// this is an error in GraphProperties.[...].defaultValue - fix code with a correct class name
-				e.printStackTrace();
-			}
-		// this will always return a valid, non null class - if problems, it will throw an exception
-		return result;
-	}
-	
-	// gets a default class from the graph properties
-	private Class<?> getClass(TreeProperties gp) {
-		return getClass(gp,null);
-	}
-
-	
 	// builds the tree from the parsed data
 	@SuppressWarnings("unchecked")
 	private void buildTree() {
@@ -204,7 +169,7 @@ public class TreeParser extends MinimalGraphParser {
 			switch (TreeProperties.propertyForName(p.name)) {
 			case CLASS:
 				treeClass = (Class<? extends Tree<? extends TreeNode>>) 
-					getClass(TreeProperties.CLASS,p.value);
+					getClass(TreeProperties.CLASS,p.value,log);
 				break;
 			case MUTABLE:
 // TODO: implement MutableTreeImpl				
@@ -213,11 +178,11 @@ public class TreeParser extends MinimalGraphParser {
 				break;
 			case PROP_FACTORY:
 				plFactoryClass = (Class<? extends PropertyListFactory>) 
-					getClass(TreeProperties.PROP_FACTORY,p.value);
+					getClass(TreeProperties.PROP_FACTORY,p.value,log);
 				break;
 			case TREE_FACTORY:
 				tFactoryClass = (Class<? extends TreeNodeFactory>) 
-					getClass(TreeProperties.TREE_FACTORY,p.value);
+					getClass(TreeProperties.TREE_FACTORY,p.value,log);
 				break;
 			default:
 				break;
@@ -226,13 +191,13 @@ public class TreeParser extends MinimalGraphParser {
 		// use default settings if graph properties were absent
 		if (treeClass==null)
 			treeClass = (Class<? extends Tree<? extends TreeNode>>) 
-				getClass(TreeProperties.CLASS);
+				getClass(TreeProperties.CLASS,log);
 		if (tFactoryClass==null)
 			tFactoryClass = (Class<? extends TreeNodeFactory>) 
-				getClass(TreeProperties.TREE_FACTORY);
+				getClass(TreeProperties.TREE_FACTORY,log);
 		if (plFactoryClass==null)
 			plFactoryClass = (Class<? extends PropertyListFactory>) 
-				getClass(TreeProperties.PROP_FACTORY);
+				getClass(TreeProperties.PROP_FACTORY,log);
 		// setup the factories
 		try {
 			treeFactory = tFactoryClass.newInstance();
@@ -250,10 +215,6 @@ public class TreeParser extends MinimalGraphParser {
 				n = treeFactory.makeTreeNode(null);
 			else
 				n = treeFactory.makeTreeNode(null,makePropertyList(ns.props,log));
-//			if (Labelled.class.isAssignableFrom(n.getClass())) 
-//				((Labelled)n).setLabel(ns.label);
-//			if (Named.class.isAssignableFrom(n.getClass())) 
-//				((Named)n).setName(ns.name);
 			String nodeId = ns.label.trim()+":"+ns.name.trim();
 			if (nodes.containsKey(nodeId))
 				log.severe("duplicate node found ("+nodeId+") - ignoring the second one");

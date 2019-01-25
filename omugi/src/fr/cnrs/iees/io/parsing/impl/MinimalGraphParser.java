@@ -39,10 +39,12 @@ import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
 import au.edu.anu.rscs.aot.graph.property.Property;
+import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.tree.Tree;
 
 /**
  * <p>This class groups the common grounds for graph and tree parsers. See {@link GraphParser}
@@ -169,6 +171,72 @@ public abstract class MinimalGraphParser extends Parser {
 		return propertyListFactory.makePropertyList(pp);
 	}
 
+	// gets a class from the tree properties
+	protected Class<?> getClass(TreeProperties gp, String value, Logger log) {
+		Class<?> result = null;
+		if (value!=null)
+			try {
+				Class<?> c = Class.forName(value);
+				if (Tree.class.isAssignableFrom(c))
+					result = c;
+				else
+					log.severe("graph property \""+ gp.propertyName() +
+						"\" does not refer to a valid type (" + gp.propertyType() +
+						") - using default type (" + gp.defaultValue() +
+						")");
+			} catch (ClassNotFoundException e) {
+				log.severe("graph property \""+ gp.propertyName() +
+					"\" does not refer to a valid java class - using default type (" + gp.defaultValue() +
+					")");
+		}
+		if (result==null)
+			try {
+				result = Class.forName(gp.defaultValue());
+			} catch (ClassNotFoundException e) {
+				// this is an error in GraphProperties.[...].defaultValue - fix code with a correct class name
+				e.printStackTrace();
+			}
+		// this will always return a valid, non null class - if problems, it will throw an exception
+		return result;
+	}
 
+	// gets a default class from the graph properties
+	protected Class<?> getClass(TreeProperties gp,Logger log) {
+		return getClass(gp,null,log);
+	}
+
+	// gets a class from the graph properties
+	protected Class<?> getClass(GraphProperties gp, String value, Logger log) {
+		Class<?> result = null;
+		if (value!=null)
+			try {
+				Class<?> c = Class.forName(value);
+				if (Graph.class.isAssignableFrom(c))
+					result = c;
+				else
+					log.severe("graph property \""+ gp.propertyName() +
+						"\" does not refer to a valid type (" + gp.propertyType() +
+						") - using default type (" + gp.defaultValue() +
+						")");
+			} catch (ClassNotFoundException e) {
+				log.severe("graph property \""+ gp.propertyName() +
+					"\" does not refer to a valid java class - using default type (" + gp.defaultValue() +
+					")");
+		}
+		if (result==null)
+			try {
+				result = Class.forName(gp.defaultValue());
+			} catch (ClassNotFoundException e) {
+				// this is an error in GraphProperties.[...].defaultValue - fix code with a correct class name
+				e.printStackTrace();
+			}
+		// this will always return a valid, non null class - if problems, it will throw an exception
+		return result;
+	}
+	
+	// gets a default class from the graph properties
+	protected Class<?> getClass(GraphProperties gp, Logger log) {
+		return getClass(gp,null,log);
+	}
 
 }

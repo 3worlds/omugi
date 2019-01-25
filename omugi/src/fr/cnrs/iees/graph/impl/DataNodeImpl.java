@@ -60,6 +60,10 @@ public class DataNodeImpl extends SimpleNodeImpl
 		propertyList = props;
 	}
 
+	protected DataNodeImpl(String classId, String instanceId, SimplePropertyList props, NodeFactory factory) {
+		super(classId,instanceId,factory);
+		propertyList = props;
+	}
 
 	// SimplePropertyList
 	

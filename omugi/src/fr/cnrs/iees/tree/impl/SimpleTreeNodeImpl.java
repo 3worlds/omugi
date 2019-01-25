@@ -34,6 +34,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import au.edu.anu.rscs.aot.util.Uid;
+import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.tree.TreeNode;
 import fr.cnrs.iees.tree.TreeNodeFactory;
@@ -50,6 +52,9 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	private TreeNodeFactory factory = null;
 	private TreeNode parent = null;
 	private Set<TreeNode> children = null;
+	private String instanceId = null;
+	private String classId = null;
+
 	
 	// --- Constructors
 
@@ -57,8 +62,37 @@ public class SimpleTreeNodeImpl implements TreeNode {
 		super();
 		children = new HashSet<TreeNode>();
 		this.factory = factory;
+		instanceId = (new Uid()).toString();
+		classId = this.getClass().getSimpleName();
 	}
 	
+	protected SimpleTreeNodeImpl(String instanceId, TreeNodeFactory factory) {
+		super();
+		children = new HashSet<TreeNode>();
+		this.factory = factory;
+		if (instanceId==null)
+			throw new OmugiException("Attempt to instantiate a tree node with a null id.");
+		this.instanceId = instanceId;
+		classId = this.getClass().getSimpleName();
+	}
+
+	protected SimpleTreeNodeImpl(String classId, String instanceId, TreeNodeFactory factory) {
+		this(instanceId,factory);
+		if (classId!=null)
+			this.classId = classId;
+	}
+
+	// Identifiable
+
+	@Override
+	public String instanceId() {
+		return instanceId;
+	}
+
+	@Override
+	public String classId() {
+		return classId;
+	}
 	// --- TreeNode
 	
 	@Override

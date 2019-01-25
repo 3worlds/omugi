@@ -56,6 +56,11 @@ public class DataEdgeImpl extends SimpleEdgeImpl implements DataEdge {
 		propertyList = props;
 	}
 	
+	protected DataEdgeImpl(String classId, String instanceId, Node start, Node end, 
+			SimplePropertyList props, EdgeFactory factory) {
+		super(classId, instanceId, start, end, factory);
+		propertyList = props;
+	}
 	// SimplePropertyList
 	
 	@Override

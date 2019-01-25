@@ -225,40 +225,6 @@ public class GraphParser extends MinimalGraphParser {
 		}		
 	}
 
-	// gets a class from the graph properties
-	private Class<?> getClass(GraphProperties gp, String value) {
-		Class<?> result = null;
-		if (value!=null)
-			try {
-				Class<?> c = Class.forName(value);
-				if (Graph.class.isAssignableFrom(c))
-					result = c;
-				else
-					log.severe("graph property \""+ gp.propertyName() +
-						"\" does not refer to a valid type (" + gp.propertyType() +
-						") - using default type (" + gp.defaultValue() +
-						")");
-			} catch (ClassNotFoundException e) {
-				log.severe("graph property \""+ gp.propertyName() +
-					"\" does not refer to a valid java class - using default type (" + gp.defaultValue() +
-					")");
-		}
-		if (result==null)
-			try {
-				result = Class.forName(gp.defaultValue());
-			} catch (ClassNotFoundException e) {
-				// this is an error in GraphProperties.[...].defaultValue - fix code with a correct class name
-				e.printStackTrace();
-			}
-		// this will always return a valid, non null class - if problems, it will throw an exception
-		return result;
-	}
-	
-	// gets a default class from the graph properties
-	private Class<?> getClass(GraphProperties gp) {
-		return getClass(gp,null);
-	}
-
 	// builds the graph from the parsed data
 	@SuppressWarnings("unchecked")
 	private void buildGraph() {
@@ -274,26 +240,26 @@ public class GraphParser extends MinimalGraphParser {
 			switch (GraphProperties.propertyForName(p.name))  {
 				case CLASS:
 					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-						getClass(GraphProperties.CLASS,p.value);
+						getClass(GraphProperties.CLASS,p.value,log);
 					break;
 				case NODE_FACTORY:
 					nFactoryClass = (Class<? extends NodeFactory>) 
-						getClass(GraphProperties.NODE_FACTORY,p.value);
+						getClass(GraphProperties.NODE_FACTORY,p.value,log);
 					break;
 				case EDGE_FACTORY:
 					eFactoryClass = (Class<? extends EdgeFactory>) 
-						getClass(GraphProperties.EDGE_FACTORY,p.value);
+						getClass(GraphProperties.EDGE_FACTORY,p.value,log);
 					break;
 				case PROP_FACTORY:
 					plFactoryClass = (Class<? extends PropertyListFactory>) 
-						getClass(GraphProperties.PROP_FACTORY,p.value);
+						getClass(GraphProperties.PROP_FACTORY,p.value,log);
 					break;
 				case DIRECTED:
 					// TODO
 					break;
 				case MUTABLE:
 					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-						getClass(GraphProperties.CLASS,MutableGraphImpl.class.getName());
+						getClass(GraphProperties.CLASS,MutableGraphImpl.class.getName(),log);
 					break;
 				default:
 					// other properties are ignored by the parser
@@ -303,16 +269,16 @@ public class GraphParser extends MinimalGraphParser {
 		// use default settings if graph properties were absent
 		if (graphClass==null)
 			graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-				getClass(GraphProperties.CLASS);
+				getClass(GraphProperties.CLASS,log);
 		if (nFactoryClass==null)
 			nFactoryClass = (Class<? extends NodeFactory>) 
-				getClass(GraphProperties.NODE_FACTORY);
+				getClass(GraphProperties.NODE_FACTORY,log);
 		if (eFactoryClass==null)
 			eFactoryClass = (Class<? extends EdgeFactory>) 
-				getClass(GraphProperties.EDGE_FACTORY);
+				getClass(GraphProperties.EDGE_FACTORY,log);
 		if (plFactoryClass==null)
 			plFactoryClass = (Class<? extends PropertyListFactory>) 
-				getClass(GraphProperties.PROP_FACTORY);
+				getClass(GraphProperties.PROP_FACTORY,log);
 		// setup the factories
 		try {
 			nodeFactory = nFactoryClass.newInstance();
@@ -334,10 +300,6 @@ public class GraphParser extends MinimalGraphParser {
 				n = nodeFactory.makeNode();
 			else
 				n = nodeFactory.makeNode(makePropertyList(ns.props,log));
-//			if (Labelled.class.isAssignableFrom(n.getClass())) 
-//				((Labelled)n).setLabel(ns.label);
-//			if (Named.class.isAssignableFrom(n.getClass())) 
-//				((Named)n).setName(ns.name);
 			String nodeId = ns.label.trim()+":"+ns.name.trim();
 			if (nodes.containsKey(nodeId))
 				log.severe("duplicate node found ("+") - ignoring the second one");
@@ -345,7 +307,6 @@ public class GraphParser extends MinimalGraphParser {
 				nodes.put(nodeId,n);
 		}
 		for (edgeSpec es:edgeSpecs) {
-			Edge e = null;
 			String[] refs = es.start.split(":");
 			String ref = refs[0].trim()+":"+refs[1].trim();
 			Node start = nodes.get(ref);
@@ -358,13 +319,9 @@ public class GraphParser extends MinimalGraphParser {
 				log.severe("end node "+ref+" not found for edge "+es.label+":"+es.name);
 			if ((start!=null)&&(end!=null)) {
 				if (es.props.isEmpty())
-					e = edgeFactory.makeEdge(start, end);
+					edgeFactory.makeEdge(start, end);
 				else 
-					e = edgeFactory.makeEdge(start,end,makePropertyList(es.props,log));
-//				if (Labelled.class.isAssignableFrom(e.getClass())) 
-//					((Labelled)e).setLabel(es.label);
-//				if (Named.class.isAssignableFrom(e.getClass())) 
-//					((Named)e).setName(es.name);
+					edgeFactory.makeEdge(start,end,makePropertyList(es.props,log));
 			}
 		}
 		// make graph

@@ -56,6 +56,12 @@ public abstract class NodeAdapter extends GraphElementAdapter implements Node {
 		this.factory = factory;
 	}
 
+	protected NodeAdapter(String classId, String instanceId, NodeFactory factory) {
+		super(classId,instanceId);
+		this.factory = factory;
+	}
+
+	
 	// NODE ==================================================================
 	
 	@Override

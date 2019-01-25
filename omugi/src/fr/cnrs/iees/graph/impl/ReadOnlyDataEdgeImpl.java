@@ -59,6 +59,11 @@ public class ReadOnlyDataEdgeImpl extends SimpleEdgeImpl implements ReadOnlyData
 		propertyList = props;
 	}
 
+	protected ReadOnlyDataEdgeImpl(String classId, String instanceId, Node start, Node end, 
+			ReadOnlyPropertyList props, EdgeFactory factory) {
+		super(classId, instanceId, start, end, factory);
+		propertyList = props;
+	}
 	
 	// SimplePropertyList
 

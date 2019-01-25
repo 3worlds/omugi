@@ -53,9 +53,7 @@ public class TreeGraphNode extends SimpleNodeImpl
 	// this only holds the children and parent nodes
 	private TreeNode treenode;
 	// this holds the properties
-	protected ReadOnlyPropertyList properties;
-	// the label - remember that label+name = uniqueID within the graph context
-	protected String label=null;
+	protected ReadOnlyPropertyList properties = null;
 
 	// ----------------------- Constructors
 
@@ -69,9 +67,8 @@ public class TreeGraphNode extends SimpleNodeImpl
 	 * @param props a property list - can be null
 	 */
 	protected TreeGraphNode(String classId, String instanceId, TreeNodeFactory tf, NodeFactory nf, ReadOnlyPropertyList props) {
-		super(instanceId,nf);
+		super(classId,instanceId,nf);
 		treenode = DefaultTreeFactory.makeSimpleTreeNode(null,tf);
-		label = classId;
 		properties = props;
 	}
 	
@@ -82,19 +79,16 @@ public class TreeGraphNode extends SimpleNodeImpl
 	 * @param nf the node factory
 	 * @param props a property list - can be null
 	 */
-	protected TreeGraphNode(String classId, TreeNodeFactory tf, NodeFactory nf, ReadOnlyPropertyList props) {
-		super(nf);
+	protected TreeGraphNode(String instanceId, TreeNodeFactory tf, NodeFactory nf, ReadOnlyPropertyList props) {
+		super(instanceId,nf);
 		treenode = DefaultTreeFactory.makeSimpleTreeNode(null,tf);
-		label = classId;
 		properties = props;
 	}
-	
-	// ---------------------------Identifiable (from both Node and TreeNode). 
-	@Override
-	public String classId() {
-		if (label==null)
-			return super.classId(); // the class name by default
-		return label;
+
+	protected TreeGraphNode(TreeNodeFactory tf, NodeFactory nf, ReadOnlyPropertyList props) {
+		super(nf);
+		treenode = DefaultTreeFactory.makeSimpleTreeNode(null,tf);
+		properties = props;
 	}
 
 	// ---------------- TreeNode
@@ -105,7 +99,7 @@ public class TreeGraphNode extends SimpleNodeImpl
 	}
 
 	@Override
-	public Iterable<TreeNode> getChildren() {
+	public Iterable<? extends TreeNode> getChildren() {
 		return treenode.getChildren();
 	}
 
@@ -195,9 +189,10 @@ public class TreeGraphNode extends SimpleNodeImpl
 		if (getEdges(Direction.OUT).iterator().hasNext()) {
 			for (Edge e:getEdges(Direction.OUT))
 				sb.append(" →").append(e.endNode().toUniqueString());
-		}		
-		if (properties.size()>0)
-			sb.append(' ').append(properties.toString());
+		}
+		if (properties!=null)
+			if (properties.size()>0)
+				sb.append(' ').append(properties.toString());
 		sb.append("]");
 		return sb.toString();
 	}
