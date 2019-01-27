@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -30,46 +30,24 @@
  **************************************************************************/
 package fr.cnrs.iees;
 
-import fr.ens.biologie.generic.SaveableAsText;
+import java.util.UUID;
 
-/**
- * How to uniquely identify items in a graph, tree or other system
- * 
- * @author Jacques Gignoux - 19 déc. 2018
- *
- */
-public interface Identifiable {
-	
-    public static final char LABEL_NAME_SEPARATOR = SaveableAsText.COLON;
-    public static final String LABEL_NAME_STR_SEPARATOR = ""+LABEL_NAME_SEPARATOR;
+public final class GUIDIdentity implements Identifiable{
+	private final String classId;
+	private final String instanceId;
+	public GUIDIdentity(String classId) {
+		//format classId no spaces
+		this.classId = classId;
+		this.instanceId = UUID.randomUUID().toString();
+	}
+	@Override
+	public String classId() {
+		return classId;
+	}
 
-	/**
-	 * Getter for
-	 * @return this element's class id (eg 'node' or 'edge')
-	 * <p>formerly known as <em>label</em>. By default, this is the java class name.</p>
-	 */
-//	public default String classId() {
-//		return this.getClass().getSimpleName();
-//	}
-	public String classId();
-	
-	/**
-	 * Getter for
-	 * @return this element's instance id
-	 * <p>formerly known as <em>name</em>. By default, this is the java instance hash code
-	 * (i.e. the value returned by {@code Object.hashCode()}.</p>
-	 */
-//	public default String instanceId() {
-//		return Integer.toHexString(hashCode());
-//	}
-	public String instanceId();
-
-	/**
-	 * Getter for
-	 * @return this element's unique identifier
-	 */
-	public default String uniqueId() {
-		return new StringBuilder().append(classId()+LABEL_NAME_SEPARATOR+instanceId()).toString();
+	@Override
+	public String instanceId() {
+		return instanceId;
 	}
 
 }
