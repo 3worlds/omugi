@@ -29,7 +29,7 @@
  *                                                                        *
  **************************************************************************/
 
-package fr.cnrs.iees;
+package fr.cnrs.iees.identity;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +41,12 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
+
+import fr.cnrs.iees.GUIDIdentity;
+import fr.cnrs.iees.Identifiable;
+import fr.cnrs.iees.SimpleIdentity;
+import fr.cnrs.iees.TwIdentity;
+import fr.cnrs.iees.UidIdentity;
 
 class TwIdentityTest {
 
