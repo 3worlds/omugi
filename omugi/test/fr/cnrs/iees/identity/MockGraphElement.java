@@ -31,8 +31,6 @@
 
 package fr.cnrs.iees.identity;
 
-import fr.cnrs.iees.Identifiable;
-
 public class MockGraphElement implements Identifiable {
 	private Identifiable identity;
 

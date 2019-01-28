@@ -42,12 +42,6 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.GUIDIdentity;
-import fr.cnrs.iees.Identifiable;
-import fr.cnrs.iees.SimpleIdentity;
-import fr.cnrs.iees.TwIdentity;
-import fr.cnrs.iees.UidIdentity;
-
 class TwIdentityTest {
 
 	@Test

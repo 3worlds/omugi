@@ -28,31 +28,67 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees;
+package fr.cnrs.iees.identity;
 
-import au.edu.anu.rscs.aot.util.Uid;
+import java.util.HashSet;
+import java.util.Set;
+
+import javafx.util.Pair;
 
 /**
+ * A Scope for unique Ids
  * 
  * @author Ian Davies - 28 jan. 2019
  *
  */
-public final class UidIdentity implements Identifiable{
-	private final String instanceId;
-	private final String classId;
-	public UidIdentity(String classId) {
-		this.classId= classId;
-		this.instanceId = new Uid().toHexString();	
+public class ScopeUnique {
+
+	public static String createUniqueInstanceWithinClass(String classId, String proposedInstanceId, Iterable<? extends Identifiable> list) {
+		Set<String> scope = new HashSet<>();
+		for (Identifiable id : list) {
+			if (id.classId().equals(classId))
+				scope.add(id.instanceId());
+		}
+		return createUniqueStringInSet(proposedInstanceId, scope);
 	}
 
-	@Override
-	public String classId() {
-		return classId;
+	public static String createUniqueStringInSet(String name, Set<String> scope) {
+		if (!scope.contains(name))
+			return name;
+		Pair<String, Integer> nameInstance = parseName(name);
+		int count = nameInstance.getValue() + 1;
+		name = nameInstance.getKey() + count;
+		return createUniqueStringInSet(name, scope);
 	}
 
-	@Override
-	public String instanceId() {
-		return instanceId;
+	private static Pair<String, Integer> parseName(String name) {
+		int idx = getCountStartIndex(name);
+		// all numbers or no numbers
+		// no numbers
+		if (idx < 0)
+			return new Pair<>(name, 0);
+		// all numbers
+		if (idx == 0)
+			return new Pair<String, Integer>(name + "_", 0);
+		// ends with some numbers
+		String key = name.substring(0, idx);
+		String sCount = name.substring(idx, name.length());
+		int count = Integer.parseInt(sCount);
+		return new Pair<>(key, count);
+	}
+
+	private static int getCountStartIndex(String name) {
+		int result = -1;
+		for (int i = name.length() - 1; i >= 0; i--) {
+			String s = name.substring(i, i + 1);
+			try {
+				Integer.parseInt(s);
+				result = i;
+			} catch (NumberFormatException e) {
+				return result;
+			}
+		}
+		return result;
 	}
 
 }

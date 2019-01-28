@@ -28,20 +28,21 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees;
+package fr.cnrs.iees.identity;
+
+import au.edu.anu.rscs.aot.util.Uid;
 
 /**
  * 
  * @author Ian Davies - 28 jan. 2019
  *
  */
-public final class SimpleIdentity implements Identifiable {
-	private final String classId;
+public final class UidIdentity implements Identifiable{
 	private final String instanceId;
-
-	public SimpleIdentity(String classId) {
-		this.classId = classId;
-		this.instanceId = Integer.toHexString(hashCode());
+	private final String classId;
+	public UidIdentity(String classId) {
+		this.classId= classId;
+		this.instanceId = new Uid().toHexString();	
 	}
 
 	@Override

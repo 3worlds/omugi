@@ -28,30 +28,22 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees;
+package fr.cnrs.iees.identity;
 
-import java.util.Set;
+import java.util.UUID;
 
 /**
  * 
  * @author Ian Davies - 28 jan. 2019
  *
  */
-public final class TwIdentity implements Identifiable {
+public final class GUIDIdentity implements Identifiable{
 	private final String classId;
 	private final String instanceId;
-
-	public TwIdentity(String classId, String instanceId) {
+	public GUIDIdentity(String classId) {
+		//format classId no spaces
 		this.classId = classId;
-		this.instanceId = instanceId;
-	}
-
-	public TwIdentity(String classId, String proposedInstanceId, Set<String> scope) {
-		this(classId, ScopeUnique.createUniqueStringInSet(proposedInstanceId.trim(), scope));
-	}
-
-	public TwIdentity(String classId,String proposedInstanceId, Iterable<Identifiable> scope) {
-		this(classId, ScopeUnique.createUniqueInstanceWithinClass(classId, proposedInstanceId.trim(), scope));
+		this.instanceId = UUID.randomUUID().toString();
 	}
 	@Override
 	public String classId() {

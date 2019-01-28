@@ -28,7 +28,7 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees;
+package fr.cnrs.iees.identity;
 
 import fr.ens.biologie.generic.SaveableAsText;
 

@@ -32,7 +32,7 @@ package fr.cnrs.iees.tree;
 
 import java.util.Collection;
 
-import fr.cnrs.iees.Identifiable;
+import fr.cnrs.iees.identity.Identifiable;
 import fr.ens.biologie.generic.Textable;
 
 /**
