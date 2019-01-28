@@ -28,49 +28,65 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.identity;
+package fr.cnrs.iees.identity.impl;
 
-import fr.ens.biologie.generic.SaveableAsText;
+import java.util.HashSet;
+import java.util.Set;
+
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.identity.IdentityScope;
 
 /**
- * How to uniquely identify items in a graph, tree or other system
+ * A scope for an identity based on a pair label+name.
  * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * @author Jacques Gignoux - 28 janv. 2019
  *
  */
-@Deprecated // replaced by Identity
-public interface Identifiable {
+public class PairLocalScope implements IdentityScope {
 	
-    public static final char LABEL_NAME_SEPARATOR = SaveableAsText.COLON;
-    public static final String LABEL_NAME_STR_SEPARATOR = ""+LABEL_NAME_SEPARATOR;
+	private Set<String> names = new HashSet<String>();
 
 	/**
-	 * Getter for
-	 * @return this element's class id (eg 'node' or 'edge')
-	 * <p>formerly known as <em>label</em>. By default, this is the java class name.</p>
+	 * returns a new identity with label and name modified to make the pair unique.
+	 * The first argument is the label, all other arguments are concatenated into a name.
 	 */
-//	public default String classId() {
-//		return this.getClass().getSimpleName();
-//	}
-	public String classId();
+	@Override
+	public Identity newId(String... proposedIdComponents) {
+		PairIdentity result = null;
+		String label = proposedIdComponents[0];
+		String name = "";
+		for (int i=1; i<proposedIdComponents.length; i++)
+			name += proposedIdComponents[i];
+		String id = label+PairIdentity.LABEL_NAME_SEPARATOR+name;
+		if (!names.contains(name)) {
+			result = new PairIdentity(label,name,this);
+			names.add(id);
+		}
+		else {
+			String s = ScopeUnique.createUniqueStringInSet(name,names);
+			result = new PairIdentity(label,s,this);
+			names.add(s);
+		}
+		return result;
+	}
 	
 	/**
-	 * Getter for
-	 * @return this element's instance id
-	 * <p>formerly known as <em>name</em>. By default, this is the java instance hash code
-	 * (i.e. the value returned by {@code Object.hashCode()}.</p>
+	 * returns a new identity based on label only - creates name with increasing numbers if required
 	 */
-//	public default String instanceId() {
-//		return Integer.toHexString(hashCode());
-//	}
-	public String instanceId();
-
-	/**
-	 * Getter for
-	 * @return this element's unique identifier
-	 */
-	public default String uniqueId() {
-		return new StringBuilder().append(classId()+LABEL_NAME_SEPARATOR+instanceId()).toString();
+	@Override
+	public Identity newId(String proposedId) {
+		String[] s = new String[2];
+		s[0] = proposedId;
+		s[1] = "";
+		return newId(s);
 	}
 
+	/**
+	 * returns a new identity with empty name and label
+	 */
+	@Override
+	public Identity newId() {
+		return newId("","");
+	}
+	
 }

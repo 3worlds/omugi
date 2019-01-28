@@ -28,22 +28,34 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.identity;
+package fr.cnrs.iees.identity.impl;
+
+import java.util.Set;
+
+import fr.cnrs.iees.identity.Identifiable;
 
 /**
  * 
  * @author Ian Davies - 28 jan. 2019
  *
  */
-public final class SimpleIdentity implements Identifiable {
+@Deprecated // replaced by PairIdentity
+public final class TwIdentity implements Identifiable {
 	private final String classId;
 	private final String instanceId;
 
-	public SimpleIdentity(String classId) {
+	public TwIdentity(String classId, String instanceId) {
 		this.classId = classId;
-		this.instanceId = Integer.toHexString(hashCode());
+		this.instanceId = instanceId;
 	}
 
+	public TwIdentity(String classId, String proposedInstanceId, Set<String> scope) {
+		this(classId, ScopeUnique.createUniqueStringInSet(proposedInstanceId.trim(), scope));
+	}
+
+	public TwIdentity(String classId,String proposedInstanceId, Iterable<Identifiable> scope) {
+		this(classId, ScopeUnique.createUniqueInstanceWithinClass(classId, proposedInstanceId.trim(), scope));
+	}
 	@Override
 	public String classId() {
 		return classId;

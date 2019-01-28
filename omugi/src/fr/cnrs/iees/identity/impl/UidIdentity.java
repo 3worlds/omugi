@@ -28,31 +28,44 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.identity;
+package fr.cnrs.iees.identity.impl;
 
 import au.edu.anu.rscs.aot.util.Uid;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.identity.IdentityScope;
 
 /**
  * 
  * @author Ian Davies - 28 jan. 2019
  *
  */
-public final class UidIdentity implements Identifiable{
-	private final String instanceId;
-	private final String classId;
-	public UidIdentity(String classId) {
-		this.classId= classId;
-		this.instanceId = new Uid().toHexString();	
+public final class UidIdentity implements Identity{
+
+	private final String id;
+	private final IdentityScope scope;
+	
+	/**
+	 * protected constructor, as all instantiations should be made through the scope.
+	 * @param scope
+	 */
+	protected UidIdentity(IdentityScope scope) {
+		id = new Uid().toHexString();	
+		this.scope = scope;
+	}
+	
+	@Override
+	public String id() {
+		return id;
+	}
+	
+	@Override
+	public IdentityScope scope() {
+		return scope;
 	}
 
 	@Override
-	public String classId() {
-		return classId;
-	}
-
-	@Override
-	public String instanceId() {
-		return instanceId;
+	public String toString() {
+		return id;
 	}
 
 }

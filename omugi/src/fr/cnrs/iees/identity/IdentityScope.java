@@ -30,47 +30,44 @@
  **************************************************************************/
 package fr.cnrs.iees.identity;
 
-import fr.ens.biologie.generic.SaveableAsText;
-
 /**
- * How to uniquely identify items in a graph, tree or other system
+ * A scope over which Identities are guaranteed to be unique.
  * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * @author Jacques Gignoux - 28 janv. 2019
  *
  */
-@Deprecated // replaced by Identity
-public interface Identifiable {
-	
-    public static final char LABEL_NAME_SEPARATOR = SaveableAsText.COLON;
-    public static final String LABEL_NAME_STR_SEPARATOR = ""+LABEL_NAME_SEPARATOR;
+public interface IdentityScope {
 
 	/**
-	 * Getter for
-	 * @return this element's class id (eg 'node' or 'edge')
-	 * <p>formerly known as <em>label</em>. By default, this is the java class name.</p>
+	 * makes a new instance of an Identity, unique over this scope.
+	 * NOTE: implementations of this method should never return null
+	 * 
+	 * @return a new Identity instance, unique over this scope
 	 */
-//	public default String classId() {
-//		return this.getClass().getSimpleName();
-//	}
-	public String classId();
+	public Identity newId();
 	
 	/**
-	 * Getter for
-	 * @return this element's instance id
-	 * <p>formerly known as <em>name</em>. By default, this is the java instance hash code
-	 * (i.e. the value returned by {@code Object.hashCode()}.</p>
+	 * makes a new instance of an Identity, unique over this scope. The default method
+	 * ignores the argument.
+	 * NOTE: implementations of this method should never return null
+	 * 
+	 * @param proposedId a base for the id to be computed
+	 * @return a new Identity instance, unique over this scope
 	 */
-//	public default String instanceId() {
-//		return Integer.toHexString(hashCode());
-//	}
-	public String instanceId();
-
+	public default Identity newId(String proposedId) {
+		return newId();
+	}
+	
 	/**
-	 * Getter for
-	 * @return this element's unique identifier
+	 * makes a new instance of an Identity, unique over this scope. The default method
+	 * ignores the arguments.
+	 * NOTE: implementations of this method should never return null
+	 * 
+	 * @param proposedIdComponents a base for the id to be computed
+	 * @return a new Identity instance, unique over this scope
 	 */
-	public default String uniqueId() {
-		return new StringBuilder().append(classId()+LABEL_NAME_SEPARATOR+instanceId()).toString();
+	public default Identity newId(String... proposedIdComponents) {
+		return newId();
 	}
 
 }

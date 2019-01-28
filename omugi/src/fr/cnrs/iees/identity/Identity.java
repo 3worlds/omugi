@@ -30,47 +30,26 @@
  **************************************************************************/
 package fr.cnrs.iees.identity;
 
-import fr.ens.biologie.generic.SaveableAsText;
-
 /**
- * How to uniquely identify items in a graph, tree or other system
+ * A unique identity within a given scope, attached to some item.
+ * Classes implementing this interface must override the object equals() and hashCode() 
+ * methods. [not sure - check this]
  * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * @author Jacques Gignoux - 28 janv. 2019
  *
  */
-@Deprecated // replaced by Identity
-public interface Identifiable {
+public interface Identity {
 	
-    public static final char LABEL_NAME_SEPARATOR = SaveableAsText.COLON;
-    public static final String LABEL_NAME_STR_SEPARATOR = ""+LABEL_NAME_SEPARATOR;
-
-	/**
-	 * Getter for
-	 * @return this element's class id (eg 'node' or 'edge')
-	 * <p>formerly known as <em>label</em>. By default, this is the java class name.</p>
+	/** 
+	 * returns
+	 * @return a unique identifier, valid over a particular scope
 	 */
-//	public default String classId() {
-//		return this.getClass().getSimpleName();
-//	}
-	public String classId();
+	public String id();
 	
 	/**
-	 * Getter for
-	 * @return this element's instance id
-	 * <p>formerly known as <em>name</em>. By default, this is the java instance hash code
-	 * (i.e. the value returned by {@code Object.hashCode()}.</p>
+	 * returns
+	 * @return the scope within which this Identity is guaranteed to be unique.
 	 */
-//	public default String instanceId() {
-//		return Integer.toHexString(hashCode());
-//	}
-	public String instanceId();
-
-	/**
-	 * Getter for
-	 * @return this element's unique identifier
-	 */
-	public default String uniqueId() {
-		return new StringBuilder().append(classId()+LABEL_NAME_SEPARATOR+instanceId()).toString();
-	}
+	public IdentityScope scope();
 
 }

@@ -28,31 +28,44 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.identity;
+package fr.cnrs.iees.identity.impl;
 
-import java.util.UUID;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.identity.IdentityScope;
 
 /**
  * 
  * @author Ian Davies - 28 jan. 2019
  *
  */
-public final class GUIDIdentity implements Identifiable{
-	private final String classId;
-	private final String instanceId;
-	public GUIDIdentity(String classId) {
-		//format classId no spaces
-		this.classId = classId;
-		this.instanceId = UUID.randomUUID().toString();
-	}
-	@Override
-	public String classId() {
-		return classId;
+public final class SimpleIdentity implements Identity {
+	
+	private final String id;
+	private final IdentityScope scope;
+
+	/**
+	 * protected constructor, as all instantiations should be made through the scope.
+	 * @param scope
+	 */
+	protected SimpleIdentity(String id, IdentityScope scope) {
+		super();
+		this.id = id;
+		this.scope = scope;
 	}
 
 	@Override
-	public String instanceId() {
-		return instanceId;
+	public String id() {
+		return id;
+	}
+
+	@Override
+	public IdentityScope scope() {
+		return scope;
+	}
+
+	@Override
+	public String toString() {
+		return id;
 	}
 
 }

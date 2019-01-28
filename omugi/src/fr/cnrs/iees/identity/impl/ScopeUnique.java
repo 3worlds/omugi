@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,49 +28,68 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.identity;
+package fr.cnrs.iees.identity.impl;
 
-import fr.ens.biologie.generic.SaveableAsText;
+import java.util.HashSet;
+import java.util.Set;
+
+import fr.cnrs.iees.identity.Identifiable;
+import javafx.util.Pair;
 
 /**
- * How to uniquely identify items in a graph, tree or other system
+ * A Scope for unique Ids
  * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * @author Ian Davies - 28 jan. 2019
  *
  */
-@Deprecated // replaced by Identity
-public interface Identifiable {
-	
-    public static final char LABEL_NAME_SEPARATOR = SaveableAsText.COLON;
-    public static final String LABEL_NAME_STR_SEPARATOR = ""+LABEL_NAME_SEPARATOR;
+public class ScopeUnique {
 
-	/**
-	 * Getter for
-	 * @return this element's class id (eg 'node' or 'edge')
-	 * <p>formerly known as <em>label</em>. By default, this is the java class name.</p>
-	 */
-//	public default String classId() {
-//		return this.getClass().getSimpleName();
-//	}
-	public String classId();
-	
-	/**
-	 * Getter for
-	 * @return this element's instance id
-	 * <p>formerly known as <em>name</em>. By default, this is the java instance hash code
-	 * (i.e. the value returned by {@code Object.hashCode()}.</p>
-	 */
-//	public default String instanceId() {
-//		return Integer.toHexString(hashCode());
-//	}
-	public String instanceId();
+	public static String createUniqueInstanceWithinClass(String classId, String proposedInstanceId, Iterable<? extends Identifiable> list) {
+		Set<String> scope = new HashSet<>();
+		for (Identifiable id : list) {
+			if (id.classId().equals(classId))
+				scope.add(id.instanceId());
+		}
+		return createUniqueStringInSet(proposedInstanceId, scope);
+	}
 
-	/**
-	 * Getter for
-	 * @return this element's unique identifier
-	 */
-	public default String uniqueId() {
-		return new StringBuilder().append(classId()+LABEL_NAME_SEPARATOR+instanceId()).toString();
+	public static String createUniqueStringInSet(String name, Set<String> scope) {
+		if (!scope.contains(name))
+			return name;
+		Pair<String, Integer> nameInstance = parseName(name);
+		int count = nameInstance.getValue() + 1;
+		name = nameInstance.getKey() + count;
+		return createUniqueStringInSet(name, scope);
+	}
+
+	private static Pair<String, Integer> parseName(String name) {
+		int idx = getCountStartIndex(name);
+		// all numbers or no numbers
+		// no numbers
+		if (idx < 0)
+			return new Pair<>(name, 0);
+		// all numbers
+		if (idx == 0)
+			return new Pair<String, Integer>(name + "_", 0);
+		// ends with some numbers
+		String key = name.substring(0, idx);
+		String sCount = name.substring(idx, name.length());
+		int count = Integer.parseInt(sCount);
+		return new Pair<>(key, count);
+	}
+
+	private static int getCountStartIndex(String name) {
+		int result = -1;
+		for (int i = name.length() - 1; i >= 0; i--) {
+			String s = name.substring(i, i + 1);
+			try {
+				Integer.parseInt(s);
+				result = i;
+			} catch (NumberFormatException e) {
+				return result;
+			}
+		}
+		return result;
 	}
 
 }

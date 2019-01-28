@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,39 +28,50 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.identity;
+package fr.cnrs.iees.identity.impl;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.identity.IdentityScope;
+
 /**
+ * A local scope, keeping track of all its ids.
  * 
- * @author Ian Davies - 28 jan. 2019
+ * @author Jacques Gignoux - 28 janv. 2019
  *
  */
-public final class TwIdentity implements Identifiable {
-	private final String classId;
-	private final String instanceId;
-
-	public TwIdentity(String classId, String instanceId) {
-		this.classId = classId;
-		this.instanceId = instanceId;
-	}
-
-	public TwIdentity(String classId, String proposedInstanceId, Set<String> scope) {
-		this(classId, ScopeUnique.createUniqueStringInSet(proposedInstanceId.trim(), scope));
-	}
-
-	public TwIdentity(String classId,String proposedInstanceId, Iterable<Identifiable> scope) {
-		this(classId, ScopeUnique.createUniqueInstanceWithinClass(classId, proposedInstanceId.trim(), scope));
-	}
-	@Override
-	public String classId() {
-		return classId;
-	}
+public class LocalScope implements IdentityScope {
+	
+	private Set<String> ids = new HashSet<String>();
 
 	@Override
-	public String instanceId() {
-		return instanceId;
+	public Identity newId() {
+		return newId("");
+	}
+	
+	@Override
+	public Identity newId(String proposedId) {
+		SimpleIdentity result = null;
+		if (!ids.contains(proposedId)) {
+			result = new SimpleIdentity(proposedId,this);
+			ids.add(proposedId);
+		}
+		else {
+			String s = ScopeUnique.createUniqueStringInSet(proposedId,ids);
+			result = new SimpleIdentity(s,this);
+			ids.add(s);
+		}
+		return result;
+	}
+	
+	@Override
+	public Identity newId(String... proposedIdComponents) {
+		StringBuilder sb = new StringBuilder();
+		for (String s:proposedIdComponents)
+			sb.append(s);
+		return newId(sb.toString());
 	}
 
 }
