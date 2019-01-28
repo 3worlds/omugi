@@ -95,9 +95,9 @@ public interface TreeNode extends Identifiable, Textable {
 				return true;
 		return false;
 	}
-//	public  <T extends treeNodeFactory> T treeNodeFactory();
+	public  <T extends TreeNodeFactory> T treeNodeFactory();
 
-	public TreeNodeFactory treeNodeFactory();
+//	public TreeNodeFactory treeNodeFactory();
 	
 	/**
 	 * Gets the number of children of this TreeNode

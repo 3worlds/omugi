@@ -137,9 +137,10 @@ public class TreeGraphNode extends SimpleNodeImpl
 		if (treenode.getParent()==null)
 			treenode.setParent(parent);
 	}
-
+//<T extends TreeNodeFactory> T
 	@Override
-	public TreeNodeFactory treeNodeFactory() {
+	public <T extends TreeNodeFactory> T treeNodeFactory() {
+//		public TreeNodeFactory treeNodeFactory() {
 		return treenode.treeNodeFactory();
 	}
 
