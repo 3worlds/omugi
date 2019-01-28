@@ -52,7 +52,7 @@ class TwIdentityTest {
 
 	@Test
 	void test() {
-		Identifiable id,id2;
+		Identifiable id, id2;
 		id = new SimpleIdentity("test class");
 		id2 = new SimpleIdentity("test class");
 		assertTrue(!id.uniqueId().equals(id2.uniqueId()));
@@ -76,23 +76,21 @@ class TwIdentityTest {
 		Set<String> scopeSet = new HashSet<>();
 		scopeSet.add(id.instanceId());
 		scopeSet.add(id2.instanceId());
-		assertTrue(scopeSet.size()==1);
-		
+		assertTrue(scopeSet.size() == 1);
+
 		for (int i = 0; i < 10; i++) {
 			id = new TwIdentity("test class", "my Process", scopeSet);
 			scopeSet.add(id.instanceId());
 		}
 		assertTrue(id.uniqueId().equals("test class:my Process10"));
 
-		
 		id = new SimpleIdentity(MockGraphElement.class.getSimpleName());
 		id2 = new SimpleIdentity(MockGraphElement.class.getSimpleName());
 		MockGraphElement ge = new MockGraphElement(id);
 		ge.setIdentity(id2);
 		assertTrue(!id.uniqueId().equals(id2.uniqueId()));
 		assertTrue(id2.uniqueId().equals(ge.uniqueId()));
-	
-		
+
 		List<Identifiable> ids = new ArrayList<>();
 		ge.setIdentity(new TwIdentity("Process", "my Process"));
 		assertTrue(ge.uniqueId().equals("Process:my Process"));
@@ -100,7 +98,6 @@ class TwIdentityTest {
 
 		ge.setIdentity(new TwIdentity("Process", "my Process", ids));
 		assertTrue(ge.uniqueId().equals("Process:my Process1"));
-
 
 		for (int i = 0; i < 10; i++) {
 			ge.setIdentity(new TwIdentity("Process", "my Process", ids));
@@ -111,35 +108,40 @@ class TwIdentityTest {
 		}
 		// TODO much more testing of crazy instanceId with TwIdentity
 		ids.clear();
-		for (int i = 0; i<10;i++) {
-			id = new TwIdentity("Process", "1",ids);
+		for (int i = 0; i < 10; i++) {
+			id = new TwIdentity("Process", "1", ids);
 			ids.add(id);
 		}
 		assertTrue(id.uniqueId().equals("Process:1_9"));
-		for (int i = 0; i<10;i++) {
-			id = new TwIdentity("Process", "a",ids);
+
+		for (int i = 0; i < 10; i++) {
+			id = new TwIdentity("Process", "a", ids);
 			ids.add(id);
 		}
 		assertTrue(id.uniqueId().equals("Process:a9"));
 
 		ids.clear();
-		for (int i = 0; i<10;i++) {
-			id = new TwIdentity("Process", "1a2b",ids);
+		for (int i = 0; i < 10; i++) {
+			id = new TwIdentity("Process", "1a2b", ids);
 			ids.add(id);
 		}
 		assertTrue(id.uniqueId().equals("Process:1a2b9"));
-		
-		ids.clear();
-		id = new TwIdentity("Process",UUID.randomUUID().toString());
-		ids.add(id);
-		for (int i=0;i<10;i++) {
-			ids.add(new TwIdentity("process",id.instanceId(),ids));
-		}
-		System.out.println(id.uniqueId());
-		System.out.println(ids.get(ids.size()-1).uniqueId());
-		
 
-		
+		ids.clear();
+		id = new TwIdentity("Process", UUID.randomUUID().toString());
+		ids.add(id);
+		for (int i = 0; i < 10; i++) {
+			ids.add(new TwIdentity("process", id.instanceId(), ids));
+		}
+		/*
+		 * Difficult to assert anything here. If id ends in alpha char, the last char in id2
+		 * will be 9 after 10 iterations. If the last char is a number, the number will
+		 * be incremented by 9. Fine - who cares.
+		 */
+
+		System.out.println(id.uniqueId());
+		System.out.println(ids.get(ids.size() - 1).uniqueId());
+
 	}
 
 }
