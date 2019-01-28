@@ -35,6 +35,7 @@ import java.util.Set;
 
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
+import fr.ens.biologie.generic.utils.UniqueString;
 
 /**
  * A local scope, keeping track of all its ids.
@@ -59,7 +60,7 @@ public class LocalScope implements IdentityScope {
 			ids.add(proposedId);
 		}
 		else {
-			String s = ScopeUnique.createUniqueStringInSet(proposedId,ids);
+			String s = UniqueString.makeString(proposedId,ids);
 			result = new SimpleIdentity(s,this);
 			ids.add(s);
 		}

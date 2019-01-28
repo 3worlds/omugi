@@ -35,6 +35,7 @@ import java.util.Set;
 
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
+import fr.ens.biologie.generic.utils.UniqueString;
 
 /**
  * A scope for an identity based on a pair label+name.
@@ -63,7 +64,7 @@ public class PairLocalScope implements IdentityScope {
 			names.add(id);
 		}
 		else {
-			String s = ScopeUnique.createUniqueStringInSet(name,names);
+			String s = UniqueString.makeString(name,names);
 			result = new PairIdentity(label,s,this);
 			names.add(s);
 		}
