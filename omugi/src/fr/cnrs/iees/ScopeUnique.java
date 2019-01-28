@@ -33,9 +33,14 @@ package fr.cnrs.iees;
 import java.util.HashSet;
 import java.util.Set;
 
-import fr.cnrs.iees.graph.Node;
 import javafx.util.Pair;
 
+/**
+ * A Scope for unique Ids
+ * 
+ * @author Ian Davies - 28 jan. 2019
+ *
+ */
 public class ScopeUnique {
 
 	public static String createUniqueInstanceWithinClass(String classId, String proposedInstanceId, Iterable<? extends Identifiable> list) {

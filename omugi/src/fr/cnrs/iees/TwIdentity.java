@@ -32,7 +32,11 @@ package fr.cnrs.iees;
 
 import java.util.Set;
 
-
+/**
+ * 
+ * @author Ian Davies - 28 jan. 2019
+ *
+ */
 public final class TwIdentity implements Identifiable {
 	private final String classId;
 	private final String instanceId;

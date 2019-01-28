@@ -32,6 +32,11 @@ package fr.cnrs.iees;
 
 import java.util.UUID;
 
+/**
+ * 
+ * @author Ian Davies - 28 jan. 2019
+ *
+ */
 public final class GUIDIdentity implements Identifiable{
 	private final String classId;
 	private final String instanceId;

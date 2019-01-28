@@ -32,6 +32,11 @@ package fr.cnrs.iees;
 
 import au.edu.anu.rscs.aot.util.Uid;
 
+/**
+ * 
+ * @author Ian Davies - 28 jan. 2019
+ *
+ */
 public final class UidIdentity implements Identifiable{
 	private final String instanceId;
 	private final String classId;

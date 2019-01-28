@@ -30,6 +30,11 @@
  **************************************************************************/
 package fr.cnrs.iees;
 
+/**
+ * 
+ * @author Ian Davies - 28 jan. 2019
+ *
+ */
 public final class SimpleIdentity implements Identifiable {
 	private final String classId;
 	private final String instanceId;
