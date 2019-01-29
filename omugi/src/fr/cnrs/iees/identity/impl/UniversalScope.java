@@ -32,6 +32,7 @@ package fr.cnrs.iees.identity.impl;
 
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
+import fr.ens.biologie.generic.utils.UniqueString;
 
 /**
  * A 'universal' scope for unique ids. The ids are constructed from (1) the computer mac Address
@@ -46,9 +47,26 @@ import fr.cnrs.iees.identity.IdentityScope;
  */
 public class UniversalScope implements IdentityScope {
 
+	private String id;
+	
+	public UniversalScope() {
+		this(UniversalScope.class.getSimpleName());
+	}
+
+	public UniversalScope(String name) {
+		super();
+		id = UniqueString.makeString(name,scopeIds);
+		scopeIds.add(id);
+	}
+	
 	@Override
 	public Identity newId() {
 		return new UidIdentity(this);
+	}
+
+	@Override
+	public java.lang.String id() {
+		return id;
 	}
 
 }

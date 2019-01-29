@@ -45,8 +45,20 @@ import fr.ens.biologie.generic.utils.UniqueString;
  */
 public class LocalScope implements IdentityScope {
 	
+	private String id;
 	private Set<String> ids = new HashSet<String>();
 
+	public LocalScope() {
+		this(LocalScope.class.getSimpleName());
+	}
+
+	public LocalScope(String name) {
+		super();
+		id = UniqueString.makeString(name,scopeIds);
+		scopeIds.add(id);
+	}
+
+	
 	@Override
 	public Identity newId() {
 		return newId("");
@@ -73,6 +85,11 @@ public class LocalScope implements IdentityScope {
 		for (String s:proposedIdComponents)
 			sb.append(s);
 		return newId(sb.toString());
+	}
+
+	@Override
+	public java.lang.String id() {
+		return id;
 	}
 
 }

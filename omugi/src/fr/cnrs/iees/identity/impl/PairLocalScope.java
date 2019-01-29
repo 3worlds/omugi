@@ -45,8 +45,19 @@ import fr.ens.biologie.generic.utils.UniqueString;
  */
 public class PairLocalScope implements IdentityScope {
 	
+	private String id;
 	private Set<String> names = new HashSet<String>();
 
+	public PairLocalScope() {
+		this(PairLocalScope.class.getSimpleName());
+	}
+
+	public PairLocalScope(String name) {
+		super();
+		id = UniqueString.makeString(name,scopeIds);
+		scopeIds.add(id);
+	}
+	
 	/**
 	 * returns a new identity with label and name modified to make the pair unique.
 	 * The first argument is the label, all other arguments are concatenated into a name.
@@ -89,5 +100,10 @@ public class PairLocalScope implements IdentityScope {
 	public Identity newId() {
 		return newId("","");
 	}
-	
+
+	@Override
+	public java.lang.String id() {
+		return id;
+	}
+
 }

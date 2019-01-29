@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.identity;
 
+import fr.ens.biologie.generic.SaveableAsText;
+
 /**
  * A unique identity within a given scope, attached to some item.
  * Classes implementing this interface must override the object equals() and hashCode() 
@@ -51,5 +53,13 @@ public interface Identity {
 	 * @return the scope within which this Identity is guaranteed to be unique.
 	 */
 	public IdentityScope scope();
+	
+	/**
+	 * returns
+	 * @return the universal id = scope id + item id
+	 */
+	public default String universalId() {
+		return scope().id()+SaveableAsText.COLON+id();
+	}
 
 }

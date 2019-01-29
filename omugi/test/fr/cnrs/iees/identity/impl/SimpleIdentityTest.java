@@ -52,6 +52,11 @@ class SimpleIdentityTest {
 		assertEquals(scope.newId("toto",":tata",":titi").toString(),"toto:tata:titi");
 		assertEquals(scope.newId().toString(),"1_4");
 		assertEquals(scope.newId("toto",":tata",":titi").toString(),"toto:tata:titi1");
+		assertEquals(scope.newId().universalId(),"LocalScope:1_5");
+		IdentityScope scope2 = new LocalScope();
+		assertEquals(scope2.newId("toto").universalId(),"LocalScope1:toto");
+		IdentityScope scope3 = new UniversalScope("LocalScope");
+		assertEquals(scope3.id(),"LocalScope2");
 	}
 
 }

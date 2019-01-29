@@ -30,13 +30,29 @@
  **************************************************************************/
 package fr.cnrs.iees.identity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * A scope over which Identities are guaranteed to be unique.
+ * Note: every scope has a unique id over the application scope so that merging items
+ * from different scopes is always possible
  * 
  * @author Jacques Gignoux - 28 janv. 2019
  *
  */
 public interface IdentityScope {
+	
+	/**
+	 * This field to make sure all scope instances have a different id
+	 */
+	static final Set<String> scopeIds = new HashSet<String>();
+	
+	/**
+	 * returns
+	 * @return the scope id within the application context
+	 */
+	public String id();
 
 	/**
 	 * makes a new instance of an Identity, unique over this scope.
