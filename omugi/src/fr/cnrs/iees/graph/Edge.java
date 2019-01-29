@@ -82,11 +82,6 @@ public interface Edge extends GraphElement {
 		return this;
 	}
 
-	@Override
-	public default String classId() {
-		return EDGE_LABEL;
-	}
-
 	/**
 	 * 
 	 * @return the EdgeFactory with which this Edge was instantiated

@@ -137,9 +137,4 @@ public interface Node extends GraphElement {
 		return this;
 	}
 
-	@Override
-	public default String classId() {
-		return NODE_LABEL;
-	}
-
 }

@@ -30,8 +30,9 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import au.edu.anu.rscs.aot.util.Uid;
 import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.identity.IdentityScope;
 
 /**
  * A base implementation of Element with the methods that should be universal in all descendants
@@ -40,61 +41,43 @@ import fr.cnrs.iees.OmugiException;
  */
 public abstract class GraphElementAdapter implements GraphElement {
 	
-	private String instanceId = null;
-	private String classId = null;
+	private Identity id = null;
 
 	// Constructors
-	
-	/**
-	 * Default constructor: initialises an Element with a unique ID.
-	 */
-	public GraphElementAdapter() {
-		super();
-		instanceId = (new Uid()).toString();
-		classId = this.getClass().getSimpleName();
-	}
-	
-	/**
-	 * Use this constructor with caution: there is no guarantee that the ID passed as argument
-	 * is unique.
-	 * @param instanceId
-	 */
-	public GraphElementAdapter(String instanceId) {
-		super();
-		if (instanceId==null)
-			throw new OmugiException("Attempt to instantiate a graph element with a null id.");
-		this.instanceId = instanceId;
-		classId = this.getClass().getSimpleName();
-	}
-	
-	public GraphElementAdapter(String classId, String instanceId) {
-		this(instanceId);
-		if (classId!=null)
-			this.classId = classId;
-	}
-	
-	// Identifiable
 
-	@Override
-	public String instanceId() {
-		return instanceId;
+	// this to prevent construction without an id
+	protected GraphElementAdapter() {
+		throw new OmugiException("A Graph Element must be created with a valid id");
 	}
-
+	
+	// this is the only constructor to use
+	protected GraphElementAdapter(Identity id) {
+		super();
+		this.id = id;
+	}
+	
+	// IDENTITY
+	
 	@Override
-	public String classId() {
-		return classId;
+	public String id() {
+		return id.id();
+	}
+	
+	@Override
+	public IdentityScope scope() {
+		return id.scope();
 	}
 	
 	// TEXTABLE
 
 	@Override
 	public String toUniqueString() {
-		return uniqueId();
+		return id.universalId();
 	}
 
 	@Override
 	public String toShortString() {
-		return classId();
+		return id();
 	}
 	
 	@Override
@@ -109,7 +92,7 @@ public abstract class GraphElementAdapter implements GraphElement {
 		return "["+toDetailedString()+"]";
 	}
 
-	// Two elements are equal if they have the same classId and instanceId
+	// Two elements are equal if they have the same id within their scope
 	@Override
 	public boolean equals(Object obj) {
 		if (obj==null)
@@ -117,8 +100,8 @@ public abstract class GraphElementAdapter implements GraphElement {
 		if (!GraphElement.class.isAssignableFrom(obj.getClass()))
 			return false;
 		GraphElement e = (GraphElement) obj;
-		return (instanceId().equals(e.instanceId()) &&
-				classId().equals(e.classId()));
+		return (scope().id().equals(e.scope().id()) &&
+				id().equals(e.id()));
 	}
 	
 	// This is important when using HashSets or HahsMaps: to make sure graph elements are only
@@ -129,7 +112,7 @@ public abstract class GraphElementAdapter implements GraphElement {
 	// same classId+instanceId.
 	@Override
 	public int hashCode() {
-		return uniqueId().hashCode();
+		return id.universalId().hashCode();
 	}
 
 

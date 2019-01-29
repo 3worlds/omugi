@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.identity.Identity;
 
 
 /**
@@ -53,46 +54,21 @@ public abstract class EdgeAdapter extends GraphElementAdapter implements Edge {
 	 * is invalid
 	 */
 	@SuppressWarnings("unused")
-	private EdgeAdapter() {};
-//		super();
-//		throw new OmugiException("An Edge must be created with a start and an end node");
-//	}
+	private EdgeAdapter() {}
 	
 	/**
 	 * The only valid constructor for an Edge: an Edge cannot exist without a start and end node
 	 * @param start the start Node
 	 * @param end the end Node
 	 */
-	protected EdgeAdapter(Node start, Node end, 
-			EdgeFactory factory) {
-		super();
+	protected EdgeAdapter(Identity id, Node start, Node end, EdgeFactory factory) {
+		super(id);
 		this.factory = factory;
 		this.start = start;
 		this.end = end;
 		start.addEdge(this, Direction.OUT);
 		end.addEdge(this, Direction.IN);
 	}
-	
-	protected EdgeAdapter(String instanceId, Node start, Node end, 
-			EdgeFactory factory) {
-		super(instanceId);
-		this.factory = factory;
-		this.start = start;
-		this.end = end;
-		start.addEdge(this, Direction.OUT);
-		end.addEdge(this, Direction.IN);
-	}
-
-	protected EdgeAdapter(String classId, String instanceId, Node start, Node end, 
-			EdgeFactory factory) {
-		super(classId,instanceId);
-		this.factory = factory;
-		this.start = start;
-		this.end = end;
-		start.addEdge(this, Direction.OUT);
-		end.addEdge(this, Direction.IN);
-	}
-
 	
 	// ELEMENT ==================================================================
 
@@ -196,15 +172,15 @@ public abstract class EdgeAdapter extends GraphElementAdapter implements Edge {
 		if (!Edge.class.isAssignableFrom(obj.getClass()))
 			return false;
 		Edge e = (Edge) obj;
-		return (instanceId().equals(e.instanceId()) &&
-			classId().equals(e.classId()) &&
+		return (scope().id().equals(e.scope().id()) &&
+			id().equals(e.id()) &&
 			(startNode()==e.startNode()) && // identity of node objects, not equality
 			(endNode()==e.endNode())); // identity of node objects, not equality
 	}
 	
 	@Override
 	public int hashCode() {
-		return (uniqueId()+startNode().uniqueId()+endNode().uniqueId()).hashCode();
+		return (scope().id()+id()+startNode().id()+endNode().id()).hashCode();
 	}
 
 

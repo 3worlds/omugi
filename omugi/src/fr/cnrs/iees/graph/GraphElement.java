@@ -32,7 +32,7 @@ package fr.cnrs.iees.graph;
 
 import java.util.Collection;
 
-import fr.cnrs.iees.identity.Identifiable;
+import fr.cnrs.iees.identity.Identity;
 import fr.ens.biologie.generic.Textable;
 
 /**
@@ -44,7 +44,7 @@ import fr.ens.biologie.generic.Textable;
  * TODO: remove all the fluency I added before
  *
  */
-public interface GraphElement extends Textable, Identifiable {
+public interface GraphElement extends Textable, Identity {
 	
 	/**
 	 * Safely disconnects this Element from the Graph (by taking care of references to it by

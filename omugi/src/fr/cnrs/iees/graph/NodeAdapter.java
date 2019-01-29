@@ -33,6 +33,8 @@ package fr.cnrs.iees.graph;
 import java.util.Collection;
 import java.util.EnumMap;
 
+import fr.cnrs.iees.identity.Identity;
+
 /**
  * A base implementation of Node with all the methods that should be universal in descendants
  * @author gignoux - 16 août 2017
@@ -46,21 +48,10 @@ public abstract class NodeAdapter extends GraphElementAdapter implements Node {
 	
 	// Constructors --------
 	
-	protected NodeAdapter(NodeFactory factory) {
-		super();
+	protected NodeAdapter(Identity id,NodeFactory factory) {
+		super(id);
 		this.factory = factory;
 	}
-	
-	protected NodeAdapter(String instanceId, NodeFactory factory) {
-		super(instanceId);
-		this.factory = factory;
-	}
-
-	protected NodeAdapter(String classId, String instanceId, NodeFactory factory) {
-		super(classId,instanceId);
-		this.factory = factory;
-	}
-
 	
 	// NODE ==================================================================
 	
