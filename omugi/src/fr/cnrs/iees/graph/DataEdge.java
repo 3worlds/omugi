@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
  * An Edge with read/write data contained in it, accessible as properties.
@@ -40,6 +40,6 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  */
 public interface DataEdge extends Edge {
 
-	public ReadOnlyPropertyList properties();
+	public SimplePropertyList properties();
 	
 }

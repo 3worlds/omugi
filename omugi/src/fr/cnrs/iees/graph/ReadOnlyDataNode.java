@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,29 +28,17 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
+package fr.cnrs.iees.graph;
 
-package fr.cnrs.iees.identity;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
-@Deprecated
-public class MockGraphElement implements Identifiable {
-	private Identifiable identity;
+/**
+ * A Node with read-only data as a property list
+ * @author Jacques Gignoux - 29 janv. 2019
+ *
+ */
+public interface ReadOnlyDataNode extends Node {
 
-//	public MockGraphElement(Identifiable identity) {
-//		setIdentity(identity);
-//	}
-//	
-//	public void setIdentity(Identifiable identity) {
-//		this.identity=identity;
-//	}
-//
-//	@Override
-//	public String classId() {
-//		return identity.classId();
-//	}
-//
-//	@Override
-//	public String instanceId() {
-//		return identity.instanceId();
-//	}
-
+	public ReadOnlyPropertyList properties();
+	
 }

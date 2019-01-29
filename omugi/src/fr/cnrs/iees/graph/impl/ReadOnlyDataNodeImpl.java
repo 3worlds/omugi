@@ -30,12 +30,12 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import fr.cnrs.iees.graph.DataNode;
 import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.graph.ReadOnlyDataNode;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
-public class ReadOnlyDataNodeImpl extends SimpleNodeImpl implements DataNode {
+public class ReadOnlyDataNodeImpl extends SimpleNodeImpl implements ReadOnlyDataNode {
 	
 	private ReadOnlyPropertyList propertyList = null;
 	

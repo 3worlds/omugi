@@ -63,13 +63,13 @@ class SimpleEdgeImplTest {
 		DefaultGraphFactory f = new DefaultGraphFactory();
 		nodes = new HashMap<String,String>();
 		n1 = f.makeNode();
-		nodes.put(n1.uniqueId(), "n1");
+		nodes.put(n1.id(), "n1");
 		n2 = f.makeNode();
-		nodes.put(n2.uniqueId(), "n2");
+		nodes.put(n2.id(), "n2");
 		n3 = f.makeNode();
-		nodes.put(n3.uniqueId(), "n3");
+		nodes.put(n3.id(), "n3");
 		n4 = f.makeNode();
-		nodes.put(n4.uniqueId(), "n4");
+		nodes.put(n4.id(), "n4");
 		e1 = f.makeEdge(n1,n2);
 		e2 = f.makeEdge(n2,n1);
 		e3 = f.makeEdge(n2,n2);
@@ -89,7 +89,7 @@ class SimpleEdgeImplTest {
 	@Test
 	void testToDetailedString() {
 		show("testToDetailedString",e5.toDetailedString());
-		assertTrue(e5.toDetailedString().contains(n4.uniqueId().toString()));
+		assertTrue(e5.toDetailedString().contains(n4.id().toString()));
 	}
 
 	@Test
@@ -161,13 +161,13 @@ class SimpleEdgeImplTest {
 	@Test
 	void testToShortString() {
 		show("testToShortString",e2.toShortString());
-		assertTrue(e2.toShortString().contains(e2.uniqueId().toString()));
+		assertTrue(e2.toShortString().contains(e2.id().toString()));
 	}
 
 	@Test
 	void testToString() {
 		show("testToString",e2.toString());
-		assertTrue(e2.toString().contains(n2.uniqueId().toString()));
+		assertTrue(e2.toString().contains(n2.id().toString()));
 	}
 
 }

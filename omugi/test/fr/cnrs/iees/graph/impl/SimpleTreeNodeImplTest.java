@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -32,135 +32,111 @@ package fr.cnrs.iees.graph.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
-import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
+import fr.cnrs.iees.graph.TreeNode;
 
-class ImmutableGraphImplTest {
-
-	DefaultGraphFactory f = new DefaultGraphFactory();
-	Node n1;
-	Node n2, n3, n4;
-	Edge e1, e2, e3, e4, e5;
-	Map<String,String> nodes;
-	ImmutableGraphImpl<Node,Edge> graph;
+/**
+ * TODO: implement all tests
+ * 
+ * @author Jacques Gignoux - 9 janv. 2019
+ *
+ */
+class SimpleTreeNodeImplTest {
 	
-	// little test graph:
-	//
-	//              e3
-	//              ||
-	//              v|
-	//  n1 ---e1--> n2 ---e4--> n3 ---e5--> n4
-	//     <--e2--- 
+	@SuppressWarnings("unused")
+	private TreeNode tn1, tn2, tn3, tn4;
 	
-	@BeforeEach
-	private void init() {
-		nodes = new HashMap<String,String>();
-		n1 = f.makeNode();
-		nodes.put(n1.id(), "n1");
-		n2 = f.makeNode();
-		nodes.put(n2.id(), "n2");
-		n3 = f.makeNode();
-		nodes.put(n3.id(), "n3");
-		n4 = f.makeNode();
-		nodes.put(n4.id(), "n4");
-		e1 = f.makeEdge(n1,n2);
-		e2 = f.makeEdge(n2,n1);
-		e3 = f.makeEdge(n2,n2);
-		e4 = f.makeEdge(n2,n3);
-		e5 = f.makeEdge(n3,n4);
-		List<Node> l = new LinkedList<Node>();
-		l.add(n1); l.add(n2);
-		l.add(n3); l.add(n4);
-		graph = new ImmutableGraphImpl<Node,Edge>(l);
-	}
-
 	private void show(String method,String text) {
 		System.out.println(method+": "+text);
 	}
 	
-	@Test
-	void testImmutableGraphImplIterableOfN() {
-		assertNotNull(graph);
+	@BeforeEach
+	private void init() {
+		DefaultGraphFactory f = new DefaultGraphFactory();
+		tn1 = f.makeTreeNode(null);
+		tn2 = f.makeTreeNode(tn1);
+		tn3 = f.makeTreeNode(tn1);
+		tn4 = f.makeTreeNode(tn2);
 	}
 
 	@Test
-	void testNodes() {
-		int i=0;
-		for (Node n:graph.nodes()) {
-			show("testNodes",nodes.get(n.id()));
-			i++;
-		}
-		assertEquals(i,4);
+	void testGetParent() {
+		fail("Not yet implemented");
 	}
 
 	@Test
-	void testEdges() {
-		int i=0;
-		for (Edge e:graph.edges()) {
-			show("testEdges",e.id().toString());
-			i++;
-		}
-		assertEquals(i,5);
-	}
-
-	@SuppressWarnings("unused")
-	@Test
-	void testRoots() {
-		int i=0;
-		for (Node n:graph.roots()) 
-			i++;
-		assertEquals(i,0);
-	}
-
-	@SuppressWarnings("unused")
-	@Test
-	void testLeaves() {
-		int i=0;
-		for (Node n:graph.leaves()) 
-			i++;
-		assertEquals(i,1);
+	void testSetParent() {
+	
+		fail("Not yet implemented");
 	}
 
 	@Test
-	void testContains() {
-		assertTrue(graph.contains(n3));
-		Node n = f.makeNode();
-		assertFalse(graph.contains(n));
+	void testGetChildren() {
+		fail("Not yet implemented");
 	}
 
 	@Test
-	void testSize() {
-		assertEquals(graph.size(),4);
+	void testAddChild() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSetChildrenTreeNodeArray() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSetChildrenIterableOfTreeNode() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testSetChildrenCollectionOfTreeNode() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testHasChildren() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testInstanceId() {
+		fail("Not yet implemented");
 	}
 
 	@Test
 	void testToUniqueString() {
-		show("testToUniqueString",graph.toUniqueString());
+		fail("Not yet implemented");
 	}
 
 	@Test
 	void testToShortString() {
-		show("testToShortString",graph.toShortString());
+		fail("Not yet implemented");
 	}
 
 	@Test
 	void testToDetailedString() {
-		show("testToDetailedString",graph.toDetailedString());
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testTreeNodeFactory() {
+		fail("Not yet implemented");
 	}
 
 	@Test
 	void testToString() {
-		show("testToString",graph.toString());
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testEqualsObject() {
+		show("testEqualsObject",tn2.toDetailedString());
+		show("testEqualsObject",tn3.toDetailedString());
+		assertFalse(tn2.equals(tn3));
 	}
 
 }

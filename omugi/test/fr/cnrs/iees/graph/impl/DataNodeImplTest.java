@@ -80,11 +80,11 @@ class DataNodeImplTest {
 
 	@Test
 	void testSetProperty() {
-		n1.setProperty("prop1", 12);
-		n1.setProperty("prop2",25.34);
+		n1.properties().setProperty("prop1", 12);
+		n1.properties().setProperty("prop2",25.34);
 		show("testSetProperty",n1.toDetailedString());
-		assertEquals(n1.getPropertyValue("prop1"),12);
-		assertEquals(n1.getPropertyValue("prop2"),25.34);
+		assertEquals(n1.properties().getPropertyValue("prop1"),12);
+		assertEquals(n1.properties().getPropertyValue("prop2"),25.34);
 	}
 
 	@Test
@@ -94,31 +94,31 @@ class DataNodeImplTest {
 
 	@Test
 	void testGetPropertyValue() {
-		assertEquals(n3.getPropertyValue("prop1"),"coucou");
+		assertEquals(n3.properties().getPropertyValue("prop1"),"coucou");
 	}
 
 	@Test
 	void testHasProperty() {
-		assertTrue(n3.hasProperty("prop1"));
-		assertFalse(n3.hasProperty("prop3"));
+		assertTrue(n3.properties().hasProperty("prop1"));
+		assertFalse(n3.properties().hasProperty("prop3"));
 	}
 
 	@Test
 	void testGetKeysAsSet() {
-		show("testGetKeysAsSet",n1.getKeysAsSet().toString());
-		assertEquals(n1.getKeysAsSet().toString(),"[prop1, prop2]");
+		show("testGetKeysAsSet",n1.properties().getKeysAsSet().toString());
+		assertEquals(n1.properties().getKeysAsSet().toString(),"[prop1, prop2]");
 	}
 
 	@Test
 	void testSize() {
-		assertEquals(n1.size(),2);
+		assertEquals(n1.properties().size(),2);
 	}
 
 	@Test
 	void testClear() {
-		assertEquals(n3.getPropertyValue("prop1"),"coucou");
-		n3.clear();
-		assertEquals(n3.getPropertyValue("prop1"),null);
+		assertEquals(n3.properties().getPropertyValue("prop1"),"coucou");
+		n3.properties().clear();
+		assertEquals(n3.properties().getPropertyValue("prop1"),null);
 	}
 
 }

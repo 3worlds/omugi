@@ -28,116 +28,18 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.tree.impl;
+package fr.cnrs.iees.graph;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.impl.DefaultTreeFactory;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
- * TODO: implement all tests
+ * An Edge with read-only data as property list.
  * 
- * @author Jacques Gignoux - 9 janv. 2019
+ * @author Jacques Gignoux - 29 janv. 2019
  *
  */
-class SimpleTreeNodeImplTest {
-	
-	@SuppressWarnings("unused")
-	private TreeNode tn1, tn2, tn3, tn4;
-	
-	private void show(String method,String text) {
-		System.out.println(method+": "+text);
-	}
-	
-	@BeforeEach
-	private void init() {
-		DefaultTreeFactory f = new DefaultTreeFactory();
-		tn1 = f.makeTreeNode(null);
-		tn2 = f.makeTreeNode(tn1);
-		tn3 = f.makeTreeNode(tn1);
-		tn4 = f.makeTreeNode(tn2);
-	}
+public interface ReadOnlyDataEdge extends Edge {
 
-	@Test
-	void testGetParent() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetParent() {
-	
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetChildren() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testAddChild() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetChildrenTreeNodeArray() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetChildrenIterableOfTreeNode() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetChildrenCollectionOfTreeNode() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testHasChildren() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testInstanceId() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToUniqueString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToShortString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToDetailedString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testTreeNodeFactory() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testEqualsObject() {
-		show("testEqualsObject",tn2.toDetailedString());
-		show("testEqualsObject",tn3.toDetailedString());
-		assertFalse(tn2.equals(tn3));
-	}
+	public ReadOnlyPropertyList properties();
 
 }

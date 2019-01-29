@@ -30,9 +30,9 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import fr.cnrs.iees.graph.DataEdge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.ReadOnlyDataEdge;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
@@ -41,7 +41,7 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  * @author Jacques Gignoux - 29 nov. 2018
  *
  */
-public class ReadOnlyDataEdgeImpl extends SimpleEdgeImpl implements DataEdge {
+public class ReadOnlyDataEdgeImpl extends SimpleEdgeImpl implements ReadOnlyDataEdge {
 
 	private ReadOnlyPropertyList propertyList = null;
 

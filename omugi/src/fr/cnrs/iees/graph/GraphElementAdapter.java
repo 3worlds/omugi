@@ -72,7 +72,7 @@ public abstract class GraphElementAdapter implements GraphElement {
 
 	@Override
 	public String toUniqueString() {
-		return id.universalId();
+		return id();
 	}
 
 	@Override
