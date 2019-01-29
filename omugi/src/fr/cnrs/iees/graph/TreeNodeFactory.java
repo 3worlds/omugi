@@ -65,4 +65,8 @@ public interface TreeNodeFactory {
 	
 	public TreeNode makeTreeNode(TreeNode parent, String proposedId,SimplePropertyList properties);
 
+	public default String treeNodeClassName(Class<? extends TreeNode> nodeClass) {
+		return nodeClass.getSimpleName();
+	}
+
 }

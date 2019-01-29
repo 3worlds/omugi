@@ -100,5 +100,10 @@ public interface NodeFactory {
 	 * @return
 	 */
 	public Node makeNode(String proposedId, ReadOnlyPropertyList props);
+
+	public default String nodeClassName(Class<? extends Node> nodeClass) {
+		return nodeClass.getSimpleName();
+	}
+
 	
 }

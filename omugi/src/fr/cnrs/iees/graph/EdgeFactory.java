@@ -106,4 +106,15 @@ public interface EdgeFactory {
 	 */
 	public Edge makeEdge(Node start, Node end, String proposedId, ReadOnlyPropertyList props);
 
+	/**
+	 * returns the "label" of an edge class as known by this factory. For use in descendants
+	 * which use labels to identify edge class types.
+	 * 
+	 * @param edgeClass
+	 * @return
+	 */
+	public default String edgeClassName(Class<? extends Edge> edgeClass) {
+		return edgeClass.getSimpleName();
+	}
+	
 }
