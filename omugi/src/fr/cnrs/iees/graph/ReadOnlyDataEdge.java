@@ -39,6 +39,7 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  * @author Jacques Gignoux - 29 nov. 2018
  *
  */
+@Deprecated
 public interface ReadOnlyDataEdge extends Edge, ReadOnlyPropertyList {
 
 	@Override
