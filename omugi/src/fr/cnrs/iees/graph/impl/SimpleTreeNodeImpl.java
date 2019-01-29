@@ -28,17 +28,17 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.tree.impl;
+package fr.cnrs.iees.graph.impl;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import au.edu.anu.rscs.aot.util.Uid;
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Direction;
-import fr.cnrs.iees.tree.TreeNode;
-import fr.cnrs.iees.tree.TreeNodeFactory;
+import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.TreeNodeFactory;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.identity.IdentityScope;
 
 /**
  * Basic implementation of {@link TreeNode} without data and no possibility to set
@@ -52,47 +52,29 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	private TreeNodeFactory factory = null;
 	private TreeNode parent = null;
 	private Set<TreeNode> children = null;
-	private String instanceId = null;
-	private String classId = null;
-
+	private Identity id = null;
 	
 	// --- Constructors
 
-	protected SimpleTreeNodeImpl(TreeNodeFactory factory) {
+	protected SimpleTreeNodeImpl(Identity id, TreeNodeFactory factory) {
 		super();
+		this.id = id;
 		children = new HashSet<TreeNode>();
 		this.factory = factory;
-		instanceId = (new Uid()).toString();
-		classId = this.getClass().getSimpleName();
 	}
 	
-	protected SimpleTreeNodeImpl(String instanceId, TreeNodeFactory factory) {
-		super();
-		children = new HashSet<TreeNode>();
-		this.factory = factory;
-		if (instanceId==null)
-			throw new OmugiException("Attempt to instantiate a tree node with a null id.");
-		this.instanceId = instanceId;
-		classId = this.getClass().getSimpleName();
-	}
-
-	protected SimpleTreeNodeImpl(String classId, String instanceId, TreeNodeFactory factory) {
-		this(instanceId,factory);
-		if (classId!=null)
-			this.classId = classId;
-	}
-
-	// Identifiable
+	// Identity
 
 	@Override
-	public String instanceId() {
-		return instanceId;
+	public IdentityScope scope() {
+		return id.scope();
 	}
 
 	@Override
-	public String classId() {
-		return classId;
+	public String id() {
+		return id.id();
 	}
+
 	// --- TreeNode
 	
 	@Override
@@ -151,7 +133,7 @@ public class SimpleTreeNodeImpl implements TreeNode {
 
 	@Override
 	public String toUniqueString() {
-		return getClass().getSimpleName()+ " id=" + uniqueId();
+		return getClass().getSimpleName()+ " id=" + id();
 	}
 
 	@Override
@@ -219,5 +201,6 @@ public class SimpleTreeNodeImpl implements TreeNode {
 			return false;
 		return true;
 	}
+
 
 }

@@ -40,11 +40,11 @@ import java.util.logging.Logger;
 import au.edu.anu.rscs.aot.collections.tables.Table;
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.Tree;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.tree.Tree;
 
 /**
  * <p>This class groups the common grounds for graph and tree parsers. See {@link GraphParser}

@@ -28,49 +28,18 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.identity;
+package fr.cnrs.iees.graph;
 
-import fr.ens.biologie.generic.SaveableAsText;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
- * How to uniquely identify items in a graph, tree or other system
+ * A tree node with data
  * 
  * @author Jacques Gignoux - 19 déc. 2018
  *
  */
-@Deprecated // replaced by Identity
-public interface Identifiable {
+public interface DataTreeNode extends TreeNode {
 	
-    public static final char LABEL_NAME_SEPARATOR = SaveableAsText.COLON;
-    public static final String LABEL_NAME_STR_SEPARATOR = ""+LABEL_NAME_SEPARATOR;
-
-	/**
-	 * Getter for
-	 * @return this element's class id (eg 'node' or 'edge')
-	 * <p>formerly known as <em>label</em>. By default, this is the java class name.</p>
-	 */
-//	public default String classId() {
-//		return this.getClass().getSimpleName();
-//	}
-	public String classId();
-	
-	/**
-	 * Getter for
-	 * @return this element's instance id
-	 * <p>formerly known as <em>name</em>. By default, this is the java instance hash code
-	 * (i.e. the value returned by {@code Object.hashCode()}.</p>
-	 */
-//	public default String instanceId() {
-//		return Integer.toHexString(hashCode());
-//	}
-	public String instanceId();
-
-	/**
-	 * Getter for
-	 * @return this element's unique identifier
-	 */
-	public default String uniqueId() {
-		return new StringBuilder().append(classId()+LABEL_NAME_SEPARATOR+instanceId()).toString();
-	}
+	public ReadOnlyPropertyList properties();
 
 }

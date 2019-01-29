@@ -61,7 +61,7 @@ public interface EdgeFactory {
 	 * @return
 	 */
 	public default Edge makeEdge(Node start, Node end) {
-		return makeEdge(start,end,null,null,null);
+		return makeEdge(start,end,null,null);
 	}
 	
 	/**
@@ -74,22 +74,9 @@ public interface EdgeFactory {
 	 * @return
 	 */
 	public default Edge makeEdge(Node start, Node end, ReadOnlyPropertyList props) {
-		return makeEdge(start,end,null,null,props);
+		return makeEdge(start,end,null,props);
 	}
 	
-	/**
-	 * Create an edge with no properties and a particular class ID. The instance ID is 
-	 * automatically generated and is unique.
-	 * 
-	 * @param start the start node for this edge
-	 * @param end the end node for this edge
-	 * @param classId the class identifier
-	 * @return
-	 */
-	public default Edge makeEdge(Node start, Node end, String classId) {
-		return makeEdge(start,end,classId,null,null);
-	}
-
 	/**
 	 * Create an edge with no properties, a particular class ID and instance ID. Implementing
 	 * classes should make sure the (classId,instanceId) pair enables to uniquely identify
@@ -101,22 +88,8 @@ public interface EdgeFactory {
 	 * @param instanceId the instance identifier
 	 * @return
 	 */
-	public default Edge makeEdge(Node start, Node end, String classId, String instanceId) {
-		return makeEdge(start,end,classId,instanceId,null);
-	}
-
-	/**
-	 * Create an edge with a particular class ID and properties. The instance ID is automatically 
-	 * generated and is unique.
-	 * 
-	 * @param start the start node for this edge
-	 * @param end the end node for this edge
-	 * @param classId the class identifier
-	 * @param props properties
-	 * @return
-	 */
-	public default Edge makeEdge(Node start, Node end, String classId, ReadOnlyPropertyList props) {
-		return makeEdge(start,end,classId,null,props);
+	public default Edge makeEdge(Node start, Node end, String proposedId) {
+		return makeEdge(start,end,proposedId,null);
 	}
 
 	/**
@@ -131,6 +104,6 @@ public interface EdgeFactory {
 	 * @param props properties
 	 * @return 
 	 */
-	public Edge makeEdge(Node start, Node end, String classId, String instanceId, ReadOnlyPropertyList props);
+	public Edge makeEdge(Node start, Node end, String proposedId, ReadOnlyPropertyList props);
 
 }

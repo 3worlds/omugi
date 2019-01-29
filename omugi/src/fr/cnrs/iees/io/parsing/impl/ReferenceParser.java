@@ -40,10 +40,10 @@ import java.util.List;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
 import fr.cnrs.iees.graph.MinimalGraph;
+import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer.token;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.cnrs.iees.tree.TreeNode;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**

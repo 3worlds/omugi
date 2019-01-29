@@ -48,11 +48,11 @@ import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.ReadOnlyDataEdge;
 import fr.cnrs.iees.graph.ReadOnlyDataNode;
+import fr.cnrs.iees.graph.Tree;
+import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.tree.Tree;
-import fr.cnrs.iees.tree.TreeNode;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**

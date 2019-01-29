@@ -28,73 +28,60 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.tree;
+package fr.cnrs.iees.graph.impl;
 
-import fr.cnrs.iees.OmugiException;
-import fr.cnrs.iees.graph.MinimalGraph;
-import fr.cnrs.iees.io.parsing.impl.ReferenceParser;
-import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
+import fr.cnrs.iees.graph.DataTreeNode;
+import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.TreeNodeFactory;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
- * <p>A tree, i.e. a graph with a hierarchical structure. Its nodes must implement the TreeNode
- * interface, i.e. have getParent() and getChildren() methods.</p>
+ * Basic implementation of {@link TreeNode} with read-write properties.
  * 
- * @author Jacques Gignoux - 17 déc. 2018
+ * @author Jacques Gignoux - 19 déc. 2018
  *
  */
-public interface Tree<N extends TreeNode> extends MinimalGraph<N> {
+public class DataTreeNodeImpl extends SimpleTreeNodeImpl 
+		implements DataTreeNode {
+		
+	private ReadOnlyPropertyList propertyList = null;
 
-	/**
-	 * Accessor to the tree root (a tree has 0 or 1 root).
-	 * 
-	 * @return the Node at the root of the tree
-	 */
-	public N root();
+	// Constructors
 	
-	public int maxDepth();
-	
-	public int minDepth();
-	
-	public Tree<N> subTree(N node);
-	
-	/**
-	 * Finds the node matching a reference - will issue an Exception if more than one node match
-	 * @param reference
-	 * @return the matching node, or null if nothing found
-	 */
-	public default N findNodeByReference(String reference) {
-		Iterable<N> list = findNodesByReference(reference);
-		int i=0;
-		N found = null;
-		for (N n:list) {
-			found = n;
-			i++;
-		}
-		if (i<=1)
-			return found;
-		else
-			throw new OmugiException("more than one Node matching ["+reference+"] found");
+	protected DataTreeNodeImpl(Identity id, ReadOnlyPropertyList props, TreeNodeFactory factory) {
+		super(id,factory);
+		propertyList = props;
 	}
-	
-	/**
-	 * Finds all the nodes matching a reference.
-	 * @param reference
-	 * @return a read-only list of matching nodes
-	 */
-	public Iterable<N> findNodesByReference(String reference);
 
-	/**
-	 * <p>Checks that the node passed as argument matches the String reference passed as 
-	 * argument. The reference is a locator referring to at most one node in a tree.
-	 * 
-	 * @param node the node to check
-	 * @param ref the String reference
-	 * @return
-	 */
-	public static boolean matchesReference(TreeNode node, String ref) {
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		return p.matches(node);
+	// DataTreeNode
+
+	@Override
+	public ReadOnlyPropertyList properties() {
+		return propertyList;
+	}
+
+	// Textable
+
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(propertyList.toString());
+		return sb.toString();
+	}
+
+	// TODO: implement toString()
+	@Override
+	public boolean equals(Object obj) {
+		if (!TreeNode.class.isAssignableFrom(obj.getClass()))
+			return false;
+		if (!SimplePropertyList.class.isAssignableFrom(obj.getClass()))
+			return false;
+		TreeNode tn = (TreeNode) obj;
+		SimplePropertyList p = (SimplePropertyList) obj;
+		return (tn.equals(this) && p.equals(this));
 	}
 
 }

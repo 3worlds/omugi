@@ -31,13 +31,8 @@
 package fr.cnrs.iees.properties.impl;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.properties.SimplePropertyList;
@@ -55,32 +50,24 @@ import fr.ens.biologie.generic.Textable;
  *
  */
 // Tested OK with version 0.0.1 on 25/10/2018
-public class SimplePropertyListImpl implements SimplePropertyList, Textable {
-
-	private SortedMap<String, Object> propertyMap = new TreeMap<String, Object>();
+public class SimplePropertyListImpl 
+	extends ReadOnlyPropertyListImpl
+	implements SimplePropertyList, Textable {
 
 	// CONSTRUCTORS - please note that this class is not resizeable beyond
 	// construction time,
 	// which means no properties can be added in the map after construction.
 
 	public SimplePropertyListImpl(SimplePropertyList propertyList) {
-		super();
-		for (String key : propertyList.getKeysAsSet())
-			propertyMap.put(key, null);
-		setProperties(propertyList);
+		super(propertyList);
 	}
 
 	public SimplePropertyListImpl(Property... properties) {
-		super();
-		for (Property p : properties)
-			propertyMap.put(p.getKey(), p.getValue());
+		super(properties);
 	}
 
 	public SimplePropertyListImpl(List<String> keys, List<Object> values) {
-		super();
-		Iterator<Object> it = values.iterator();
-		for (String key : keys)
-			propertyMap.put(key, it.next());
+		super(keys,values);
 	}
 
 	// CAUTION: order of properties may be random
@@ -128,19 +115,6 @@ public class SimplePropertyListImpl implements SimplePropertyList, Textable {
 		propertyMap.clear();
 	}
 
-	// PropertyListGetters methods
-	//
-	
-	@Override
-	public Object getPropertyValue(String key) {
-		return propertyMap.get(key);
-	}
-
-	@Override
-	public Set<String> getKeysAsSet() {
-		return propertyMap.keySet();
-	}
-
 	// DataContainer methods
 	//
 
@@ -163,34 +137,6 @@ public class SimplePropertyListImpl implements SimplePropertyList, Textable {
 		for (Map.Entry<String, Object> e:propertyMap.entrySet())
 			e.setValue(null);
 		return this;
-	}
-
-	@Override
-	public boolean hasProperty(String key) {
-		return propertyMap.containsKey(key);
-	}
-
-	// Sizeable methods
-
-	@Override
-	public int size() {
-		return propertyMap.size();
-	}
-
-	// Object methods
-	//
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(1024);
-		boolean first = true;
-		for (Map.Entry<String, Object> e : propertyMap.entrySet())
-			if (first) {
-				sb.append(e.getKey()).append("=").append(e.getValue());
-				first = false;
-			} else
-				sb.append(" ").append(e.getKey()).append("=").append(e.getValue());
-		return sb.toString();
 	}
 
 }

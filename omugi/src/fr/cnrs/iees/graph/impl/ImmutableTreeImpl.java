@@ -28,13 +28,13 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.tree.impl;
+package fr.cnrs.iees.graph.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.cnrs.iees.tree.Tree;
-import fr.cnrs.iees.tree.TreeNode;
+import fr.cnrs.iees.graph.Tree;
+import fr.cnrs.iees.graph.TreeNode;
 import fr.ens.biologie.generic.Textable;
 
 /**

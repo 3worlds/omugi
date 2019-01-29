@@ -33,6 +33,7 @@ package fr.cnrs.iees.graph.impl;
 import fr.cnrs.iees.graph.EdgeAdapter;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.identity.Identity;
 
 /**
  * <p>The simplest possible Edge implementation. This class only has:</p>
@@ -48,16 +49,8 @@ import fr.cnrs.iees.graph.Node;
  */
 public class SimpleEdgeImpl extends EdgeAdapter {
 
-	protected SimpleEdgeImpl(Node start, Node end, EdgeFactory factory) {
-		super(start,end,factory);
+	protected SimpleEdgeImpl(Identity id, Node start, Node end, EdgeFactory factory) {
+		super(id,start,end,factory);
 	}
-	
-	protected SimpleEdgeImpl(String instanceId, Node start, Node end, EdgeFactory factory) {
-		super(instanceId,start,end,factory);
-	}
-
-	protected SimpleEdgeImpl(String classId, String instanceId, Node start, Node end, EdgeFactory factory) {
-		super(classId,instanceId,start,end,factory);
-	}
-		
+			
 }

@@ -30,11 +30,10 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import java.util.Set;
-
+import fr.cnrs.iees.graph.DataEdge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.ReadOnlyDataEdge;
+import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
@@ -42,54 +41,23 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  * @author Jacques Gignoux - 29 nov. 2018
  *
  */
-public class ReadOnlyDataEdgeImpl extends SimpleEdgeImpl implements ReadOnlyDataEdge {
+public class ReadOnlyDataEdgeImpl extends SimpleEdgeImpl implements DataEdge {
 
 	private ReadOnlyPropertyList propertyList = null;
 
 	// SimpleEdgeImpl
 
-	protected ReadOnlyDataEdgeImpl(Node start, Node end, ReadOnlyPropertyList props, EdgeFactory factory) {
-		super(start, end, factory);
-		propertyList = props;
-	}
-
-	protected ReadOnlyDataEdgeImpl(String instanceId, Node start, Node end, 
-			ReadOnlyPropertyList props, EdgeFactory factory) {
-		super(instanceId, start, end, factory);
-		propertyList = props;
-	}
-
-	protected ReadOnlyDataEdgeImpl(String classId, String instanceId, Node start, Node end, 
-			ReadOnlyPropertyList props, EdgeFactory factory) {
-		super(classId, instanceId, start, end, factory);
+	protected ReadOnlyDataEdgeImpl(Identity id, Node start, Node end, ReadOnlyPropertyList props, EdgeFactory factory) {
+		super(id, start, end, factory);
 		propertyList = props;
 	}
 	
-	// SimplePropertyList
+	// DataEdge
 
 	@Override
-	public ReadOnlyDataEdgeImpl clone() {
-		return new ReadOnlyDataEdgeImpl(startNode(),endNode(),propertyList.clone(),edgeFactory());
+	public ReadOnlyPropertyList properties() {
+		return propertyList;
 	}
 
-	@Override
-	public Object getPropertyValue(String key) {
-		return propertyList.getPropertyValue(key);
-	}
-
-	@Override
-	public boolean hasProperty(String key) {
-		return propertyList.hasProperty(key);
-	}
-
-	@Override
-	public Set<String> getKeysAsSet() {
-		return propertyList.getKeysAsSet();
-	}
-
-	@Override
-	public int size() {
-		return propertyList.size();
-	}
 
 }

@@ -28,75 +28,72 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.tree.impl;
+package fr.cnrs.iees.graph;
 
-import au.edu.anu.rscs.aot.graph.property.Property;
-import fr.cnrs.iees.properties.PropertyListFactory;
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
-import fr.cnrs.iees.tree.DataTreeNode;
-import fr.cnrs.iees.tree.TreeNode;
-import fr.cnrs.iees.tree.TreeNodeFactory;
+import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.io.parsing.impl.ReferenceParser;
+import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
 
 /**
+ * <p>A tree, i.e. a graph with a hierarchical structure. Its nodes must implement the TreeNode
+ * interface, i.e. have getParent() and getChildren() methods.</p>
  * 
- * @author Jacques Gignoux - 20 déc. 2018
+ * @author Jacques Gignoux - 17 déc. 2018
  *
  */
-public class DefaultTreeFactory implements TreeNodeFactory, PropertyListFactory {
+public interface Tree<N extends TreeNode> extends MinimalGraph<N> {
 
-	@Override
-	public ReadOnlyPropertyList makeReadOnlyPropertyList(Property... properties) {
-		return new SimplePropertyListImpl(properties);
-	}
-
-	@Override
-	public ReadOnlyPropertyList makeReadOnlyPropertyList(String... propertyKeys) {
-		return new SimplePropertyListImpl(propertyKeys);
-	}
-
-	@Override
-	public SimplePropertyList makePropertyList(Property... properties) {
-		return new SimplePropertyListImpl(properties);
-	}
-
-	@Override
-	public SimplePropertyList makePropertyList(String... propertyKeys) {
-		return new SimplePropertyListImpl(propertyKeys);
-	}
-
-	@Override
-	public TreeNode makeTreeNode(TreeNode parent) {
-		TreeNode result = new SimpleTreeNodeImpl(this);
-		result.setParent(parent);
-		if (parent!=null)
-			parent.addChild(result);
-		return result;
+	/**
+	 * Accessor to the tree root (a tree has 0 or 1 root).
+	 * 
+	 * @return the Node at the root of the tree
+	 */
+	public N root();
+	
+	public int maxDepth();
+	
+	public int minDepth();
+	
+	public Tree<N> subTree(N node);
+	
+	/**
+	 * Finds the node matching a reference - will issue an Exception if more than one node match
+	 * @param reference
+	 * @return the matching node, or null if nothing found
+	 */
+	public default N findNodeByReference(String reference) {
+		Iterable<N> list = findNodesByReference(reference);
+		int i=0;
+		N found = null;
+		for (N n:list) {
+			found = n;
+			i++;
+		}
+		if (i<=1)
+			return found;
+		else
+			throw new OmugiException("more than one Node matching ["+reference+"] found");
 	}
 	
-	// this is used in AotNode to instantiate a simple node within the AotNode
-	public static TreeNode makeSimpleTreeNode(TreeNode parent, TreeNodeFactory factory) {
-		TreeNode result = new SimpleTreeNodeImpl(factory);
-		result.setParent(parent);
-		if (parent!=null)
-			parent.addChild(result);
-		return result;
-	}
+	/**
+	 * Finds all the nodes matching a reference.
+	 * @param reference
+	 * @return a read-only list of matching nodes
+	 */
+	public Iterable<N> findNodesByReference(String reference);
 
-	@Override
-	public DataTreeNode makeTreeNode(TreeNode parent, SimplePropertyList properties) {
-		DataTreeNode result = new DataTreeNodeImpl(properties,this);
-		result.setParent(parent);
-		if (parent!=null)
-			parent.addChild(result);
-		return result;
-	}
-
-	@Override
-	public TreeNode makeTreeNode(TreeNode parent, String classId, String instanceId, SimplePropertyList properties) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * <p>Checks that the node passed as argument matches the String reference passed as 
+	 * argument. The reference is a locator referring to at most one node in a tree.
+	 * 
+	 * @param node the node to check
+	 * @param ref the String reference
+	 * @return
+	 */
+	public static boolean matchesReference(TreeNode node, String ref) {
+		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
+		ReferenceParser p = tk.parser();
+		return p.matches(node);
 	}
 
 }

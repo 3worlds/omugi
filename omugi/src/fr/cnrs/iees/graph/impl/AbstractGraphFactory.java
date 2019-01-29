@@ -28,49 +28,81 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.tree;
+package fr.cnrs.iees.graph.impl;
 
+import au.edu.anu.rscs.aot.graph.property.Property;
+import fr.cnrs.iees.graph.Edge;
+import fr.cnrs.iees.graph.EdgeFactory;
+import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.identity.IdentityScope;
+import fr.cnrs.iees.identity.impl.LocalScope;
+import fr.cnrs.iees.properties.PropertyListFactory;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.properties.impl.ReadOnlyPropertyListImpl;
+import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 /**
+ * Common ancestor for DefaultGraphFactory and TreeGraphFactory
  * 
- * @author Jacques Gignoux - 20 déc. 2018
+ * @author Jacques Gignoux - 29 janv. 2019
  *
  */
-public interface TreeNodeFactory {
+public abstract class AbstractGraphFactory implements PropertyListFactory, EdgeFactory {
+
+	protected IdentityScope scope;
+	protected static String defaultNodeId = "node0";
+	protected static String defaultEdgeId = "edge0";
 	
-	/**
-	 * Creates a new instance of a {@link TreeNode}, with the argument as its
-	 * parent. No data.
-	 * @param parent the parent of the newly created {@code TreeNode}
-	 * @return
-	 */
-	public default TreeNode makeTreeNode(TreeNode parent) {
-		return makeTreeNode(parent,null,null,null);
+	protected AbstractGraphFactory(String factoryName) {
+		super();
+		scope = new LocalScope(factoryName);
 	}
+
+	// PropertyListFactory
 	
-	/**
-	 * Creates a new instance of a {@link TreeNode}, with the argument as its
-	 * parent, and properties.
-	 * @param parent the parent of the newly created {@code TreeNode}
-	 * @return
-	 */
-	public default TreeNode makeTreeNode(TreeNode parent,SimplePropertyList properties) {
-		return makeTreeNode(parent,null,null,properties);
+	@Override
+	public ReadOnlyPropertyList makeReadOnlyPropertyList(Property... properties) {
+		return new ReadOnlyPropertyListImpl(properties);
 	}
-	
-	public default TreeNode makeTreeNode(TreeNode parent, String classId) {
-		return makeTreeNode(parent,classId,null,null);
+
+	@Override
+	public SimplePropertyList makePropertyList(Property... properties) {
+		return new SimplePropertyListImpl(properties);
 	}
-	
-	public default TreeNode makeTreeNode(TreeNode parent, String classId, String instanceId) {
-		return makeTreeNode(parent,classId,instanceId,null);
+
+	@Override
+	public SimplePropertyList makePropertyList(String... propertyKeys) {
+		return new SimplePropertyListImpl(propertyKeys);
 	}
+
+	// EdgeFactory
 	
-	public default TreeNode makeTreeNode(TreeNode parent, String classId,SimplePropertyList properties) {
-		return makeTreeNode(parent,classId,null,properties);
+	@Override
+	public Edge makeEdge(Node start, Node end) {
+		return new SimpleEdgeImpl(scope.newId(defaultEdgeId),start,end,this);
 	}
-	
-	public TreeNode makeTreeNode(TreeNode parent, String classId, String instanceId,SimplePropertyList properties);
+
+	@Override
+	public Edge makeEdge(Node start, Node end, String proposedId) {
+		return new SimpleEdgeImpl(scope.newId(proposedId),start,end,this);
+	}
+
+	@Override
+	public Edge makeEdge(Node start, Node end, ReadOnlyPropertyList props) {
+		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
+			return new DataEdgeImpl(scope.newId(defaultEdgeId),start,end,(SimplePropertyList)props,this);
+		else
+			return new ReadOnlyDataEdgeImpl(scope.newId(defaultEdgeId),start,end,props,this);
+	}
+
+	@Override
+	public Edge makeEdge(Node start, Node end, String proposedId, ReadOnlyPropertyList props) {
+		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
+			return new DataEdgeImpl(scope.newId(proposedId),start,end,(SimplePropertyList)props,this);
+		else
+			return new ReadOnlyDataEdgeImpl(scope.newId(proposedId),start,end,props,this);
+	}
+
 
 }

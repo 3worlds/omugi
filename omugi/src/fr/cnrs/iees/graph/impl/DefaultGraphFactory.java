@@ -30,106 +30,92 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import au.edu.anu.rscs.aot.graph.property.Property;
-import fr.cnrs.iees.OmugiException;
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
-import fr.cnrs.iees.properties.PropertyListFactory;
+import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.TreeNodeFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 /**
- * A simple factory for graph elements - mainly for testing purposes. 
+ * A simple factory for graph elements - mainly for testing purposes. Only makes plain
+ * Edges, Nodes, Property lists and TreeNodes.
  * 
  * @author Jacques Gignoux - 7 nov. 2018
  *
  */
 public class DefaultGraphFactory 
-	implements NodeFactory, EdgeFactory, PropertyListFactory {
-	
+	extends AbstractGraphFactory
+	implements NodeFactory, TreeNodeFactory {
 	
 	public DefaultGraphFactory() {
-		super();
+		super("DGF");
 	}
 
+	// NodeFactory
+	
 	@Override
 	public Node makeNode() {
-		return new SimpleNodeImpl(this);
-	}
-	
-	// this is used in AotNode to instantiate a simple node within the AotNode
-	public static Node makeSimpleNode(NodeFactory factory) {
-		return new SimpleNodeImpl(factory);
-	}
-	
-	// this is used in AotEdge to instantiate a simple edge within the AotEdge
-	public static Edge makeSimpleEdge(Node start, Node end, EdgeFactory factory) {
-		return new SimpleEdgeImpl(start,end,factory);
+		return new SimpleNodeImpl(scope.newId(defaultNodeId),this);
 	}
 
 	@Override
-	public Edge makeEdge(Node start, Node end) {
-		return new SimpleEdgeImpl(start,end,this);
+	public Node makeNode(String proposedId) {
+		return new SimpleNodeImpl(scope.newId(proposedId),this);
 	}
-
+	
 	@Override
 	public Node makeNode(ReadOnlyPropertyList props) {
-		if (props==null)
-			throw new OmugiException("makeNode(ReadOnlyPropertyList): property list cannot be null. Use makeNode() if you want no properties.");
 		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
-			return new DataNodeImpl((SimplePropertyList) props,this);
-		return new ReadOnlyDataNodeImpl(props,this);
+			return new DataNodeImpl(scope.newId(defaultNodeId),(SimplePropertyList)props,this);
+		else
+			return new ReadOnlyDataNodeImpl(scope.newId(defaultNodeId),props,this);
 	}
-
+	
 	@Override
-	public Edge makeEdge(Node start, Node end, ReadOnlyPropertyList props) {
-		if (props==null)
-			throw new OmugiException("makeEdge(Node,Node,ReadOnlyPropertyList): property list cannot be null. Use makeEdge(Node,Node) if you want no properties.");
+	public Node makeNode(String proposedId, ReadOnlyPropertyList props) {
 		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
-			return new DataEdgeImpl(start,end,(SimplePropertyList) props,this);
-		return new ReadOnlyDataEdgeImpl(start,end,props,this);
+			return new DataNodeImpl(scope.newId(proposedId),(SimplePropertyList)props,this);
+		else
+			return new ReadOnlyDataNodeImpl(scope.newId(proposedId),props,this);
+	}
+	
+	// TreeNodeFactory
+
+	@Override
+	public TreeNode makeTreeNode(TreeNode parent) {
+		TreeNode result = new SimpleTreeNodeImpl(scope.newId(defaultNodeId),this);
+		result.setParent(parent);
+		if (parent!=null)
+			parent.addChild(result);
+		return result;
 	}
 
 	@Override
-	public ReadOnlyPropertyList makeReadOnlyPropertyList(Property... properties) {
-		return new SimplePropertyListImpl(properties);
+	public TreeNode makeTreeNode(TreeNode parent, String proposedId) {
+		TreeNode result = new SimpleTreeNodeImpl(scope.newId(proposedId),this);
+		result.setParent(parent);
+		if (parent!=null)
+			parent.addChild(result);
+		return result;
 	}
 
 	@Override
-	public ReadOnlyPropertyList makeReadOnlyPropertyList(String... propertyKeys) {
-		return new SimplePropertyListImpl(propertyKeys);
+	public TreeNode makeTreeNode(TreeNode parent, SimplePropertyList properties) {
+		TreeNode result = new DataTreeNodeImpl(scope.newId(defaultNodeId),properties,this);
+		result.setParent(parent);
+		if (parent!=null)
+			parent.addChild(result);
+		return result;
 	}
 
 	@Override
-	public SimplePropertyList makePropertyList(Property... properties) {
-		return new SimplePropertyListImpl(properties);
-	}
-
-	@Override
-	public SimplePropertyList makePropertyList(String... propertyKeys) {
-		return new SimplePropertyListImpl(propertyKeys);
-	}
-
-	@Override
-	public Edge makeEdge(Node start, Node end, String classId, String instanceId, 
-			ReadOnlyPropertyList props) {
-		if (props==null)
-			return new SimpleEdgeImpl(instanceId,start,end,this);
-		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
-			return new DataEdgeImpl(instanceId,start,end,(SimplePropertyList) props,this);
-		return new ReadOnlyDataEdgeImpl(instanceId,start,end,props,this);
-	}
-
-	@Override
-	public Node makeNode(String classId, String instanceId, ReadOnlyPropertyList props) {
-		if (props==null)
-			return new SimpleNodeImpl(instanceId,this);
-		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
-			return new DataNodeImpl(instanceId,(SimplePropertyList) props,this);
-		return new ReadOnlyDataNodeImpl(instanceId,props,this);
+	public TreeNode makeTreeNode(TreeNode parent, String proposedId, SimplePropertyList properties) {
+		TreeNode result = new DataTreeNodeImpl(scope.newId(proposedId),properties,this);
+		result.setParent(parent);
+		if (parent!=null)
+			parent.addChild(result);
+		return result;
 	}
 
 }

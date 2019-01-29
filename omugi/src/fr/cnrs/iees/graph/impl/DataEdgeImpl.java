@@ -30,14 +30,11 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import java.util.Set;
-
 import fr.cnrs.iees.graph.DataEdge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.properties.PropertyListSetters;
+import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.ens.biologie.generic.DataContainer;
 
 public class DataEdgeImpl extends SimpleEdgeImpl implements DataEdge {
 
@@ -45,57 +42,16 @@ public class DataEdgeImpl extends SimpleEdgeImpl implements DataEdge {
 
 	// SimpleEdgeImpl
 
-	protected DataEdgeImpl(Node start, Node end, SimplePropertyList props, EdgeFactory factory) {
-		super(start, end, factory);
+	protected DataEdgeImpl(Identity id, Node start, Node end, SimplePropertyList props, EdgeFactory factory) {
+		super(id, start, end, factory);
 		propertyList = props;
 	}
 
-	protected DataEdgeImpl(String instanceId, Node start, Node end, 
-			SimplePropertyList props, EdgeFactory factory) {
-		super(instanceId, start, end, factory);
-		propertyList = props;
-	}
-	
-	protected DataEdgeImpl(String classId, String instanceId, Node start, Node end, 
-			SimplePropertyList props, EdgeFactory factory) {
-		super(classId, instanceId, start, end, factory);
-		propertyList = props;
-	}
-	// SimplePropertyList
+	// DataEdge
 	
 	@Override
-	public DataEdgeImpl clone() {
-		return new DataEdgeImpl(startNode(),endNode(),propertyList.clone(),edgeFactory());
-	}
-
-	@Override
-	public PropertyListSetters setProperty(String key, Object value) {
-		return propertyList.setProperty(key,value);
-	}
-
-	@Override
-	public Object getPropertyValue(String key) {
-		return propertyList.getPropertyValue(key);
-	}
-
-	@Override
-	public boolean hasProperty(String key) {
-		return propertyList.hasProperty(key);
-	}
-
-	@Override
-	public Set<String> getKeysAsSet() {
-		return propertyList.getKeysAsSet();
-	}
-
-	@Override
-	public int size() {
-		return propertyList.size();
-	}
-
-	@Override
-	public DataContainer clear() {
-		return propertyList.clear();
+	public SimplePropertyList properties() {
+		return propertyList;
 	}
 	
 }

@@ -34,11 +34,11 @@ import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.TreeNodeFactory;
 import fr.cnrs.iees.graph.impl.SimpleNodeImpl;
+import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.cnrs.iees.tree.TreeNode;
-import fr.cnrs.iees.tree.TreeNodeFactory;
-import fr.cnrs.iees.tree.impl.DefaultTreeFactory;
 
 /**
  * A Node that is also a TreeNode, ie has out and in edges but also a parent and children nodes.
@@ -66,31 +66,12 @@ public class TreeGraphNode extends SimpleNodeImpl
 	 * @param nf the node factory
 	 * @param props a property list - can be null
 	 */
-	protected TreeGraphNode(String classId, String instanceId, TreeNodeFactory tf, NodeFactory nf, ReadOnlyPropertyList props) {
-		super(classId,instanceId,nf);
-		treenode = DefaultTreeFactory.makeSimpleTreeNode(null,tf);
+	protected TreeGraphNode(Identity id, TreeNodeFactory tf, NodeFactory nf, ReadOnlyPropertyList props) {
+		super(id,nf);
+		treenode = new SimpleTreeNodeImpl(id,tf); // same id as its owner - is it safe ?
 		properties = props;
 	}
 	
-	/**
-	 * This constructor will generate a unique instanceId.
-	 * @param classId the class id - can be null (will default to class name in this case)
-	 * @param tf the treeNode factory
-	 * @param nf the node factory
-	 * @param props a property list - can be null
-	 */
-	protected TreeGraphNode(String instanceId, TreeNodeFactory tf, NodeFactory nf, ReadOnlyPropertyList props) {
-		super(instanceId,nf);
-		treenode = DefaultTreeFactory.makeSimpleTreeNode(null,tf);
-		properties = props;
-	}
-
-	protected TreeGraphNode(TreeNodeFactory tf, NodeFactory nf, ReadOnlyPropertyList props) {
-		super(nf);
-		treenode = DefaultTreeFactory.makeSimpleTreeNode(null,tf);
-		properties = props;
-	}
-
 	// ---------------- TreeNode
 
 	@Override
@@ -139,7 +120,7 @@ public class TreeGraphNode extends SimpleNodeImpl
 	}
 //<T extends TreeNodeFactory> T
 	@Override
-	public <T extends TreeNodeFactory> T treeNodeFactory() {
+	public TreeNodeFactory treeNodeFactory() {
 //		public TreeNodeFactory treeNodeFactory() {
 		return treenode.treeNodeFactory();
 	}
@@ -153,7 +134,7 @@ public class TreeGraphNode extends SimpleNodeImpl
 
 	@Override
 	public String toUniqueString() {
-		return uniqueId();
+		return id();
 	}
 
 	/**

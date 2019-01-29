@@ -38,14 +38,12 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.graph.Tree;
+import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.TreeNodeFactory;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
-import fr.cnrs.iees.tree.Tree;
-import fr.cnrs.iees.tree.TreeNode;
-import fr.cnrs.iees.tree.TreeNodeFactory;
-//import fr.ens.biologie.generic.Labelled;
-//import fr.ens.biologie.generic.Named;
 
 /**
  * <p>A parser for tree data.</p>

@@ -30,64 +30,37 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import java.util.Set;
-
+import fr.cnrs.iees.graph.DataNode;
 import fr.cnrs.iees.graph.NodeFactory;
-import fr.cnrs.iees.graph.ReadOnlyDataNode;
+import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.ens.biologie.generic.DataContainer;
 
-public class ReadOnlyDataNodeImpl extends SimpleNodeImpl implements ReadOnlyDataNode {
+public class ReadOnlyDataNodeImpl extends SimpleNodeImpl implements DataNode {
 	
 	private ReadOnlyPropertyList propertyList = null;
 	
 	// SimpleNodeImpl
 	
-	protected ReadOnlyDataNodeImpl(ReadOnlyPropertyList props, NodeFactory factory) {
-		super(factory);
+	protected ReadOnlyDataNodeImpl(Identity id, ReadOnlyPropertyList props, NodeFactory factory) {
+		super(id,factory);
 		propertyList = props;
 	}
 
-	protected ReadOnlyDataNodeImpl(String instanceId, ReadOnlyPropertyList props, NodeFactory factory) {
-		super(instanceId,factory);
-		propertyList = props;
-	}
+	// DataNode
 
-	protected ReadOnlyDataNodeImpl(String classId, String instanceId, ReadOnlyPropertyList props, NodeFactory factory) {
-		super(classId,instanceId,factory);
-		propertyList = props;
+	@Override
+	public ReadOnlyPropertyList properties() {
+		return propertyList;
 	}
-	// ReadOnlyPropertyList
 	
-	@Override
-	public Object getPropertyValue(String key) {
-		return propertyList.getPropertyValue(key);
-	}
+	// Textable
 
 	@Override
-	public boolean hasProperty(String key) {
-		return propertyList.hasProperty(key);
-	}
-
-	@Override
-	public Set<String> getKeysAsSet() {
-		return propertyList.getKeysAsSet();
-	}
-
-	@Override
-	public int size() {
-		return propertyList.size();
-	}
-
-	@Override
-	public ReadOnlyDataNodeImpl clone() {
-		return new ReadOnlyDataNodeImpl(propertyList.clone(),nodeFactory());
-	}
-
-	@Override
-	public DataContainer clear() {
-		// do nothing, this is read-only
-		return this;
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(propertyList.toString());
+		return sb.toString();
 	}
 
 }

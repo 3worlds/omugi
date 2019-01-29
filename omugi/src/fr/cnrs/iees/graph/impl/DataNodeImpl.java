@@ -30,13 +30,10 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import java.util.Set;
-
 import fr.cnrs.iees.graph.DataNode;
 import fr.cnrs.iees.graph.NodeFactory;
-import fr.cnrs.iees.properties.PropertyListSetters;
+import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.ens.biologie.generic.DataContainer;
 
 /**
  * <p>A node class with a list of properties.</p>
@@ -50,56 +47,16 @@ public class DataNodeImpl extends SimpleNodeImpl
 
 	// SimpleNodeImpl
 	
-	protected DataNodeImpl(SimplePropertyList props, NodeFactory factory) {
-		super(factory);
-		propertyList = props;
-	}
-	
-	protected DataNodeImpl(String instanceId, SimplePropertyList props, NodeFactory factory) {
-		super(instanceId,factory);
+	protected DataNodeImpl(Identity id,SimplePropertyList props, NodeFactory factory) {
+		super(id,factory);
 		propertyList = props;
 	}
 
-	protected DataNodeImpl(String classId, String instanceId, SimplePropertyList props, NodeFactory factory) {
-		super(classId,instanceId,factory);
-		propertyList = props;
-	}
-
-	// SimplePropertyList
-	
-	@Override
-	public PropertyListSetters setProperty(String key, Object value) {
-		return propertyList.setProperty(key,value);
-	}
+	// DataNode
 
 	@Override
-	public DataNodeImpl clone() {
-		return new DataNodeImpl(propertyList.clone(),nodeFactory());
-	}
-
-	@Override
-	public Object getPropertyValue(String key) {
-		return propertyList.getPropertyValue(key);
-	}
-
-	@Override
-	public boolean hasProperty(String key) {
-		return propertyList.hasProperty(key);
-	}
-
-	@Override
-	public Set<String> getKeysAsSet() {
-		return propertyList.getKeysAsSet();
-	}
-
-	@Override
-	public int size() {
-		return propertyList.size();
-	}
-
-	@Override
-	public DataContainer clear() {
-		return propertyList.clear();
+	public SimplePropertyList properties() {
+		return propertyList;
 	}
 	
 	// Textable

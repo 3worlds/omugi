@@ -35,12 +35,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import au.edu.anu.rscs.aot.graph.property.Property;
+import fr.cnrs.iees.graph.DataTreeNode;
+import fr.cnrs.iees.graph.impl.DefaultTreeFactory;
 import fr.cnrs.iees.io.parsing.impl.ReferenceParser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
-import fr.cnrs.iees.tree.DataTreeNode;
-import fr.cnrs.iees.tree.impl.DefaultTreeFactory;
 
 /**
  * 

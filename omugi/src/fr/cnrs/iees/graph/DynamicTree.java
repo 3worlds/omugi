@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -30,19 +30,14 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+public interface DynamicTree {
 
-/**
- * An Edge with properties that can only be read, not set. Use this interface for 
- * edges with internally generated property values (like age, number of items, etc.)
- * 
- * @author Jacques Gignoux - 29 nov. 2018
- *
- */
-@Deprecated
-public interface ReadOnlyDataEdge extends Edge, ReadOnlyPropertyList {
+	/**
+	 * Connects two tree nodes as parent and child, checking for tree consistency (no loops,
+	 * no replicates)
+	 * @param parent
+	 * @param child
+	 */
+	public void connect(TreeNode parent,TreeNode child);
 
-	@Override
-	public ReadOnlyDataEdge clone();
-	
 }

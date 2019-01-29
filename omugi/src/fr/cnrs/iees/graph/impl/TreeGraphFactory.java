@@ -30,40 +30,81 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.EdgeFactory;
-import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.TreeNodeFactory;
+import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.tree.TreeNode;
-import fr.cnrs.iees.tree.TreeNodeFactory;
 
 /**
- * A default factory for TreeGraphs
+ * A factory for TreeGraphs, ie nodes are both Nodes and TreeNodes. Only makes plain
+ * Edges, Property lists, and TreeGraphNodes.
  * 
  * @author Jacques Gignoux - 25 janv. 2019
  *
  */
-public class TreeGraphFactory implements TreeNodeFactory, NodeFactory, EdgeFactory {
+public class TreeGraphFactory 
+	extends AbstractGraphFactory
+	implements TreeNodeFactory, NodeFactory, EdgeFactory {
 
+	private IdentityScope scope;
+	
+	public TreeGraphFactory() {
+		super("TGF");
+	}
+	
+	// NodeFactory
+
+	/**
+	 * returns a free-floating node, i.e. with parent not set and no children.
+	 * Use with caution (prefer makeTreeNode(...)
+	 */
 	@Override
-	public Edge makeEdge(Node start, Node end, String classId, String instanceId, ReadOnlyPropertyList props) {
-		if (props==null)
-			return new SimpleEdgeImpl(classId,instanceId,start,end,this);
-		if (SimplePropertyList.class.isAssignableFrom(props.getClass()))
-			return new DataEdgeImpl(classId,instanceId,start,end,(SimplePropertyList) props,this);
-		return new ReadOnlyDataEdgeImpl(classId,instanceId,start,end,props,this);
+	public TreeGraphNode makeNode(String proposedId, ReadOnlyPropertyList props) {
+		TreeGraphNode result = new TreeGraphNode(scope.newId(proposedId),this,this,props);
+		return result;
+	}
+	
+	/**
+	 * returns a free-floating node, i.e. with parent not set and no children.
+	 * Use with caution (prefer makeTreeNode(...)
+	 */
+	@Override
+	public TreeGraphNode makeNode(ReadOnlyPropertyList props) {
+		TreeGraphNode result = new TreeGraphNode(scope.newId(defaultNodeId),this,this,props);
+		return result;
 	}
 
+	
+	// TreeNodeFactory
+
+	/**
+	 * returns a node properly placed in the tree, according to its parent argument. This
+	 * should be the proper way to create TreeGraphNodes.
+	 */
 	@Override
-	public TreeGraphNode makeTreeNode(TreeNode parent, String classId, String instanceId, SimplePropertyList properties) {
-		return new TreeGraphNode(classId,instanceId,this,this,properties);
+	public TreeGraphNode makeTreeNode(TreeNode parent, String proposedId, SimplePropertyList properties) {
+		TreeGraphNode result = new TreeGraphNode(scope.newId(proposedId),this,this,properties);
+		result.setParent(parent);
+		if (parent!=null)
+			parent.addChild(result);
+		return result;
 	}
 
+	/**
+	 * returns a node properly placed in the tree, according to its parent argument. This
+	 * should be the proper way to create TreeGraphNodes.
+	 */
 	@Override
-	public TreeGraphNode makeNode(String classId, String instanceId, ReadOnlyPropertyList props) {
-		return new TreeGraphNode(classId,instanceId,this,this,props);
+	public TreeGraphNode makeTreeNode(TreeNode parent, SimplePropertyList properties) {
+		TreeGraphNode result = new TreeGraphNode(scope.newId(defaultNodeId),this,this,properties);
+		result.setParent(parent);
+		if (parent!=null)
+			parent.addChild(result);
+		return result;
 	}
-
+	
+	
 }

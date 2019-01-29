@@ -74,7 +74,7 @@ public class ImmutableGraphImpl<N extends Node,E extends Edge>
 	public ImmutableGraphImpl(Iterable<N> list) {
 		super();
 		for (N n:list)
-			nodes.put(n.uniqueId(),n);
+			nodes.put(n.id(),n);
 		nodeList = new ArrayList<N>(nodes.size());
 		nodeList.addAll(nodes.values());
 	}
@@ -124,7 +124,7 @@ public class ImmutableGraphImpl<N extends Node,E extends Edge>
 
 	@Override
 	public boolean contains(N node) {
-		return nodes.containsKey(node.uniqueId());
+		return nodes.containsKey(node.id());
 	}
 	
 	// SIZEABLE

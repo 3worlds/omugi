@@ -35,7 +35,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.tree.TreeNode;
+import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.impl.DefaultTreeFactory;
 
 /**
  * TODO: implement all tests

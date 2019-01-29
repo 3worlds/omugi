@@ -39,8 +39,8 @@ import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.tree.Tree;
-import fr.cnrs.iees.tree.TreeNode;
+import fr.cnrs.iees.graph.Tree;
+import fr.cnrs.iees.graph.TreeNode;
 import fr.ens.biologie.generic.Textable;
 
 /**

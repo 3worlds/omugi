@@ -28,102 +28,41 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.tree.impl;
+package fr.cnrs.iees.graph;
 
-import java.util.Set;
-
-import fr.cnrs.iees.properties.PropertyListSetters;
 import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.tree.DataTreeNode;
-import fr.cnrs.iees.tree.TreeNode;
-import fr.cnrs.iees.tree.TreeNodeFactory;
-import fr.ens.biologie.generic.DataContainer;
 
 /**
- * Basic implementation of {@link TreeNode} with read-write properties.
  * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * @author Jacques Gignoux - 20 déc. 2018
  *
  */
-public class DataTreeNodeImpl extends SimpleTreeNodeImpl 
-		implements DataTreeNode {
-		
-	private SimplePropertyList propertyList = null;
-
-	// Constructors
+public interface TreeNodeFactory {
 	
-	protected DataTreeNodeImpl(SimplePropertyList props, TreeNodeFactory factory) {
-		super(factory);
-		propertyList = props;
-	}
-	
-	protected DataTreeNodeImpl(String instanceId, SimplePropertyList props, TreeNodeFactory factory) {
-		super(instanceId,factory);
-		propertyList = props;
-	}
-
-	protected DataTreeNodeImpl(String classId, String instanceId, SimplePropertyList props, TreeNodeFactory factory) {
-		super(classId,instanceId,factory);
-		propertyList = props;
-	}
-
-	// SimplePropertyList
-	
-	@Override
-	public PropertyListSetters setProperty(String key, Object value) {
-		return propertyList.setProperty(key,value);
-	}
-
-	@Override
-	public Object getPropertyValue(String key) {
-		return propertyList.getPropertyValue(key);
-	}
-
-	@Override
-	public boolean hasProperty(String key) {
-		return propertyList.hasProperty(key);
-	}
-
-	@Override
-	public Set<String> getKeysAsSet() {
-		return propertyList.getKeysAsSet();
-	}
-
-	@Override
-	public DataContainer clear() {
-		return propertyList.clear();
+	/**
+	 * Creates a new instance of a {@link TreeNode}, with the argument as its
+	 * parent. No data.
+	 * @param parent the parent of the newly created {@code TreeNode}
+	 * @return
+	 */
+	public default TreeNode makeTreeNode(TreeNode parent) {
+		return makeTreeNode(parent,null,null);
 	}
 	
-	@Override
-	public int size() {
-		return propertyList.size();
+	/**
+	 * Creates a new instance of a {@link TreeNode}, with the argument as its
+	 * parent, and properties.
+	 * @param parent the parent of the newly created {@code TreeNode}
+	 * @return
+	 */
+	public default TreeNode makeTreeNode(TreeNode parent,SimplePropertyList properties) {
+		return makeTreeNode(parent,null,properties);
 	}
-
-	@Override
-	public DataTreeNode clone() {
-		return new DataTreeNodeImpl(propertyList.clone(),treeNodeFactory());
+	
+	public default TreeNode makeTreeNode(TreeNode parent, String proposedId) {
+		return makeTreeNode(parent,proposedId,null);
 	}
-
-	// Textable
-
-	@Override
-	public String toDetailedString() {
-		StringBuilder sb = new StringBuilder(super.toDetailedString());
-		sb.append(' ');
-		sb.append(propertyList.toString());
-		return sb.toString();
-	}
-
-	// TODO: implement toString()
-	@Override
-	public boolean equals(Object obj) {
-		if (!TreeNode.class.isAssignableFrom(obj.getClass()))
-			return false;
-		if (!SimplePropertyList.class.isAssignableFrom(obj.getClass()))
-			return false;
-		TreeNode tn = (TreeNode) obj;
-		SimplePropertyList p = (SimplePropertyList) obj;
-		return (tn.equals(this) && p.equals(this));
-	}
+	
+	public TreeNode makeTreeNode(TreeNode parent, String proposedId,SimplePropertyList properties);
 
 }

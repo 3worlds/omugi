@@ -28,81 +28,102 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.tree;
+package fr.cnrs.iees.properties.impl;
 
-import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
-import fr.cnrs.iees.identity.Identifiable;
+import au.edu.anu.rscs.aot.graph.property.Property;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.ens.biologie.generic.Textable;
 
 /**
- * A Node member of a tree graph. Introduces the concepts of parents and children.
- * 
- * @author Jacques Gignoux - 4 déc. 2018
+ * A read-only property list - property values can only be set at construction time 
+ * @author Jacques Gignoux - 29 janv. 2019
  *
  */
-public interface TreeNode extends Identifiable, Textable {
-	
-	/**
-	 * Gets the parent node. Returns null if this is the tree root.
-	 * @return the parent of this node
-	 */
-//	public  <T extends TreeNode> T getParent();
-	public TreeNode getParent();
-	
-	/**
-	 * Set the argument as this node's parent. CAUTION: no consistency checks! this is the
-	 * tree's job.
-	 * 
-	 * @param parent the parent node
-	 */
-	public void setParent(TreeNode parent);
-	
-	/**
-	 * Gets the children nodes.
-	 * @return the list of children nodes.
-	 */
-	//	public Iterable<? extends TreeNode> getChildren();
+public class ReadOnlyPropertyListImpl implements ReadOnlyPropertyList, Textable {
 
-	public Iterable<? extends TreeNode> getChildren();
+	protected SortedMap<String, Object> propertyMap = new TreeMap<String, Object>();
 	
-	/**
-	 * Adds a node as a child. CAUTION: no consistency checks! this is the
-	 * tree's job.
-	 * 
-	 * @param child the node to add
-	 */
-	public void addChild(TreeNode child);
+	// Constructors
 	
-	/**
-	 * Adds a set of nodes as children
-	 * @param children the nodes to add
-	 */
-	public void setChildren(TreeNode... children);
-	public void setChildren(Iterable<TreeNode> children);
-	public void setChildren(Collection<TreeNode> children);
-	
-	public boolean hasChildren();
-	
-	/**
-	 * Checks that a child is in a node. NOT efficient - should be overloaded in descendants
-	 * @param child the child to check
-	 * @return true if the child was found;
-	 */
-	public default boolean hasChild(TreeNode child) {
-		for (TreeNode c:getChildren())
-			if (c==child)
-				return true;
-		return false;
+	public ReadOnlyPropertyListImpl(ReadOnlyPropertyList propertyList) {
+		super();
+		for (String key : propertyList.getKeysAsSet())
+			propertyMap.put(key, propertyList.getPropertyValue(key));
 	}
-	public  <T extends TreeNodeFactory> T treeNodeFactory();
 
-//	public TreeNodeFactory treeNodeFactory();
+	public ReadOnlyPropertyListImpl(Property... properties) {
+		super();
+		for (Property p : properties)
+			propertyMap.put(p.getKey(), p.getValue());
+	}
+
+	public ReadOnlyPropertyListImpl(List<String> keys, List<Object> values) {
+		super();
+		Iterator<Object> it = values.iterator();
+		for (String key : keys)
+			propertyMap.put(key, it.next());
+	}
 	
-	/**
-	 * Gets the number of children of this TreeNode
-	 * @return the number of child nodes
-	 */
-	public int nChildren();
+	// PropertyListGetters methods
+	//
 	
+	@Override
+	public Object getPropertyValue(String key) {
+		return propertyMap.get(key);
+	}
+
+	@Override
+	public Set<String> getKeysAsSet() {
+		return propertyMap.keySet();
+	}
+
+	@Override
+	public boolean hasProperty(String key) {
+		return propertyMap.containsKey(key);
+	}
+
+	// Sizeable methods
+
+	@Override
+	public int size() {
+		return propertyMap.size();
+	}
+
+	// DataContainer methods
+	//
+
+	@Override
+	public ReadOnlyPropertyList clone() {
+		return new ReadOnlyPropertyListImpl(this);
+	}
+
+	@Override
+	public ReadOnlyPropertyList clear() {
+		// DO NOTHING! this is read-only
+		return this;
+	}
+
+	// Object methods
+	//
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(1024);
+		boolean first = true;
+		for (Map.Entry<String, Object> e : propertyMap.entrySet())
+			if (first) {
+				sb.append(e.getKey()).append("=").append(e.getValue());
+				first = false;
+			} else
+				sb.append(" ").append(e.getKey()).append("=").append(e.getValue());
+		return sb.toString();
+	}
+
 }

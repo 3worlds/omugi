@@ -66,7 +66,7 @@ public interface NodeFactory {
 	 * @return 
 	 */
 	public default Node makeNode() {
-		return makeNode(null,null,null);
+		return makeNode(null,null);
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public interface NodeFactory {
 	 * @return
 	 */
 	public default Node makeNode(ReadOnlyPropertyList props) {
-		return makeNode(null,null,props);
+		return makeNode(null,props);
 	}
 	
 	/**
@@ -87,21 +87,8 @@ public interface NodeFactory {
 	 * @param classId the class identifier
 	 * @return
 	 */
-	public default Node makeNode(String classId) {
-		return makeNode(classId,null,null);
-	}
-
-	/**
-	 * Create a node with no properties, a particular class ID and instance ID. Implementing
-	 * classes should make sure the (classId,instanceId) pair enables to uniquely identify
-	 * the instance returned.
-	 * 
-	 * @param classId the class identifier
-	 * @param instanceId the instance identifier
-	 * @return
-	 */
-	public default Node makeNode(String classId, String instanceId) {
-		return makeNode(classId,instanceId,null);
+	public default Node makeNode(String proposedId) {
+		return makeNode(proposedId,null);
 	}
 	
 	/**
@@ -112,20 +99,6 @@ public interface NodeFactory {
 	 * @param props properties
 	 * @return
 	 */
-	public default Node makeNode(String classId, ReadOnlyPropertyList props) {
-		return makeNode(classId,null,props);
-	}
-	
-	/**
-	 * Create a node with a particular class ID and instance ID and properties. Implementing
-	 * classes should make sure the (classId,instanceId) pair enables to uniquely identify
-	 * the instance returned.
-	 * 
-	 * @param classId the class identifier
-	 * @param instanceId the instance identifier
-	 * @param props properties
-	 * @return
-	 */
-	public Node makeNode(String classId, String instanceId, ReadOnlyPropertyList props);
+	public Node makeNode(String proposedId, ReadOnlyPropertyList props);
 	
 }

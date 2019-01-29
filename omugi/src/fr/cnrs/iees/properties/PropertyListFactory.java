@@ -47,13 +47,6 @@ public interface PropertyListFactory {
 	public ReadOnlyPropertyList makeReadOnlyPropertyList(Property... properties);
 	
 	/**
-	 * Create a read-only property list with property names, but no values
-	 * @param propertyKeys
-	 * @return
-	 */
-	public ReadOnlyPropertyList makeReadOnlyPropertyList(String... propertyKeys);
-	
-	/**
 	 * Create a read-write property list with property names and values 
 	 * @param properties
 	 * @return
