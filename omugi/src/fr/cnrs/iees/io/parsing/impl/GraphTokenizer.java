@@ -166,7 +166,7 @@ public class GraphTokenizer extends LineTokenizer {
 		words = line.trim().split(PROPERTY_NAME.suffix());
 		if (words.length>1)  { // a property name was found
 			if (words.length==2) {
-				tokenlist.add(new graphToken(PROPERTY_NAME,words[0].trim()));
+				tokenlist.add(new graphToken(PROPERTY_NAME,words[0].trim().replace("\"","")));
 				processLine(words[1]);
 				return;
 			}
@@ -176,10 +176,10 @@ public class GraphTokenizer extends LineTokenizer {
 		words = line.trim().split("\\(");
 		if (words.length>1)  { // a property type (and value) was found (but it may contain more '(')
 			if (line.trim().endsWith(PROPERTY_VALUE.suffix())) {
-				tokenlist.add(new graphToken(PROPERTY_TYPE,words[0].trim()));
+				tokenlist.add(new graphToken(PROPERTY_TYPE,words[0].trim().replace("\"","")));
 				String s = line.trim().substring(line.trim().indexOf('(')+1, line.trim().length()-1);
 //				tokenlist.add(new token(PROPERTY_VALUE,words[1].substring(0,words[1].indexOf(PROPERTY_VALUE.suffix())).trim()));
-				tokenlist.add(new graphToken(PROPERTY_VALUE,s));
+				tokenlist.add(new graphToken(PROPERTY_VALUE,s.replace("\"","")));
 				return;
 			}
 			else
@@ -189,9 +189,9 @@ public class GraphTokenizer extends LineTokenizer {
 		if (words.length>1) { // an edge definition was found
 			words = trimEmptyWords(words);
 			if (words.length==3) {
-				tokenlist.add(new graphToken(NODE_REF,words[0].trim()));
+				tokenlist.add(new graphToken(NODE_REF,words[0].trim().replace("\"","")));
 				processLine(words[1]);
-				tokenlist.add(new graphToken(NODE_REF,words[2].trim()));
+				tokenlist.add(new graphToken(NODE_REF,words[2].trim().replace("\"","")));
 				return;
 			}
 			else
@@ -199,10 +199,10 @@ public class GraphTokenizer extends LineTokenizer {
 		}
 		words = line.trim().split("\\s"); // matches any whitespace character
 		if (words.length>1) { 
-			tokenlist.add(new graphToken(LABEL,words[0].trim())); // first word is label
+			tokenlist.add(new graphToken(LABEL,words[0].trim().replace("\"",""))); // first word is label
 			cttoken = new graphToken(NAME,"");
 			for (int i=1; i<words.length; i++) { // anything else is name
-				cttoken.value += words[i]+" ";
+				cttoken.value += words[i].replace("\"","")+" ";
 			}
 			cttoken.value = cttoken.value.trim();
 			tokenlist.add(cttoken);
@@ -211,7 +211,7 @@ public class GraphTokenizer extends LineTokenizer {
 		else if (words.length==1) // there is only one label in this case
 			if (!words[0].trim().isEmpty()) 
 				if (!words[0].trim().equals("graph")) { // I hate this - it's a flaw !
-					tokenlist.add(new graphToken(LABEL,words[0].trim())); 
+					tokenlist.add(new graphToken(LABEL,words[0].trim().replace("\"",""))); 
 					tokenlist.add(new graphToken(NAME,""));
 					return;
 		}

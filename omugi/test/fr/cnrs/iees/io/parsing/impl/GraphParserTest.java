@@ -78,6 +78,28 @@ class GraphParserTest {
 			"label2 name5\n" ,
 			"prop1 = Integer(0)"};
 
+	String[] otherTest = {"graph // checking the new ids\n", 
+			"  node=String(\"fr.cnrs.iees.graph.impl.SimpleNodeImpl\")\n",
+			"  pnode=String(\"fr.cnrs.iees.graph.impl.DataNodeImpl\")\n",
+			"  edge=String(\"SimpleEdgeImpl\")\n", 
+			"  mutable=Boolean(true)\n",
+			"\n",
+			"// nodes\n", 
+			"pnode\n",
+			"  prop1=Integer(1)\n", 
+			"  prop2 =Double(2.0)\n", 
+			"  prop3= String(\"blabla\")\n", 
+			"  prop4 = Boolean(true)\n",
+			"node name2\n",
+			"node name3\n", 
+			"\n",
+			"// edges\n", 
+			"[pnode:] edge name1 [node:name2]\n", 
+			"[pnode:] edge name2 [node:name2 ]\n", 
+			"[node:name2 ] edge [node:name3]\n", 
+			"// more nodes\n",
+			"pnode name5\n",
+			"  prop1 = Integer(0)"};
 	
 	@Test
 	void testParse() {
@@ -113,4 +135,37 @@ class GraphParserTest {
 		assertEquals(g.size(),4);
 	}
 
+	@Test
+	void testParse2() {
+		GraphParser gp = new GraphParser(new GraphTokenizer(otherTest));
+		gp.parse();
+		System.out.println(gp.toString());
+//		assertEquals(gp.toString(),"Graph specification\n" + 
+//				"Graph properties:\n" + 
+//				"	node:String=\"fr.cnrs.iees.graph.impl.SimpleNodeImpl\"\n" + 
+//				"	edge:String=\"SimpleEdgeImpl\"\n" + 
+//				"	mutable:Boolean=true\n" + 
+//				"Nodes:\n" + 
+//				"	node:\n" + 
+//				"		prop1:Integer=1\n" + 
+//				"		prop2:Double=2.0\n" + 
+//				"		prop3:String=\"blabla\"\n" + 
+//				"		prop4:Boolean=true\n" + 
+//				"	node:name2\n" + 
+//				"	node:name3\n" + 
+//				"	node:name5\n" + 
+//				"		prop1:Integer=0\n" + 
+//				"Edges:\n" + 
+//				"	edge:name1 [node:-->node:name2]\n" + 
+//				"	edge:name2 [node:-->node:name2]\n" + 
+//				"	edge: [node:name2-->node:name3]\n");
+	}
+	
+	@Test
+	void testGraph2() {
+		GraphParser gp = new GraphParser(new GraphTokenizer(otherTest));
+		Graph<?,?> g = gp.graph();
+		System.out.println(g.toString());
+	}		
+	
 }

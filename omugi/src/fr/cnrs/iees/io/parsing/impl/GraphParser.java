@@ -235,9 +235,15 @@ public class GraphParser extends MinimalGraphParser {
 		Class<? extends NodeFactory> nFactoryClass = null;
 		Class<? extends EdgeFactory> eFactoryClass = null;
 		Class<? extends PropertyListFactory> plFactoryClass = null;
+		Map<String,String> labels = new HashMap<>();
 		// scan graph properties for graph building options
 		for (propSpec p:graphProps) {
-			switch (GraphProperties.propertyForName(p.name))  {
+			GraphProperties gp = GraphProperties.propertyForName(p.name);
+			if (gp==null) { // all other properties are considered to be (label,class name) pairs
+				if (p.type.contains("String"))
+					labels.put(p.name,p.value);
+			}
+			else switch (gp)  {
 				case CLASS:
 					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
 						getClass(GraphProperties.CLASS,p.value,log);
@@ -261,8 +267,7 @@ public class GraphParser extends MinimalGraphParser {
 					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
 						getClass(GraphProperties.CLASS,MutableGraphImpl.class.getName(),log);
 					break;
-				default:
-					// other properties are ignored by the parser
+				default: 
 					break;
 			}
 		}
@@ -281,13 +286,15 @@ public class GraphParser extends MinimalGraphParser {
 				getClass(GraphProperties.PROP_FACTORY,log);
 		// setup the factories
 		try {
-			nodeFactory = nFactoryClass.newInstance();
+//			nodeFactory = nFactoryClass.newInstance();
+			Constructor<? extends NodeFactory> c = nFactoryClass.getConstructor(Map.class);
+			nodeFactory = c.newInstance(labels);
 			edgeFactory = eFactoryClass.newInstance();
 			if (eFactoryClass.equals(nFactoryClass))
 				if (nodeFactory instanceof DefaultGraphFactory)
 					edgeFactory = (EdgeFactory) nodeFactory;
 			propertyListFactory = plFactoryClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (Exception e) {
 			// There should not be any problem here given the previous checks
 			// unless the factory class is flawed
 			e.printStackTrace();
@@ -297,9 +304,9 @@ public class GraphParser extends MinimalGraphParser {
 		for (nodeSpec ns: nodeSpecs) {
 			Node n = null;
 			if (ns.props.isEmpty())
-				n = nodeFactory.makeNode();
+				n = nodeFactory.makeNode(nodeFactory.nodeClass(ns.label),ns.name);
 			else
-				n = nodeFactory.makeNode(makePropertyList(ns.props,log));
+				n = nodeFactory.makeNode(nodeFactory.nodeClass(ns.label),ns.name,makePropertyList(ns.props,log));
 			String nodeId = ns.label.trim()+":"+ns.name.trim();
 			if (nodes.containsKey(nodeId))
 				log.severe("duplicate node found ("+") - ignoring the second one");

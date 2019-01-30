@@ -65,9 +65,7 @@ public interface NodeFactory {
 	 * 
 	 * @return 
 	 */
-	public default Node makeNode() {
-		return makeNode(null,null);
-	}
+	public  Node makeNode();
 	
 	/**
 	 * Create a node with properties. The class ID is set to the default (= the implementing
@@ -76,9 +74,7 @@ public interface NodeFactory {
 	 * @param props properties
 	 * @return
 	 */
-	public default Node makeNode(ReadOnlyPropertyList props) {
-		return makeNode(null,props);
-	}
+	public Node makeNode(ReadOnlyPropertyList props);
 	
 	/**
 	 * Create a node with no properties and a particular class ID. The instance ID is 
@@ -87,9 +83,7 @@ public interface NodeFactory {
 	 * @param classId the class identifier
 	 * @return
 	 */
-	public default Node makeNode(String proposedId) {
-		return makeNode(proposedId,null);
-	}
+	public Node makeNode(String proposedId);
 	
 	/**
 	 * Create a node with a particular class ID and properties. The instance ID is automatically 
@@ -101,9 +95,27 @@ public interface NodeFactory {
 	 */
 	public Node makeNode(String proposedId, ReadOnlyPropertyList props);
 
+	
 	public default String nodeClassName(Class<? extends Node> nodeClass) {
 		return nodeClass.getSimpleName();
 	}
+	
+	public Class<? extends Node> nodeClass(String label);
 
+	/**
+	 * Create a node of a particular node sub-class passed as the first argument
+	 * 
+	 * @param nodeClass the Node subclass to instantiate
+	 * @param proposedId the proposed unique id
+	 * @param props property list 
+	 * @return a new instance, or null if fails
+	 */
+	public Node makeNode(Class<? extends Node> nodeClass, String proposedId, ReadOnlyPropertyList props);
+
+	public Node makeNode(Class<? extends Node> nodeClass, String proposedId);
+
+	public Node makeNode(Class<? extends Node> nodeClass, ReadOnlyPropertyList props);
+
+	public Node makeNode(Class<? extends Node> nodeClass);
 	
 }
