@@ -136,5 +136,19 @@ public interface Node extends GraphElement {
 		}
 		return this;
 	}
+	
+	/**
+	 * The "label" or classId of a Node is a String matching its java class name. It is
+	 * known by the nodeFactory.
+	 * This method should not be overriden.
+	 * 
+	 * @return
+	 */
+	public default String classId() {
+		String s = nodeFactory().nodeClassName(this.getClass());
+		if (s==null)
+			s = this.getClass().getSimpleName();
+		return s;
+	}
 
 }

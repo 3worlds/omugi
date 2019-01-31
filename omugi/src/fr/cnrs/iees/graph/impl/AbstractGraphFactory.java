@@ -30,10 +30,17 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.identity.impl.LocalScope;
 import fr.cnrs.iees.properties.PropertyListFactory;
@@ -53,6 +60,12 @@ public abstract class AbstractGraphFactory implements PropertyListFactory, EdgeF
 	protected IdentityScope scope;
 	protected static String defaultNodeId = "node0";
 	protected static String defaultEdgeId = "edge0";
+	
+	protected Logger log = null;
+	
+	// these to be filled by descendant constructors
+	protected Map<String,Class<? extends Edge>> edgeLabels = new HashMap<>();
+	protected Map<Class<? extends Edge>,String> edgeClassNames = new HashMap<>();
 	
 	protected AbstractGraphFactory(String factoryName) {
 		super();
@@ -102,6 +115,98 @@ public abstract class AbstractGraphFactory implements PropertyListFactory, EdgeF
 			return new DataEdgeImpl(scope.newId(proposedId),start,end,(SimplePropertyList)props,this);
 		else
 			return new ReadOnlyDataEdgeImpl(scope.newId(proposedId),start,end,props,this);
+	}
+
+	@Override
+	public String edgeClassName(Class<? extends Edge> edgeClass) {
+		return edgeClassNames.get(edgeClass);
+	}
+
+	@Override
+	public Class<? extends Edge> edgeClass(String label) {
+		return edgeLabels.get(label);
+	}
+
+	// TIP: getConstructor(...) fails to return the constructor even if the parameter types are
+	// correct because it is meant to return only PUBLIC constructors and the Edge descendant
+	// constructors are all PROTECTED. getDeclaredConstructor(...) fixes the problem.
+	private Constructor<? extends Edge> getEdgeConstructorNoProps(Class<? extends Edge> edgeClass) {
+		Constructor<? extends Edge> c = null;
+		try {
+			c = edgeClass.getDeclaredConstructor(Identity.class,Node.class,Node.class,
+				EdgeFactory.class);
+		} catch (Exception e) {
+			log.severe(()->"Constructor for class \""+edgeClass.getName()+ "\" not found");
+		}
+		return c;
+	}
+
+	// TIP: getConstructor(...) fails to return the constructor even if the parameter types are
+	// correct because it is meant to return only PUBLIC constructors and the Edge descendant
+	// constructors are all PROTECTED. getDeclaredConstructor(...) fixes the problem.
+	private Constructor<? extends Edge> getEdgeConstructorProps(Class<? extends Edge> edgeClass) {
+		Constructor<? extends Edge> c = null;
+		try {
+			c = edgeClass.getDeclaredConstructor(Identity.class,Node.class,Node.class,
+				ReadOnlyPropertyList.class,EdgeFactory.class);
+		} catch (Exception e) {
+			try {
+				c = edgeClass.getDeclaredConstructor(Identity.class,Node.class,Node.class,
+					SimplePropertyList.class,NodeFactory.class);
+			} catch (Exception e1) {
+				log.severe(()->"Constructor for class \""+edgeClass.getName()+ "\" not found");
+			}			
+		}
+		return c;
+	}
+
+	@Override
+	public Edge makeEdge(Class<? extends Edge> edgeClass, Node start, Node end, 
+		String proposedId,ReadOnlyPropertyList props) {
+		Constructor<? extends Edge> c = getEdgeConstructorProps(edgeClass);
+		Identity id = scope.newId(proposedId);
+		try {
+			return c.newInstance(id,start,end,props,this);
+		} catch (Exception e1) {
+			log.severe(()->"Edge of class \""+edgeClass.getName()+ "\" could not be instantiated");
+		}
+		return null;
+	}
+
+	@Override
+	public Edge makeEdge(Class<? extends Edge> edgeClass, Node start, Node end, String proposedId) {
+		Constructor<? extends Edge> c = getEdgeConstructorNoProps(edgeClass);
+		Identity id = scope.newId(proposedId);
+		try {
+			return c.newInstance(id,start,end,this);
+		} catch (Exception e1) {
+			log.severe(()->"Edge of class \""+edgeClass.getName()+ "\" could not be instantiated");
+		}
+		return null;
+	}
+
+	@Override
+	public Edge makeEdge(Class<? extends Edge> edgeClass, Node start, Node end, ReadOnlyPropertyList props) {
+		Constructor<? extends Edge> c = getEdgeConstructorProps(edgeClass);
+		Identity id = scope.newId();
+		try {
+			return c.newInstance(id,start,end,props,this);
+		} catch (Exception e1) {
+			log.severe(()->"Edge of class \""+edgeClass.getName()+ "\" could not be instantiated");
+		}
+		return null;
+	}
+
+	@Override
+	public Edge makeEdge(Class<? extends Edge> edgeClass, Node start, Node end) {
+		Constructor<? extends Edge> c = getEdgeConstructorNoProps(edgeClass);
+		Identity id = scope.newId();
+		try {
+			return c.newInstance(id,start,end,this);
+		} catch (Exception e1) {
+			log.severe(()->"Edge of class \""+edgeClass.getName()+ "\" could not be instantiated");
+		}
+		return null;
 	}
 
 

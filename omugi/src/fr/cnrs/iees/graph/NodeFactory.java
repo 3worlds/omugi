@@ -95,12 +95,32 @@ public interface NodeFactory {
 	 */
 	public Node makeNode(String proposedId, ReadOnlyPropertyList props);
 
-	
+	/**
+	 * returns the "label" of a node class as known by this factory. For use in descendants
+	 * which use labels to identify node class types.
+	 * 
+	 * @param nodeClass
+	 * @return
+	 */
 	public default String nodeClassName(Class<? extends Node> nodeClass) {
 		return nodeClass.getSimpleName();
 	}
 	
-	public Class<? extends Node> nodeClass(String label);
+	/**
+	 * returns the class type matching a node "label". Default behaviour is to pretend
+	 * label is a class name in the package fr.cnrs.iees.graph.impl
+	 * 
+	 * @param label
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public default Class<? extends Node> nodeClass(String label) {
+		try {
+			return (Class<? extends Node>) Class.forName("fr.cnrs.iees.graph.impl."+label);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+	}
 
 	/**
 	 * Create a node of a particular node sub-class passed as the first argument

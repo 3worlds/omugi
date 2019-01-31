@@ -88,4 +88,18 @@ public interface Edge extends GraphElement {
 	 */
 	public EdgeFactory edgeFactory();
 	
+	
+	/**
+	 * The "label" or "classId" is now a String matching the java class name. The edgeFactory 
+	 * knows this String.
+	 * 
+	 * @return
+	 */
+	public default String classId() {
+		String s = edgeFactory().edgeClassName(this.getClass());
+		if (s==null)
+			s = this.getClass().getSimpleName();
+		return s;
+	}
+	
 }

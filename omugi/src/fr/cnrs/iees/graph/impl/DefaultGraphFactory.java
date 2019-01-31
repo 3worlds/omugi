@@ -31,11 +31,11 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.TreeNode;
@@ -55,22 +55,37 @@ public class DefaultGraphFactory
 	extends AbstractGraphFactory
 	implements NodeFactory, TreeNodeFactory {
 	
-	private Logger log = Logger.getLogger(DefaultGraphFactory.class.getName());
-	private Map<String,Class<? extends Node>> labels = new HashMap<>();
+	private Map<String,Class<? extends Node>> nodeLabels = new HashMap<>();
 	private Map<Class<? extends Node>,String> nodeClassNames = new HashMap<>();
+	private Map<String,Class<? extends TreeNode>> treeNodeLabels = new HashMap<>();
+	private Map<Class<? extends TreeNode>,String> treeNodeClassNames = new HashMap<>();
+	
+	// constructors
 	
 	public DefaultGraphFactory() {
 		super("DGF");
+		log = Logger.getLogger(DefaultGraphFactory.class.getName());
 	}
 	
 	@SuppressWarnings("unchecked")
 	public DefaultGraphFactory(Map<String,String> labels) {
 		super("DGF");
+		log = Logger.getLogger(DefaultGraphFactory.class.getName());
 		for (String label:labels.keySet()) {
 			try {
-				Class<? extends Node> c = (Class<? extends Node>) Class.forName(labels.get(label));
-				this.labels.put(label,c);
-				nodeClassNames.put(c,label);
+				Class<?> c = Class.forName(labels.get(label));
+				if (Node.class.isAssignableFrom(c)) {
+					nodeLabels.put(label,(Class<? extends Node>) c);
+					nodeClassNames.put((Class<? extends Node>) c,label);
+				}
+				else if (Edge.class.isAssignableFrom(c)) {
+					edgeLabels.put(label,(Class<? extends Edge>) c);
+					edgeClassNames.put((Class<? extends Edge>) c, label);
+				}
+				else if (TreeNode.class.isAssignableFrom(c)) {
+					treeNodeLabels.put(label,(Class<? extends TreeNode>) c);
+					treeNodeClassNames.put((Class<? extends TreeNode>) c,label);
+				}
 			} catch (ClassNotFoundException e) {
 				log.severe(()->"Node class \""+labels.get(label)+"\" for label \""+label+"\" not found");
 			}
@@ -112,43 +127,38 @@ public class DefaultGraphFactory
 
 	@Override
 	public Class<? extends Node> nodeClass(String label) {
-		return labels.get(label);
+		return nodeLabels.get(label);
 	}
 	
+	// TIP: getConstructor(...) fails to return the constructor even if the parameter types are
+	// correct because it is meant to return only PUBLIC constructors and the Node descendant
+	// constructors are all PROTECTED. getDeclaredConstructor(...) fixes the problem.
 	private Constructor<? extends Node> getNodeConstructorNoProps(Class<? extends Node> nodeClass) {
 		Constructor<? extends Node> c = null;
 		try {
-			c = nodeClass.getConstructor(Identity.class,NodeFactory.class);
-		} catch (NoSuchMethodException e) {
+			c = nodeClass.getDeclaredConstructor(Identity.class,NodeFactory.class);
+		} catch (Exception e) {
 			log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return c;
 	}
 
+	// TIP: getConstructor(...) fails to return the constructor even if the parameter types are
+	// correct because it is meant to return only PUBLIC constructors and the Node descendant
+	// constructors are all PROTECTED. getDeclaredConstructor(...) fixes the problem.
 	private Constructor<? extends Node> getNodeConstructorProps(Class<? extends Node> nodeClass) {
 		Constructor<? extends Node> c = null;
 		try {
-			c = nodeClass.getConstructor(Identity.class,ReadOnlyPropertyList.class,NodeFactory.class);
-		} catch (NoSuchMethodException e) {
+			c = nodeClass.getDeclaredConstructor(Identity.class,ReadOnlyPropertyList.class,NodeFactory.class);
+		} catch (Exception e) {
 			try {
-				c = nodeClass.getConstructor(Identity.class,SimplePropertyList.class,NodeFactory.class);
-			} catch (NoSuchMethodException e1) {
+				c = nodeClass.getDeclaredConstructor(Identity.class,SimplePropertyList.class,NodeFactory.class);
+			} catch (Exception e1) {
 				log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
-				e1.printStackTrace();
-			} catch (SecurityException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			}			
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return c;
 	}
-
 
 	@Override 
 	public Node makeNode(Class<? extends Node> nodeClass, 
@@ -156,10 +166,8 @@ public class DefaultGraphFactory
 			ReadOnlyPropertyList props) {
 		Constructor<? extends Node> c = getNodeConstructorProps(nodeClass);
 		Identity id = scope.newId(proposedId);
-		Node n;
 		try {
-			n = c.newInstance(id,props,this);
-			return n;
+			return c.newInstance(id,props,this);
 		} catch (Exception e) {
 			log.severe(()->"Node of class \""+nodeClass.getName()+ "\" could not be instantiated");
 		}
@@ -169,12 +177,10 @@ public class DefaultGraphFactory
 	@Override
 	public Node makeNode(Class<? extends Node> nodeClass, 
 			String proposedId) {
+		Constructor<? extends Node> c = getNodeConstructorNoProps(nodeClass);
+		Identity id = scope.newId(proposedId);
 		try {
-			Constructor<? extends Node> c = 
-				nodeClass.getConstructor(Identity.class,NodeFactory.class);
-			Identity id = scope.newId(proposedId);
-			Node n = c.newInstance(id,this);
-			return n;
+			return c.newInstance(id,this);
 		} catch (Exception e) {
 			log.severe(()->"Node of class \""+nodeClass.getName()+ "\" could not be instantiated");
 		}
@@ -184,12 +190,10 @@ public class DefaultGraphFactory
 	@Override
 	public Node makeNode(Class<? extends Node> nodeClass, 
 			ReadOnlyPropertyList props) {
+		Constructor<? extends Node> c = getNodeConstructorProps(nodeClass);
+		Identity id = scope.newId();
 		try {
-			Constructor<? extends Node> c = 
-				nodeClass.getConstructor(ReadOnlyPropertyList.class,NodeFactory.class);
-			Identity id = scope.newId();
-			Node n = c.newInstance(id,props,this);
-			return n;
+			return c.newInstance(id,props,this);
 		} catch (Exception e) {
 			log.severe(()->"Node of class \""+nodeClass.getName()+ "\" could not be instantiated");
 		}
@@ -198,54 +202,144 @@ public class DefaultGraphFactory
 
 	@Override
 	public Node makeNode(Class<? extends Node> nodeClass) {
+		Constructor<? extends Node> c = getNodeConstructorNoProps(nodeClass);
+		Identity id = scope.newId();
 		try {
-			Constructor<? extends Node> c =	nodeClass.getConstructor(NodeFactory.class);
-			Identity id = scope.newId();
-			Node n = c.newInstance(id,this);
-			return n;
+			return c.newInstance(id,this);
 		} catch (Exception e) {
 			log.severe(()->"Node of class \""+nodeClass.getName()+ "\" could not be instantiated");
 		}
 		return null;
 	}
-
 	
 	// TreeNodeFactory
+	
+	private void connectToParent(TreeNode child, TreeNode parent) {
+		child.setParent(parent);
+		if (parent!=null)
+			parent.addChild(child);
+	}
 
 	@Override
 	public TreeNode makeTreeNode(TreeNode parent) {
 		TreeNode result = new SimpleTreeNodeImpl(scope.newId(defaultNodeId),this);
-		result.setParent(parent);
-		if (parent!=null)
-			parent.addChild(result);
+		connectToParent(result,parent);
 		return result;
 	}
 
 	@Override
 	public TreeNode makeTreeNode(TreeNode parent, String proposedId) {
 		TreeNode result = new SimpleTreeNodeImpl(scope.newId(proposedId),this);
-		result.setParent(parent);
-		if (parent!=null)
-			parent.addChild(result);
+		connectToParent(result,parent);
 		return result;
 	}
 
 	@Override
 	public TreeNode makeTreeNode(TreeNode parent, SimplePropertyList properties) {
 		TreeNode result = new DataTreeNodeImpl(scope.newId(defaultNodeId),properties,this);
-		result.setParent(parent);
-		if (parent!=null)
-			parent.addChild(result);
+		connectToParent(result,parent);
 		return result;
 	}
 
 	@Override
 	public TreeNode makeTreeNode(TreeNode parent, String proposedId, SimplePropertyList properties) {
 		TreeNode result = new DataTreeNodeImpl(scope.newId(proposedId),properties,this);
-		result.setParent(parent);
-		if (parent!=null)
-			parent.addChild(result);
+		connectToParent(result,parent);
 		return result;
 	}
+	
+	private Constructor<? extends TreeNode> getTreeNodeConstructorNoProps(Class<? extends TreeNode> nodeClass) {
+		Constructor<? extends TreeNode> c = null;
+		try {
+			c = nodeClass.getDeclaredConstructor(Identity.class,TreeNodeFactory.class);
+		} catch (Exception e) {
+			log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
+		}
+		return c;
+	}
 
+	private Constructor<? extends TreeNode> getTreeNodeConstructorProps(Class<? extends TreeNode> nodeClass) {
+		Constructor<? extends TreeNode> c = null;
+		try {
+			c = nodeClass.getDeclaredConstructor(Identity.class,
+				ReadOnlyPropertyList.class,TreeNodeFactory.class);
+		} catch (Exception e) {
+			try {
+				c = nodeClass.getDeclaredConstructor(Identity.class,
+					SimplePropertyList.class,TreeNodeFactory.class);
+			} catch (Exception e1) {
+				log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
+			}			
+		}
+		return c;
+	}
+
+	@Override
+	public TreeNode makeTreeNode(Class<? extends TreeNode> treeNodeClass, TreeNode parent) {
+		Constructor<? extends TreeNode> c = getTreeNodeConstructorNoProps(treeNodeClass);
+		Identity id = scope.newId();
+		try {
+			TreeNode tn = c.newInstance(id,this); 
+			connectToParent(tn,parent);
+			return tn;
+		} catch (Exception e) {
+			log.severe(()->"Node of class \""+treeNodeClass.getName()+ "\" could not be instantiated");
+		}
+		return null;
+	}
+
+	@Override
+	public TreeNode makeTreeNode(Class<? extends TreeNode> treeNodeClass, TreeNode parent,
+			SimplePropertyList properties) {
+		Constructor<? extends TreeNode> c = getTreeNodeConstructorProps(treeNodeClass);
+		Identity id = scope.newId();
+		try {
+			TreeNode tn = c.newInstance(id,properties,this); 
+			connectToParent(tn,parent);
+			return tn;
+		} catch (Exception e) {
+			log.severe(()->"Node of class \""+treeNodeClass.getName()+ "\" could not be instantiated");
+		}
+		return null;
+	}
+
+	@Override
+	public TreeNode makeTreeNode(Class<? extends TreeNode> treeNodeClass, 
+			TreeNode parent, String proposedId) {
+		Constructor<? extends TreeNode> c = getTreeNodeConstructorNoProps(treeNodeClass);
+		Identity id = scope.newId(proposedId);
+		try {
+			TreeNode tn = c.newInstance(id,this); 
+			connectToParent(tn,parent);
+			return tn;
+		} catch (Exception e) {
+			log.severe(()->"Node of class \""+treeNodeClass.getName()+ "\" could not be instantiated");
+		}
+		return null;
+	}
+
+	@Override
+	public TreeNode makeTreeNode(Class<? extends TreeNode> treeNodeClass, TreeNode parent, String proposedId,
+			SimplePropertyList properties) {
+		Constructor<? extends TreeNode> c = getTreeNodeConstructorProps(treeNodeClass);
+		Identity id = scope.newId(proposedId);
+		try {
+			TreeNode tn = c.newInstance(id,properties,this); 
+			connectToParent(tn,parent);
+			return tn;
+		} catch (Exception e) {
+			log.severe(()->"Node of class \""+treeNodeClass.getName()+ "\" could not be instantiated");
+		}
+		return null;
+	}
+
+	public String treeNodeClassName(Class<? extends TreeNode> nodeClass) {
+		return treeNodeClassNames.get(nodeClass);
+	}
+	
+	public Class<? extends TreeNode> treeNodeClass(String label) {
+		return treeNodeLabels.get(label);
+	}
+
+	
 }

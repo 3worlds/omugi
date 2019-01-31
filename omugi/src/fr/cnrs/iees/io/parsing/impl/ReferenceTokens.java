@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing.impl;
 
-import fr.cnrs.iees.graph.GraphElement;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**
@@ -44,8 +43,8 @@ public enum ReferenceTokens {
 
 	// token type	prefix						content type	suffix
 	NODE_REF		('\0',							"token",	SaveableAsText.SLASH),
-	NODE_LABEL		('\0',							"String",	GraphElement.LABEL_NAME_SEPARATOR),
-	NODE_NAME		(GraphElement.LABEL_NAME_SEPARATOR,	"String",	'\0'),
+	NODE_LABEL		('\0',							"String",	SaveableAsText.COLON),
+	NODE_NAME		(SaveableAsText.COLON,			"String",	'\0'),
 	PROPERTY_NAME	(SaveableAsText.PLUS,			"String",	SaveableAsText.EQUAL),
 	PROPERTY_VALUE	(SaveableAsText.EQUAL,			"Object",	'\0'),
 	;

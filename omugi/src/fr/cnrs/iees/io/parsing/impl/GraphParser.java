@@ -48,8 +48,6 @@ import fr.cnrs.iees.graph.impl.MutableGraphImpl;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
-//import fr.ens.biologie.generic.Labelled;
-//import fr.ens.biologie.generic.Named;
 
 /**
  * <p>A replacement parser for Shayne's 'UniversalParser'. Simpler. Maybe Faster. 
@@ -78,8 +76,8 @@ import fr.cnrs.iees.properties.PropertyListFactory;
  *
  */
 //todo: import	
-// add options at graph level for property list types, node types, edge types ???
 // Tested OK with version 0.0.1 on 17/12/2018
+// Tested OK with version 0.0.10 on 31/1/2019
 public class GraphParser extends MinimalGraphParser {
 	
 	private Logger log = Logger.getLogger(GraphParser.class.getName());
@@ -286,7 +284,6 @@ public class GraphParser extends MinimalGraphParser {
 				getClass(GraphProperties.PROP_FACTORY,log);
 		// setup the factories
 		try {
-//			nodeFactory = nFactoryClass.newInstance();
 			Constructor<? extends NodeFactory> c = nFactoryClass.getConstructor(Map.class);
 			nodeFactory = c.newInstance(labels);
 			edgeFactory = eFactoryClass.newInstance();
@@ -294,50 +291,65 @@ public class GraphParser extends MinimalGraphParser {
 				if (nodeFactory instanceof DefaultGraphFactory)
 					edgeFactory = (EdgeFactory) nodeFactory;
 			propertyListFactory = plFactoryClass.newInstance();
+			if (plFactoryClass.equals(nFactoryClass))
+				if (nodeFactory instanceof DefaultGraphFactory)
+					propertyListFactory = (PropertyListFactory) nodeFactory;
 		} catch (Exception e) {
 			// There should not be any problem here given the previous checks
 			// unless the factory class is flawed
 			e.printStackTrace();
 		}
-		// make nodes and edges
+		// make nodes
 		Map<String,Node> nodes = new HashMap<>();
 		for (nodeSpec ns: nodeSpecs) {
 			Node n = null;
+			Class<? extends Node> nc = nodeFactory.nodeClass(ns.label);
 			if (ns.props.isEmpty())
-				n = nodeFactory.makeNode(nodeFactory.nodeClass(ns.label),ns.name);
+				if (nc==null)
+					n = nodeFactory.makeNode(ns.name);
+				else
+					n = nodeFactory.makeNode(nc,ns.name);
 			else
-				n = nodeFactory.makeNode(nodeFactory.nodeClass(ns.label),ns.name,makePropertyList(ns.props,log));
+				if (nc==null)
+					n = nodeFactory.makeNode(ns.name,makePropertyList(ns.props,log));
+				else
+					n = nodeFactory.makeNode(nc,ns.name,makePropertyList(ns.props,log));
 			String nodeId = ns.label.trim()+":"+ns.name.trim();
 			if (nodes.containsKey(nodeId))
 				log.severe("duplicate node found ("+") - ignoring the second one");
 			else
 				nodes.put(nodeId,n);
 		}
+		// make edges
 		for (edgeSpec es:edgeSpecs) {
-			String[] refs = es.start.split(":");
-			String ref = refs[0].trim()+":"+refs[1].trim();
+			String ref = es.start.replaceAll("\\s","");
 			Node start = nodes.get(ref);
 			if (start==null)
 				log.severe("start node "+ref+" not found for edge "+es.label+":"+es.name);
-			refs = es.end.split(":");
-			ref = refs[0].trim()+":"+refs[1].trim();
+			ref = es.end.replaceAll("\\s","");
 			Node end = nodes.get(ref);
 			if (end==null)
 				log.severe("end node "+ref+" not found for edge "+es.label+":"+es.name);
 			if ((start!=null)&&(end!=null)) {
+				Class<? extends Edge> ec = edgeFactory.edgeClass(es.label);
 				if (es.props.isEmpty())
-					edgeFactory.makeEdge(start, end);
+					if (ec==null)
+						edgeFactory.makeEdge(start,end,es.name);
+					else
+						edgeFactory.makeEdge(ec,start,end,es.name);
 				else 
-					edgeFactory.makeEdge(start,end,makePropertyList(es.props,log));
+					if (ec==null)
+						edgeFactory.makeEdge(start,end,es.name,makePropertyList(es.props,log));
+					else
+						edgeFactory.makeEdge(ec,start,end,es.name,makePropertyList(es.props,log));
 			}
 		}
-		// make graph
+		// make graph and fill it with nodes
 		try {
 			Constructor<?> cons = graphClass.getConstructor(Iterable.class);
 			graph = (Graph<? extends Node, ? extends Edge>) cons.newInstance(nodes.values()); // pbs with non empty constructors
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.severe("Graph constructor not found.");
 		}
 	}
 	

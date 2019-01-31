@@ -39,11 +39,19 @@ package fr.cnrs.iees.io.parsing.impl;
  */
 public enum TreeProperties {
 
-	// name			property name				property class				property default value
-	CLASS			("type",					"fr.cnrs.iees.tree.Tree",	"fr.cnrs.iees.tree.impl.ImmutableTreeImpl"),
-	TREE_FACTORY	("tree_factory",			"fr.cnrs.iees.tree.TreeNodeFactory",	"fr.cnrs.iees.tree.impl.DefaultTreeFactory"),
-	PROP_FACTORY	("property_list_factory",	"fr.cnrs.iees.properties.PropertyListFactory",	"fr.cnrs.iees.tree.impl.DefaultTreeFactory"),
-	MUTABLE			("mutable",					"java.lang.Boolean",		"false"),
+	// name			property name	property class				property default value
+	CLASS			("type",					
+									"fr.cnrs.iees.graph.Tree",	"fr.cnrs.iees.graph.impl.ImmutableTreeImpl"),
+	
+	TREE_FACTORY	("tree_factory",			
+									"fr.cnrs.iees.graph.TreeNodeFactory",	
+																"fr.cnrs.iees.graph.impl.DefaultGraphFactory"),
+	
+	PROP_FACTORY	("property_list_factory",	
+									"fr.cnrs.iees.properties.PropertyListFactory",	
+																"fr.cnrs.iees.graph.impl.DefaultGraphFactory"),
+	
+	MUTABLE			("mutable",		"java.lang.Boolean",		"false"),
 	// others to come ?
 	;
 	

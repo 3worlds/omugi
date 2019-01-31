@@ -1,41 +1,41 @@
-graph // saved by OmugiGraphExporter on Wed Jan 23 09:12:47 CET 2019
+graph // saved by OmugiGraphExporter on Thu Jan 31 14:50:19 CET 2019
 
 // 4 NODES
-node D89EF3043496-0000016879C4CDBE-0000
+DataNodeImpl node4
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
-node D89EF3043496-0000016879C4CDBE-0001
+DataNodeImpl node5
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
-node D89EF3043496-0000016879C4CDBD-0000
+DataNodeImpl node6
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
-node D89EF3043496-0000016879C4CDBF-0000
+DataNodeImpl node7
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
 
 // 5 EDGES
-[node:D89EF3043496-0000016879C4CDBE-0001] edge D89EF3043496-0000016879C4CDC2-0000 [node:D89EF3043496-0000016879C4CDBF-0000]
+[DataNodeImpl:node4] DataEdgeImpl edge5 [DataNodeImpl:node5]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[node:D89EF3043496-0000016879C4CDBD-0000] edge D89EF3043496-0000016879C4CDC1-0000 [node:D89EF3043496-0000016879C4CDBE-0000]
+[DataNodeImpl:node5] DataEdgeImpl edge8 [DataNodeImpl:node6]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[node:D89EF3043496-0000016879C4CDBF-0000] edge D89EF3043496-0000016879C4CDC2-0002 [node:D89EF3043496-0000016879C4CDBE-0001]
+[DataNodeImpl:node5] DataEdgeImpl edge6 [DataNodeImpl:node4]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[node:D89EF3043496-0000016879C4CDBF-0000] edge D89EF3043496-0000016879C4CDC3-0000 [node:D89EF3043496-0000016879C4CDBD-0000]
+[DataNodeImpl:node5] DataEdgeImpl edge7 [DataNodeImpl:node5]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[node:D89EF3043496-0000016879C4CDBF-0000] edge D89EF3043496-0000016879C4CDC2-0001 [node:D89EF3043496-0000016879C4CDBF-0000]
+[DataNodeImpl:node6] DataEdgeImpl edge9 [DataNodeImpl:node7]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)

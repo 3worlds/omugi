@@ -59,6 +59,7 @@ import au.edu.anu.rscs.aot.collections.tables.Table;
 // tested with version 0.0.1 on a graph of DataNodes and DataEdges OK on 29/11/2018
 // Problem: keys must be saved BEFORE the graph as per the xml schema
 // tested with version 0.0.4 OK on 20/12/2018 (fixed previous bug)
+// tested OK with version 0.0.10 on 31/1/2019
 public class GraphmlExporter implements GraphExporter {
 
 	// the output file
@@ -240,7 +241,7 @@ public class GraphmlExporter implements GraphExporter {
 	private void writeGraph(StringBuilder sb,Graph<? extends Node, ? extends Edge> graph) {
 		sb.append("  <graph id=\"G\" edgedefault=\"directed\">\n");
 		for (Node node : graph.nodes()) {
-			sb.append("    <node id=\"" + localId(node.uniqueId()) + "\"");
+			sb.append("    <node id=\"" + localId(node.id()) + "\"");
 			String s = writeData(node);
 			if (s==null)
 				sb.append("/>\n");
@@ -251,9 +252,9 @@ public class GraphmlExporter implements GraphExporter {
 			}
 		}
 		for (Edge edge : graph.edges()) {
-			sb.append("    <edge id=\"" + localId(edge.uniqueId()) 
-				+ "\" source=\"" + localId(edge.startNode().uniqueId()) 
-				+ "\" target=\"" + localId(edge.endNode().uniqueId()) 
+			sb.append("    <edge id=\"" + localId(edge.id()) 
+				+ "\" source=\"" + localId(edge.startNode().id()) 
+				+ "\" target=\"" + localId(edge.endNode().id()) 
 				+ "\"");
 			String s = writeData(edge);
 			if (s==null)

@@ -117,4 +117,41 @@ public interface EdgeFactory {
 		return edgeClass.getSimpleName();
 	}
 	
+	/**
+	 * returns the class type matching an edge "label". Default behaviour is to pretend
+	 * label is a class name in the package fr.cnrs.iees.graph.impl
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public default Class<? extends Edge> edgeClass(String label) {
+		try {
+			return (Class<? extends Edge>) Class.forName("fr.cnrs.iees.graph.impl."+label);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Create an edge of a particular sub-class passed as the first argument
+	 * 
+	 * @param edgeClass
+	 * @param start
+	 * @param end
+	 * @param proposedId
+	 * @param props
+	 * @return
+	 */
+	public Edge makeEdge(Class<? extends Edge> edgeClass, 
+		Node start, Node end, String proposedId, ReadOnlyPropertyList props);
+
+	public Edge makeEdge(Class<? extends Edge> edgeClass,
+		Node start, Node end, String proposedId);
+	
+	public Edge makeEdge(Class<? extends Edge> edgeClass,
+		Node start, Node end, ReadOnlyPropertyList props);
+	
+	public Edge makeEdge(Class<? extends Edge> edgeClass,Node start, Node end);
+	
+	
+	
 }

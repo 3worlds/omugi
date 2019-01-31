@@ -88,13 +88,13 @@ class GraphmlExporterTest {
 		// simple graph
 		nodes = new HashMap<String,String>();
 		n1 = f.makeNode();
-		nodes.put(n1.uniqueId(), "n1");
+		nodes.put(n1.id(), "n1");
 		n2 = f.makeNode();
-		nodes.put(n2.uniqueId(), "n2");
+		nodes.put(n2.id(), "n2");
 		n3 = f.makeNode();
-		nodes.put(n3.uniqueId(), "n3");
+		nodes.put(n3.id(), "n3");
 		n4 = f.makeNode();
-		nodes.put(n4.uniqueId(), "n4");
+		nodes.put(n4.id(), "n4");
 		e1 = f.makeEdge(n1,n2);
 		e2 = f.makeEdge(n2,n1);
 		e3 = f.makeEdge(n2,n2);

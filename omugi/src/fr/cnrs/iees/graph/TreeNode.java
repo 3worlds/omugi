@@ -104,4 +104,18 @@ public interface TreeNode extends Identity, Textable {
 	 */
 	public int nChildren();
 	
+	/**
+	 * The "label" or classId of a TreeNode is a String matching its java class name. It is
+	 * known by the treeNodeFactory.
+	 * This method should not be overriden.
+	 * 
+	 * @return
+	 */
+	public default String classId() {
+		String s = treeNodeFactory().treeNodeClassName(this.getClass());
+		if (s==null)
+			s = this.getClass().getSimpleName();
+		return s;
+	}
+
 }

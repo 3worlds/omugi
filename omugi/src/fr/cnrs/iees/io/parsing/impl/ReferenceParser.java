@@ -47,7 +47,7 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**
- * 
+ * TODO: possible flaw here as classId is used as part of identity
  * @author Jacques Gignoux - 19 déc. 2018
  *
  */
@@ -136,7 +136,7 @@ public class ReferenceParser extends Parser {
 					return false;
 			// match node name
 			if (nm.name.length()>0) // no name in ref means any node matches
-				if (!testNode.instanceId().equals(nm.name))
+				if (!testNode.id().equals(nm.name))
 					return false;
 			// match property names and values
 			for (propMatch pm:nm.props) {

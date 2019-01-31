@@ -59,14 +59,32 @@ public interface TreeNodeFactory {
 		return makeTreeNode(parent,null,properties);
 	}
 	
-	public default TreeNode makeTreeNode(TreeNode parent, String proposedId) {
+	public default TreeNode makeTreeNode(TreeNode parent,String proposedId) {
 		return makeTreeNode(parent,proposedId,null);
 	}
 	
-	public TreeNode makeTreeNode(TreeNode parent, String proposedId,SimplePropertyList properties);
+	public TreeNode makeTreeNode(TreeNode parent,String proposedId,SimplePropertyList properties);
 
 	public default String treeNodeClassName(Class<? extends TreeNode> nodeClass) {
 		return nodeClass.getSimpleName();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public default Class<? extends TreeNode> treeNodeClass(String label) {
+		try {
+			return (Class<? extends TreeNode>) Class.forName("fr.cnrs.iees.graph.impl."+label);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+	}
 
+
+	public TreeNode makeTreeNode(Class<? extends TreeNode> treeNodeClass,TreeNode parent);
+	public TreeNode makeTreeNode(Class<? extends TreeNode> treeNodeClass,TreeNode parent,
+		SimplePropertyList properties);
+	public TreeNode makeTreeNode(Class<? extends TreeNode> treeNodeClass,TreeNode parent,
+		String proposedId);
+	public TreeNode makeTreeNode(Class<? extends TreeNode> treeNodeClass,TreeNode parent,
+			String proposedId,SimplePropertyList properties);
+	
 }

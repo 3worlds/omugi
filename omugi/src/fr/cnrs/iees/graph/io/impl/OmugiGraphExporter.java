@@ -50,6 +50,7 @@ import fr.cnrs.iees.graph.ReadOnlyDataEdge;
 import fr.cnrs.iees.graph.ReadOnlyDataNode;
 import fr.cnrs.iees.graph.Tree;
 import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.DataTreeNode;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
@@ -62,6 +63,7 @@ import fr.ens.biologie.generic.SaveableAsText;
  *
  */
 // tested OK with version 0.0.4 on 21/12/2018
+// tested OK with version 0.0.10 on 31/1/2019
 public class OmugiGraphExporter implements GraphExporter {
 
 	private Logger log = Logger.getLogger(OmugiGraphExporter.class.getName());
@@ -120,20 +122,24 @@ public class OmugiGraphExporter implements GraphExporter {
 	protected void exportEdges(Iterable<? extends Edge> edges, PrintWriter w) {
 		for (Edge e:edges) {
 			w.print(NODE_REF.prefix());
-			w.print(e.startNode().uniqueId());
+			w.print(e.startNode().classId());
+			w.print(SaveableAsText.COLON);
+			w.print(e.startNode().id());
 			w.print(NODE_REF.suffix());
 			w.print(' ');
 			w.print(e.classId());
 			w.print(LABEL.suffix());
-			w.print(e.instanceId());
+			w.print(e.id());
 			w.print(' ');
 			w.print(NODE_REF.prefix());
-			w.print(e.endNode().uniqueId());
+			w.print(e.endNode().classId());
+			w.print(SaveableAsText.COLON);
+			w.print(e.endNode().id());
 			w.println(NODE_REF.suffix());
 			if (ReadOnlyDataEdge.class.isAssignableFrom(e.getClass()))
 				writeProperties((ReadOnlyPropertyList)e,w,"");
 			else if (DataEdge.class.isAssignableFrom(e.getClass()))
-				writeProperties((SimplePropertyList)e,w,"");
+				writeProperties((SimplePropertyList)((DataEdge)e).properties(),w,"");
 		}
 	}
 	
@@ -153,12 +159,12 @@ public class OmugiGraphExporter implements GraphExporter {
 			for (Node n:graph.nodes()) {
 				writer.print(n.classId());
 				writer.print(LABEL.suffix());
-				writer.println(n.instanceId());
+				writer.println(n.id());
 				// node properties
 				if (ReadOnlyDataNode.class.isAssignableFrom(n.getClass()))
 					writeProperties((ReadOnlyPropertyList)n,writer,"");
 				else if (DataNode.class.isAssignableFrom(n.getClass()))
-					writeProperties((SimplePropertyList)n,writer,"");
+					writeProperties((SimplePropertyList)((DataNode) n).properties(),writer,"");
 				nedges += n.degree(Direction.OUT);
 			}
 			// export edges
@@ -182,12 +188,12 @@ public class OmugiGraphExporter implements GraphExporter {
 		w.print(indent);
 		w.print(node.classId());
 		w.print(LABEL.suffix());
-		w.println(node.instanceId());
+		w.println(node.id());
 		// node properties
 		if (ReadOnlyPropertyList.class.isAssignableFrom(node.getClass()))
 			writeProperties((ReadOnlyPropertyList)node,w,indent);
 		else if (SimplePropertyList.class.isAssignableFrom(node.getClass()))
-			writeProperties((SimplePropertyList)node,w,indent);
+			writeProperties((SimplePropertyList)((DataTreeNode) node).properties(),w,indent);
 		for (TreeNode tn: node.getChildren())
 			writeTree(tn,w,depth+1);
 	}
