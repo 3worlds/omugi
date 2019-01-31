@@ -186,7 +186,6 @@ public class GraphParser extends MinimalGraphParser {
 						case GRAPH:
 							log.severe("missing node label declaration");
 							break;
-//							throw new OmugiException("missing node label declaration");
 						case NODE:
 							lastNode.name = tk.value;
 							nodeSpecs.add(lastNode);
@@ -316,7 +315,7 @@ public class GraphParser extends MinimalGraphParser {
 					n = nodeFactory.makeNode(nc,ns.name,makePropertyList(ns.props,log));
 			String nodeId = ns.label.trim()+":"+ns.name.trim();
 			if (nodes.containsKey(nodeId))
-				log.severe("duplicate node found ("+") - ignoring the second one");
+				log.severe(()->"duplicate node found ("+") - ignoring the second one");
 			else
 				nodes.put(nodeId,n);
 		}

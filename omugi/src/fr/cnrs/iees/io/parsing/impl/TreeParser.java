@@ -209,10 +209,17 @@ public class TreeParser extends MinimalGraphParser {
 		Map<String,TreeNode> nodes = new HashMap<>();
 		for (treeNodeSpec ns:nodeSpecs) {
 			TreeNode n = null;
+			Class<? extends TreeNode> nc = treeFactory.treeNodeClass(ns.label);
 			if (ns.props.isEmpty())
-				n = treeFactory.makeTreeNode(null);
+				if (nc==null)
+					n = treeFactory.makeTreeNode(null,ns.name);
+				else
+					n = treeFactory.makeTreeNode(nc,null,ns.name);
 			else
-				n = treeFactory.makeTreeNode(null,makePropertyList(ns.props,log));
+				if (nc==null)
+					n = treeFactory.makeTreeNode(null,ns.name,makePropertyList(ns.props,log));
+				else
+					n = treeFactory.makeTreeNode(nc,null,ns.name,makePropertyList(ns.props,log));
 			String nodeId = ns.label.trim()+":"+ns.name.trim();
 			if (nodes.containsKey(nodeId))
 				log.severe("duplicate node found ("+nodeId+") - ignoring the second one");

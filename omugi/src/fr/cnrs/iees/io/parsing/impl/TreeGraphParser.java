@@ -38,7 +38,6 @@ import java.util.logging.Logger;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
 import fr.cnrs.iees.graph.impl.TreeGraph;
 import fr.cnrs.iees.graph.impl.TreeGraphFactory;
 import fr.cnrs.iees.graph.impl.TreeGraphNode;
@@ -88,40 +87,61 @@ public class TreeGraphParser extends MinimalGraphParser {
 	// lazy init: nothing is done before it's needed
 	/**
 	 * Default constructor.
-	 * NB: to use other factories for nodes and edges, just make a descendant and write 
-	 * the appropriate constructor (as this one, initialising the factories to whatever you want).
+	 * 
 	 * @param tokenizer
 	 */
 	public TreeGraphParser(TreeGraphTokenizer tokenizer) {
 		super();
 		this.tokenizer =tokenizer;
-		// setup the factories
-		propertyListFactory = new DefaultGraphFactory();
-		graphFactory = new TreeGraphFactory();
 	}
 		
+	@SuppressWarnings("unchecked")
 	private void buildGraph() {
 		// parse token if not yet done
 		if (lastItem==null)
 			parse();
+		// scan graph properties for label properties
+		Map<String,String> labels = new HashMap<>();
+		for (propSpec p:graphProps) {
+			GraphProperties gp = GraphProperties.propertyForName(p.name);
+			if (gp==null) { // all other properties are considered to be (label,class name) pairs
+				if (p.type.contains("String"))
+					labels.put(p.name,p.value);
+			}
+		}		
+		// setup the factories
+		graphFactory = new TreeGraphFactory(labels);
+		propertyListFactory = graphFactory;
 		// make tree nodes
 		Map<String,TreeGraphNode> nodes = new HashMap<>();
 		for (treeNodeSpec ns:nodeSpecs) {
 			TreeGraphNode n = null;
-			TreeGraphNode parent = null;
+			Class<? extends TreeGraphNode> nc = 
+				(Class<? extends TreeGraphNode>) graphFactory.nodeClass(ns.label);
 			if (ns.props.isEmpty()) 
-				n = (TreeGraphNode) graphFactory.makeTreeNode(parent,ns.label.trim(),ns.name.trim());
+				if (nc==null)
+					n = graphFactory.makeTreeNode(null,ns.name);
+				else
+					n = graphFactory.makeTreeNode(nc,null,ns.name);
 			else
-				n = (TreeGraphNode) graphFactory.makeTreeNode(parent,ns.label.trim(),
-					ns.name.trim(),makePropertyList(ns.props,log));
+				if (nc==null)
+					n = (TreeGraphNode) graphFactory.makeTreeNode(null,ns.name,
+						makePropertyList(ns.props,log));
+				else
+					n = (TreeGraphNode) graphFactory.makeTreeNode(nc,null,ns.name,
+						makePropertyList(ns.props,log));
 			if (ns.parent!=null) {
 				// the parent has always been set before
-				parent = nodes.get(ns.parent.label.trim()+":"+ns.parent.name.trim());
+				TreeGraphNode parent = nodes.get(ns.parent.label.trim()+":"+ns.parent.name.trim());
 				n.setParent(parent);
 				parent.addChild(n);
 			}
 			// this puts the node in the graph
-			nodes.put(n.classId()+":"+n.instanceId(),n);
+			String nodeId = ns.label.trim()+":"+ns.name.trim();
+			if (nodes.containsKey(nodeId))
+				log.severe(()->"duplicate node found ("+") - ignoring the second one");
+			else
+				nodes.put(nodeId,n);
 		}
 		graph = new TreeGraph<>(nodes.values());
 		// make cross links
@@ -129,19 +149,21 @@ public class TreeGraphParser extends MinimalGraphParser {
 			SimplePropertyList pl = null;
 			if (!es.props.isEmpty()) 
 				pl = makePropertyList(es.props,log);
-			String[] refs = es.start.split(":");
-			String ref = refs[0].trim()+":"+refs[1].trim();
+			String ref = es.start.replaceAll("\\s","");
 			Node start = nodes.get(ref);
 			if (start==null)
 				log.severe("start node "+ref+" not found for edge "+es.label+":"+es.name);
-			refs = es.end.split(":");
-			ref = refs[0].trim()+":"+refs[1].trim();
+			ref = es.end.replaceAll("\\s","");
 			Node end = nodes.get(ref);
 			if (end==null)
 				log.severe("end node "+ref+" not found for edge "+es.label+":"+es.name);
-			if ((start!=null)&&(end!=null))
-				// this attaches the edge properly to the nodes
-				graphFactory.makeEdge(start,end,es.label.trim(),es.name.trim(),pl);
+			if ((start!=null)&&(end!=null)) {
+				Class<? extends Edge> ec = graphFactory.edgeClass(es.label);
+				if (ec==null)
+					graphFactory.makeEdge(start,end,es.name,pl);
+				else
+					graphFactory.makeEdge(ec,start,end,es.name,pl);
+			}
 		}
 	}
 

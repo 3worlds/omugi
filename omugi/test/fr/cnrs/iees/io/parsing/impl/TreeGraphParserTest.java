@@ -45,8 +45,8 @@ class TreeGraphParserTest {
 	String[] test = {"aot // saved by AotGraphExporter on Mon Jan 21 11:31:07 CET 2019\n", 
 			"\n",
 			"// TREE\n", 
-			"3Worlds \n", 
-			"	ecology my model\n", 
+			"node 3Worlds \n", 
+			"	node ecology\n", 
 			"		a = java.lang.Object(null)\n", 
 			"		b = java.lang.Object(null)\n", 
 			"		category animal\n",
@@ -64,7 +64,7 @@ class TreeGraphParserTest {
 			"			z = java.lang.Object(null)\n", 
 			"		engine my simulator\n",
 			"		process growth\n",
-			"	codeSource \n",
+			"	node codeSource \n",
 			"		function some computation\n", 
 			"			a = java.lang.Object(null)\n", 
 			"			b = java.lang.Object(null)\n", 
@@ -88,45 +88,45 @@ class TreeGraphParserTest {
 	void testParse() {
 		TreeGraphParser p = new TreeGraphParser(new TreeGraphTokenizer(test));
 		p.parse();
-//		System.out.println(p.toString());
+		System.out.println(p.toString());
 		assertEquals(p.toString(),"Aot graph specification\n" + 
 				"Nodes:\n" + 
-				"3Worlds:\n" + 
+				"node:3Worlds\n" + 
 				"	ROOT NODE\n" + 
-				"ecology:my model\n" + 
+				"node:ecology\n" + 
 				"	a:java.lang.Object=null\n" + 
 				"	b:java.lang.Object=null\n" + 
-				"	parent 3Worlds:\n" + 
+				"	parent node:3Worlds\n" + 
 				"category:animal\n" + 
 				"	x:java.lang.Object=null\n" + 
 				"	y:java.lang.Object=null\n" + 
 				"	z:java.lang.Object=null\n" + 
-				"	parent ecology:my model\n" + 
+				"	parent node:ecology\n" + 
 				"system:entity\n" + 
 				"	i:java.lang.Object=null\n" + 
 				"	j:java.lang.Object=null\n" + 
 				"	k:java.lang.Object=null\n" + 
 				"	l:java.lang.Object=null\n" + 
-				"	parent ecology:my model\n" + 
+				"	parent node:ecology\n" + 
 				"category:plant\n" + 
 				"	x:java.lang.Object=null\n" + 
 				"	y:java.lang.Object=null\n" + 
 				"	z:java.lang.Object=null\n" + 
-				"	parent ecology:my model\n" + 
+				"	parent node:ecology\n" + 
 				"engine:my simulator\n" + 
-				"	parent ecology:my model\n" + 
+				"	parent node:ecology\n" + 
 				"process:growth\n" + 
-				"	parent ecology:my model\n" + 
-				"codeSource:\n" + 
-				"	parent 3Worlds:\n" + 
+				"	parent node:ecology\n" + 
+				"node:codeSource\n" + 
+				"	parent node:3Worlds\n" + 
 				"function:some computation\n" + 
 				"	a:java.lang.Object=null\n" + 
 				"	b:java.lang.Object=null\n" + 
-				"	parent codeSource:\n" + 
+				"	parent node:codeSource\n" + 
 				"bidon:D89EF3043496-000001686FF6BA12-0000\n" + 
-				"	parent codeSource:\n" + 
+				"	parent node:codeSource\n" + 
 				"experiment:my experiment\n" + 
-				"	parent 3Worlds:\n" + 
+				"	parent node:3Worlds\n" + 
 				"Edges:\n" + 
 				"	belongsTo:random name [system:entity-->category:animal]\n" + 
 				"	appliesTo: [process:growth-->category:animal]\n" + 
@@ -139,6 +139,10 @@ class TreeGraphParserTest {
 		TreeGraphParser p = new TreeGraphParser(new TreeGraphTokenizer(test2));
 		p.parse();
 //		System.out.println(p.toString());
+		assertEquals(p.toString(),"Aot graph specification\n" + 
+				"Nodes:\n" + 
+				"3Worlds:myProject\n" + 
+				"	ROOT NODE\n");
 	}
 
 	@Test

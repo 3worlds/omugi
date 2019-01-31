@@ -75,6 +75,14 @@ public class TreeGraphNode extends SimpleNodeImpl
 	// ---------------- TreeNode
 
 	@Override
+	public String classId() {
+		String s = nodeFactory().nodeClassName(this.getClass()); 
+		if (s==null)
+			s = this.getClass().getSimpleName();
+		return s;
+	}
+	
+	@Override
 	public void addChild(TreeNode child) {
 		treenode.addChild(child);
 	}
