@@ -224,7 +224,7 @@ public class OmugiGraphExporter implements GraphExporter {
 				+" on "+now+"\n");
 	}
 	
-	private void exportTreeGraph(TreeGraph<? extends TreeGraphNode, ? extends Edge> graph) {
+	protected void exportTreeGraph(TreeGraph<? extends TreeGraphNode, ? extends Edge> graph) {
 		try {
 			PrintWriter writer = new PrintWriter(file);
 			writeHeader(writer);
