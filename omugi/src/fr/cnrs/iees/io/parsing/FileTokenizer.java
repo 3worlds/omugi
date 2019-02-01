@@ -38,6 +38,8 @@ import java.util.logging.Logger;
 
 import fr.cnrs.iees.io.parsing.impl.GraphParser;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer;
+import fr.cnrs.iees.io.parsing.impl.TreeGraphParser;
+import fr.cnrs.iees.io.parsing.impl.TreeGraphTokenizer;
 import fr.cnrs.iees.io.parsing.impl.TreeParser;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
 
@@ -60,6 +62,8 @@ public class FileTokenizer implements Tokenizer {
 			String s = lines.get(0).trim();
 			if (s.startsWith("graph"))
 				tokenizer = new GraphTokenizer(this);
+			else if (s.startsWith("treegraph"))
+				tokenizer = new TreeGraphTokenizer(this);
 			else if (s.startsWith("tree"))
 				tokenizer = new TreeTokenizer(this);
 			else
@@ -86,6 +90,8 @@ public class FileTokenizer implements Tokenizer {
 			return new GraphParser((GraphTokenizer) tokenizer);
 		if (TreeTokenizer.class.isAssignableFrom(tokenizer.getClass()))
 			return new TreeParser((TreeTokenizer) tokenizer);
+		if (TreeGraphTokenizer.class.isAssignableFrom(tokenizer.getClass()))
+			return new TreeGraphParser((TreeGraphTokenizer) tokenizer);
 		return null;
 	}
 	

@@ -49,6 +49,7 @@ import static fr.cnrs.iees.io.GraphFileFormats.*;
  *
  */
 // Tested OK with version 0.0.4 on 21/12/2018
+// Tested OK with version 0.0.10 on 31/1/2019
 public class FileImporter {
 	
 	private GraphImporter importer = null;
