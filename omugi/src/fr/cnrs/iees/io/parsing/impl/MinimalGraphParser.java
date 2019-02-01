@@ -109,7 +109,7 @@ public abstract class MinimalGraphParser extends Parser {
 	}
 	//----------------------------------------------------
 	protected PropertyListFactory propertyListFactory = null;
-
+	
 	// builds a propertyList from specs
 	protected SimplePropertyList makePropertyList(List<propSpec> props, Logger log) {
 		List<Property> pl = new LinkedList<Property>();

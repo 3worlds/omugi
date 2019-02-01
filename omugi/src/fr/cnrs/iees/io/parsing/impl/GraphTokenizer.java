@@ -210,7 +210,7 @@ public class GraphTokenizer extends LineTokenizer {
 		}	
 		else if (words.length==1) // there is only one label in this case
 			if (!words[0].trim().isEmpty()) 
-				if (!words[0].trim().equals("graph")) { // I hate this - it's a flaw !
+				if (!isFileHeader(words[0].trim())) { // remove file header from the possible labels
 					tokenlist.add(new graphToken(LABEL,words[0].trim().replace("\"",""))); 
 					tokenlist.add(new graphToken(NAME,""));
 					return;

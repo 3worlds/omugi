@@ -50,6 +50,8 @@ import fr.cnrs.iees.graph.ReadOnlyDataEdge;
 import fr.cnrs.iees.graph.ReadOnlyDataNode;
 import fr.cnrs.iees.graph.Tree;
 import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.impl.TreeGraph;
+import fr.cnrs.iees.graph.impl.TreeGraphNode;
 import fr.cnrs.iees.graph.DataTreeNode;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
@@ -68,6 +70,9 @@ public class OmugiGraphExporter implements GraphExporter {
 
 	private Logger log = Logger.getLogger(OmugiGraphExporter.class.getName());
 	
+	// the keyword to put at the head of the saved file
+	protected String header = "graph";
+	
 	// the output file
 	protected File file;
 	
@@ -83,7 +88,7 @@ public class OmugiGraphExporter implements GraphExporter {
 	
 	//=====================================
 	
-	protected void writeProperties(ReadOnlyPropertyList props, PrintWriter w, String indent) {
+	private void writeProperties(ReadOnlyPropertyList props, PrintWriter w, String indent) {
 		for (String key: props.getKeysAsSet()) {
 			w.print('\t'); // indentation for readability
 			w.print(indent); // indentation for trees
@@ -119,7 +124,7 @@ public class OmugiGraphExporter implements GraphExporter {
 		}
 	}
 	
-	protected void exportEdges(Iterable<? extends Edge> edges, PrintWriter w) {
+	private void exportEdges(Iterable<? extends Edge> edges, PrintWriter w) {
 		for (Edge e:edges) {
 			w.print(NODE_REF.prefix());
 			w.print(e.startNode().classId());
@@ -137,7 +142,7 @@ public class OmugiGraphExporter implements GraphExporter {
 			w.print(e.endNode().id());
 			w.println(NODE_REF.suffix());
 			if (ReadOnlyDataEdge.class.isAssignableFrom(e.getClass()))
-				writeProperties((ReadOnlyPropertyList)e,w,"");
+				writeProperties((ReadOnlyPropertyList)((ReadOnlyDataEdge)e).properties(),w,"");
 			else if (DataEdge.class.isAssignableFrom(e.getClass()))
 				writeProperties((SimplePropertyList)((DataEdge)e).properties(),w,"");
 		}
@@ -146,10 +151,7 @@ public class OmugiGraphExporter implements GraphExporter {
 	private void exportGraph(Graph<? extends Node, ? extends Edge> graph) {
 		try {
 			PrintWriter writer = new PrintWriter(file);
-			Date now = new Date();
-			writer.println("graph "+COMMENT.prefix()+" saved by "
-				+OmugiGraphExporter.class.getSimpleName()
-				+" on "+now+"\n");
+			writeHeader(writer);
 			// export nodes
 			writer.print(COMMENT.prefix());
 			writer.print(' ');
@@ -162,7 +164,7 @@ public class OmugiGraphExporter implements GraphExporter {
 				writer.println(n.id());
 				// node properties
 				if (ReadOnlyDataNode.class.isAssignableFrom(n.getClass()))
-					writeProperties((ReadOnlyPropertyList)n,writer,"");
+					writeProperties((ReadOnlyPropertyList)((ReadOnlyDataNode)n).properties(),writer,"");
 				else if (DataNode.class.isAssignableFrom(n.getClass()))
 					writeProperties((SimplePropertyList)((DataNode) n).properties(),writer,"");
 				nedges += n.degree(Direction.OUT);
@@ -176,12 +178,12 @@ public class OmugiGraphExporter implements GraphExporter {
 			exportEdges(graph.edges(),writer);
 			writer.close();
 		} catch (FileNotFoundException e) {
-			log.severe("cannot save graph to file \""+file.getPath()+"\" - file not found");
+			log.severe(()->"cannot save graph to file \""+file.getPath()+"\" - file not found");
 		}
 	}
 	
 	// recursive
-	protected void writeTree(TreeNode node, PrintWriter w, int depth) {
+	private void writeTree(TreeNode node, PrintWriter w, int depth) {
 		String indent = "";
 		for (int i=0; i<depth; i++)
 			indent += "\t";
@@ -190,10 +192,12 @@ public class OmugiGraphExporter implements GraphExporter {
 		w.print(LABEL.suffix());
 		w.println(node.id());
 		// node properties
-		if (ReadOnlyPropertyList.class.isAssignableFrom(node.getClass()))
-			writeProperties((ReadOnlyPropertyList)node,w,indent);
-		else if (SimplePropertyList.class.isAssignableFrom(node.getClass()))
+		if (DataTreeNode.class.isAssignableFrom(node.getClass()))
 			writeProperties((SimplePropertyList)((DataTreeNode) node).properties(),w,indent);
+		else
+			if (TreeGraphNode.class.isAssignableFrom(node.getClass()))
+				if (((TreeGraphNode)node).properties()!=null)
+					writeProperties(((TreeGraphNode)node).properties(),w,indent);
 		for (TreeNode tn: node.getChildren())
 			writeTree(tn,w,depth+1);
 	}
@@ -201,10 +205,7 @@ public class OmugiGraphExporter implements GraphExporter {
 	private void exportTree(Tree<? extends TreeNode> tree) {
 		try {
 			PrintWriter writer = new PrintWriter(file);
-			Date now = new Date();
-			writer.println("tree "+COMMENT.prefix()+" saved by "
-				+OmugiGraphExporter.class.getSimpleName()
-				+" on "+now+"\n");
+			writeHeader(writer);
 			writer.print(COMMENT.prefix());
 			writer.print(' ');
 			writer.print(tree.size());
@@ -212,17 +213,55 @@ public class OmugiGraphExporter implements GraphExporter {
 			writeTree(tree.root(),writer, 0);
 			writer.close();
 		} catch (FileNotFoundException e) {
-			log.severe("cannot save graph to file \""+file.getPath()+"\" - file not found");
+			log.severe(()->"cannot save graph to file \""+file.getPath()+"\" - file not found");
+		}
+	}
+	
+	protected void writeHeader(PrintWriter pw) {
+		Date now = new Date();
+		pw.println(header+" "+ COMMENT.prefix()+" saved by "
+				+this.getClass().getSimpleName()
+				+" on "+now+"\n");
+	}
+	
+	private void exportTreeGraph(TreeGraph<? extends TreeGraphNode, ? extends Edge> graph) {
+		try {
+			PrintWriter writer = new PrintWriter(file);
+			writeHeader(writer);
+			// 1. export tree
+			writer.print(COMMENT.prefix());
+			writer.print(' ');
+			writer.println("TREE");
+			if (graph.root()!=null)
+				writeTree(graph.root(),writer, 0);
+			// 2. export edge list
+			writer.println();
+			writer.print(COMMENT.prefix());
+			writer.print(' ');
+			writer.println("CROSS-LINKS");
+			exportEdges(graph.edges(),writer);
+			writer.close();
+		} catch (FileNotFoundException e) {
+			log.severe(()->"cannot save treegraph to file \""+file.getPath()+"\" - file not found");
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void exportGraph(MinimalGraph<?> graph) {
-		if (Graph.class.isAssignableFrom(graph.getClass()))
+		// TreeGraph must be tested first because it's a subclass of Graph and Tree
+		if (TreeGraph.class.isAssignableFrom(graph.getClass())) {
+			header = "treegraph";
+			exportTreeGraph((TreeGraph<? extends TreeGraphNode, ? extends Edge>)graph);
+		}
+		else if (Graph.class.isAssignableFrom(graph.getClass())) {
+			header = "graph";
 			exportGraph((Graph<? extends Node, ? extends Edge>)graph);
-		else if (Tree.class.isAssignableFrom(graph.getClass()))
+		}
+		else if (Tree.class.isAssignableFrom(graph.getClass())) {
+			header = "tree";
 			exportTree((Tree<? extends TreeNode>)graph);
+		}
 	}
 
 }

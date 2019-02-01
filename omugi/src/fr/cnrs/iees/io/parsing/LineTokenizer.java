@@ -31,7 +31,9 @@
 package fr.cnrs.iees.io.parsing;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import fr.cnrs.iees.io.parsing.impl.TreeGraphTokens;
 
@@ -64,10 +66,22 @@ public abstract class LineTokenizer implements Tokenizer {
 	//----------------------------------------------------
 	
 	protected List<String> lines;
+	
+	// This array lists the words that are placed at the top of a file according
+	// to the graph type.
+	private static String[] fileHeaders = {"graph","tree","treegraph","aot"};
+	// this for expanding this list in descendants
+	protected Set<String> fheaders = new HashSet<String>();
 		
 	public LineTokenizer(FileTokenizer parent) {
 		super();
 		lines = parent.lines();
+		for (String s:fileHeaders)
+			fheaders.add(s);
+	}
+	
+	protected boolean isFileHeader(String s) {
+		return fheaders.contains(s);
 	}
 	
 	// for debugging only
@@ -76,6 +90,9 @@ public abstract class LineTokenizer implements Tokenizer {
 		this.lines = new ArrayList<>(lines.length);
 		for (int i=0; i<lines.length; i++)
 			this.lines.add(lines[i]);
+		for (String s:fileHeaders)
+			fheaders.add(s);
+
 	}
 	
 }

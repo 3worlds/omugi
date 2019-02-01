@@ -50,8 +50,11 @@ import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
 import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
+import fr.cnrs.iees.graph.impl.TreeGraph;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.io.FileImporter;
+import fr.cnrs.iees.io.parsing.impl.TreeGraphParser;
+import fr.cnrs.iees.io.parsing.impl.TreeGraphTokenizer;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
@@ -267,4 +270,55 @@ DataTreeNodeImpl 436e852b
 				plop = java.lang.Integer(12)
 	
 */	
+	
+	String[] test = {"treegraph // saved by AotGraphExporter on Mon Jan 21 11:31:07 CET 2019\n", 
+			"\n",
+			"// TREE\n", 
+			"node 3Worlds \n", 
+			"	node ecology\n", 
+			"		a = java.lang.Object(null)\n", 
+			"		b = java.lang.Object(null)\n", 
+			"		category animal\n",
+			"			x = java.lang.Object(null)\n", 
+			"			y = java.lang.Object(null)\n", 
+			"			z = java.lang.Object(null)\n", 
+			"		system entity\n",
+			"			i = java.lang.Object(null)\n", 
+			"			j = java.lang.Object(null)\n", 
+			"			k = java.lang.Object(null)\n", 
+			"			l = java.lang.Object(null)\n", 
+			"		category plant\n",
+			"			x = java.lang.Object(null)\n", 
+			"			y = java.lang.Object(null)\n", 
+			"			z = java.lang.Object(null)\n", 
+			"		engine my simulator\n",
+			"		process growth\n",
+			"	node codeSource \n",
+			"		function some computation\n", 
+			"			a = java.lang.Object(null)\n", 
+			"			b = java.lang.Object(null)\n", 
+			"		bidon D89EF3043496-000001686FF6BA12-0000\n", 
+			"	experiment my experiment\n",
+			"\n",
+			"// CROSS-LINKS\n", 
+			"[system:entity] belongsTo random name [category:animal]\n", 
+			"[process:growth] appliesTo  [category:animal]\n",
+			"[process:growth] appliesTo  [category:plant]\n", 
+			"[process:growth] function  [function:some computation]\n"};
+
+	
+	@Test
+	void testExportTreeGraph() {
+		TreeGraphParser p = new TreeGraphParser(new TreeGraphTokenizer(test));
+		TreeGraph<?, ?> g = p.graph();
+		System.out.println(g.toDetailedString());
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+				+ File.separator + "test" 
+				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+				+ File.separator + "treegraph.utg";
+		File f = new File(testfile);
+		OmugiGraphExporter ge = new OmugiGraphExporter(f);
+		ge.exportGraph(g);
+	}
+	
 }

@@ -30,10 +30,11 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.Collection;
+
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.graph.ReadOnlyDataNode;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.TreeNodeFactory;
 import fr.cnrs.iees.graph.impl.SimpleNodeImpl;
@@ -48,7 +49,7 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  *
  */
 public class TreeGraphNode extends SimpleNodeImpl 
-		implements Node, TreeNode {
+		implements ReadOnlyDataNode, TreeNode {
 
 	// this only holds the children and parent nodes
 	private TreeNode treenode;
@@ -185,6 +186,11 @@ public class TreeGraphNode extends SimpleNodeImpl
 				sb.append(' ').append(properties.toString());
 		sb.append("]");
 		return sb.toString();
+	}
+
+	@Override
+	public ReadOnlyPropertyList properties() {
+		return properties;
 	}
 		
 }

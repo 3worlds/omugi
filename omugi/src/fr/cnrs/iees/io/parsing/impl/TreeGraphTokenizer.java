@@ -78,7 +78,7 @@ public class TreeGraphTokenizer extends LineTokenizer {
 		splitLines();
 	}
 	
-	protected TreeGraphTokenizer(String[] lines) {
+	public TreeGraphTokenizer(String[] lines) {
 		super(lines);
 		splitLines();
 	}
