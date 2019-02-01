@@ -150,7 +150,6 @@ class TreeGraphParserTest {
 		TreeGraphParser p = new TreeGraphParser(new TreeGraphTokenizer(test));
 		TreeGraph<?, ?> g = p.graph();
 		System.out.println(g.toDetailedString());
-		assertTrue(g.toDetailedString().endsWith("(11 tree nodes / 4 cross-links) = {ecology:my model=[↑3Worlds: ↓category:animal ↓system:entity ↓category:plant ↓engine:my simulator ↓process:growth a=null b=null],codeSource:=[↑3Worlds: ↓function:some computation ↓bidon:D89EF3043496-000001686FF6BA12-0000],function:some computation=[↑codeSource: ←process:growth a=null b=null],category:animal=[↑ecology:my model ←system:entity ←process:growth x=null y=null z=null],system:entity=[↑ecology:my model →category:animal i=null j=null k=null l=null],experiment:my experiment=[↑3Worlds:],category:plant=[↑ecology:my model ←process:growth x=null y=null z=null],engine:my simulator=[↑ecology:my model],3Worlds:=[ROOT ↓ecology:my model ↓codeSource: ↓experiment:my experiment],process:growth=[↑ecology:my model →function:some computation →category:plant →category:animal],bidon:D89EF3043496-000001686FF6BA12-0000=[↑codeSource:]}"));
+		assertTrue(g.toDetailedString().endsWith("(11 tree nodes / 4 cross-links) = {some computation=[↑codeSource ←growth a=null b=null],growth=[↑ecology →animal →plant →some computation],3Worlds=[ROOT ↓ecology ↓my experiment ↓codeSource],D89EF3043496-000001686FF6BA12-0000=[↑codeSource],animal=[↑ecology ←growth ←entity x=null y=null z=null],plant=[↑ecology ←growth x=null y=null z=null],entity=[↑ecology →animal i=null j=null k=null l=null],ecology=[↑3Worlds ↓growth ↓animal ↓plant ↓entity ↓my simulator a=null b=null],my simulator=[↑ecology],my experiment=[↑3Worlds],codeSource=[↑3Worlds ↓some computation ↓D89EF3043496-000001686FF6BA12-0000]}"));	
 	}
-
 }

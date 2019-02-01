@@ -137,7 +137,7 @@ public class TreeGraphParser extends MinimalGraphParser {
 				parent.addChild(n);
 			}
 			// this puts the node in the graph
-			String nodeId = ns.label.trim()+":"+ns.name.trim();
+			String nodeId = (ns.label+":"+ns.name).replaceAll("\\s","");
 			if (nodes.containsKey(nodeId))
 				log.severe(()->"duplicate node found ("+") - ignoring the second one");
 			else
@@ -152,17 +152,23 @@ public class TreeGraphParser extends MinimalGraphParser {
 			String ref = es.start.replaceAll("\\s","");
 			Node start = nodes.get(ref);
 			if (start==null)
-				log.severe("start node "+ref+" not found for edge "+es.label+":"+es.name);
+				log.severe("start node \""+ref+"\" not found for edge \""+es.label+":"+es.name+"\"");
 			ref = es.end.replaceAll("\\s","");
 			Node end = nodes.get(ref);
 			if (end==null)
-				log.severe("end node "+ref+" not found for edge "+es.label+":"+es.name);
+				log.severe("end node \""+ref+"\" not found for edge \""+es.label+":"+es.name+"\"");
 			if ((start!=null)&&(end!=null)) {
 				Class<? extends Edge> ec = graphFactory.edgeClass(es.label);
-				if (ec==null)
-					graphFactory.makeEdge(start,end,es.name,pl);
+				if (pl==null)
+					if (ec==null)
+						graphFactory.makeEdge(start,end,es.name);
+					else
+						graphFactory.makeEdge(ec,start,end,es.name);
 				else
-					graphFactory.makeEdge(ec,start,end,es.name,pl);
+					if (ec==null)
+						graphFactory.makeEdge(start,end,es.name,pl);
+					else
+						graphFactory.makeEdge(ec,start,end,es.name,pl);
 			}
 		}
 	}

@@ -313,7 +313,7 @@ public class GraphParser extends MinimalGraphParser {
 					n = nodeFactory.makeNode(ns.name,makePropertyList(ns.props,log));
 				else
 					n = nodeFactory.makeNode(nc,ns.name,makePropertyList(ns.props,log));
-			String nodeId = ns.label.trim()+":"+ns.name.trim();
+			String nodeId = (ns.label+":"+ns.name).replaceAll("\\s","");
 			if (nodes.containsKey(nodeId))
 				log.severe(()->"duplicate node found ("+") - ignoring the second one");
 			else
