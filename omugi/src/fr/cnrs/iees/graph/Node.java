@@ -140,7 +140,9 @@ public interface Node extends GraphElement {
 	/**
 	 * The "label" or classId of a Node is a String matching its java class name. It is
 	 * known by the nodeFactory.
-	 * This method should not be overriden.
+	 * This method should not be overridden.
+	 * 
+	 * Should this, therefore, be in NodeAdapter as final.
 	 * 
 	 * @return
 	 */
