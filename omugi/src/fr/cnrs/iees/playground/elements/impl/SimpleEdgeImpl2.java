@@ -48,7 +48,7 @@ import fr.cnrs.iees.playground.factories.IEdgeFactory;
  * @author gignoux - 16 août 2017
  *
  */
-public  class SimpleEdgeImpl3 extends GraphElementAdapter2 implements IEdge {
+public  class SimpleEdgeImpl2 extends GraphElementAdapter2 implements IEdge {
 	
 	private IEdgeFactory factory;
 	private INode start = null;
@@ -59,14 +59,14 @@ public  class SimpleEdgeImpl3 extends GraphElementAdapter2 implements IEdge {
 	 * is invalid
 	 */
 	@SuppressWarnings("unused")
-	private SimpleEdgeImpl3() {}
+	private SimpleEdgeImpl2() {}
 	
 	/**
 	 * The only valid constructor for an Edge: an Edge cannot exist without a start and end node
 	 * @param start the start Node
 	 * @param end the end Node
 	 */
-	protected SimpleEdgeImpl3(Identity id, INode start, INode end, IEdgeFactory factory) {
+	protected SimpleEdgeImpl2(Identity id, INode start, INode end, IEdgeFactory factory) {
 		super(id);
 		this.factory = factory;
 		this.start = start;

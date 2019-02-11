@@ -36,7 +36,7 @@ import fr.cnrs.iees.playground.elements.ISimpleProperties;
 import fr.cnrs.iees.playground.factories.IEdgeFactory;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
-public class DataEdgeImpl2 extends SimpleEdgeImpl3 implements ISimpleProperties {
+public class DataEdgeImpl2 extends SimpleEdgeImpl2 implements ISimpleProperties {
 
 	private SimplePropertyList propertyList = null;
 

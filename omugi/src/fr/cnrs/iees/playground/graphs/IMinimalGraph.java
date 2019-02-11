@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,82 +28,66 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.elements.impl;
+package fr.cnrs.iees.playground.graphs;
 
-import java.util.Collection;
+import fr.cnrs.iees.OmugiException;
+import fr.ens.biologie.generic.Sizeable;
 
-import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.playground.elements.ITreeGraphNode;
-import fr.cnrs.iees.playground.elements.ITreeNode;
-import fr.cnrs.iees.playground.elements.impl.NodeAdapter2;
-import fr.cnrs.iees.playground.elements.impl.SimpleTreeNodeImpl2;
-import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
+/**
+ * An interface to represent the most generic properties of any graph. Meant to be the
+ * root ancestor of the graph interface hierarchy
+ * 
+ * @author Jacques Gignoux - 21 déc. 2018
+ *
+ */
+public interface IMinimalGraph<N> extends Sizeable {
 
-public class SimpleTreeGraphNodeImpl extends NodeAdapter2 implements ITreeGraphNode {
+	/**
+	 * Read-only accessor to all Nodes
+	 * @return an Iterable of all Nodes
+	 */
+	public Iterable<N> nodes();
 
-	private ITreeNode treeNode;
+	/**
+	 * Read-only accessor to all leaf Nodes (if any)
+	 * @return an Iterable on all leaf Nodes
+	 */
+	public Iterable<N> leaves();
 
-	protected SimpleTreeGraphNodeImpl(Identity id, ITreeNodeFactory factory) {
-		super(id);
-		treeNode = new SimpleTreeNodeImpl2(id, factory);
+	/**
+	 * Finds the node matching a reference - will issue an Exception if more than one node match
+	 * @param reference
+	 * @return the matching node, or null if nothing found
+	 */
+public default N findNodeByReference(String reference) {
+		Iterable<N> list = findNodesByReference(reference);
+		int i=0;
+		N found = null;
+		for (N n:list) {
+			found = n;
+			i++;
+		}
+		if (i<=1)
+			return found;
+		else
+			throw new OmugiException("more than one Node matching ["+reference+"] found");
 	}
-
-	// --------------------NodeAdapter2
-	@Override
-	public String classId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	// ---------------------ITreeNode2
-	@Override
-	public ITreeNode getParent() {
-		return treeNode.getParent();
-	}
-
-	@Override
-	public void setParent(ITreeNode parent) {
-		treeNode.setParent(parent);
-	}
-
-	@Override
-	public Iterable<? extends ITreeNode> getChildren() {
-		return treeNode.getChildren();
-	}
-
-	@Override
-	public void addChild(ITreeNode child) {
-		treeNode.addChild(child);
-	}
-
-	@Override
-	public void setChildren(ITreeNode... children) {
-		treeNode.setChildren(children);
-	}
-
-	@Override
-	public void setChildren(Iterable<ITreeNode> children) {
-		treeNode.setChildren(children);
-	}
-
-	@Override
-	public void setChildren(Collection<ITreeNode> children) {
-		treeNode.setChildren(children);
-	}
-
-	@Override
-	public boolean hasChildren() {
-		return treeNode.hasChildren();
-	}
-
-	@Override
-	public ITreeNodeFactory treeNodeFactory() {
-		return treeNode.treeNodeFactory();
-	}
-
-	@Override
-	public int nChildren() {
-		return treeNode.nChildren();
-	}
+	/**
+	 * Finds all the nodes matching a reference.
+	 * @param reference
+	 * @return a read-only list of matching nodes
+	 */
+	public Iterable<N> findNodesByReference(String reference);
+	/**
+	 * Read-only accessor to all root Nodes (if any)
+	 * @return an Iterable on all root Nodes
+	 */
+	public Iterable<N> roots();
+	/**
+	 * Checks if this graph contains a particular Node
+	 * @param node the Node to search for
+	 * @return true if node was found in the graph
+	 */
+	public boolean contains(N node);
 
 }

@@ -28,28 +28,115 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.elements.impl;
+package fr.cnrs.iees.playground.graphs;
 
+import java.util.List;
+import java.util.Set;
+
+import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.playground.elements.INode;
-import fr.cnrs.iees.playground.elements.IReadOnlyProperties;
+import fr.cnrs.iees.playground.elements.impl.SimpleEdgeImpl2;
 import fr.cnrs.iees.playground.factories.IEdgeFactory;
+import fr.cnrs.iees.properties.ExtendablePropertyList;
+import fr.cnrs.iees.properties.PropertyListSetters;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-public class ReadOnlyDataEdgeImpl2 extends SimpleEdgeImpl2 implements IReadOnlyProperties {
+import fr.cnrs.iees.properties.ResizeablePropertyList;
+import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.ens.biologie.generic.Sealable;
 
-	private ReadOnlyPropertyList propertyList = null;
+public class AotEdge2 extends SimpleEdgeImpl2  implements ExtendablePropertyList{
 
-	protected ReadOnlyDataEdgeImpl2(Identity id, INode start, INode end, ReadOnlyPropertyList props, IEdgeFactory factory) {
+	private ExtendablePropertyList properties;
+
+	// protected??
+	protected AotEdge2(Identity id, INode start, INode end, ExtendablePropertyList props, IEdgeFactory factory) {
 		super(id, start, end, factory);
-		propertyList = props;
+		this.properties = props;
 	}
-	
-	// DataEdge
+	@Override
+	public SimplePropertyList clone() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public PropertyListSetters setProperty(String key, Object value) {
+		return properties.setProperty(key,value);
+	}
 
 	@Override
-	public ReadOnlyPropertyList properties() {
-		return propertyList;
+	public Object getPropertyValue(String key) {
+		return properties.getPropertyValue(key);
 	}
 
+	@Override
+	public boolean hasProperty(String key) {
+		return properties.hasProperty(key);
+	}
+
+	@Override
+	public Set<String> getKeysAsSet() {
+		return properties.getKeysAsSet();
+	}
+
+	@Override
+	public int size() {
+		return properties.size();
+	}
+
+	@Override
+	public ResizeablePropertyList addProperty(Property property) {
+		return properties.addProperty(property);
+	}
+
+	@Override
+	public ResizeablePropertyList addProperty(String key) {
+		return properties.addProperty(key);
+	}
+
+	@Override
+	public ResizeablePropertyList addProperty(String key, Object value) {
+		return properties.addProperty(key, value);
+	}
+
+	@Override
+	public ResizeablePropertyList addProperties(List<String> keys) {
+		return properties.addProperties(keys);
+	}
+
+	@Override
+	public ResizeablePropertyList addProperties(String... keys) {
+		return properties.addProperties(keys);
+	}
+
+	@Override
+	public ResizeablePropertyList addProperties(ReadOnlyPropertyList plist) {
+		return properties.addProperties(plist);
+	}
+
+	@Override
+	public Object getPropertyValue(String key, Object defaultValue) {
+		return properties.getPropertyValue(key, defaultValue);
+	}
+
+	@Override
+	public ResizeablePropertyList removeProperty(String key) {
+		return properties.removeProperty(key);
+	}
+
+	@Override
+	public ResizeablePropertyList removeAllProperties() {
+		return properties.removeAllProperties();
+	}
+
+	@Override
+	public Sealable seal() {
+		return properties.seal();
+	}
+
+	@Override
+	public boolean isSealed() {
+		return properties.isSealed();
+	}
 
 }

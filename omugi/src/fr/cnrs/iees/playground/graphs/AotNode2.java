@@ -28,82 +28,116 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.elements.impl;
+package fr.cnrs.iees.playground.graphs;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
+import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.playground.elements.ITreeGraphNode;
-import fr.cnrs.iees.playground.elements.ITreeNode;
-import fr.cnrs.iees.playground.elements.impl.NodeAdapter2;
-import fr.cnrs.iees.playground.elements.impl.SimpleTreeNodeImpl2;
+import fr.cnrs.iees.playground.elements.impl.SimpleTreeGraphNodeImpl;
 import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
+import fr.cnrs.iees.properties.ExtendablePropertyList;
+import fr.cnrs.iees.properties.PropertyListSetters;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+import fr.cnrs.iees.properties.ResizeablePropertyList;
+import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.ens.biologie.generic.Sealable;
 
-public class SimpleTreeGraphNodeImpl extends NodeAdapter2 implements ITreeGraphNode {
+public class AotNode2 extends SimpleTreeGraphNodeImpl implements ExtendablePropertyList//,Configurable
+{
 
-	private ITreeNode treeNode;
-
-	protected SimpleTreeGraphNodeImpl(Identity id, ITreeNodeFactory factory) {
-		super(id);
-		treeNode = new SimpleTreeNodeImpl2(id, factory);
+	private ExtendablePropertyList properties;
+	
+	protected AotNode2(Identity id, ExtendablePropertyList props,ITreeNodeFactory factory) {
+		super(id, factory);
+		this.properties= props;
 	}
 
-	// --------------------NodeAdapter2
 	@Override
-	public String classId() {
+	public SimplePropertyList clone() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	// ---------------------ITreeNode2
 	@Override
-	public ITreeNode getParent() {
-		return treeNode.getParent();
+	public PropertyListSetters setProperty(String key, Object value) {
+		return properties.setProperty(key,value);
 	}
 
 	@Override
-	public void setParent(ITreeNode parent) {
-		treeNode.setParent(parent);
+	public Object getPropertyValue(String key) {
+		return properties.getPropertyValue(key);
 	}
 
 	@Override
-	public Iterable<? extends ITreeNode> getChildren() {
-		return treeNode.getChildren();
+	public boolean hasProperty(String key) {
+		return properties.hasProperty(key);
 	}
 
 	@Override
-	public void addChild(ITreeNode child) {
-		treeNode.addChild(child);
+	public Set<String> getKeysAsSet() {
+		return properties.getKeysAsSet();
 	}
 
 	@Override
-	public void setChildren(ITreeNode... children) {
-		treeNode.setChildren(children);
+	public int size() {
+		return properties.size();
 	}
 
 	@Override
-	public void setChildren(Iterable<ITreeNode> children) {
-		treeNode.setChildren(children);
+	public ResizeablePropertyList addProperty(Property property) {
+		return properties.addProperty(property);
 	}
 
 	@Override
-	public void setChildren(Collection<ITreeNode> children) {
-		treeNode.setChildren(children);
+	public ResizeablePropertyList addProperty(String key) {
+		return properties.addProperty(key);
 	}
 
 	@Override
-	public boolean hasChildren() {
-		return treeNode.hasChildren();
+	public ResizeablePropertyList addProperty(String key, Object value) {
+		return properties.addProperty(key, value);
 	}
 
 	@Override
-	public ITreeNodeFactory treeNodeFactory() {
-		return treeNode.treeNodeFactory();
+	public ResizeablePropertyList addProperties(List<String> keys) {
+		return properties.addProperties(keys);
 	}
 
 	@Override
-	public int nChildren() {
-		return treeNode.nChildren();
+	public ResizeablePropertyList addProperties(String... keys) {
+		return properties.addProperties(keys);
+	}
+
+	@Override
+	public ResizeablePropertyList addProperties(ReadOnlyPropertyList plist) {
+		return properties.addProperties(plist);
+	}
+
+	@Override
+	public Object getPropertyValue(String key, Object defaultValue) {
+		return properties.getPropertyValue(key, defaultValue);
+	}
+
+	@Override
+	public ResizeablePropertyList removeProperty(String key) {
+		return properties.removeProperty(key);
+	}
+
+	@Override
+	public ResizeablePropertyList removeAllProperties() {
+		return properties.removeAllProperties();
+	}
+
+	@Override
+	public Sealable seal() {
+		return properties.seal();
+	}
+
+	@Override
+	public boolean isSealed() {
+		return properties.isSealed();
 	}
 
 }

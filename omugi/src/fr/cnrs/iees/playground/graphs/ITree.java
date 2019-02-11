@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,82 +28,41 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.elements.impl;
+package fr.cnrs.iees.playground.graphs;
 
-import java.util.Collection;
-
-import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.playground.elements.ITreeGraphNode;
+import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.io.parsing.impl.ReferenceParser;
+import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
 import fr.cnrs.iees.playground.elements.ITreeNode;
-import fr.cnrs.iees.playground.elements.impl.NodeAdapter2;
-import fr.cnrs.iees.playground.elements.impl.SimpleTreeNodeImpl2;
-import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
 
-public class SimpleTreeGraphNodeImpl extends NodeAdapter2 implements ITreeGraphNode {
+/**
+ * <p>A tree, i.e. a graph with a hierarchical structure. Its nodes must implement the TreeNode
+ * interface, i.e. have getParent() and getChildren() methods.</p>
+ * 
+ * @author Jacques Gignoux - 17 déc. 2018
+ *
+ */
+public interface ITree<N extends ITreeNode> extends IMinimalGraph<N> {
 
-	private ITreeNode treeNode;
-
-	protected SimpleTreeGraphNodeImpl(Identity id, ITreeNodeFactory factory) {
-		super(id);
-		treeNode = new SimpleTreeNodeImpl2(id, factory);
-	}
-
-	// --------------------NodeAdapter2
-	@Override
-	public String classId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	// ---------------------ITreeNode2
-	@Override
-	public ITreeNode getParent() {
-		return treeNode.getParent();
-	}
-
-	@Override
-	public void setParent(ITreeNode parent) {
-		treeNode.setParent(parent);
-	}
-
-	@Override
-	public Iterable<? extends ITreeNode> getChildren() {
-		return treeNode.getChildren();
-	}
-
-	@Override
-	public void addChild(ITreeNode child) {
-		treeNode.addChild(child);
-	}
-
-	@Override
-	public void setChildren(ITreeNode... children) {
-		treeNode.setChildren(children);
-	}
-
-	@Override
-	public void setChildren(Iterable<ITreeNode> children) {
-		treeNode.setChildren(children);
-	}
-
-	@Override
-	public void setChildren(Collection<ITreeNode> children) {
-		treeNode.setChildren(children);
-	}
-
-	@Override
-	public boolean hasChildren() {
-		return treeNode.hasChildren();
-	}
-
-	@Override
-	public ITreeNodeFactory treeNodeFactory() {
-		return treeNode.treeNodeFactory();
-	}
-
-	@Override
-	public int nChildren() {
-		return treeNode.nChildren();
+	/**
+	 * Accessor to the tree root (a tree has 0 or 1 root).
+	 * 
+	 * @return the Node at the root of the tree
+	 */
+	public N root();
+	
+	public ITree<N> subTree(N node);
+	
+	/**
+	 * Finds the node matching a reference - will issue an Exception if more than one node match
+	 * @param reference
+	 * @return the matching node, or null if nothing found
+	 */
+	public static boolean matchesReference(ITreeNode node, String ref) {
+		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
+		ReferenceParser p = tk.parser();
+		//return p.matches(node);// whoops
+		return false;
 	}
 
 }

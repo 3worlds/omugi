@@ -28,82 +28,64 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.elements.impl;
-
-import java.util.Collection;
+package fr.cnrs.iees.playground.graphs;
 
 import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.playground.elements.ITreeGraphNode;
+import fr.cnrs.iees.identity.IdentityScope;
+import fr.cnrs.iees.identity.impl.LocalScope;
+import fr.cnrs.iees.playground.elements.IEdge;
+import fr.cnrs.iees.playground.elements.INode;
 import fr.cnrs.iees.playground.elements.ITreeNode;
-import fr.cnrs.iees.playground.elements.impl.NodeAdapter2;
-import fr.cnrs.iees.playground.elements.impl.SimpleTreeNodeImpl2;
+import fr.cnrs.iees.playground.factories.IEdgeFactory;
 import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
+import fr.cnrs.iees.properties.ExtendablePropertyList;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.properties.impl.ExtendablePropertyListImpl;
 
-public class SimpleTreeGraphNodeImpl extends NodeAdapter2 implements ITreeGraphNode {
+public class AotGraph2 extends TreeGraph2<AotNode2, AotEdge2> implements ITreeNodeFactory, IEdgeFactory// ,
+																										// ConfiguarableGraph,Textable
+{
+	private IdentityScope nodeScope;
+	private IdentityScope edgeScope;//????????????????
 
-	private ITreeNode treeNode;
-
-	protected SimpleTreeGraphNodeImpl(Identity id, ITreeNodeFactory factory) {
-		super(id);
-		treeNode = new SimpleTreeNodeImpl2(id, factory);
+	// Factories need a getScopeFunction
+	public AotGraph2() {
+		nodeScope = new LocalScope();
+		edgeScope = new LocalScope();
 	}
 
-	// --------------------NodeAdapter2
+	// We don't need this except for Importers - probably the whole this will come unstuck there!!
 	@Override
-	public String classId() {
-		// TODO Auto-generated method stub
+	public ReadOnlyPropertyList makeNodePropertyList() {
+		return new ExtendablePropertyListImpl();
+	}
+
+	@Override
+	public SimplePropertyList makeNodePropertyList(String... propertyKeys) {
 		return null;
 	}
 
-	// ---------------------ITreeNode2
 	@Override
-	public ITreeNode getParent() {
-		return treeNode.getParent();
+	public IEdge makeEdge(INode start, INode end, String proposedId) {
+		Identity id = edgeScope.newId(proposedId);
+		return new AotEdge2(id,start, end, (ExtendablePropertyList) makeEdgePropertyList(), this);
 	}
 
 	@Override
-	public void setParent(ITreeNode parent) {
-		treeNode.setParent(parent);
+	public ReadOnlyPropertyList makeEdgePropertyList() {
+		return new ExtendablePropertyListImpl();
 	}
 
 	@Override
-	public Iterable<? extends ITreeNode> getChildren() {
-		return treeNode.getChildren();
+	public SimplePropertyList makeEdgePropertyList(String... propertyKeys) {
+		return null;
 	}
 
 	@Override
-	public void addChild(ITreeNode child) {
-		treeNode.addChild(child);
-	}
-
-	@Override
-	public void setChildren(ITreeNode... children) {
-		treeNode.setChildren(children);
-	}
-
-	@Override
-	public void setChildren(Iterable<ITreeNode> children) {
-		treeNode.setChildren(children);
-	}
-
-	@Override
-	public void setChildren(Collection<ITreeNode> children) {
-		treeNode.setChildren(children);
-	}
-
-	@Override
-	public boolean hasChildren() {
-		return treeNode.hasChildren();
-	}
-
-	@Override
-	public ITreeNodeFactory treeNodeFactory() {
-		return treeNode.treeNodeFactory();
-	}
-
-	@Override
-	public int nChildren() {
-		return treeNode.nChildren();
+	public ITreeNode makeTreeNode(String proposedId) {
+		Identity id = nodeScope.newId(proposedId);
+		return new AotNode2(id, (ExtendablePropertyList) makeNodePropertyList(), this);
 	}
 
 }
