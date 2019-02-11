@@ -30,14 +30,14 @@
  **************************************************************************/
 package fr.cnrs.iees.playground.factories;
 
-import fr.cnrs.iees.playground.elements.IEdge2;
-import fr.cnrs.iees.playground.elements.INode2;
+import fr.cnrs.iees.playground.elements.IEdge;
+import fr.cnrs.iees.playground.elements.INode;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 public interface IEdgeFactory {
 
-	public IEdge2 makeEdge(INode2 start, INode2 end, String proposedId) ;
+	public IEdge makeEdge(INode start, INode end, String proposedId) ;
 	public ReadOnlyPropertyList makeEdgePropertyList();
 	public SimplePropertyList makeEdgePropertyList(String... propertyKeys);
 

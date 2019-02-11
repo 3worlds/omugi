@@ -28,13 +28,27 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
+package fr.cnrs.iees.playground.elements.impl;
 
-package fr.cnrs.iees.playground.elements;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.playground.elements.INode;
+import fr.cnrs.iees.playground.elements.ISimpleProperties;
+import fr.cnrs.iees.playground.factories.IEdgeFactory;
+import fr.cnrs.iees.properties.SimplePropertyList;
 
-import fr.cnrs.iees.playground.factories.INodeFactory;
+public class DataEdgeImpl2 extends SimpleEdgeImpl3 implements ISimpleProperties {
 
-public interface IGraphNode extends INode{
+	private SimplePropertyList propertyList = null;
+
+	protected DataEdgeImpl2(Identity id, INode start, INode end, SimplePropertyList props, IEdgeFactory factory) {
+		super(id, start, end, factory);
+		propertyList = props;
+	}
+
+	// ISimpleProperties
+	@Override
+	public SimplePropertyList properties() {
+		return propertyList;
+	}
 	
-	public INodeFactory nodeFactory();
-
 }

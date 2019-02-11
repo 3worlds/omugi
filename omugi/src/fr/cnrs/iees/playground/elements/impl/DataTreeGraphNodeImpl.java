@@ -28,13 +28,24 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
+package fr.cnrs.iees.playground.elements.impl;
 
-package fr.cnrs.iees.playground.elements;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.playground.elements.ISimpleProperties;
+import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
+import fr.cnrs.iees.properties.SimplePropertyList;
 
-import fr.cnrs.iees.playground.factories.INodeFactory;
+public class DataTreeGraphNodeImpl extends SimpleTreeGraphNodeImpl implements ISimpleProperties{
 
-public interface IGraphNode extends INode{
-	
-	public INodeFactory nodeFactory();
+	private SimplePropertyList properties;
+	protected DataTreeGraphNodeImpl(Identity id,SimplePropertyList props, ITreeNodeFactory factory) {
+		super(id, factory);
+		this.properties = props;
+	}
+
+	@Override
+	public SimplePropertyList properties() {
+		return properties;
+	}
 
 }

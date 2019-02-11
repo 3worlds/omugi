@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,21 +28,28 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.elements;
+package fr.cnrs.iees.playground.elements.impl;
 
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.playground.elements.INode;
+import fr.cnrs.iees.playground.elements.IReadOnlyProperties;
+import fr.cnrs.iees.playground.factories.IEdgeFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+public class ReadOnlyDataEdgeImpl2 extends SimpleEdgeImpl3 implements IReadOnlyProperties {
 
-/**
- * 
- * Not inheriting Node may be a problem later when tying to "write to the interface"
- * 
- *  
- * A Node with read-only data as a property list
- * @author Jacques Gignoux - 29 janv. 2019
- *
- */
-public interface IReadOnlyProperites  {
+	private ReadOnlyPropertyList propertyList = null;
 
-	public ReadOnlyPropertyList properties();
+	protected ReadOnlyDataEdgeImpl2(Identity id, INode start, INode end, ReadOnlyPropertyList props, IEdgeFactory factory) {
+		super(id, start, end, factory);
+		propertyList = props;
+	}
 	
+	// DataEdge
+
+	@Override
+	public ReadOnlyPropertyList properties() {
+		return propertyList;
+	}
+
+
 }

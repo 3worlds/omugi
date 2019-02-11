@@ -31,14 +31,13 @@
 package fr.cnrs.iees.playground.elements;
 
 import fr.cnrs.iees.graph.Direction;
-import fr.cnrs.iees.graph.GraphElement;
 
 /**
  * The basic features any Node in any graph should have
  * @author gignoux - 17 août 2017
  *
  */
-public interface INode2 extends IGraphElement2 {
+public interface INode extends IGraphElement2 {
 	
 	public static String NODE_LABEL = "node";
 
@@ -49,7 +48,7 @@ public interface INode2 extends IGraphElement2 {
 	 * @return true if edge was successfully added
 	 * <p>CAUTION: does not update the Edge start/end nodes</p>
 	 */
-	public boolean addEdge(IEdge2 edge, Direction direction);
+	public boolean addEdge(IEdge edge, Direction direction);
 	
 	/**
 	 * Removes an edge from this node, in the appropriate direction list (if known) 
@@ -58,7 +57,7 @@ public interface INode2 extends IGraphElement2 {
 	 * @return true if edge was successfully removed
 	 * <p>CAUTION: does not update the Edge start/end nodes</p>
 	 */
-	public boolean removeEdge(IEdge2 edge, Direction direction);
+	public boolean removeEdge(IEdge edge, Direction direction);
 	
 	/**
 	 * Removes an edge from this Node, without knowing the direction list (slower)
@@ -66,7 +65,7 @@ public interface INode2 extends IGraphElement2 {
 	 * @return true if edge was successfully removed
 	 * <p>CAUTION: does not update the Edge start/end nodes</p>
 	 */
-	public default boolean removeEdge(IEdge2 edge) {
+	public default boolean removeEdge(IEdge edge) {
 		// the | (NOT ||) because of loop edges. otherwise fine.
 		return (removeEdge(edge,Direction.IN)|removeEdge(edge,Direction.OUT));
 	}
@@ -78,7 +77,7 @@ public interface INode2 extends IGraphElement2 {
 	 * @return true if edge was successfully added
 	 * <p>CAUTION: does not update the Edge start/end nodes</p>
 	 */
-	public boolean addEdge(IEdge2 edge);
+	public boolean addEdge(IEdge edge);
 	
 	/**
 	 * Tests if this Node is a leaf (=has no OUT edges)
@@ -97,13 +96,13 @@ public interface INode2 extends IGraphElement2 {
 	 * @param direction the direction (IN or OUT)
 	 * @return an immutable list of edges matching the direction
 	 */
-	public Iterable<? extends IEdge2> getEdges(Direction direction);
+	public Iterable<? extends IEdge> getEdges(Direction direction);
 	
 	/**
 	 * Read-only accessor to all edges.
 	 * @return an immutable list of edges 
 	 */
-	public Iterable<? extends IEdge2> getEdges(); 
+	public Iterable<? extends IEdge> getEdges(); 
 		
 	/**
 	 * 
@@ -121,7 +120,7 @@ public interface INode2 extends IGraphElement2 {
 	public int degree(Direction direction);
 
 	@Override
-	public INode2 addConnectionsLike(IGraphElement2 element);
+	public INode addConnectionsLike(IGraphElement2 element);
 	
 	// WAIT AND SEE ABOUT THIS.
 	public String classId();

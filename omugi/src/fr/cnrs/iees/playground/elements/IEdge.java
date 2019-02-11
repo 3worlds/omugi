@@ -28,13 +28,93 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-
 package fr.cnrs.iees.playground.elements;
 
-import fr.cnrs.iees.playground.factories.INodeFactory;
+import fr.cnrs.iees.playground.factories.IEdgeFactory;
 
-public interface IGraphNode extends INode{
-	
-	public INodeFactory nodeFactory();
+/**
+ * The basic features any edge in any graph should have
+ * 
+ * @author gignoux - 17 août 2017
+ *         <p>
+ *         Setters make sure the graph stays valid, ie they update the Node edge
+ *         lists if needed
+ *         </p>
+ *
+ */
+public interface IEdge extends IGraphElement2 {
+
+	public static String EDGE_LABEL = "edge";
+
+	/**
+	 * Getter for
+	 * 
+	 * @return the start Node of this edge
+	 */
+	public INode startNode();
+
+	/**
+	 * Getter for
+	 * 
+	 * @return the end Node of this edge
+	 */
+	public INode endNode();
+
+	/**
+	 * Getter for
+	 * 
+	 * @param other a node at one of the two ends of this edge
+	 * @return the opposite end of this edge - null if the argument is not found in
+	 *         this edge
+	 */
+	public INode otherNode(INode other);
+
+	/**
+	 * Setter for
+	 * 
+	 * @param node the start Node of this edge
+	 */
+	public IEdge setStartNode(INode node);
+
+	/**
+	 * Setter for
+	 * 
+	 * @param node the end Node of this edge
+	 */
+	public IEdge setEndNode(INode node);
+
+	/**
+	 * Setter for both start and end Nodes
+	 * 
+	 * @param start the new start node
+	 * @param end   the new end node
+	 */
+	public default IEdge setNodes(INode start, INode end) {
+		setStartNode(start);
+		setEndNode(end);
+		return this;
+	}
+
+	/**
+	 * 
+	 * @return the EdgeFactory with which this Edge was instantiated
+	 */
+	public IEdgeFactory edgeFactory();
+
+	/**
+	 * The "label" or "classId" is now a String matching the java class name. The
+	 * edgeFactory knows this String.
+	 * 
+	 * @return
+	 */
+
+	// Wait and see
+	public String classId();
+//	{
+//		String s = edgeFactory().edgeClassName(this.getClass());
+//		if (s == null)
+//			s = this.getClass().getSimpleName();
+//		return s;
+//	}
 
 }

@@ -31,10 +31,10 @@
 
 package fr.cnrs.iees.playground.factories;
 
-import fr.cnrs.iees.playground.elements.ITreeNode2;
+import fr.cnrs.iees.playground.elements.ITreeNode;
 
 public interface ITreeNodeFactory  extends INodePropertyListFactory{
-	public ITreeNode2 makeTreeNode(String proposedId);	
+	public ITreeNode makeTreeNode(String proposedId);	
 
 
 }

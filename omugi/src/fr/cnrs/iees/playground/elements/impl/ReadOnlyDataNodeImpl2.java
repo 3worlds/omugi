@@ -31,12 +31,12 @@
 package fr.cnrs.iees.playground.elements.impl;
 
 import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.playground.elements.IReadOnlyProperites;
+import fr.cnrs.iees.playground.elements.IReadOnlyProperties;
 import fr.cnrs.iees.playground.factories.INodeFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 
-public class ReadOnlyDataNodeImpl2 extends SimpleNodeImpl2 implements IReadOnlyProperites {
+public class ReadOnlyDataNodeImpl2 extends SimpleNodeImpl2 implements IReadOnlyProperties {
 	
 	private ReadOnlyPropertyList propertyList = null;
 	

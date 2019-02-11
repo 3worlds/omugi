@@ -28,13 +28,81 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
+package fr.cnrs.iees.playground.elements.impl;
 
-package fr.cnrs.iees.playground.elements;
+import java.util.Collection;
 
-import fr.cnrs.iees.playground.factories.INodeFactory;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.playground.elements.ITreeNode;
+import fr.cnrs.iees.playground.elements.impl.NodeAdapter2;
+import fr.cnrs.iees.playground.elements.impl.SimpleTreeNodeImpl2;
+import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
 
-public interface IGraphNode extends INode{
-	
-	public INodeFactory nodeFactory();
+public class SimpleTreeGraphNodeImpl extends NodeAdapter2 implements ITreeNode {
+
+	private ITreeNode treeNode;
+
+	protected SimpleTreeGraphNodeImpl(Identity id, ITreeNodeFactory factory) {
+		super(id);
+		treeNode = new SimpleTreeNodeImpl2(id, factory);
+	}
+
+	// --------------------NodeAdapter2
+	@Override
+	public String classId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// ---------------------ITreeNode2
+	@Override
+	public ITreeNode getParent() {
+		return treeNode.getParent();
+	}
+
+	@Override
+	public void setParent(ITreeNode parent) {
+		treeNode.setParent(parent);
+	}
+
+	@Override
+	public Iterable<? extends ITreeNode> getChildren() {
+		return treeNode.getChildren();
+	}
+
+	@Override
+	public void addChild(ITreeNode child) {
+		treeNode.addChild(child);
+	}
+
+	@Override
+	public void setChildren(ITreeNode... children) {
+		treeNode.setChildren(children);
+	}
+
+	@Override
+	public void setChildren(Iterable<ITreeNode> children) {
+		treeNode.setChildren(children);
+	}
+
+	@Override
+	public void setChildren(Collection<ITreeNode> children) {
+		treeNode.setChildren(children);
+	}
+
+	@Override
+	public boolean hasChildren() {
+		return treeNode.hasChildren();
+	}
+
+	@Override
+	public ITreeNodeFactory treeNodeFactory() {
+		return treeNode.treeNodeFactory();
+	}
+
+	@Override
+	public int nChildren() {
+		return treeNode.nChildren();
+	}
 
 }

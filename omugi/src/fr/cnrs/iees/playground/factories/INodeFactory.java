@@ -30,8 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.playground.factories;
 
-import fr.cnrs.iees.playground.elements.INode2;
+import fr.cnrs.iees.playground.elements.INode;
 public interface INodeFactory extends INodePropertyListFactory{
 
-		public INode2 makeNode(String proposedId);	
+		public INode makeNode(String proposedId);	
 }

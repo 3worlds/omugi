@@ -88,7 +88,7 @@ public interface IGraphElement2 extends Textable, Identity {
 	 * with caution in unconnected Graphs (will not find subgraphs unconnected to this element).
 	 * @return the connected Graph containing this instance
 	 */
-	public default Collection<INode2> traversal() {
+	public default Collection<INode> traversal() {
 		return traversal(Integer.MAX_VALUE);
 	}
 
@@ -97,7 +97,7 @@ public interface IGraphElement2 extends Textable, Identity {
 	 * @param direction the direction in which to search 
 	 * @return the connected Graph containing this instance
 	 */
-	public default Collection<? extends INode2> traversal(Direction direction) {
+	public default Collection<? extends INode> traversal(Direction direction) {
 		return traversal(Integer.MAX_VALUE);
 	}
 	
@@ -108,7 +108,7 @@ public interface IGraphElement2 extends Textable, Identity {
 	 * @param distance the number of recursion steps to search
 	 * @return the connected Graph containing this instance
 	 */
-	public Collection<INode2> traversal(int distance);
+	public Collection<INode> traversal(int distance);
 
 	/**
 	 * As traversal(), but following only one direction from the starting Element and
@@ -117,6 +117,6 @@ public interface IGraphElement2 extends Textable, Identity {
 	 * @param direction the direction in which to search 
 	 * @return the connected Graph containing this instance
 	 */
-	public Collection<? extends INode2> traversal(int distance, Direction direction);			
+	public Collection<? extends INode> traversal(int distance, Direction direction);			
 	
 }

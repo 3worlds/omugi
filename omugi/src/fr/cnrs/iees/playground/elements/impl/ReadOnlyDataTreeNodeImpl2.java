@@ -28,93 +28,24 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.elements;
+package fr.cnrs.iees.playground.elements.impl;
 
-import fr.cnrs.iees.graph.GraphElement;
-import fr.cnrs.iees.playground.factories.IEdgeFactory;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.playground.elements.IReadOnlyProperties;
+import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
-/**
- * The basic features any edge in any graph should have
- * 
- * @author gignoux - 17 août 2017
- *         <p>
- *         Setters make sure the graph stays valid, ie they update the Node edge
- *         lists if needed
- *         </p>
- *
- */
-public interface IEdge2 extends GraphElement {
+public class ReadOnlyDataTreeNodeImpl2 extends SimpleTreeNodeImpl2 implements IReadOnlyProperties{
 
-	public static String EDGE_LABEL = "edge";
-
-	/**
-	 * Getter for
-	 * 
-	 * @return the start Node of this edge
-	 */
-	public INode2 startNode();
-
-	/**
-	 * Getter for
-	 * 
-	 * @return the end Node of this edge
-	 */
-	public INode2 endNode();
-
-	/**
-	 * Getter for
-	 * 
-	 * @param other a node at one of the two ends of this edge
-	 * @return the opposite end of this edge - null if the argument is not found in
-	 *         this edge
-	 */
-	public INode2 otherNode(INode2 other);
-
-	/**
-	 * Setter for
-	 * 
-	 * @param node the start Node of this edge
-	 */
-	public IEdge2 setStartNode(INode2 node);
-
-	/**
-	 * Setter for
-	 * 
-	 * @param node the end Node of this edge
-	 */
-	public IEdge2 setEndNode(INode2 node);
-
-	/**
-	 * Setter for both start and end Nodes
-	 * 
-	 * @param start the new start node
-	 * @param end   the new end node
-	 */
-	public default IEdge2 setNodes(INode2 start, INode2 end) {
-		setStartNode(start);
-		setEndNode(end);
-		return this;
+	private ReadOnlyPropertyList propertyList;
+	protected ReadOnlyDataTreeNodeImpl2(Identity id, ReadOnlyPropertyList properties, ITreeNodeFactory factory) {
+		super(id, factory);
+		this.propertyList = properties;
 	}
 
-	/**
-	 * 
-	 * @return the EdgeFactory with which this Edge was instantiated
-	 */
-	public IEdgeFactory edgeFactory();
-
-	/**
-	 * The "label" or "classId" is now a String matching the java class name. The
-	 * edgeFactory knows this String.
-	 * 
-	 * @return
-	 */
-
-	public String classId();
-//	{
-//		String s = edgeFactory().edgeClassName(this.getClass());
-//		if (s == null)
-//			s = this.getClass().getSimpleName();
-//		return s;
-//	}
+	@Override
+	public ReadOnlyPropertyList properties() {
+		return propertyList;
+	}
 
 }

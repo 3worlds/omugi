@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,13 +28,53 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
+package fr.cnrs.iees.playground.elements.impl;
 
-package fr.cnrs.iees.playground.elements;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.playground.elements.ISimpleProperties;
+import fr.cnrs.iees.playground.elements.ITreeNode;
+import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
+import fr.cnrs.iees.properties.SimplePropertyList;
 
-import fr.cnrs.iees.playground.factories.INodeFactory;
+public class DataTreeNodeImpl2 extends SimpleTreeNodeImpl2
+		implements ISimpleProperties {
+		
+	private SimplePropertyList propertyList = null;
 
-public interface IGraphNode extends INode{
+	// Constructors
 	
-	public INodeFactory nodeFactory();
+	protected DataTreeNodeImpl2(Identity id, SimplePropertyList props, ITreeNodeFactory factory) {
+		super(id,factory);
+		propertyList = props;
+	}
+
+	// DataTreeNode
+
+	@Override
+	public SimplePropertyList properties() {
+		return propertyList;
+	}
+
+	// Textable
+
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(propertyList.toString());
+		return sb.toString();
+	}
+
+	// TODO: implement toString()
+	@Override
+	public boolean equals(Object obj) {
+		if (!ITreeNode.class.isAssignableFrom(obj.getClass()))
+			return false;
+		if (!SimplePropertyList.class.isAssignableFrom(obj.getClass()))
+			return false;
+		ITreeNode tn = (ITreeNode) obj;
+		SimplePropertyList p = (SimplePropertyList) obj;
+		return (tn.equals(this) && p.equals(this));
+	}
 
 }

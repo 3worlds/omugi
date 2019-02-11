@@ -39,20 +39,20 @@ import java.util.Set;
 
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.playground.elements.IEdge2;
+import fr.cnrs.iees.playground.elements.IEdge;
 import fr.cnrs.iees.playground.elements.IGraphElement2;
-import fr.cnrs.iees.playground.elements.INode2;
+import fr.cnrs.iees.playground.elements.INode;
 import fr.cnrs.iees.playground.factories.IEdgeFactory;
 
-public abstract class NodeAdapter2 extends GraphElementAdapter2 implements INode2 {
+public abstract class NodeAdapter2 extends GraphElementAdapter2 implements INode {
 	
-	protected EnumMap<Direction,Collection<IEdge2>> edges = null;
+	protected EnumMap<Direction,Collection<IEdge>> edges = null;
 	
 	// Constructors --------
 	
 	protected NodeAdapter2(Identity id) {
 		super(id);
-		edges = new EnumMap<Direction,Collection<IEdge2>>(Direction.class);
+		edges = new EnumMap<Direction,Collection<IEdge>>(Direction.class);
 		// Now using sets to prevent accidental insertion of duplicate edges (duplicates sensu .equals())
 		edges.put(Direction.IN,new HashSet<>());
 		edges.put(Direction.OUT,new HashSet<>());
@@ -62,7 +62,7 @@ public abstract class NodeAdapter2 extends GraphElementAdapter2 implements INode
 	// NODE ==================================================================
 	
 	@Override
-	public final boolean addEdge(IEdge2 edge, Direction direction) {
+	public final boolean addEdge(IEdge edge, Direction direction) {
 		if ((direction==Direction.IN)&&(!edge.endNode().equals(this)))
 			return false;
 		if ((direction==Direction.OUT)&&(!edge.startNode().equals(this)))
@@ -71,7 +71,7 @@ public abstract class NodeAdapter2 extends GraphElementAdapter2 implements INode
 	}
 	
 	@Override
-	public final boolean addEdge(IEdge2 edge) {
+	public final boolean addEdge(IEdge edge) {
 		if (edge.startNode().equals(this))
 			return edges.get(Direction.OUT).add(edge);
 		if (edge.endNode().equals(this))
@@ -80,7 +80,7 @@ public abstract class NodeAdapter2 extends GraphElementAdapter2 implements INode
 	}
 
 	@Override
-	public final boolean removeEdge(IEdge2 edge, Direction direction) {
+	public final boolean removeEdge(IEdge edge, Direction direction) {
 		return edges.get(direction).remove(edge);
 	}
 
@@ -100,17 +100,17 @@ public abstract class NodeAdapter2 extends GraphElementAdapter2 implements INode
 	}
 
 	@Override
-	public final Iterable<? extends IEdge2> getEdges(Direction direction) {
+	public final Iterable<? extends IEdge> getEdges(Direction direction) {
 		return edges.get(direction);
 	}
 
 	// ELEMENT ==================================================================
 
 	@Override
-	public final INode2 disconnect() {
-		for (IEdge2 e:getEdges(Direction.IN)) 
+	public final INode disconnect() {
+		for (IEdge e:getEdges(Direction.IN)) 
 			e.startNode().removeEdge(e,Direction.OUT);
-		for (IEdge2 e:getEdges(Direction.OUT)) 
+		for (IEdge e:getEdges(Direction.OUT)) 
 			e.endNode().removeEdge(e,Direction.IN);
 		edges.get(Direction.IN).clear();
 		edges.get(Direction.OUT).clear();
@@ -124,13 +124,13 @@ public abstract class NodeAdapter2 extends GraphElementAdapter2 implements INode
 	 * @param distance search depth
 	 * @return a list of Nodes connected to this node within <em>distance</em> steps
 	 */
-	protected final Collection<INode2> traversal(Collection<INode2> list, INode2 node, int distance) {
+	protected final Collection<INode> traversal(Collection<INode> list, INode node, int distance) {
 		if (distance>0) {
 			if (!list.contains(node)) {
 				list.add(node);
-				for (IEdge2 e:node.getEdges(Direction.IN))
+				for (IEdge e:node.getEdges(Direction.IN))
 					traversal(list,e.startNode(),distance-1);
-				for (IEdge2 e:node.getEdges(Direction.OUT))
+				for (IEdge e:node.getEdges(Direction.OUT))
 					traversal(list,e.endNode(),distance-1);
 			}
 		}
@@ -145,11 +145,11 @@ public abstract class NodeAdapter2 extends GraphElementAdapter2 implements INode
 	 * @param direction direction in which to search
 	 * @return a list of Nodes connected to this node within <em>distance</em> steps in direction <em>IN</em> or <em>OUT</em>
 	 */
-	protected final Collection<INode2> traversal(Collection<INode2> list, INode2 node, int distance, Direction direction) {
+	protected final Collection<INode> traversal(Collection<INode> list, INode node, int distance, Direction direction) {
 		if (distance>0) {
 			if (!list.contains(node)) {
 				list.add(node);
-				for (IEdge2 e:node.getEdges(direction))
+				for (IEdge e:node.getEdges(direction))
 					if (direction.equals(Direction.OUT))
 						traversal(list,e.endNode(),distance-1,direction);
 					else 
@@ -168,47 +168,47 @@ public abstract class NodeAdapter2 extends GraphElementAdapter2 implements INode
 	public String toDetailedString() {
 		String result = super.toDetailedString();
 		result += " " + Direction.IN +"=(";
-		for (IEdge2 e:getEdges(Direction.IN))
+		for (IEdge e:getEdges(Direction.IN))
 			result += "["+e.toDetailedString()+"]";
 		result += ") " + Direction.OUT +"=(";
-		for (IEdge2 e:getEdges(Direction.OUT))
+		for (IEdge e:getEdges(Direction.OUT))
 			result += "["+e.toDetailedString()+"]";
 		result += ")";
 		return result;
 	}
 
 	@Override
-	public INode2 addConnectionsLike(IGraphElement2 element) {
-		INode2 node = (INode2) element;
-		for (IEdge2 e:node.getEdges(Direction.IN)) {
+	public INode addConnectionsLike(IGraphElement2 element) {
+		INode node = (INode) element;
+		for (IEdge e:node.getEdges(Direction.IN)) {
 			IEdgeFactory f =  e.edgeFactory();
 			f.makeEdge(e.startNode(), this,e.id());			
 		}
-		for (IEdge2 e:node.getEdges(Direction.OUT)) {
+		for (IEdge e:node.getEdges(Direction.OUT)) {
 			IEdgeFactory f =  e.edgeFactory();
 			f.makeEdge(this, e.endNode(),e.id());
 		}
 		return this;
 	}
 	@Override
-	public final Iterable<? extends IEdge2> getEdges() {
-		Collection<IEdge2> inEdges = edges.get(Direction.IN);
-		Collection<IEdge2> outEdges = edges.get(Direction.OUT);
-		Set<IEdge2> result = new HashSet<IEdge2>(inEdges.size()+outEdges.size());
+	public final Iterable<? extends IEdge> getEdges() {
+		Collection<IEdge> inEdges = edges.get(Direction.IN);
+		Collection<IEdge> outEdges = edges.get(Direction.OUT);
+		Set<IEdge> result = new HashSet<IEdge>(inEdges.size()+outEdges.size());
 		result.addAll(inEdges);
 		result.addAll(outEdges);
 		return result;
 	}
 	@Override
-	public final Collection<INode2> traversal(int distance) {
-		List<INode2> result = new LinkedList<INode2>(); 
+	public final Collection<INode> traversal(int distance) {
+		List<INode> result = new LinkedList<INode>(); 
 		traversal(result,this,distance);
 		return result;
 	}
 
 	@Override
-	public final Collection<? extends INode2> traversal(int distance, Direction direction) {
-		List<INode2> result = new LinkedList<INode2>(); 
+	public final Collection<? extends INode> traversal(int distance, Direction direction) {
+		List<INode> result = new LinkedList<INode>(); 
 		traversal(result,this,distance,direction);
 		return result;
 	}
