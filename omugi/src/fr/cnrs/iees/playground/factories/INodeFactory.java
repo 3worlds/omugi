@@ -30,10 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.playground.factories;
 
-import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.playground.elements.INode;
-public interface INodeFactory extends INodePropertyListFactory{
+public interface INodeFactory {
 
 		public INode makeNode(String proposedId);	
-		public IdentityScope getNodeScope();
 }

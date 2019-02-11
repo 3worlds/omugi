@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.playground.graphs;
 
-import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.identity.impl.LocalScope;
 import fr.cnrs.iees.playground.elements.IEdge;
@@ -38,65 +37,27 @@ import fr.cnrs.iees.playground.elements.INode;
 import fr.cnrs.iees.playground.elements.ITreeNode;
 import fr.cnrs.iees.playground.factories.IEdgeFactory;
 import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
-import fr.cnrs.iees.properties.ExtendablePropertyList;
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.ExtendablePropertyListImpl;
 
 public class AotGraph2 extends TreeGraph2<AotNode2, AotEdge2> implements ITreeNodeFactory, IEdgeFactory// ,
 																										// ConfiguarableGraph,Textable
 {
 	private IdentityScope nodeScope;
-	private IdentityScope edgeScope;// ????????????????
+	private IdentityScope edgeScope;
 
-	// Factories need a getScopeFunction
 	public AotGraph2() {
 		nodeScope = new LocalScope();
 		edgeScope = new LocalScope();
 	}
 
-	// We don't need this except for Importers - probably the whole this will come
-	// unstuck there!!
-	@Override
-	public ReadOnlyPropertyList makeNodePropertyList() {
-		return new ExtendablePropertyListImpl();
-	}
-
-	@Override
-	public SimplePropertyList makeNodePropertyList(String... propertyKeys) {
-		return null;
-	}
-
 	@Override
 	public IEdge makeEdge(INode start, INode end, String proposedId) {
-		Identity id = edgeScope.newId(proposedId);
-		return new AotEdge2(id, start, end, (ExtendablePropertyList) makeEdgePropertyList(), this);
-	}
-
-	@Override
-	public ReadOnlyPropertyList makeEdgePropertyList() {
-		return new ExtendablePropertyListImpl();
-	}
-
-	@Override
-	public SimplePropertyList makeEdgePropertyList(String... propertyKeys) {
-		return null;
+		return new AotEdge2(edgeScope.newId(proposedId), start, end, new ExtendablePropertyListImpl(), this);
 	}
 
 	@Override
 	public ITreeNode makeTreeNode(String proposedId) {
-		Identity id = nodeScope.newId(proposedId);
-		return new AotNode2(id, (ExtendablePropertyList) makeNodePropertyList(), this);
-	}
-
-	@Override
-	public IdentityScope getEdgeScope() {
-		return edgeScope;
-	}
-
-	@Override
-	public IdentityScope getTreeNodeScope() {
-		return nodeScope;
+		return new AotNode2(nodeScope.newId(proposedId), new ExtendablePropertyListImpl(), this);
 	}
 
 }
