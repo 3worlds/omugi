@@ -31,10 +31,12 @@
 
 package fr.cnrs.iees.playground.factories;
 
+import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.playground.elements.ITreeNode;
 
 public interface ITreeNodeFactory  extends INodePropertyListFactory{
 	public ITreeNode makeTreeNode(String proposedId);	
+	public IdentityScope getTreeNodeScope();
 
 
 }

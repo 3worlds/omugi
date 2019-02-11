@@ -47,7 +47,7 @@ public class AotGraph2 extends TreeGraph2<AotNode2, AotEdge2> implements ITreeNo
 																										// ConfiguarableGraph,Textable
 {
 	private IdentityScope nodeScope;
-	private IdentityScope edgeScope;//????????????????
+	private IdentityScope edgeScope;// ????????????????
 
 	// Factories need a getScopeFunction
 	public AotGraph2() {
@@ -55,7 +55,8 @@ public class AotGraph2 extends TreeGraph2<AotNode2, AotEdge2> implements ITreeNo
 		edgeScope = new LocalScope();
 	}
 
-	// We don't need this except for Importers - probably the whole this will come unstuck there!!
+	// We don't need this except for Importers - probably the whole this will come
+	// unstuck there!!
 	@Override
 	public ReadOnlyPropertyList makeNodePropertyList() {
 		return new ExtendablePropertyListImpl();
@@ -69,7 +70,7 @@ public class AotGraph2 extends TreeGraph2<AotNode2, AotEdge2> implements ITreeNo
 	@Override
 	public IEdge makeEdge(INode start, INode end, String proposedId) {
 		Identity id = edgeScope.newId(proposedId);
-		return new AotEdge2(id,start, end, (ExtendablePropertyList) makeEdgePropertyList(), this);
+		return new AotEdge2(id, start, end, (ExtendablePropertyList) makeEdgePropertyList(), this);
 	}
 
 	@Override
@@ -86,6 +87,16 @@ public class AotGraph2 extends TreeGraph2<AotNode2, AotEdge2> implements ITreeNo
 	public ITreeNode makeTreeNode(String proposedId) {
 		Identity id = nodeScope.newId(proposedId);
 		return new AotNode2(id, (ExtendablePropertyList) makeNodePropertyList(), this);
+	}
+
+	@Override
+	public IdentityScope getEdgeScope() {
+		return edgeScope;
+	}
+
+	@Override
+	public IdentityScope getTreeNodeScope() {
+		return nodeScope;
 	}
 
 }
