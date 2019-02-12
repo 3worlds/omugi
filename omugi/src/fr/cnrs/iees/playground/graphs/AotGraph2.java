@@ -30,11 +30,15 @@
  **************************************************************************/
 package fr.cnrs.iees.playground.graphs;
 
+import java.io.File;
+
 import fr.cnrs.iees.playground.elements.IEdge;
 import fr.cnrs.iees.playground.elements.INode;
 import fr.cnrs.iees.playground.elements.ITreeNode;
 import fr.cnrs.iees.playground.factories.IEdgeFactory;
 import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
+import fr.cnrs.iees.playground.io.OmugiGraphImporter2;
+import fr.cnrs.iees.playground.io.TreeGraphParser2;
 import fr.cnrs.iees.playground.io.TreeGraphTokenizer2;
 import fr.cnrs.iees.properties.impl.ExtendablePropertyListImpl;
 
@@ -45,11 +49,21 @@ public class AotGraph2 extends TreeGraph2<AotNode2, AotEdge2> implements ITreeNo
 	public AotGraph2() {
 		super();
 	}
+	
+	// OR
+	public AotGraph2(File file) {
+		this();
+		// lines
+		// TreeGraphTokenizer2
+		// TreeGraphReader
+	}
 
+	// Use a reader pattern???
 	protected AotGraph2(TreeGraphTokenizer2 tokenizer) {
 		this();
-		// TODO Auto-generated constructor stub
-		// no its a mess
+		TreeGraphParser2 tgp = new TreeGraphParser2(tokenizer,this,this);
+//		this.nodes = tgp.getNodes();
+//		this.root = tgp.getRoot();
 	}
 
 	@Override
@@ -66,17 +80,11 @@ public class AotGraph2 extends TreeGraph2<AotNode2, AotEdge2> implements ITreeNo
 		return node;
 	}
 
-//	public static AotGraph2 importGraph(File file){
-//		// what about a reader pattern?
-//		TreeGraphTokenizer2 tokenizer;
-//		try {
-//			tokenizer = new TreeGraphTokenizer2(Files.readAllLines(file.toPath()));
-//			return new AotGraph2(tokenizer);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return null;		
-//	}
+	// maybe 
+	public static AotGraph2 importGraph(File file){
+		AotGraph2 factories = new AotGraph2();
+		OmugiGraphImporter2 gi = new OmugiGraphImporter2(file, factories, null, factories);
+		return (AotGraph2) gi.getGraph();		
+	}
 
 }
