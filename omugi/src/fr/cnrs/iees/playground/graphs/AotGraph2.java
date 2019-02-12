@@ -53,11 +53,11 @@ public class AotGraph2 extends TreeGraph2<AotNode2, AotEdge2> implements ITreeNo
 	// OR
 	public AotGraph2(File file) {
 		this();
-		// lines
-		// TreeGraphTokenizer2
-		// TreeGraphReader
+		// lines 
+		// TreeGraphTokenizer
+		// TreeGraphReader/Parser
 	}
-
+//OR
 	// Use a reader pattern???
 	protected AotGraph2(TreeGraphTokenizer2 tokenizer) {
 		this();
