@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,28 +28,72 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.elements.impl;
+package fr.cnrs.iees.playground.io;
 
-import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.playground.elements.INode;
-import fr.cnrs.iees.playground.elements.IReadOnlyProperties;
-import fr.cnrs.iees.playground.factories.IEdgeFactory;
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-public class ReadOnlyDataEdgeImpl2 extends SimpleEdgeImpl2 implements IReadOnlyProperties {
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-	private ReadOnlyPropertyList propertyList = null;
+import fr.cnrs.iees.io.parsing.Tokenizer;
+import fr.cnrs.iees.io.parsing.impl.TreeGraphTokens;
 
-	protected ReadOnlyDataEdgeImpl2(Identity id, INode start, INode end, ReadOnlyPropertyList props, IEdgeFactory factory) {
-		super(id, start, end, factory);
-		propertyList = props;
+/**
+ * An abstract ancestor for tokenizers based on multi-line text. This class assumes that
+ * the token come in a list of Strings (lines), and that a token is always fully contained
+ * in a single line String.
+ * 
+ * @author Jacques Gignoux - 7 déc. 2018
+ *
+ */
+public abstract class LineTokenizer2 implements Tokenizer {
+	
+	//----------------------------------------------------
+	public class token {
+		public TreeGraphTokens type;
+		public String value;
+		
+		public token(TreeGraphTokens type, String value) {
+			super();
+			this.type = type;
+			this.value = value;
+		}
+		
+		@Override
+		public String toString() {
+			return type+":"+value;
+		}
+	}
+	//----------------------------------------------------
+	
+	protected List<String> lines;
+	
+	// This array lists the words that are placed at the top of a file according
+	// to the graph type.
+	private static String[] fileHeaders = {"graph","tree","treegraph","aot"};
+	// this for expanding this list in descendants
+	protected Set<String> fheaders = new HashSet<String>();
+		
+	public LineTokenizer2(List<String> lines) {
+		super();
+		this.lines = lines;
+		for (String s:fileHeaders)
+			fheaders.add(s);
 	}
 	
-	// DataEdge
-
-	@Override
-	public ReadOnlyPropertyList properties() {
-		return propertyList;
+	protected boolean isFileHeader(String s) {
+		return fheaders.contains(s);
 	}
+	
+	// for debugging only
+	protected LineTokenizer2(String[] lines) {
+		super();
+		this.lines = new ArrayList<>(lines.length);
+		for (int i=0; i<lines.length; i++)
+			this.lines.add(lines[i]);
+		for (String s:fileHeaders)
+			fheaders.add(s);
 
-
+	}
+	
 }

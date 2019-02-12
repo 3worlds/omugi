@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,40 +28,33 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.elements.impl;
+package fr.cnrs.iees.playground.io;
 
-import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.playground.elements.ISimpleProperties;
+import java.io.File;
+
+import fr.cnrs.iees.playground.factories.IEdgeFactory;
 import fr.cnrs.iees.playground.factories.INodeFactory;
-import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
+import fr.cnrs.iees.playground.graphs.IMinimalGraph;
 
-public class DataNodeImpl2 extends SimpleNodeImpl2
-		implements ISimpleProperties {
-
-	private SimplePropertyList propertyList = null;
-
-	// SimpleNodeImpl
+public class OmugiGraphImporter2 implements IGraphImporter {
 	
-	protected DataNodeImpl2(Identity id,SimplePropertyList props, INodeFactory factory) {
-		super(id,factory);
-		propertyList = props;
+	private final FileTokenizer2 tokenizer;
+	private final AbstractParser parser;
+
+	// All this is a mess!.
+	public OmugiGraphImporter2(File infile, IEdgeFactory edgeFactory, INodeFactory nodeFactory,
+			ITreeNodeFactory treeNodeFactory) {
+		super();
+		tokenizer = new FileTokenizer2(infile,edgeFactory, nodeFactory, treeNodeFactory);
+		parser = tokenizer.parser();
 	}
 
-	// DataNode
 
 	@Override
-	public SimplePropertyList properties() {
-		return propertyList;
-	}
-	
-	// Textable
+	public IMinimalGraph<?> getGraph() {
+		return parser.graph();
 
-	@Override
-	public String toDetailedString() {
-		StringBuilder sb = new StringBuilder(super.toDetailedString());
-		sb.append(' ');
-		sb.append(propertyList.toString());
-		return sb.toString();
 	}
 
 }

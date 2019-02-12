@@ -30,34 +30,53 @@
  **************************************************************************/
 package fr.cnrs.iees.playground.graphs;
 
-import fr.cnrs.iees.identity.IdentityScope;
-import fr.cnrs.iees.identity.impl.LocalScope;
 import fr.cnrs.iees.playground.elements.IEdge;
 import fr.cnrs.iees.playground.elements.INode;
 import fr.cnrs.iees.playground.elements.ITreeNode;
 import fr.cnrs.iees.playground.factories.IEdgeFactory;
 import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
+import fr.cnrs.iees.playground.io.TreeGraphTokenizer2;
 import fr.cnrs.iees.properties.impl.ExtendablePropertyListImpl;
 
 public class AotGraph2 extends TreeGraph2<AotNode2, AotEdge2> implements ITreeNodeFactory, IEdgeFactory// ,
 																										// ConfiguarableGraph,Textable
 {
-	private IdentityScope nodeScope;
-	private IdentityScope edgeScope;
 
 	public AotGraph2() {
-		nodeScope = new LocalScope();
-		edgeScope = new LocalScope();
+		super();
+	}
+
+	protected AotGraph2(TreeGraphTokenizer2 tokenizer) {
+		this();
+		// TODO Auto-generated constructor stub
+		// no its a mess
 	}
 
 	@Override
 	public IEdge makeEdge(INode start, INode end, String proposedId) {
+		// could each start,end pair have an IndentityScope or should the scope be graph
+		// wide?
 		return new AotEdge2(edgeScope.newId(proposedId), start, end, new ExtendablePropertyListImpl(), this);
 	}
 
 	@Override
 	public ITreeNode makeTreeNode(String proposedId) {
-		return new AotNode2(nodeScope.newId(proposedId), new ExtendablePropertyListImpl(), this);
+		AotNode2 node = new AotNode2(nodeScope.newId(proposedId), new ExtendablePropertyListImpl(), this);
+		nodes.add(node);
+		return node;
 	}
+
+//	public static AotGraph2 importGraph(File file){
+//		// what about a reader pattern?
+//		TreeGraphTokenizer2 tokenizer;
+//		try {
+//			tokenizer = new TreeGraphTokenizer2(Files.readAllLines(file.toPath()));
+//			return new AotGraph2(tokenizer);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return null;		
+//	}
 
 }

@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,24 +28,73 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.elements.impl;
+package fr.cnrs.iees.playground.io;
 
-import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.playground.elements.IReadOnlyProperties;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
+import java.util.logging.Logger;
+
+import fr.cnrs.iees.io.parsing.Tokenizer;
+import fr.cnrs.iees.playground.elements.IEdge;
+import fr.cnrs.iees.playground.elements.INode;
+import fr.cnrs.iees.playground.factories.IEdgeFactory;
+import fr.cnrs.iees.playground.factories.INodeFactory;
 import fr.cnrs.iees.playground.factories.ITreeNodeFactory;
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+import fr.cnrs.iees.playground.graphs.IGraph;
+import fr.cnrs.iees.playground.graphs.IMinimalGraph;
 
-public class ReadOnlyDataTreeNodeImpl2 extends SimpleTreeNodeImpl2 implements IReadOnlyProperties{
+public class FileTokenizer2 implements Tokenizer {
+	
+	private Logger log = Logger.getLogger(FileTokenizer2.class.getName());
+	private List<String> lines = null;
+	private LineTokenizer2 tokenizer = null;
+	private IEdgeFactory edgeFactory;
+	private INodeFactory nodeFactory;
+	private ITreeNodeFactory treeNodeFactory;
 
-	private ReadOnlyPropertyList propertyList;
-	protected ReadOnlyDataTreeNodeImpl2(Identity id, ReadOnlyPropertyList properties, ITreeNodeFactory factory) {
-		super(id, factory);
-		this.propertyList = properties;
+	
+	public FileTokenizer2(File f, IEdgeFactory edgeFactory, INodeFactory nodeFactory, ITreeNodeFactory treeNodeFactory) {
+		super();
+		this.edgeFactory=edgeFactory;
+		this.nodeFactory = nodeFactory;
+		this.treeNodeFactory = treeNodeFactory;
+		try {
+			lines = Files.readAllLines(f.toPath());
+			if (nodeFactory!=null)
+				tokenizer = new GraphTokenizer2(this);
+			else if (edgeFactory == null)
+				tokenizer = new TreeTokenizer2(this);
+			else if (treeNodeFactory!=null)
+				tokenizer = new TreeGraphTokenizer2(this);
+			else
+				log.severe("unrecognized file format - unable to load file \""+f.getName()+"\"");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected List<String> lines() {
+		return lines;
+	}
+	
+	public void tokenize() {
+		tokenizer.tokenize();
 	}
 
-	@Override
-	public ReadOnlyPropertyList properties() {
-		return propertyList;
+	/**
+	 * Create an instance of {@link Parser} adapted for this tokenizer
+	 * @return a new instance of Parser
+	 */
+	public AbstractParser parser() {
+		if (GraphTokenizer2.class.isAssignableFrom(tokenizer.getClass()))
+			return new GraphParser2((GraphTokenizer2) tokenizer, edgeFactory,nodeFactory);
+		if (TreeTokenizer2.class.isAssignableFrom(tokenizer.getClass()))
+			return new TreeParser2((TreeTokenizer2) tokenizer,treeNodeFactory);
+		if (TreeGraphTokenizer2.class.isAssignableFrom(tokenizer.getClass()))
+			return new TreeGraphParser2((TreeGraphTokenizer2) tokenizer,edgeFactory,treeNodeFactory);
+		return null;
 	}
-
+	
 }

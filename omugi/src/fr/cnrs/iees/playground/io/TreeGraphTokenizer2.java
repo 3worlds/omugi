@@ -27,80 +27,73 @@
  *  along with UIT.  If not, see <https://www.gnu.org/licenses/gpl.html>. *
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.playground.graphs;
+package fr.cnrs.iees.playground.io;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
-import fr.cnrs.iees.identity.IdentityScope;
-import fr.cnrs.iees.identity.impl.LocalScope;
-import fr.cnrs.iees.playground.elements.IEdge;
-import fr.cnrs.iees.playground.elements.ITreeGraphNode;
-import fr.ens.biologie.generic.Textable;
+import fr.cnrs.iees.io.parsing.impl.GraphTokenizer;
+import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
 
-public class TreeGraph2<N extends ITreeGraphNode, E extends IEdge> implements ITree<N>, IGraph<N, E>, Textable {
+/**
+ * A tokenizer for mixed tree graphs - first uses a tree tokenizer, then a graph tokenizer,
+ * assuming the file comes into two parts matching those.
+ * 
+ * @author Jacques Gignoux - 22 janv. 2019
+ *
+ */
+//tested OK with version 0.0.5 on 23/1/2019
+public class TreeGraphTokenizer2 extends LineTokenizer2 {
+
+	// the top of the file contains the tree structure
+	private List<String> treeLines = new LinkedList<String>();
+	// the end of the file contains the cross links between treenodes
+	private List<String> crossLinkLines = new LinkedList<String>();
+	private TreeTokenizer ttk = null;
+	private GraphTokenizer gtk = null;
 	
-	protected IdentityScope nodeScope;
-	protected IdentityScope edgeScope;
-	protected Set<N> nodes;
-	protected N root;
-	protected TreeGraph2() {
-		super();
-		nodeScope = new LocalScope();
-		edgeScope = new LocalScope();
-		nodes = new HashSet<>();
+	protected TreeTokenizer treeTokenizer() {
+		return ttk;
+	}
+	
+	protected GraphTokenizer graphTokenizer() {
+		return gtk;
+	}
+	
+	private void splitLines() {
+		for (String s:lines)
+			if (s.trim().startsWith("["))
+				crossLinkLines.add(s);
+			else
+				treeLines.add(s);
+		String[] ss = new String[0];
+		ttk = new TreeTokenizer(treeLines.toArray(ss));
+		gtk = new GraphTokenizer(crossLinkLines.toArray(ss));
+	}
+	
+	public TreeGraphTokenizer2(List<String> list) {
+		super(list);
+		splitLines();
+	}
+	
+	public TreeGraphTokenizer2(String[] lines) {
+		super(lines);
+		splitLines();
+	}
+	
+	public TreeGraphTokenizer2(FileTokenizer2 fileTokenizer2) {
+	
 	}
 
 	@Override
-	public Iterable<N> nodes() {
-		return nodes;
+	public void tokenize() {
+		ttk.tokenize();
+		gtk.tokenize();
 	}
 
 	@Override
-	public Iterable<N> leaves() {
-		// TODO Auto-generated method stub
-		return null;
+	public String toString() {
+		return ttk.toString()+gtk.toString();
 	}
 
-	@Override
-	public Iterable<N> findNodesByReference(String reference) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Iterable<N> roots() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean contains(N node) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Iterable<E> edges() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public N root() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ITree<N> subTree(N node) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
