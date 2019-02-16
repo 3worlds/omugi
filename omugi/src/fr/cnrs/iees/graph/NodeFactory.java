@@ -30,6 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
+import fr.cnrs.iees.OmugiClassLoader;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
@@ -116,7 +117,7 @@ public interface NodeFactory {
 	@SuppressWarnings("unchecked")
 	public default Class<? extends Node> nodeClass(String label) {
 		try {
-			return (Class<? extends Node>) Class.forName("fr.cnrs.iees.graph.impl."+label);
+			return (Class<? extends Node>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}

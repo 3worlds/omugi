@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import fr.cnrs.iees.OmugiClassLoader;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
@@ -73,7 +74,7 @@ public class DefaultGraphFactory
 		log = Logger.getLogger(DefaultGraphFactory.class.getName());
 		for (String label:labels.keySet()) {
 			try {
-				Class<?> c = Class.forName(labels.get(label));
+				Class<?> c = Class.forName(labels.get(label),false,OmugiClassLoader.getClassLoader());
 				if (Node.class.isAssignableFrom(c)) {
 					nodeLabels.put(label,(Class<? extends Node>) c);
 					nodeClassNames.put((Class<? extends Node>) c,label);

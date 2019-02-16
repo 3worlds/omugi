@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
 import au.edu.anu.rscs.aot.graph.property.Property;
+import fr.cnrs.iees.OmugiClassLoader;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.Tree;
 import fr.cnrs.iees.io.parsing.Parser;
@@ -120,7 +121,7 @@ public abstract class MinimalGraphParser extends Parser {
 			else {
 				Object o = null;
 				try {
-					Class<?> c = Class.forName(className);
+					Class<?> c = Class.forName(className,false,OmugiClassLoader.getClassLoader());
 					// if method present, instantiate object with valueOf()
 					for (Method m:c.getMethods())
 						if (m.getName().equals("valueOf")) {
@@ -176,7 +177,7 @@ public abstract class MinimalGraphParser extends Parser {
 		Class<?> result = null;
 		if (value!=null)
 			try {
-				Class<?> c = Class.forName(value);
+				Class<?> c = Class.forName(value,false,OmugiClassLoader.getClassLoader());
 				if (Tree.class.isAssignableFrom(c))
 					result = c;
 				else
@@ -191,7 +192,7 @@ public abstract class MinimalGraphParser extends Parser {
 		}
 		if (result==null)
 			try {
-				result = Class.forName(gp.defaultValue());
+				result = Class.forName(gp.defaultValue(),false,OmugiClassLoader.getClassLoader());
 			} catch (ClassNotFoundException e) {
 				// this is an error in GraphProperties.[...].defaultValue - fix code with a correct class name
 				e.printStackTrace();
@@ -210,7 +211,7 @@ public abstract class MinimalGraphParser extends Parser {
 		Class<?> result = null;
 		if (value!=null)
 			try {
-				Class<?> c = Class.forName(value);
+				Class<?> c = Class.forName(value,false,OmugiClassLoader.getClassLoader());
 				if (Graph.class.isAssignableFrom(c))
 					result = c;
 				else
@@ -225,7 +226,7 @@ public abstract class MinimalGraphParser extends Parser {
 		}
 		if (result==null)
 			try {
-				result = Class.forName(gp.defaultValue());
+				result = Class.forName(gp.defaultValue(),false,OmugiClassLoader.getClassLoader());
 			} catch (ClassNotFoundException e) {
 				// this is an error in GraphProperties.[...].defaultValue - fix code with a correct class name
 				e.printStackTrace();

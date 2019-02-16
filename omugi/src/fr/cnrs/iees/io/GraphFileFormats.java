@@ -34,6 +34,7 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.logging.Logger;
 
+import fr.cnrs.iees.OmugiClassLoader;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.graph.io.impl.GraphmlExporter;
@@ -117,7 +118,7 @@ public enum GraphFileFormats {
 			switch (gf) {
 				case AOT:
 				try {
-					Class<?> c = Class.forName("au.edu.anu.rscs.aot.graph.io.AotGraphImporter");
+					Class<?> c = Class.forName("au.edu.anu.rscs.aot.graph.io.AotGraphImporter",false,OmugiClassLoader.getClassLoader());
 					Constructor<?> cc = c.getConstructor(File.class);
 					GraphImporter gi = (GraphImporter) cc.newInstance(f);
 					return gi;

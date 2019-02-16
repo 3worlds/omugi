@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import fr.cnrs.iees.OmugiClassLoader;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
@@ -71,7 +72,7 @@ public class TreeGraphFactory
 		log = Logger.getLogger(DefaultGraphFactory.class.getName());
 		for (String label:labels.keySet()) {
 			try {
-				Class<?> c = Class.forName(labels.get(label));
+				Class<?> c = Class.forName(labels.get(label),false,OmugiClassLoader.getClassLoader());
 				if (TreeGraphNode.class.isAssignableFrom(c)) {
 					nodeLabels.put(label,(Class<? extends TreeGraphNode>) c);
 					nodeClassNames.put((Class<? extends TreeGraphNode>) c,label);

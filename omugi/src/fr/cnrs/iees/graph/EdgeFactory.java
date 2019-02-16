@@ -30,6 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
+import fr.cnrs.iees.OmugiClassLoader;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
@@ -125,7 +126,7 @@ public interface EdgeFactory {
 	@SuppressWarnings("unchecked")
 	public default Class<? extends Edge> edgeClass(String label) {
 		try {
-			return (Class<? extends Edge>) Class.forName("fr.cnrs.iees.graph.impl."+label);
+			return (Class<? extends Edge>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}

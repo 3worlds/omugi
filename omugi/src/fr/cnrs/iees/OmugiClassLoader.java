@@ -36,10 +36,10 @@ package fr.cnrs.iees;
  *
  * Date 16 Feb. 2019
  */
-public class KlassLoader {
-//	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+public class OmugiClassLoader {
+	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 	
-	private static ClassLoader classLoader =ClassLoader.getSystemClassLoader();
+//	private static ClassLoader classLoader =ClassLoader.getSystemClassLoader();
 	public static ClassLoader getClassLoader() {
 		return classLoader;
 	}
