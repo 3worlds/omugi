@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Set;
 
 import au.edu.anu.rscs.aot.collections.QuickListOfLists;
+import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Graph;
@@ -44,19 +45,21 @@ import fr.cnrs.iees.graph.TreeNode;
 import fr.ens.biologie.generic.Textable;
 
 /**
- * <p>A graph that is both a tree and a graph, ie it has a tree structure with parent and
- * children treeNodes, but may also have cross-link edges between nodes. The node must be of the
- * {@link TreeGraphNode} class, edges can be of any edge class.
+ * <p>
+ * A graph that is both a tree and a graph, ie it has a tree structure with
+ * parent and children treeNodes, but may also have cross-link edges between
+ * nodes. The node must be of the {@link TreeGraphNode} class, edges can be of
+ * any edge class.
  * </p>
  * 
  * @author Jacques Gignoux - 21 déc. 2018
  *
  */
 
-public class TreeGraph<N extends TreeGraphNode,E extends Edge> 
-	implements Tree<N>,	Graph<N,E>,	Textable {
+public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<N>, Graph<N, E>, Textable {
 
-	protected Set<N> nodes; // no duplicate nodes permitted
+	protected Set<N> nodes; // no duplicate nodes permitted - make private with addNode(N Node) and issue
+							// duplicate errors
 	private int minDepth;
 	private int maxDepth;
 	private N root;
@@ -73,6 +76,12 @@ public class TreeGraph<N extends TreeGraphNode,E extends Edge>
 			nodes.add(n);
 		// order is undefined so must search?
 		root = root();
+	}
+
+	public N addNode(N node) {
+		if (!nodes.add((N) node))
+			throw new OmugiException("Attempt to add duplicate node: " + node.toString());
+		return node;
 	}
 
 	/**
@@ -180,29 +189,28 @@ public class TreeGraph<N extends TreeGraphNode,E extends Edge>
 
 	@Override
 	public Tree<N> subTree(N parent) {
-		return new TreeGraph<N,E>(parent);
+		return new TreeGraph<N, E>(parent);
 	}
 
 	// LOCAL
 
 	private int nEdges() {
-		int n=0;
-		for (Node node:nodes)
+		int n = 0;
+		for (Node node : nodes)
 			n += node.degree(Direction.OUT);
 		return n;
 	}
 
 	// -------------------------- Textable --------------------------
-	
+
 	@Override
 	public String toDetailedString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(toShortString())
-			.append(" = {");
+		sb.append(toShortString()).append(" = {");
 		int count = 0;
-		for (N n:nodes) {
+		for (N n : nodes) {
 			sb.append(n.toDetailedString());
-			if (count<nodes.size()-1)
+			if (count < nodes.size() - 1)
 				sb.append(',');
 			count++;
 		}
@@ -212,21 +220,21 @@ public class TreeGraph<N extends TreeGraphNode,E extends Edge>
 
 	@Override
 	public String toShortString() {
-		return toUniqueString() + "(" + nodes.size() + " tree nodes / " + nEdges() + " cross-links)"; 
+		return toUniqueString() + "(" + nodes.size() + " tree nodes / " + nEdges() + " cross-links)";
 	}
 
 	@Override
 	public String toUniqueString() {
 		String ptr = super.toString();
 		ptr = ptr.substring(ptr.indexOf('@'));
-		return getClass().getSimpleName()+ptr; 
+		return getClass().getSimpleName() + ptr;
 	}
 
 	// -------------------------- Object --------------------------
-	
+
 	@Override
 	public final String toString() {
-		return "["+toDetailedString()+"]";
+		return "[" + toDetailedString() + "]";
 	}
 
 }
