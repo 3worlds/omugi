@@ -222,7 +222,7 @@ public class TreeGraphFactory
 			connectToParent(tgn,parent);
 			return tgn;
 		} catch (Exception e) {
-			log.severe(()->"Node of class \""+treeNodeClass.getName()+ "\" could not be instantiated");
+			log.severe(()->"Node of class \""+treeNodeClass.getName()+ "\" could not be instantiated. "+e);
 		}
 		return null;
 	}
