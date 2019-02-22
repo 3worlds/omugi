@@ -89,9 +89,9 @@ public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<
 	// cf example of ImmutableGraphImpl and MutableGraphImpl classes.
 
 	/*
-	 * So how does a user of MM add/delete configuration nodes? Should
-	 * AotGraph/VisualGraph descend from MutableTreeGraphImpl. cf
-	 * omugi/doco/graphs.dia
+	 * So how does a user of MM add/delete configuration nodes? There currently is
+	 * no mechanism! Should AotGraph/VisualGraph descend from MutableTreeGraphImpl.
+	 * cf omugi/doco/graphs.dia
 	 */
 	public N addNode(N node) {
 		if (!nodes.add((N) node))
