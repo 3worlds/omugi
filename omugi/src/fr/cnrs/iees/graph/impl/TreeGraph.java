@@ -78,12 +78,21 @@ public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<
 		root = root();
 	}
 
-	// JG - I disagree with this - TreeGraph is an IMMUTABLE implementation of a Tree, so it should not be possible
+	// JG - I disagree with this - TreeGraph is an IMMUTABLE implementation of a
+	// Tree, so it should not be possible
 	// to add TreeNodes after construction.
-	// If you look at the Graph interface, it doesnt implement addNode() - this is done in DynamicGraph
-	// if you want a mutable tree then we should do the same, ie have a DynamicTree interface
+	// If you look at the Graph interface, it doesnt implement addNode() - this is
+	// done in DynamicGraph
+	// if you want a mutable tree then we should do the same, ie have a DynamicTree
+	// interface
 	// and then have a MutableTreeGraph or sth like that implementing it.
 	// cf example of ImmutableGraphImpl and MutableGraphImpl classes.
+
+	/*
+	 * So how does a user of MM add/delete configuration nodes? Should
+	 * AotGraph/VisualGraph descend from MutableTreeGraphImpl. cf
+	 * omugi/doco/graphs.dia
+	 */
 	public N addNode(N node) {
 		if (!nodes.add((N) node))
 			throw new OmugiException("Attempt to add duplicate node: " + node.toString());
