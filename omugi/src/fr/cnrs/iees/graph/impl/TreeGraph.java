@@ -55,7 +55,8 @@ import fr.ens.biologie.generic.Textable;
  * @author Jacques Gignoux - 21 déc. 2018
  *
  */
-
+// Trial - replaced by ImmutableTreeGraphImpl
+@Deprecated
 public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<N>, Graph<N, E>, Textable {
 
 	protected Set<N> nodes; // no duplicate nodes permitted - make private with addNode(N Node) and issue
