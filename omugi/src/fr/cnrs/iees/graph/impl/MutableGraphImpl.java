@@ -70,10 +70,10 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 		nodes = new DynamicList<>(list);
 	}
 
-	@Override
-	public void addEdge(E edge) {
-		// do nothing since this is handled by Node at Edge creation
-	}
+//	@Override
+//	public void addEdge(E edge) {
+//		// do nothing since this is handled by Node at Edge creation
+//	}
 
 	// DynamicGraph
 	
@@ -84,9 +84,9 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 
 	// when an edge is removed from the graph, this has no consequences on Nodes
 	// Note: the edge is NOT disconnected from the node, that's another issue
-	@Override
-	public void removeEdge(Edge edge) {
-	}
+//	@Override
+//	public void removeEdge(Edge edge) {
+//	}
 
 	// when a Node is removed from the graph, this has no consequences on edges
 	// Note: the node is NOT disconnected - that's another issue

@@ -28,27 +28,72 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph;
+
+package fr.cnrs.iees.graph.impl;
+
+import au.edu.anu.rscs.aot.collections.DynamicList;
+import fr.cnrs.iees.graph.DynamicGraph;
+import fr.cnrs.iees.graph.Edge;
 
 /**
- * A mutable graph, with the possibility to add or remove Elements
- * @author gignoux - 25 août 2017
+ * Author Ian Davies
  *
+ * Date 23 Feb. 2019
  */
-public interface DynamicGraph<N extends Node, E extends Edge> {
-	
-	//public void addEdge(E edge);
-	
-	public void addNode(N node);
-	
-	//public void removeEdge(E edge);
-	
-	public void removeNode(N node);
-	
-	public void addNodes(Iterable<N> nodelist);
-	
-	public void removeNodes(Iterable<N> nodelist);
-	
-	public void clear();
+public class MutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> extends ImmutableTreeGraphImpl<N, E>
+		implements DynamicGraph<N, E> {
+
+	public MutableTreeGraphImpl() {
+		super();
+		nodes = new DynamicList<>();
+	}
+
+//	@Override
+//	public void addEdge(E edge) {
+//		// do nothing since this is handled by Node at Edge creation in this system. So
+//		// why have it in the interface???
+//	}
+
+    //root will be found on next attempted access
+	@Override
+	public void addNode(N node) {
+		nodes.add(node);
+		clearRoot();
+	}
+
+	/*
+	 * when an edge is removed from the graph, this has no consequences on Nodes
+	 * Note: the edge is NOT disconnected from the node, that's another issue
+	 */
+//	@Override
+//	public void removeEdge(E edge) {
+//		//why is this here at all??
+//	}
+
+	@Override
+	public void removeNode(N node) {
+		nodes.remove(node);
+		clearRoot();
+	}
+
+	@Override
+	public void addNodes(Iterable<N> nodelist) {
+		for (N node : nodelist)
+			nodes.add(node);
+		clearRoot();
+	}
+
+	@Override
+	public void removeNodes(Iterable<N> nodelist) {
+		for (N node : nodelist)
+			nodes.remove(node);
+		clearRoot();
+	}
+
+	@Override
+	public void clear() {
+		nodes.clear();
+		clearRoot();
+	}
 
 }
