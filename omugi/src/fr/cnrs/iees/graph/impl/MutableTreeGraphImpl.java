@@ -56,9 +56,10 @@ public class MutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> exten
 
     //root will be found on next attempted access
 	@Override
-	public void addNode(N node) {
+	public N addNode(N node) {
 		nodes.add(node);
 		clearRoot();
+		return node;
 	}
 
 	/*
@@ -71,23 +72,34 @@ public class MutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> exten
 //	}
 
 	@Override
-	public void removeNode(N node) {
+	public N removeNode(N node) {
 		nodes.remove(node);
 		clearRoot();
+		return node;
 	}
 
 	@Override
-	public void addNodes(Iterable<N> nodelist) {
-		for (N node : nodelist)
-			nodes.add(node);
+	public boolean addNodes(Iterable<N> nodelist) {
+		boolean result = true;
+		for (N node : nodelist) {
+			boolean r = nodes.add(node);
+			if (result)
+				result = r;
+		}
 		clearRoot();
+		return result;
 	}
 
 	@Override
-	public void removeNodes(Iterable<N> nodelist) {
-		for (N node : nodelist)
-			nodes.remove(node);
+	public boolean removeNodes(Iterable<N> nodelist) {
+		boolean result = true;
+		for (N node : nodelist) {
+			boolean r =nodes.remove(node);
+			if (result)
+				result = r;
+		}
 		clearRoot();
+		return result;
 	}
 
 	@Override

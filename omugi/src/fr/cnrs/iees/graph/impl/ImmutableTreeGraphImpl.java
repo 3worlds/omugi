@@ -86,8 +86,9 @@ public class ImmutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> imp
 	}
 
 	protected void clearRoot() {
-		root =null;
+		root = null;
 	}
+
 	@SuppressWarnings("unchecked")
 	private void insertChildren(TreeNode parent) {
 		for (TreeNode child : parent.getChildren()) {
@@ -95,7 +96,6 @@ public class ImmutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> imp
 			insertChildren(child);
 		}
 	}
-
 
 	@Override
 	public Iterable<N> leaves() {
@@ -149,7 +149,6 @@ public class ImmutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> imp
 				found.add(n);
 		return found;
 	}
-
 
 	private N findRoot() {
 		List<N> roots = (List<N>) roots();
