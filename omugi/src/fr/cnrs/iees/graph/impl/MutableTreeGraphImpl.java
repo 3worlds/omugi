@@ -31,6 +31,7 @@
 
 package fr.cnrs.iees.graph.impl;
 
+import java.util.Collection;
 import au.edu.anu.rscs.aot.collections.DynamicList;
 import fr.cnrs.iees.graph.DynamicGraph;
 import fr.cnrs.iees.graph.Edge;
@@ -43,10 +44,12 @@ import fr.cnrs.iees.graph.Edge;
 public class MutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> extends ImmutableTreeGraphImpl<N, E>
 		implements DynamicGraph<N, E> {
 
-	public MutableTreeGraphImpl() {
-		super();
-		nodes = new DynamicList<>();
+	
+	@Override
+	protected Collection<N>createNodeList() {
+		return new DynamicList<>();		
 	}
+
 
 //	@Override
 //	public void addEdge(E edge) {
@@ -56,10 +59,11 @@ public class MutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> exten
 
     //root will be found on next attempted access
 	@Override
-	public N addNode(N node) {
-		nodes.add(node);
-		clearRoot();
-		return node;
+	public boolean addNode(N node) {
+		boolean result =nodes.add(node);
+		if (result)
+			clearRoot();
+		return result;
 	}
 
 	/*
@@ -72,33 +76,32 @@ public class MutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> exten
 //	}
 
 	@Override
-	public N removeNode(N node) {
-		nodes.remove(node);
-		clearRoot();
-		return node;
+	public boolean removeNode(N node) {
+		boolean result = nodes.remove(node);
+		if (result)
+			clearRoot();
+		return result;
 	}
 
 	@Override
 	public boolean addNodes(Iterable<N> nodelist) {
 		boolean result = true;
-		for (N node : nodelist) {
-			boolean r = nodes.add(node);
-			if (result)
-				result = r;
-		}
-		clearRoot();
+		for (N node : nodelist)
+			if(!nodes.add(node))
+				result = false;
+		if (result) 
+			clearRoot();
 		return result;
 	}
 
 	@Override
 	public boolean removeNodes(Iterable<N> nodelist) {
 		boolean result = true;
-		for (N node : nodelist) {
-			boolean r =nodes.remove(node);
-			if (result)
-				result = r;
-		}
-		clearRoot();
+		for (N node : nodelist)
+			if (!nodes.remove(node))
+				result = false;;
+		if (result)
+			clearRoot();
 		return result;
 	}
 

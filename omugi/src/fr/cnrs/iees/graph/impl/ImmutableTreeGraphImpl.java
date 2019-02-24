@@ -63,7 +63,10 @@ public class ImmutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> imp
 	// constructors
 	public ImmutableTreeGraphImpl() {
 		super();
-		this.nodes = new HashSet<>();
+		this.nodes = createNodeList();
+	}
+	protected Collection<N>createNodeList() {
+		return new HashSet<>();	
 	}
 
 	public ImmutableTreeGraphImpl(Iterable<N> list) {

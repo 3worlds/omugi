@@ -53,12 +53,12 @@ import fr.ens.biologie.generic.Textable;
  */
 // TODO: idea: a sealable graph, dynamic for a while and then immutable -- first using
 // DynamicList, then ArrayList ; use case = configuration in aot.
-public class MutableGraphImpl<N extends Node, E extends Edge> 
-		implements Graph<N,E>, DynamicGraph<N, E>, Sizeable, Textable {
+public class MutableGraphImpl<N extends Node, E extends Edge>
+		implements Graph<N, E>, DynamicGraph<N, E>, Sizeable, Textable {
 
-	/** for easy dynamics */	
+	/** for easy dynamics */
 	private List<N> nodes = new DynamicList<>();
-	
+
 	// Constructors
 
 	public MutableGraphImpl() {
@@ -76,10 +76,10 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 //	}
 
 	// DynamicGraph
-	
+
 	@Override
-	public void addNode(N node) {
-		nodes.add(node);
+	public boolean addNode(N node) {
+		return nodes.add(node);
 	}
 
 	// when an edge is removed from the graph, this has no consequences on Nodes
@@ -91,20 +91,26 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 	// when a Node is removed from the graph, this has no consequences on edges
 	// Note: the node is NOT disconnected - that's another issue
 	@Override
-	public void removeNode(Node node) {
-		nodes.remove(node);
+	public boolean removeNode(N node) {
+		return nodes.remove(node);
 	}
 
 	@Override
-	public void addNodes(Iterable<N> nodelist) {
+	public boolean addNodes(Iterable<N> nodelist) {
+		boolean result = true;
 		for (N n : nodelist)
-			nodes.add(n);
+			if (!nodes.add(n))
+				result = false;
+		return result;
 	}
 
 	@Override
-	public void removeNodes(Iterable<N> nodelist) {
+	public boolean removeNodes(Iterable<N> nodelist) {
+		boolean result = true;
 		for (N n : nodelist)
-			removeNode(n);
+			if (!removeNode(n))
+				result = false;
+		return result;
 	}
 
 	@Override
@@ -126,7 +132,7 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 	@Override
 	public Iterable<E> edges() {
 		QuickListOfLists<E> edges = new QuickListOfLists<>();
-		for (N n:nodes)
+		for (N n : nodes)
 			edges.addList((Iterable<E>) n.getEdges(Direction.OUT));
 		return edges;
 	}
@@ -134,7 +140,7 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 	@Override
 	public Iterable<N> roots() {
 		List<N> result = new ArrayList<>(nodes.size());
-		for (N n:nodes)
+		for (N n : nodes)
 			if (n.isRoot())
 				result.add(n);
 		return result;
@@ -143,7 +149,7 @@ public class MutableGraphImpl<N extends Node, E extends Edge>
 	@Override
 	public Iterable<N> leaves() {
 		List<N> result = new ArrayList<>(nodes.size());
-		for (N n:nodes)
+		for (N n : nodes)
 			if (n.isLeaf())
 				result.add(n);
 		return result;
