@@ -57,7 +57,7 @@ import fr.ens.biologie.generic.Textable;
 public class ImmutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> implements Tree<N>, Graph<N, E>, Textable {
 
 //	protected Set<N> nodes; 
-	protected Collection<N> nodes;
+	protected Collection<TreeGraphNode> nodes;
 	private N root;
 
 	// constructors
@@ -65,7 +65,7 @@ public class ImmutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> imp
 		super();
 		this.nodes = createNodeList();
 	}
-	protected Collection<N>createNodeList() {
+	protected Collection<TreeGraphNode>createNodeList() {
 		return new HashSet<>();	
 	}
 
@@ -100,18 +100,20 @@ public class ImmutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> imp
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<N> leaves() {
-		List<N> result = new ArrayList<>(nodes.size());
-		for (N n : nodes)
+		List<TreeGraphNode> result = new ArrayList<>(nodes.size());
+		for (TreeGraphNode n : nodes)
 			if (n.isLeaf())
 				result.add(n);
-		return result;
+		return (Iterable<N>) result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<N> nodes() {
-		return nodes;
+		return (Iterable<N>) nodes;
 	}
 
 	@Override
@@ -129,28 +131,30 @@ public class ImmutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> imp
 	@Override
 	public Iterable<E> edges() {
 		QuickListOfLists<E> edges = new QuickListOfLists<>();
-		for (N n : nodes)
+		for (TreeGraphNode n : nodes)
 			edges.addList((Iterable<E>) n.getEdges(Direction.OUT));
 		return edges;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<N> roots() {
-		List<N> result = new ArrayList<>(nodes.size());
-		for (N n : nodes)
+		List<TreeGraphNode> result = new ArrayList<>(nodes.size());
+		for (TreeGraphNode n : nodes)
 			if (n.getParent() == null)
 				result.add(n);
-		return result;
+		return (Iterable<N>) result;
 	}
 
 	// ------------------ TREE -------------------------------------
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<N> findNodesByReference(String reference) {
-		List<N> found = new ArrayList<>(nodes.size()); // this may be a bad idea for big graphs
-		for (N n : nodes)
+		List<TreeGraphNode> found = new ArrayList<>(nodes.size()); // this may be a bad idea for big graphs
+		for (TreeGraphNode n : nodes)
 			if (Tree.matchesReference(n, reference))
 				found.add(n);
-		return found;
+		return (Iterable<N>) found;
 	}
 
 	private N findRoot() {
@@ -188,7 +192,7 @@ public class ImmutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> imp
 		StringBuilder sb = new StringBuilder();
 		sb.append(toShortString()).append(" = {");
 		int count = 0;
-		for (N n : nodes) {
+		for (TreeGraphNode n : nodes) {
 			sb.append(n.toDetailedString());
 			if (count < nodes.size() - 1)
 				sb.append(',');

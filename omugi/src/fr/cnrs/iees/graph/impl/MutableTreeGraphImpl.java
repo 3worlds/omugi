@@ -46,7 +46,7 @@ public class MutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> exten
 
 	
 	@Override
-	protected Collection<N>createNodeList() {
+	protected Collection<TreeGraphNode>createNodeList() {
 		return new DynamicList<>();		
 	}
 
@@ -58,9 +58,10 @@ public class MutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> exten
 //	}
 
     //root will be found on next attempted access
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean addNode(N node) {
-		boolean result =nodes.add(node);
+	public boolean addNode(TreeGraphNode node) {
+		boolean result =nodes.add((N) node);
 		if (result)
 			clearRoot();
 		return result;
