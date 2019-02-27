@@ -32,6 +32,7 @@ package fr.cnrs.iees.graph.impl;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -57,7 +58,9 @@ public class TreeGraphFactory
 	implements TreeNodeFactory, NodeFactory {
 
 	private Map<String,Class<? extends TreeGraphNode>> nodeLabels = new HashMap<>();
+	// I don't understand this. A class may have more than one label eg there are many Labels with a simple AotNode class.
 	private Map<Class<? extends TreeGraphNode>,String> nodeClassNames = new HashMap<>();
+//	private Map<Class<? extends TreeGraphNode>,List<String>> nodeClassNames = new HashMap<>();
 
 	// Constructors ---------------------------------------------------------
 	
