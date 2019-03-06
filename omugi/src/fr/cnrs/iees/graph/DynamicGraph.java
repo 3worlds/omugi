@@ -37,17 +37,17 @@ package fr.cnrs.iees.graph;
  */
 public interface DynamicGraph<N extends Node, E extends Edge> {
 	
-	public void addEdge(E edge);
+	//public void addEdge(E edge);
 	
-	public void addNode(N node);
+	public boolean addNode(N node);
 	
-	public void removeEdge(E edge);
+	//public void removeEdge(E edge);
 	
-	public void removeNode(N node);
+	public boolean removeNode(N node);
 	
-	public void addNodes(Iterable<N> nodelist);
+	public boolean addNodes(Iterable<N> nodelist);
 	
-	public void removeNodes(Iterable<N> nodelist);
+	public boolean removeNodes(Iterable<N> nodelist);
 	
 	public void clear();
 

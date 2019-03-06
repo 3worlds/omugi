@@ -30,10 +30,9 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import au.edu.anu.rscs.aot.collections.QuickListOfLists;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
@@ -54,22 +53,23 @@ import fr.ens.biologie.generic.Textable;
  * @author Jacques Gignoux - 21 déc. 2018
  *
  */
-// Trial - replacement by ImmutableTreeGraphImpl
-public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<N>, Graph<N, E>, Textable {
 
-	protected Set<N> nodes; // no duplicate nodes permitted - make private with addNode(N Node) and issue
-							// duplicate errors
-	private int minDepth;
-	private int maxDepth;
+public class ImmutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> implements Tree<N>, Graph<N, E>, Textable {
+
+//	protected Set<N> nodes; 
+	protected Collection<TreeGraphNode> nodes;
 	private N root;
 
 	// constructors
-	public TreeGraph() {
+	public ImmutableTreeGraphImpl() {
 		super();
-		this.nodes = new HashSet<>();
+		this.nodes = createNodeList();
+	}
+	protected Collection<TreeGraphNode>createNodeList() {
+		return new HashSet<>();	
 	}
 
-	public TreeGraph(Iterable<N> list) {
+	public ImmutableTreeGraphImpl(Iterable<N> list) {
 		this();
 		for (N n : list)
 			nodes.add(n);
@@ -77,17 +77,19 @@ public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<
 		root = root();
 	}
 
-
 	/**
 	 * builds the graph from a tree root by inserting all children of the argument
 	 * 
 	 * @param root
 	 */
-	public TreeGraph(N root) {
+	public ImmutableTreeGraphImpl(N root) {
 		this();
 		this.root = root;
 		insertChildren(root);
-		computeDepths(root);
+	}
+
+	protected void clearRoot() {
+		root = null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -98,22 +100,20 @@ public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<
 		}
 	}
 
-	private void computeDepths(N parent) {
-		// TODO Auto-generated method stub
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<N> leaves() {
-		List<N> result = new ArrayList<>(nodes.size());
-		for (N n : nodes)
+		List<TreeGraphNode> result = new ArrayList<>(nodes.size());
+		for (TreeGraphNode n : nodes)
 			if (n.isLeaf())
 				result.add(n);
-		return result;
+		return (Iterable<N>) result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<N> nodes() {
-		return nodes;
+		return (Iterable<N>) nodes;
 	}
 
 	@Override
@@ -131,40 +131,30 @@ public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<
 	@Override
 	public Iterable<E> edges() {
 		QuickListOfLists<E> edges = new QuickListOfLists<>();
-		for (N n : nodes)
+		for (TreeGraphNode n : nodes)
 			edges.addList((Iterable<E>) n.getEdges(Direction.OUT));
 		return edges;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<N> roots() {
-		List<N> result = new ArrayList<>(nodes.size());
-		for (N n : nodes)
+		List<TreeGraphNode> result = new ArrayList<>(nodes.size());
+		for (TreeGraphNode n : nodes)
 			if (n.getParent() == null)
 				result.add(n);
-		return result;
+		return (Iterable<N>) result;
 	}
 
 	// ------------------ TREE -------------------------------------
+	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<N> findNodesByReference(String reference) {
-		List<N> found = new ArrayList<>(nodes.size()); // this may be a bad idea for big graphs
-		for (N n : nodes)
+		List<TreeGraphNode> found = new ArrayList<>(nodes.size()); // this may be a bad idea for big graphs
+		for (TreeGraphNode n : nodes)
 			if (Tree.matchesReference(n, reference))
 				found.add(n);
-		return found;
-	}
-
-	@Override
-	public int maxDepth() {
-		// TODO not implemented
-		return maxDepth;
-	}
-
-	@Override
-	public int minDepth() {
-		// TODO not implemented
-		return minDepth;
+		return (Iterable<N>) found;
 	}
 
 	private N findRoot() {
@@ -183,7 +173,7 @@ public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<
 
 	@Override
 	public Tree<N> subTree(N parent) {
-		return new TreeGraph<N, E>(parent);
+		return new ImmutableTreeGraphImpl<N, E>(parent);
 	}
 
 	// LOCAL
@@ -202,7 +192,7 @@ public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<
 		StringBuilder sb = new StringBuilder();
 		sb.append(toShortString()).append(" = {");
 		int count = 0;
-		for (N n : nodes) {
+		for (TreeGraphNode n : nodes) {
 			sb.append(n.toDetailedString());
 			if (count < nodes.size() - 1)
 				sb.append(',');
@@ -229,6 +219,18 @@ public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<
 	@Override
 	public final String toString() {
 		return "[" + toDetailedString() + "]";
+	}
+
+	@Override
+	public int maxDepth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int minDepth() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

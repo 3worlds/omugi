@@ -43,7 +43,7 @@ import fr.cnrs.iees.identity.Identity;
 // Tested through descendant SimpleNodeImpl
 public abstract class NodeAdapter extends GraphElementAdapter implements Node {
 	
-	private NodeFactory factory;
+	private NodeFactory factory;// unused except satisfy nodeFactory()! I think this is a/the mistake?
 	protected EnumMap<Direction,Collection<Edge>> edges = null;
 	
 	// Constructors --------

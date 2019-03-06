@@ -28,136 +28,88 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
+
 package fr.cnrs.iees.graph.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.Collection;
 import au.edu.anu.rscs.aot.collections.DynamicList;
-import au.edu.anu.rscs.aot.collections.QuickListOfLists;
-import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.DynamicGraph;
 import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.ens.biologie.generic.Sizeable;
-import fr.ens.biologie.generic.Textable;
 
 /**
- * A very lightweight implementation of a Mutable graph - it only keeps the root
- * nodes of the graph, everything else is floating in the air. Veeery slow for
- * most operations !
- * 
- * @author gignoux - 6 sept. 2017
+ * Author Ian Davies
  *
+ * Date 23 Feb. 2019
  */
-// TODO: idea: a sealable graph, dynamic for a while and then immutable -- first using
-// DynamicList, then ArrayList ; use case = configuration in aot.
-public class MutableGraphImpl<N extends Node, E extends Edge>
-		implements Graph<N, E>, DynamicGraph<N, E>, Sizeable, Textable {
+public class MutableTreeGraphImpl<N extends TreeGraphNode, E extends Edge> extends ImmutableTreeGraphImpl<N, E>
+		implements DynamicGraph<N, E> {
 
-	/** for easy dynamics */
-	private List<N> nodes = new DynamicList<>();
-
-	// Constructors
-
-	public MutableGraphImpl() {
-		super();
+	
+	@Override
+	protected Collection<TreeGraphNode>createNodeList() {
+		return new DynamicList<>();		
 	}
 
-	public MutableGraphImpl(Iterable<N> list) {
-		super();
-		nodes = new DynamicList<>(list);
-	}
 
 //	@Override
 //	public void addEdge(E edge) {
-//		// do nothing since this is handled by Node at Edge creation
+//		// do nothing since this is handled by Node at Edge creation in this system. So
+//		// why have it in the interface???
 //	}
 
-	// DynamicGraph
-
+    //root will be found on next attempted access
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean addNode(N node) {
-		return nodes.add(node);
+	public boolean addNode(TreeGraphNode node) {
+		boolean result =nodes.add((N) node);
+		if (result)
+			clearRoot();
+		return result;
 	}
 
-	// when an edge is removed from the graph, this has no consequences on Nodes
-	// Note: the edge is NOT disconnected from the node, that's another issue
+	/*
+	 * when an edge is removed from the graph, this has no consequences on Nodes
+	 * Note: the edge is NOT disconnected from the node, that's another issue
+	 */
 //	@Override
-//	public void removeEdge(Edge edge) {
+//	public void removeEdge(E edge) {
+//		//why is this here at all??
 //	}
 
-	// when a Node is removed from the graph, this has no consequences on edges
-	// Note: the node is NOT disconnected - that's another issue
 	@Override
 	public boolean removeNode(N node) {
-		return nodes.remove(node);
+		boolean result = nodes.remove(node);
+		if (result)
+			clearRoot();
+		return result;
 	}
 
 	@Override
 	public boolean addNodes(Iterable<N> nodelist) {
 		boolean result = true;
-		for (N n : nodelist)
-			if (!nodes.add(n))
+		for (N node : nodelist)
+			if(!nodes.add(node))
 				result = false;
+		if (result) 
+			clearRoot();
 		return result;
 	}
 
 	@Override
 	public boolean removeNodes(Iterable<N> nodelist) {
 		boolean result = true;
-		for (N n : nodelist)
-			if (!removeNode(n))
-				result = false;
+		for (N node : nodelist)
+			if (!nodes.remove(node))
+				result = false;;
+		if (result)
+			clearRoot();
 		return result;
 	}
 
 	@Override
 	public void clear() {
 		nodes.clear();
-	}
-
-	@Override
-	public int size() {
-		return nodes.size();
-	}
-
-	@Override
-	public Iterable<N> nodes() {
-		return nodes;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Iterable<E> edges() {
-		QuickListOfLists<E> edges = new QuickListOfLists<>();
-		for (N n : nodes)
-			edges.addList((Iterable<E>) n.getEdges(Direction.OUT));
-		return edges;
-	}
-
-	@Override
-	public Iterable<N> roots() {
-		List<N> result = new ArrayList<>(nodes.size());
-		for (N n : nodes)
-			if (n.isRoot())
-				result.add(n);
-		return result;
-	}
-
-	@Override
-	public Iterable<N> leaves() {
-		List<N> result = new ArrayList<>(nodes.size());
-		for (N n : nodes)
-			if (n.isLeaf())
-				result.add(n);
-		return result;
-	}
-
-	@Override
-	public boolean contains(N node) {
-		return nodes.contains(node);
+		clearRoot();
 	}
 
 }
