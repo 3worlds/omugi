@@ -143,7 +143,7 @@ public class TreeParser extends MinimalGraphParser {
 					lastProp.value = tk.value;
 					if (lastItem==itemType.TREE)
 						treeProps.add(lastProp);
-					else
+					else// crash here for Graph properties since node is null
 						lastNodes[tk.level-1].props.add(lastProp);
 					break;
 			case NODE_REF:
