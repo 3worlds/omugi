@@ -50,7 +50,7 @@ class OmugiGraphImporterTest {
 		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
 			+ File.separator + "test" 
 			+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
-			+ File.separator + "testGraph.txt";
+			+ File.separator + "treegraph.utg";
 		File file = new File(testfile);
 		assertTrue(file.exists());
 		GraphImporter gi = new OmugiGraphImporter(file);
