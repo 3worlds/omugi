@@ -193,6 +193,7 @@ public class TreeGraphParser extends MinimalGraphParser {
 				case COMMENT:
 					break;
 				case LABEL:
+					System.out.println(tk.value);
 					int level = tk.level;
 					lastNodes[level] = new treeNodeSpec();
 					lastNodes[level].label = tk.value;
@@ -204,11 +205,13 @@ public class TreeGraphParser extends MinimalGraphParser {
 					// such tokens should never be created
 					break;
 				case NAME:
+					System.out.println(tk.value);
 					level = tk.level;
 					lastNodes[level].name = tk.value;
 					nodeSpecs.add(lastNodes[level]);
 					break;
 				case PROPERTY_NAME:
+					System.out.println(tk.value);
 					lastProp = new propSpec();
 					lastProp.name = tk.value;
 					break;
@@ -219,7 +222,7 @@ public class TreeGraphParser extends MinimalGraphParser {
 					lastProp.value = tk.value;
 					if (lastItem==itemType.GRAPH)
 						graphProps.add(lastProp);
-					else
+					else if (lastNodes[tk.level-1]!=null)
 						lastNodes[tk.level-1].props.add(lastProp);
 					break;
 			case NODE_REF:
@@ -283,18 +286,21 @@ public class TreeGraphParser extends MinimalGraphParser {
 					switch (lastItem) {
 						case GRAPH:
 						case NODE:
+							System.out.println(tk.value);
 							lastEdge = new edgeSpec();
 							lastEdge.start = tk.value;
 							lastItem = itemType.EDGE;
 							break;
 						case EDGE:
 							if (lastEdge.end==null) {
+								System.out.println(tk.value);
 								lastEdge.end = tk.value;
 								edgeSpecs.add(lastEdge);
 							}
 							else {
 								lastEdge = new edgeSpec();
 								lastEdge.start = tk.value;
+								System.out.println(tk.value);
 							}
 							break;
 					}
