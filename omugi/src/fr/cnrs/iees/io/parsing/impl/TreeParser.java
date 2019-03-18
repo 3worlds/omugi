@@ -143,9 +143,10 @@ public class TreeParser extends MinimalGraphParser {
 					lastProp.value = tk.value;
 					if (lastItem==itemType.TREE)
 						treeProps.add(lastProp);
-					else// crash here for Graph properties since node is null
-						lastNodes[tk.level-1].props.add(lastProp);
-					break;
+				// i.e if not a graph property
+				else if (lastNodes[tk.level - 1] != null)
+					lastNodes[tk.level - 1].props.add(lastProp);
+				break;
 			case NODE_REF:
 				throw new OmugiException("Invalid token type for a tree");
 			default:
