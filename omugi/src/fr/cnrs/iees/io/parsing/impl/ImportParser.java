@@ -40,6 +40,8 @@ public class ImportParser extends Parser {
 	 * parent?
 	 * 
 	 * So we don't care about the parent graph!
+	 * 
+	 * But we can't construct a graph of mixed node types!!! so need a check on this
 	 */
 
 	private TreeNode parentNode;
