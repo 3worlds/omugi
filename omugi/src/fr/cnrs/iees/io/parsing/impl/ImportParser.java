@@ -31,35 +31,52 @@
 package fr.cnrs.iees.io.parsing.impl;
 
 import fr.cnrs.iees.graph.MinimalGraph;
-import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.io.parsing.Parser;
 
 public class ImportParser extends Parser {
 	/*
-	 * How do we insert the imported graph into the parent graph? There must be a
-	 * parent?
+	 * How do we insert the imported graph into the parent graph?
 	 * 
-	 * So we don't care about the parent graph!
+	 * Depends if Minimal, Graph or Tree/TreeGraph
 	 * 
-	 * But we can't construct a graph of mixed node types!!! so need a check on this
+	 * if its a minimal graph the just add all nodes. For this you need the graph.
+	 * 
+	 * if Graph<N,E> add edge from parent node to new root. For this you need  a
+	 * node and the graph to add all imported nodes to the nodelist
+	 * 
+	 * If Tree or TreeGraph make new graph child of parentnode. For this you need a
+	 * parent tree node and the graph to add imported nodes to its nodelist
+	 * 
+	 * So for minimal graph the parent node will be null.
+	 * 
+	 * Note: We can't construct a graph of mixed node types!!! so need a check on
+	 * this. Perhaps the best way is to create the imported graph and have
+	 * factory.equals(importFactory) function. This should ensure that all classes
+	 * in the lookup map are the same!
 	 */
 
-	private TreeNode parentNode;
+	private Node parentNode;
+	private MinimalGraph<? extends Node> parentGraph;
 	private TreeTokenizer tokenizer;
 
-	public ImportParser(TreeTokenizer tokenizer, TreeNode parentNode) {
+	public ImportParser(TreeTokenizer tokenizer, Node parentNode, MinimalGraph<? extends Node> parentGraph) {
 		this.tokenizer = tokenizer;
 		this.parentNode = parentNode;
+		this.parentGraph = parentGraph;
 		parse();
 	}
 
 	@Override
 	protected void parse() {
-		/* tokens must be:
-		 * import <ext> <"fromFile|fromResource> : <filenmae> 
-		 * import dsl fromResource: "3wA-root.dsl" inPackage:  "fr.ens.biologie.threeWorlds.ui.configuration.archetype3w"
-		 if resource look for package name
-		 if file look for dir
+
+		/*
+		 * First go ahead and create the imported graph instance no matter what it is, so we can get the factory.
+		 * 
+		 * tokens must be: import <ext> <"fromFile|fromResource> : <filename> import dsl
+		 * fromResource: "3wA-root.dsl" inPackage:
+		 * "fr.ens.biologie.threeWorlds.ui.configuration.archetype3w" if resource look
+		 * for package name if file look for dir
 		 */
 
 		// tokenizer.getString("import");
@@ -71,7 +88,10 @@ public class ImportParser extends Parser {
 		//
 		// go to end of line
 		// create the sub-graph
-		// add root as child of parent
+
+		// If parentNode.factory().equals(newGraph.root().factory()) then
+		// add it somehow to the parent:
+		//
 
 	}
 
