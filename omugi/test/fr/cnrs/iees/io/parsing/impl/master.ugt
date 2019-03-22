@@ -1,0 +1,4 @@
+tree 
+archetype 3worlds
+	exclusive = Boolean(true)
+	importResource fr.cnrs.iees.io.parsing.impl.importgraph.ugt

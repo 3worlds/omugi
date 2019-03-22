@@ -132,6 +132,14 @@ public class TreeParser extends MinimalGraphParser {
 					lastNodes[level].name = tk.value;
 					nodeSpecs.add(lastNodes[level]);
 					break;
+				case IMPORT_RESOURCE:
+					System.out.println(tk.value);
+					// -1 if no graph props! -0 otherwise
+					System.out.println(lastNodes[tk.level-1].label+":"+lastNodes[tk.level-1].name);
+					break;
+				case IMPORT_FILE:
+					// stuffed here also.
+				    break;
 				case PROPERTY_NAME:
 					lastProp = new propSpec();
 					lastProp.name = tk.value;

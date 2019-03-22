@@ -55,8 +55,8 @@ public enum TreeGraphTokens {
 								"String",		String.valueOf(SaveableAsText.SQUARE_BRACKETS[SaveableAsText.BLOCK_CLOSE])),
 	LEVEL			("\t", 		"Integer",		""),
 	
-	IMPORT_RESOURCE	("importResource"+String.valueOf(SaveableAsText.BLANK), "String","eol"),
-	IMPORT_FILE     ("importFile"+String.valueOf(SaveableAsText.BLANK),"String","eol")
+	IMPORT_RESOURCE	("importResource", "String","eol"),
+	IMPORT_FILE     ("importFile","String","eol")
 	/*
 	 * old tokens were: import <file type(dsl|etc)> <"fromFile|fromResource> :
 	 * <filename> import dsl
@@ -100,7 +100,7 @@ public enum TreeGraphTokens {
 	 * @return the list of valid tokens for trees
 	 */
 	public static EnumSet<TreeGraphTokens> treeTokens() {
-		return EnumSet.of(COMMENT,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_TYPE,LABEL,NAME,LEVEL);
+		return EnumSet.of(COMMENT,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_TYPE,LABEL,NAME,LEVEL,IMPORT_RESOURCE,IMPORT_FILE);
 	}
 	
 	/**
@@ -108,7 +108,7 @@ public enum TreeGraphTokens {
 	 * @return the list of valid tokens for graphs
 	 */
 	public static EnumSet<TreeGraphTokens> graphTokens() {
-		return EnumSet.of(COMMENT,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_TYPE,LABEL,NAME,NODE_REF);
+		return EnumSet.of(COMMENT,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_TYPE,LABEL,NAME,NODE_REF,IMPORT_RESOURCE,IMPORT_FILE);
 	}
 
 }
