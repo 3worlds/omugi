@@ -51,39 +51,38 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  * @author Jacques Gignoux - 22 janv. 2019
  *
  */
-//tested OK with version 0.0.5 on 23/1/2019
+// tested OK with version 0.0.5 on 23/1/2019
 public class TreeGraphParser extends MinimalGraphParser {
 
 	private Logger log = Logger.getLogger(TreeGraphParser.class.getName());
 
-	//----------------------------------------------------
+	// ----------------------------------------------------
 	// which type of item is currently being constructed
 	private enum itemType {
-		GRAPH,
-		NODE,
-		EDGE
+		GRAPH, NODE, EDGE
 	}
+
 	// the tokenizer used to read the file
 	private TreeGraphTokenizer tokenizer = null;
-	
+
 	// the list of specifications built from the token list
 	private List<propSpec> graphProps = new LinkedList<propSpec>();
-	private List<treeNodeSpec> nodeSpecs =  new LinkedList<treeNodeSpec>();
-	private List<edgeSpec> edgeSpecs =  new LinkedList<edgeSpec>();
-	
+	private List<treeNodeSpec> nodeSpecs = new LinkedList<treeNodeSpec>();
+	private List<edgeSpec> edgeSpecs = new LinkedList<edgeSpec>();
+
 	// the last processed item
 	private itemType lastItem = null;
 	private propSpec lastProp = null;
 	private treeNodeSpec[] lastNodes = null;
 	private edgeSpec lastEdge = null;
-	
+
 	// factories for treenodes and edges
 	protected TreeGraphFactory graphFactory = null;
-	
+
 	// the result of this parsing
 	// remind that an TreeGraph is its own Node, Edge and TreeNode factory
-	private TreeGraph<? extends TreeGraphNode,? extends Edge> graph = null;
-	
+	private TreeGraph<? extends TreeGraphNode, ? extends Edge> graph = null;
+
 	// lazy init: nothing is done before it's needed
 	/**
 	 * Default constructor.
@@ -92,90 +91,89 @@ public class TreeGraphParser extends MinimalGraphParser {
 	 */
 	public TreeGraphParser(TreeGraphTokenizer tokenizer) {
 		super();
-		this.tokenizer =tokenizer;
+		this.tokenizer = tokenizer;
 	}
-		
+
+	/*
+	 * So how do we do imports? We need the graph, a parent node and we need to
+	 * detect the 'import' key word - all this before the graph is complete!
+	 */
 	@SuppressWarnings("unchecked")
 	private void buildGraph() {
 		// parse token if not yet done
-		if (lastItem==null)
+		if (lastItem == null)
 			parse();
 		// scan graph properties for label properties
-		Map<String,String> labels = new HashMap<>();
-		for (propSpec p:graphProps) {
+		Map<String, String> labels = new HashMap<>();
+		for (propSpec p : graphProps) {
 			GraphProperties gp = GraphProperties.propertyForName(p.name);
-			if (gp==null) { // all other properties are considered to be (label,class name) pairs
+			if (gp == null) { // all other properties are considered to be (label,class name) pairs
 				if (p.type.contains("String"))
-					labels.put(p.name,p.value);
+					labels.put(p.name, p.value);
 			}
-		}		
+		}
 		// setup the factories
 		graphFactory = new TreeGraphFactory(labels);
 		propertyListFactory = graphFactory;
 		// make tree nodes
-		Map<String,TreeGraphNode> nodes = new HashMap<>();
-		for (treeNodeSpec ns:nodeSpecs) {
+		Map<String, TreeGraphNode> nodes = new HashMap<>();
+		for (treeNodeSpec ns : nodeSpecs) {
 			TreeGraphNode n = null;
-			Class<? extends TreeGraphNode> nc = 
-				(Class<? extends TreeGraphNode>) graphFactory.nodeClass(ns.label);
-			if (ns.props.isEmpty()) 
-				if (nc==null)
-					n = graphFactory.makeTreeNode(null,ns.name);
+			Class<? extends TreeGraphNode> nc = (Class<? extends TreeGraphNode>) graphFactory.nodeClass(ns.label);
+			if (ns.props.isEmpty())
+				if (nc == null)
+					n = graphFactory.makeTreeNode(null, ns.name);
 				else
-					n = graphFactory.makeTreeNode(nc,null,ns.name);
+					n = graphFactory.makeTreeNode(nc, null, ns.name);
+			else if (nc == null)
+				n = (TreeGraphNode) graphFactory.makeTreeNode(null, ns.name, makePropertyList(ns.props, log));
 			else
-				if (nc==null)
-					n = (TreeGraphNode) graphFactory.makeTreeNode(null,ns.name,
-						makePropertyList(ns.props,log));
-				else
-					n = (TreeGraphNode) graphFactory.makeTreeNode(nc,null,ns.name,
-						makePropertyList(ns.props,log));
-			if (ns.parent!=null) {
+				n = (TreeGraphNode) graphFactory.makeTreeNode(nc, null, ns.name, makePropertyList(ns.props, log));
+			if (ns.parent != null) {
 				// the parent has always been set before
-				TreeGraphNode parent = nodes.get(ns.parent.label.trim()+":"+ns.parent.name.trim());
+				TreeGraphNode parent = nodes.get(ns.parent.label.trim() + ":" + ns.parent.name.trim());
 				n.setParent(parent);
 				parent.addChild(n);
 			}
 			// this puts the node in the graph
-			String nodeId = (ns.label+":"+ns.name).replaceAll("\\s","");
+			String nodeId = (ns.label + ":" + ns.name).replaceAll("\\s", "");
 			if (nodes.containsKey(nodeId))
-				log.severe(()->"duplicate node found ("+") - ignoring the second one");
+				log.severe(() -> "duplicate node found (" + ") - ignoring the second one");
 			else
-				nodes.put(nodeId,n);
+				nodes.put(nodeId, n);
 		}
 		graph = new TreeGraph<>(nodes.values());
 		// make cross links
-		for (edgeSpec es:edgeSpecs) {
+		for (edgeSpec es : edgeSpecs) {
 			SimplePropertyList pl = null;
-			if (!es.props.isEmpty()) 
-				pl = makePropertyList(es.props,log);
-			String ref = es.start.replaceAll("\\s","");
+			if (!es.props.isEmpty())
+				pl = makePropertyList(es.props, log);
+			String ref = es.start.replaceAll("\\s", "");
 			Node start = nodes.get(ref);
-			if (start==null)
-				log.severe("start node \""+ref+"\" not found for edge \""+es.label+":"+es.name+"\"");
-			ref = es.end.replaceAll("\\s","");
+			if (start == null)
+				log.severe("start node \"" + ref + "\" not found for edge \"" + es.label + ":" + es.name + "\"");
+			ref = es.end.replaceAll("\\s", "");
 			Node end = nodes.get(ref);
-			if (end==null)
-				log.severe("end node \""+ref+"\" not found for edge \""+es.label+":"+es.name+"\"");
-			if ((start!=null)&&(end!=null)) {
+			if (end == null)
+				log.severe("end node \"" + ref + "\" not found for edge \"" + es.label + ":" + es.name + "\"");
+			if ((start != null) && (end != null)) {
 				Class<? extends Edge> ec = graphFactory.edgeClass(es.label);
-				if (pl==null)
-					if (ec==null)
-						graphFactory.makeEdge(start,end,es.name);
+				if (pl == null)
+					if (ec == null)
+						graphFactory.makeEdge(start, end, es.name);
 					else
-						graphFactory.makeEdge(ec,start,end,es.name);
+						graphFactory.makeEdge(ec, start, end, es.name);
+				else if (ec == null)
+					graphFactory.makeEdge(start, end, es.name, pl);
 				else
-					if (ec==null)
-						graphFactory.makeEdge(start,end,es.name,pl);
-					else
-						graphFactory.makeEdge(ec,start,end,es.name,pl);
+					graphFactory.makeEdge(ec, start, end, es.name, pl);
 			}
 		}
 	}
 
 	@Override
-	public TreeGraph<? extends TreeGraphNode,? extends Edge> graph() {
-		if (graph==null)
+	public TreeGraph<? extends TreeGraphNode, ? extends Edge> graph() {
+		if (graph == null)
 			buildGraph();
 		return graph;
 	}
@@ -184,48 +182,48 @@ public class TreeGraphParser extends MinimalGraphParser {
 	protected void parse() {
 		if (!tokenizer.tokenized())
 			tokenizer.tokenize();
-		lastNodes = new treeNodeSpec[tokenizer.treeTokenizer().maxDepth()+1];
+		lastNodes = new treeNodeSpec[tokenizer.treeTokenizer().maxDepth() + 1];
 		lastItem = itemType.GRAPH;
 		// 1 analyse the tree part
 		while (tokenizer.treeTokenizer().hasNext()) {
 			treeToken tk = tokenizer.treeTokenizer().getNextToken();
 			switch (tk.type) {
-				case COMMENT:
-					break;
-				case LABEL:
-//					System.out.println(tk.value);
-					int level = tk.level;
-					lastNodes[level] = new treeNodeSpec();
-					lastNodes[level].label = tk.value;
-					if (level>0)
-						lastNodes[level].parent = lastNodes[level-1];
-					lastItem = itemType.NODE;
-					break;
-				case LEVEL:
-					// such tokens should never be created
-					break;
-				case NAME:
-//					System.out.println(tk.value);
-					level = tk.level;
-					lastNodes[level].name = tk.value;
-					nodeSpecs.add(lastNodes[level]);
-					break;
-				case PROPERTY_NAME:
-//					System.out.println(tk.value);
-					lastProp = new propSpec();
-					lastProp.name = tk.value;
-					break;
-				case PROPERTY_TYPE:
-					lastProp.type = tk.value;
-					break;
-				case PROPERTY_VALUE:
-					lastProp.value = tk.value;
-					if (lastItem==itemType.GRAPH)
-						graphProps.add(lastProp);
-					// i.e if not a graph property
-					else if (lastNodes[tk.level-1]!=null)
-						lastNodes[tk.level-1].props.add(lastProp);
-					break;
+			case COMMENT:
+				break;
+			case LABEL:
+				// System.out.println(tk.value);
+				int level = tk.level;
+				lastNodes[level] = new treeNodeSpec();
+				lastNodes[level].label = tk.value;
+				if (level > 0)
+					lastNodes[level].parent = lastNodes[level - 1];
+				lastItem = itemType.NODE;
+				break;
+			case LEVEL:
+				// such tokens should never be created
+				break;
+			case NAME:
+				// System.out.println(tk.value);
+				level = tk.level;
+				lastNodes[level].name = tk.value;
+				nodeSpecs.add(lastNodes[level]);
+				break;
+			case PROPERTY_NAME:
+				// System.out.println(tk.value);
+				lastProp = new propSpec();
+				lastProp.name = tk.value;
+				break;
+			case PROPERTY_TYPE:
+				lastProp.type = tk.value;
+				break;
+			case PROPERTY_VALUE:
+				lastProp.value = tk.value;
+				if (lastItem == itemType.GRAPH)
+					graphProps.add(lastProp);
+				// i.e if not a graph property
+				else if (lastNodes[tk.level - 1] != null)
+					lastNodes[tk.level - 1].props.add(lastProp);
+				break;
 			case NODE_REF:
 				throw new OmugiException("Invalid token type for a tree");
 			default:
@@ -236,84 +234,83 @@ public class TreeGraphParser extends MinimalGraphParser {
 		while (tokenizer.graphTokenizer().hasNext()) {
 			graphToken tk = tokenizer.graphTokenizer().getNextToken();
 			switch (tk.type) {
-				case COMMENT:
+			case COMMENT:
+				break;
+			case PROPERTY_NAME:
+				lastProp = new propSpec();
+				lastProp.name = tk.value;
+				break;
+			case PROPERTY_VALUE:
+				lastProp.value = tk.value;
+				switch (lastItem) {
+				case GRAPH: // this is a graph property
+					graphProps.add(lastProp);
 					break;
-				case PROPERTY_NAME:
-					lastProp = new propSpec();
-					lastProp.name = tk.value;
+				case NODE: // this is a node property
+					// this is an error - there shouldnt be any node properties left here
+					throw new OmugiException("There should not be any node property definition here.");
+				case EDGE: // this is an edge property
+					lastEdge.props.add(lastProp);
 					break;
-				case PROPERTY_VALUE:
-					lastProp.value = tk.value;
-					switch (lastItem) {
-						case GRAPH: // this is a graph property
-							graphProps.add(lastProp);
-							break;
-						case NODE: // this is a node property
-							// this is an error - there shouldnt be any node properties left here
-							throw new OmugiException("There should not be any node property definition here.");
-						case EDGE: // this is an edge property
-							lastEdge.props.add(lastProp);
-							break;
+				}
+				break;
+			case PROPERTY_TYPE:
+				lastProp.type = tk.value;
+				break;
+			case LABEL:
+				switch (lastItem) {
+				case GRAPH:
+				case NODE:
+					throw new OmugiException("There should not be any node definition here.");
+				case EDGE:
+					if (lastEdge.label == null)
+						lastEdge.label = tk.value;
+					else // this is a node label
+						throw new OmugiException("There should not be any node definition here.");
+					break;
+				}
+				break;
+			case NAME:
+				switch (lastItem) {
+				case GRAPH:
+					log.severe("missing node label declaration");
+					break;
+				case NODE:
+					throw new OmugiException("There should not be any node definition here.");
+				case EDGE:
+					lastEdge.name = tk.value;
+				}
+				break;
+			case NODE_REF:
+				switch (lastItem) {
+				case GRAPH:
+				case NODE:
+					// System.out.println(tk.value);
+					lastEdge = new edgeSpec();
+					lastEdge.start = tk.value;
+					lastItem = itemType.EDGE;
+					break;
+				case EDGE:
+					if (lastEdge.end == null) {
+						// System.out.println(tk.value);
+						lastEdge.end = tk.value;
+						edgeSpecs.add(lastEdge);
+					} else {
+						lastEdge = new edgeSpec();
+						lastEdge.start = tk.value;
+						// System.out.println(tk.value);
 					}
 					break;
-				case PROPERTY_TYPE:	
-					lastProp.type = tk.value;
-					break;
-				case LABEL:		
-					switch (lastItem) {
-						case GRAPH:
-						case NODE:
-							throw new OmugiException("There should not be any node definition here.");
-						case EDGE:
-							if (lastEdge.label==null)
-								lastEdge.label = tk.value;
-							else  // this is a node label
-								throw new OmugiException("There should not be any node definition here.");
-							break;
-					}
-					break;
-				case NAME:			
-					switch (lastItem) {
-						case GRAPH:
-							log.severe("missing node label declaration");
-							break;
-						case NODE:
-							throw new OmugiException("There should not be any node definition here.");
-						case EDGE:
-							lastEdge.name = tk.value;
-					}
-					break;
-				case NODE_REF:
-					switch (lastItem) {
-						case GRAPH:
-						case NODE:
-//							System.out.println(tk.value);
-							lastEdge = new edgeSpec();
-							lastEdge.start = tk.value;
-							lastItem = itemType.EDGE;
-							break;
-						case EDGE:
-							if (lastEdge.end==null) {
-//								System.out.println(tk.value);
-								lastEdge.end = tk.value;
-								edgeSpecs.add(lastEdge);
-							}
-							else {
-								lastEdge = new edgeSpec();
-								lastEdge.start = tk.value;
-//								System.out.println(tk.value);
-							}
-							break;
-					}
-					break;
+				}
+				break;
 			case LEVEL:
 				throw new OmugiException("Invalid token type for a cross-link only graph");
 			default:
 				break;
 			}
-		}		
+		}
 	}
-	
+
 	// for debugging only
 	@Override
 	public String toString() {
@@ -321,24 +318,24 @@ public class TreeGraphParser extends MinimalGraphParser {
 		sb.append("Aot graph specification\n");
 		if (!graphProps.isEmpty())
 			sb.append("Graph properties:\n");
-		for (propSpec p:graphProps)
+		for (propSpec p : graphProps)
 			sb.append('\t').append(p.toString()).append('\n');
 		if (!nodeSpecs.isEmpty())
 			sb.append("Nodes:\n");
-		for (treeNodeSpec n:nodeSpecs) {
+		for (treeNodeSpec n : nodeSpecs) {
 			sb.append(n.toString()).append('\n');
-			for (propSpec p:n.props)
+			for (propSpec p : n.props)
 				sb.append("\t").append(p.toString()).append('\n');
-			if (n.parent==null)
+			if (n.parent == null)
 				sb.append("\tROOT NODE\n");
 			else
 				sb.append("\tparent ").append(n.parent.toString()).append('\n');
 		}
 		if (!edgeSpecs.isEmpty())
 			sb.append("Edges:\n");
-		for (edgeSpec e:edgeSpecs) {
+		for (edgeSpec e : edgeSpecs) {
 			sb.append('\t').append(e.toString()).append('\n');
-			for (propSpec p:e.props)
+			for (propSpec p : e.props)
 				sb.append("\t\t").append(p.toString()).append('\n');
 		}
 		return sb.toString();
