@@ -54,7 +54,24 @@ public enum TreeGraphTokens {
 	NODE_REF		(String.valueOf(SaveableAsText.SQUARE_BRACKETS[SaveableAsText.BLOCK_OPEN]),
 								"String",		String.valueOf(SaveableAsText.SQUARE_BRACKETS[SaveableAsText.BLOCK_CLOSE])),
 	LEVEL			("\t", 		"Integer",		""),
-//	IMPORT			("import","filename","")
+	
+	IMPORT_RESOURCE	("importResource"+String.valueOf(SaveableAsText.BLANK), "String","eol"),
+	IMPORT_FILE     ("importFile"+String.valueOf(SaveableAsText.BLANK),"String","eol")
+	/*
+	 * old tokens were: import <file type(dsl|etc)> <"fromFile|fromResource> :
+	 * <filename> import dsl
+	 * 
+	 * There is no longer any need to use the ext as a surrogate for type.
+	 * Therefore, we just need to know if its a resource or file and the location 
+	 * i.e.:
+	 * importResource  au.edu.crap.3WorldsArchetype.ugt
+	 * importFile  ian/something/3WorldsArchetype.ugt
+	 * 
+	 * 
+	 */
+	
+	
+
 	;
 	private final String prefix;
 	private final String type;
