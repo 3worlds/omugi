@@ -30,6 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing.impl;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import au.edu.anu.rscs.aot.util.Resources;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Tree;
 import fr.cnrs.iees.graph.TreeNode;
@@ -147,16 +149,22 @@ public class TreeParser extends MinimalGraphParser {
 				nodeSpecs.add(lastNodes[level]);
 				break;
 			case IMPORT_RESOURCE:
-				// bit stuffed now: we have only specs, not graph or parent node.
 				System.out.println(tk.value);
 				System.out.println(lastNodes[tk.level - 1].label + ":" + lastNodes[tk.level - 1].name);
-				/*
-				 * we need a stub to load the resource later. Messy. Better if all this is
-				 * simple recursion
+				lastNodes[tk.level-1].imports.add(new importGraph(Resources.getFile(tk.value)));
+				//TODO ...
+				/*-
+				 * Now we make a stub (importGraph), associated with this node (as per props) that loads the
+				 * import graph by simply calling OmugiGraphImporter (recursively)
+				 * When the node is created we insert the graph at this node, depending on the graph type.
+				 * E.g. For all graphs:
+				 * 1) check factories are the same
+				 * 2) add all nodes to nodelist
+				 * 3) TreeGraph: add graph as child of parentNode
 				 */
 				break;
 			case IMPORT_FILE:
-				// stuffed here also.
+				lastNodes[tk.level-1].imports.add(new importGraph(new File(tk.value)));
 				break;
 			case PROPERTY_NAME:
 				lastProp = new propSpec();

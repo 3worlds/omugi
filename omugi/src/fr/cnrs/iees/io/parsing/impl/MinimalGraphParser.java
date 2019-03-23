@@ -31,6 +31,9 @@
 package fr.cnrs.iees.io.parsing.impl;
 
 import static fr.cnrs.iees.io.parsing.TextGrammar.*;
+
+import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -41,7 +44,10 @@ import au.edu.anu.rscs.aot.collections.tables.Table;
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.OmugiClassLoader;
 import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.MinimalGraph;
+import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.Tree;
+import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.properties.PropertyListFactory;
@@ -70,12 +76,23 @@ public abstract class MinimalGraphParser extends Parser {
 			super();
 		}
 	}
+	public class importGraph{
+		public MinimalGraph<?> graph;
+		public importGraph(File file) {
+			OmugiGraphImporter importer = new OmugiGraphImporter(file);
+			graph = importer.getGraph();
+		}
+		public importGraph(InputStream stream) {
+			// TODO
+		}
+	}
 	//----------------------------------------------------
 	// specifications for a node
 	public class nodeSpec {
 		public String label;
 		public String name;
 		public List<propSpec> props = new LinkedList<propSpec>();
+		public List<importGraph> imports = new LinkedList<importGraph>();
 		@Override // for debugging only
 		public String toString() {
 			return label+":"+name;
