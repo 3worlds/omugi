@@ -151,8 +151,8 @@ public class TreeParser extends MinimalGraphParser {
 			case IMPORT_RESOURCE:
 				System.out.println(tk.value);
 				System.out.println(lastNodes[tk.level - 1].label + ":" + lastNodes[tk.level - 1].name);
-				lastNodes[tk.level-1].imports.add(new importGraph(Resources.getFile(tk.value)));
-				//TODO ...
+				lastNodes[tk.level - 1].imports.add(new importGraph(Resources.getFile(tk.value)));
+				// TODO ...
 				/*-
 				 * Now we make a stub (importGraph), associated with this node (as per props) that loads the
 				 * import graph by simply calling OmugiGraphImporter (recursively)
@@ -164,7 +164,7 @@ public class TreeParser extends MinimalGraphParser {
 				 */
 				break;
 			case IMPORT_FILE:
-				lastNodes[tk.level-1].imports.add(new importGraph(new File(tk.value)));
+				lastNodes[tk.level - 1].imports.add(new importGraph(new File(tk.value)));
 				break;
 			case PROPERTY_NAME:
 				lastProp = new propSpec();
@@ -259,6 +259,27 @@ public class TreeParser extends MinimalGraphParser {
 				TreeNode parent = nodes.get(parentId); // parent has always been treated before
 				n.setParent(parent);
 				parent.addChild(n);
+			}
+			// Add in any imported graphs
+
+			for (importGraph ig : ns.imports) {
+				TreeNode parent = n;
+				TreeNodeFactory parentFactory = parent.treeNodeFactory();
+
+				Tree<? extends TreeNode> importTree = (Tree<? extends TreeNode>) ig.graph;
+				TreeNode importRoot = importTree.root();
+				TreeNodeFactory importFactory = importRoot.treeNodeFactory();
+				// TODO equals()
+				if (parentFactory.equals(importFactory)) {
+					importRoot.setParent(parent);
+					for (TreeNode in : importTree.nodes())
+						if (nodes.containsKey(in.id())) {
+							log.severe("duplicate node found (" + in.id() + ") - ignoring the second one");
+						} else
+							nodes.put(in.id(), in);
+				} else
+					log.severe("attempt to add graph of a differnet type:\n parentFactory:"
+							+ parentFactory.getClass().getName() + "\n" + importFactory.getClass().getName());
 			}
 		}
 		// make tree
