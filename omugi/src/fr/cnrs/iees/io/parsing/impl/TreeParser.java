@@ -269,7 +269,7 @@ public class TreeParser extends MinimalGraphParser {
 				Tree<? extends TreeNode> importTree = (Tree<? extends TreeNode>) ig.graph;
 				TreeNode importRoot = importTree.root();
 				TreeNodeFactory importFactory = importRoot.treeNodeFactory();
-				// TODO equals()
+				// TODO equals() class == class and class map has same values
 				if (parentFactory.equals(importFactory)) {
 					importRoot.setParent(parent);
 					for (TreeNode in : importTree.nodes())
@@ -278,8 +278,8 @@ public class TreeParser extends MinimalGraphParser {
 						} else
 							nodes.put(in.id(), in);
 				} else
-					log.severe("attempt to add graph of a differnet type:\n parentFactory:"
-							+ parentFactory.getClass().getName() + "\n" + importFactory.getClass().getName());
+					log.severe("attempt to add graph of a differnet type:\n Factory:"
+							+ parentFactory.getClass().getName() + "\n Other factory" + importFactory.getClass().getName());
 			}
 		}
 		// make tree
