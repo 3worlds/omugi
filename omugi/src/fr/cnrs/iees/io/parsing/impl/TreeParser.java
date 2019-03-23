@@ -260,26 +260,23 @@ public class TreeParser extends MinimalGraphParser {
 				n.setParent(parent);
 				parent.addChild(n);
 			}
-			// Add in any imported graphs
-
+			/*-
+			 * Add in any imported graphs.
+			 * Factories should be the same so don't bother
+			 * testing. If not, it will be a case of "crash now or crash later"
+			 */
 			for (importGraph ig : ns.imports) {
 				TreeNode parent = n;
-				TreeNodeFactory parentFactory = parent.treeNodeFactory();
-
 				Tree<? extends TreeNode> importTree = (Tree<? extends TreeNode>) ig.graph;
 				TreeNode importRoot = importTree.root();
-				TreeNodeFactory importFactory = importRoot.treeNodeFactory();
-				// TODO equals() class == class and class map has same values
-				if (parentFactory.equals(importFactory)) {
-					importRoot.setParent(parent);
-					for (TreeNode in : importTree.nodes())
-						if (nodes.containsKey(in.id())) {
-							log.severe("duplicate node found (" + in.id() + ") - ignoring the second one");
-						} else
-							nodes.put(in.id(), in);
-				} else
-					log.severe("attempt to add graph of a differnet type:\n Factory:"
-							+ parentFactory.getClass().getName() + "\n Other factory" + importFactory.getClass().getName());
+				importRoot.setParent(parent);
+				// ok - since ids are invented, this will cause problems here. We need to pass a
+				// "scope" to the importer but we don't have one.
+				for (TreeNode in : importTree.nodes())
+					if (nodes.containsKey(in.id())) {
+						log.severe("duplicate node found (" + in.id() + ") - ignoring the second one");
+					} else
+						nodes.put(in.id(), in);
 			}
 		}
 		// make tree
