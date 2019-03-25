@@ -50,7 +50,14 @@ class ImportParserTest {
 		File file = new File(testfile);
 		FileImporter importer = new FileImporter(file);
 		Tree<? extends TreeNode> specs = (Tree<? extends TreeNode>)importer.getGraph();
-	
+		// something wrong with parents/children?
+		int count = 0;
+		for (TreeNode n: specs.nodes()) {
+			System.out.println(n);
+			
+		for (TreeNode c: n.getChildren())
+			System.out.println("\t"+c.id());
+		}
 		
 	}
 

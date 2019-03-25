@@ -46,8 +46,8 @@ import fr.cnrs.iees.io.parsing.Parser;
 // tested OK with version 0.0.10 on 31/1/2019
 public class OmugiGraphImporter implements GraphImporter {
 
-	private FileTokenizer tokenizer = null;
-	private Parser parser = null;
+	private FileTokenizer tokenizer;
+	private Parser parser;
 	
 	public OmugiGraphImporter(File infile) {
 		super();

@@ -149,19 +149,9 @@ public class TreeParser extends MinimalGraphParser {
 				nodeSpecs.add(lastNodes[level]);
 				break;
 			case IMPORT_RESOURCE:
-				System.out.println(tk.value);
-				System.out.println(lastNodes[tk.level - 1].label + ":" + lastNodes[tk.level - 1].name);
-				lastNodes[tk.level - 1].imports.add(new importGraph(Resources.getFile(tk.value)));
-				// TODO ...
-				/*-
-				 * Now we make a stub (importGraph), associated with this node (as per props) that loads the
-				 * import graph by simply calling OmugiGraphImporter (recursively)
-				 * When the node is created we insert the graph at this node, depending on the graph type.
-				 * E.g. For all graphs:
-				 * 1) check factories are the same
-				 * 2) add all nodes to nodelist
-				 * 3) TreeGraph: add graph as child of parentNode
-				 */
+//				System.out.println(tk.value);
+//				System.out.println(lastNodes[tk.level - 1].label + ":" + lastNodes[tk.level - 1].name);
+				lastNodes[tk.level - 1].imports.add(new importGraph(Resources.getPackagedFile(tk.value)));
 				break;
 			case IMPORT_FILE:
 				lastNodes[tk.level - 1].imports.add(new importGraph(new File(tk.value)));
