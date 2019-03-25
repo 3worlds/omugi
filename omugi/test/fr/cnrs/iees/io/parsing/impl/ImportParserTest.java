@@ -43,22 +43,23 @@ class ImportParserTest {
 
 	@Test
 	void test() {
-		String testfile = System.getProperty("user.dir") // 
-				+ File.separator + "test" 
-				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
-				+ File.separator + "master.ugt";
+		String testfile = System.getProperty("user.dir") //
+				+ File.separator + "test" + File.separator
+				+ this.getClass().getPackage().getName().replace('.', File.separatorChar) + File.separator
+				+ "master.ugt";
 		File file = new File(testfile);
 		FileImporter importer = new FileImporter(file);
-		Tree<? extends TreeNode> specs = (Tree<? extends TreeNode>)importer.getGraph();
-		// something wrong with parents/children?
+		Tree<? extends TreeNode> specs = (Tree<? extends TreeNode>) importer.getGraph();
+		// something wrong: properties appearing as child nodes? Must have mucked up the ProcessLine method
 		int count = 0;
-		for (TreeNode n: specs.nodes()) {
-			System.out.println(n);
-			
-		for (TreeNode c: n.getChildren())
-			System.out.println("\t"+c.id());
+		for (TreeNode n : specs.nodes()) {
+			if (n.hasChildren()) {
+				System.out.println(n.id());
+				for (TreeNode c : n.getChildren())
+					System.out.println("\t" + c.id());
+			}
 		}
-		
+
 	}
 
 }

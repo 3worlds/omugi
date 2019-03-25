@@ -149,8 +149,6 @@ public class TreeParser extends MinimalGraphParser {
 				nodeSpecs.add(lastNodes[level]);
 				break;
 			case IMPORT_RESOURCE:
-//				System.out.println(tk.value);
-//				System.out.println(lastNodes[tk.level - 1].label + ":" + lastNodes[tk.level - 1].name);
 				lastNodes[tk.level - 1].imports.add(new importGraph(Resources.getPackagedFile(tk.value)));
 				break;
 			case IMPORT_FILE:
