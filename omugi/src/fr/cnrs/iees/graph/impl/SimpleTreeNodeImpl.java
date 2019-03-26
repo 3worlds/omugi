@@ -85,6 +85,8 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	@Override
 	public void setParent(TreeNode parent) {
 		this.parent = parent;
+		// Shouldn't this be done here?
+		//parent.addChild(this);
 	}
 
 	@Override

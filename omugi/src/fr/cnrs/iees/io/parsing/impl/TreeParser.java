@@ -258,6 +258,7 @@ public class TreeParser extends MinimalGraphParser {
 				Tree<? extends TreeNode> importTree = (Tree<? extends TreeNode>) ig.graph;
 				TreeNode importRoot = importTree.root();
 				importRoot.setParent(parent);
+				parent.addChild(importRoot);
 				// ok - since ids are invented, this will cause problems here. We need to pass a
 				// "scope" to the importer but we don't have one.
 				for (TreeNode in : importTree.nodes())
