@@ -236,7 +236,7 @@ public class TreeTokenizer extends LineTokenizer {
 				processLine(words[1]);
 				return;
 			} else
-				log.severe("malformed property format");
+				log.severe("malformed property format: "+String.join(",", words));
 		}
 		words = line.trim().split("\\(");
 		if (words.length > 1) { // a property type (and value) was found (but it may contain more '(')
@@ -248,7 +248,7 @@ public class TreeTokenizer extends LineTokenizer {
 				tokenlist.add(new treeToken(PROPERTY_VALUE, s, ctDepth));
 				return;
 			} else
-				log.severe("malformed property format");
+				log.severe("malformed property format: "+String.join(",", words));
 		}
 		words = line.trim().split("\\s"); // matches any whitespace character
 

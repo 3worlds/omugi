@@ -171,7 +171,7 @@ public class GraphTokenizer extends LineTokenizer {
 				return;
 			}
 			else
-				throw new OmugiException("GraphTokenizer: malformed property format");
+				throw new OmugiException("GraphTokenizer: malformed property format: "+String.join(",", words));
 		}
 		words = line.trim().split("\\(");
 		if (words.length>1)  { // a property type (and value) was found (but it may contain more '(')
