@@ -252,7 +252,7 @@ public class TreeParser extends MinimalGraphParser {
 			 * Add in any imported graphs.
 			 * Factories should be the same so don't bother
 			 * testing. If not, it will be a case of "crash now or crash later"
-			 * The imported graph does not necwssarily have a root.
+			 * The imported graph does not necessarily have a root.
 			 */
 			for (importGraph ig : ns.imports) {
 				TreeNode parent = n;
