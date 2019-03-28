@@ -252,20 +252,21 @@ public class TreeParser extends MinimalGraphParser {
 			 * Add in any imported graphs.
 			 * Factories should be the same so don't bother
 			 * testing. If not, it will be a case of "crash now or crash later"
+			 * The imported graph does not necwssarily have a root.
 			 */
 			for (importGraph ig : ns.imports) {
 				TreeNode parent = n;
 				Tree<? extends TreeNode> importTree = (Tree<? extends TreeNode>) ig.graph;
-				TreeNode importRoot = importTree.root();
-				importRoot.setParent(parent);
-				parent.addChild(importRoot);
-				// ok - since ids are invented, this will cause problems here. We need to pass a
-				// "scope" to the importer but we don't have one.
-				for (TreeNode in : importTree.nodes())
-					if (nodes.containsKey(in.id())) {
-						log.severe("duplicate node found (" + in.id() + ") - ignoring the second one");
+				for (TreeNode importNode : importTree.nodes()) {
+					if (importNode.getParent() == null) {
+						importNode.setParent(parent);
+						parent.addChild(importNode);
+					}
+					if (nodes.containsKey(importNode.id())) {
+						log.severe("duplicate node found (" + importNode.id() + ") - ignoring the second one");
 					} else
-						nodes.put(in.id(), in);
+						nodes.put(importNode.id(), importNode);
+				}
 			}
 		}
 		// make tree
