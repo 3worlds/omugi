@@ -1,0 +1,10 @@
+tree
+label1 name1 
+	prop1 = Integer(3) 
+label2 name2
+	prop2 = Double(4.1) 
+	label3 name3
+		prop2 = Double(4.2) 
+	label4 name4 
+		prop2 = Double(4.3) 
+	

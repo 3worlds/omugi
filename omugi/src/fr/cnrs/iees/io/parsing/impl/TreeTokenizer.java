@@ -233,10 +233,12 @@ public class TreeTokenizer extends LineTokenizer {
 		if (words.length > 1) { // a property name was found
 			if (words.length == 2) {
 				tokenlist.add(new treeToken(PROPERTY_NAME, words[0].trim(), ctDepth));
-				processLine(words[1]);
+				processLine(words[1]);// This is nasty: indent analysis must be ignored but if a node at the same
+										// level???
+				// It would be better to have a method to process property type and value specifically
 				return;
 			} else
-				log.severe("malformed property format: "+String.join(",", words));
+				log.severe("malformed property format: " + String.join(",", words));
 		}
 		words = line.trim().split("\\(");
 		if (words.length > 1) { // a property type (and value) was found (but it may contain more '(')
@@ -248,7 +250,7 @@ public class TreeTokenizer extends LineTokenizer {
 				tokenlist.add(new treeToken(PROPERTY_VALUE, s, ctDepth));
 				return;
 			} else
-				log.severe("malformed property format: "+String.join(",", words));
+				log.severe("malformed property format: " + String.join(",", words));
 		}
 		words = line.trim().split("\\s"); // matches any whitespace character
 
