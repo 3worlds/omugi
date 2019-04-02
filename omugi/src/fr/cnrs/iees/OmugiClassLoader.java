@@ -37,11 +37,13 @@ package fr.cnrs.iees;
  * Date 16 Feb. 2019
  */
 public class OmugiClassLoader {
-	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	// JG - 2/4/2019 If this is static, it is set at compile time ? then it's going to be wrong
+//	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 	
 //	private static ClassLoader classLoader =ClassLoader.getSystemClassLoader();
 	public static ClassLoader getClassLoader() {
-		return classLoader;
+//		return classLoader;
+		return Thread.currentThread().getContextClassLoader();
 	}
 
 }

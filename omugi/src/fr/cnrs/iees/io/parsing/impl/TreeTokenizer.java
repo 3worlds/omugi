@@ -244,8 +244,10 @@ public class TreeTokenizer extends LineTokenizer {
 		words = line.trim().split("\\(");
 		if (words.length > 1) { // a property type (and value) was found (but it may contain more '(')
 			if (line.trim().endsWith(PROPERTY_VALUE.suffix())) {
-				tokenlist.add(new treeToken(PROPERTY_TYPE, words[0].trim(), ctDepth));
-				String s = line.trim().substring(line.trim().indexOf('(') + 1, line.trim().length() - 1);
+				tokenlist.add(new treeToken(PROPERTY_TYPE, words[0].trim().replace("\"",""), ctDepth));
+				String s = line.trim()
+					.substring(line.trim().indexOf('(') + 1, line.trim().length() - 1)
+					.replace("\"","");
 				// tokenlist.add(new
 				// token(PROPERTY_VALUE,words[1].substring(0,words[1].indexOf(PROPERTY_VALUE.suffix())).trim()));
 				tokenlist.add(new treeToken(PROPERTY_VALUE, s, ctDepth));

@@ -43,10 +43,7 @@ import java.util.logging.Logger;
 import au.edu.anu.rscs.aot.collections.tables.Table;
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.OmugiClassLoader;
-import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.MinimalGraph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.Tree;
 import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
@@ -190,12 +187,15 @@ public abstract class MinimalGraphParser extends Parser {
 	}
 
 	// gets a class from the tree properties
-	protected Class<?> getClass(TreeProperties gp, String value, Logger log) {
+	protected Class<?> getClass(TreeProperties gp, 
+			String value, 
+			Logger log, 
+			Class<?> superClass) {
 		Class<?> result = null;
 		if (value!=null)
 			try {
-				Class<?> c = Class.forName(value,false,OmugiClassLoader.getClassLoader());
-				if (Tree.class.isAssignableFrom(c))
+				Class<?> c = Class.forName(value,true,OmugiClassLoader.getClassLoader());
+				if (superClass.isAssignableFrom(c))
 					result = c;
 				else
 					log.severe("graph property \""+ gp.propertyName() +
@@ -219,17 +219,20 @@ public abstract class MinimalGraphParser extends Parser {
 	}
 
 	// gets a default class from the graph properties
-	protected Class<?> getClass(TreeProperties gp,Logger log) {
-		return getClass(gp,null,log);
+	protected Class<?> getClass(TreeProperties gp, Logger log, Class<?> superClass) {
+		return getClass(gp,null,log,superClass);
 	}
 
 	// gets a class from the graph properties
-	protected Class<?> getClass(GraphProperties gp, String value, Logger log) {
+	protected Class<?> getClass(GraphProperties gp, 
+			String value, 
+			Logger log, 
+			Class<?> superClass) {
 		Class<?> result = null;
 		if (value!=null)
 			try {
-				Class<?> c = Class.forName(value,false,OmugiClassLoader.getClassLoader());
-				if (Graph.class.isAssignableFrom(c))
+				Class<?> c = Class.forName(value,true,OmugiClassLoader.getClassLoader());
+				if (superClass.isAssignableFrom(c))
 					result = c;
 				else
 					log.severe("graph property \""+ gp.propertyName() +
@@ -253,8 +256,8 @@ public abstract class MinimalGraphParser extends Parser {
 	}
 	
 	// gets a default class from the graph properties
-	protected Class<?> getClass(GraphProperties gp, Logger log) {
-		return getClass(gp,null,log);
+	protected Class<?> getClass(GraphProperties gp, Logger log, Class<?> superClass) {
+		return getClass(gp,null,log,superClass);
 	}
 
 }

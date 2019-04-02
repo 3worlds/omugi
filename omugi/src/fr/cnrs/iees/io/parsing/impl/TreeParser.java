@@ -189,7 +189,8 @@ public class TreeParser extends MinimalGraphParser {
 		for (propSpec p : treeProps) {
 			switch (TreeProperties.propertyForName(p.name)) {
 			case CLASS:
-				treeClass = (Class<? extends Tree<? extends TreeNode>>) getClass(TreeProperties.CLASS, p.value, log);
+				treeClass = (Class<? extends Tree<? extends TreeNode>>) 
+					getClass(TreeProperties.CLASS, p.value, log, Tree.class);
 				break;
 			case MUTABLE:
 // TODO: implement MutableTreeImpl				
@@ -197,11 +198,12 @@ public class TreeParser extends MinimalGraphParser {
 //					getClass(TreeProperties.CLASS,MutableTreeImpl.class.getName());
 				break;
 			case PROP_FACTORY:
-				plFactoryClass = (Class<? extends PropertyListFactory>) getClass(TreeProperties.PROP_FACTORY, p.value,
-						log);
+				plFactoryClass = (Class<? extends PropertyListFactory>) 
+					getClass(TreeProperties.PROP_FACTORY, p.value,log,PropertyListFactory.class);
 				break;
 			case TREE_FACTORY:
-				tFactoryClass = (Class<? extends TreeNodeFactory>) getClass(TreeProperties.TREE_FACTORY, p.value, log);
+				tFactoryClass = (Class<? extends TreeNodeFactory>) 
+					getClass(TreeProperties.TREE_FACTORY, p.value, log, TreeNodeFactory.class);
 				break;
 			default:
 				break;
@@ -209,11 +211,14 @@ public class TreeParser extends MinimalGraphParser {
 		}
 		// use default settings if graph properties were absent
 		if (treeClass == null)
-			treeClass = (Class<? extends Tree<? extends TreeNode>>) getClass(TreeProperties.CLASS, log);
+			treeClass = (Class<? extends Tree<? extends TreeNode>>) 
+				getClass(TreeProperties.CLASS, log, Tree.class);
 		if (tFactoryClass == null)
-			tFactoryClass = (Class<? extends TreeNodeFactory>) getClass(TreeProperties.TREE_FACTORY, log);
+			tFactoryClass = (Class<? extends TreeNodeFactory>) 
+				getClass(TreeProperties.TREE_FACTORY, log, TreeNodeFactory.class);
 		if (plFactoryClass == null)
-			plFactoryClass = (Class<? extends PropertyListFactory>) getClass(TreeProperties.PROP_FACTORY, log);
+			plFactoryClass = (Class<? extends PropertyListFactory>) 
+				getClass(TreeProperties.PROP_FACTORY, log, PropertyListFactory.class);
 		// setup the factories
 		try {
 			treeFactory = tFactoryClass.newInstance();

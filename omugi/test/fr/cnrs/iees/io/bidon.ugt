@@ -1,7 +1,9 @@
 tree // this is a STUPID comment 
 
+	treeProp = Integer(13)
+
 // This is a VERY STUPID comment 
-		
+
 label1 node1 
 	prop1 = Integer(3) 
 	prop2 = Double(4.2) 

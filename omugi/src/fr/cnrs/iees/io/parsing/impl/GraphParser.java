@@ -243,26 +243,26 @@ public class GraphParser extends MinimalGraphParser {
 			else switch (gp)  {
 				case CLASS:
 					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-						getClass(GraphProperties.CLASS,p.value,log);
+						getClass(GraphProperties.CLASS,p.value,log,Graph.class);
 					break;
 				case NODE_FACTORY:
 					nFactoryClass = (Class<? extends NodeFactory>) 
-						getClass(GraphProperties.NODE_FACTORY,p.value,log);
+						getClass(GraphProperties.NODE_FACTORY,p.value,log,NodeFactory.class);
 					break;
 				case EDGE_FACTORY:
 					eFactoryClass = (Class<? extends EdgeFactory>) 
-						getClass(GraphProperties.EDGE_FACTORY,p.value,log);
+						getClass(GraphProperties.EDGE_FACTORY,p.value,log,EdgeFactory.class);
 					break;
 				case PROP_FACTORY:
 					plFactoryClass = (Class<? extends PropertyListFactory>) 
-						getClass(GraphProperties.PROP_FACTORY,p.value,log);
+						getClass(GraphProperties.PROP_FACTORY,p.value,log,PropertyListFactory.class);
 					break;
 				case DIRECTED:
 					// TODO
 					break;
 				case MUTABLE:
 					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-						getClass(GraphProperties.CLASS,MutableGraphImpl.class.getName(),log);
+						getClass(GraphProperties.CLASS,MutableGraphImpl.class.getName(),log,Graph.class);
 					break;
 				default: 
 					break;
@@ -271,16 +271,16 @@ public class GraphParser extends MinimalGraphParser {
 		// use default settings if graph properties were absent
 		if (graphClass==null)
 			graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-				getClass(GraphProperties.CLASS,log);
+				getClass(GraphProperties.CLASS,log,Graph.class);
 		if (nFactoryClass==null)
 			nFactoryClass = (Class<? extends NodeFactory>) 
-				getClass(GraphProperties.NODE_FACTORY,log);
+				getClass(GraphProperties.NODE_FACTORY,log,NodeFactory.class);
 		if (eFactoryClass==null)
 			eFactoryClass = (Class<? extends EdgeFactory>) 
-				getClass(GraphProperties.EDGE_FACTORY,log);
+				getClass(GraphProperties.EDGE_FACTORY,log,EdgeFactory.class);
 		if (plFactoryClass==null)
 			plFactoryClass = (Class<? extends PropertyListFactory>) 
-				getClass(GraphProperties.PROP_FACTORY,log);
+				getClass(GraphProperties.PROP_FACTORY,log,PropertyListFactory.class);
 		// setup the factories
 		try {
 			Constructor<? extends NodeFactory> c = nFactoryClass.getConstructor(Map.class);
