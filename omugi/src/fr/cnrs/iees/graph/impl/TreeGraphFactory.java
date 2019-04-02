@@ -32,7 +32,6 @@ package fr.cnrs.iees.graph.impl;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
