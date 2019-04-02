@@ -202,11 +202,12 @@ public class TreeTokenizer extends LineTokenizer {
 		return result;
 	}
 
-	private void processLine(String line) {
-		String[] words = line.split(COMMENT.prefix());
-		if (words.length > 1) { // a comment was found
+	private void processLine(String line,boolean resetIndent) {
+		String[] words = line.split(COMMENT.prefix()); // means '//'
+		if (words.length > 1) { 
+			// COMMENT found
 			// process the beginning of the line
-			processLine(words[0]);
+			processLine(words[0],false);// recursive calls to parts of a line assumes depth will not be reset to zero
 			// end of the line is comment text that may include more '//'s
 			cttoken = new treeToken(COMMENT, "", 0);
 			for (int i = 1; i < words.length; i++)
@@ -218,7 +219,7 @@ public class TreeTokenizer extends LineTokenizer {
 		// analyse indentation
 		int indentLevel = 0;
 		if (line.trim().length() > 0)
-			if (line.startsWith(LEVEL.prefix())) {
+			if (line.startsWith(LEVEL.prefix()) || resetIndent) {
 				char indentChar = LEVEL.prefix().charAt(0); // means '\t'
 				char c = line.charAt(0);
 				while ((c == indentChar) & (indentLevel < line.length() - 1)) {
@@ -229,11 +230,11 @@ public class TreeTokenizer extends LineTokenizer {
 				maxDepth = Math.max(maxDepth, ctDepth);
 			}
 		// get other tokens - remember: no edges in this format
-		words = line.trim().split(PROPERTY_NAME.suffix());
+		words = line.trim().split(PROPERTY_NAME.suffix()); // means '='
 		if (words.length > 1) { // a property name was found
 			if (words.length == 2) {
 				tokenlist.add(new treeToken(PROPERTY_NAME, words[0].trim(), ctDepth));
-				processLine(words[1]);// This is nasty: indent analysis must be ignored but if a node at the same
+				processLine(words[1],false);// This is nasty: indent analysis must be ignored but if a node at the same
 										// level???
 				// It would be better to have a method to process property type and value specifically
 				return;
@@ -287,7 +288,7 @@ public class TreeTokenizer extends LineTokenizer {
 	public void tokenize() {
 		if (lines != null)
 			for (String line : lines) {
-				processLine(line);
+				processLine(line,true);
 			}
 	}
 

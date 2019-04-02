@@ -36,6 +36,8 @@ import java.io.File;
 
 import org.junit.jupiter.api.Test;
 
+import fr.cnrs.iees.graph.Tree;
+import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.io.GraphImporter;
 
 /**
@@ -55,9 +57,25 @@ class OmugiGraphImporterTest {
 		+ File.separator + "sameLevelTree.ugt";
 		File file = new File(testfile);
 		assertTrue(file.exists());
-		GraphImporter gi = new OmugiGraphImporter(file);
-		System.out.println(gi.getGraph().toString());
-		assertNotNull(gi);
+		GraphImporter importer = new OmugiGraphImporter(file);
+		Tree<? extends TreeNode> tree = (Tree<? extends TreeNode>)importer.getGraph();
+		String indent = "";
+		for (TreeNode node:tree.nodes()) {
+			printTree(node,indent);
+		}
+		assertNotNull(tree);
+	}
+
+	private void printTree(TreeNode parent,String indent) {
+		if (parent.getParent()!=null)
+			System.out.println(indent+parent.getParent().id()+"->"+parent.id());
+		else
+			System.out.println(indent+"null->"+parent.id());
+		for (TreeNode child:parent.getChildren())
+			printTree(child,indent+"  ");
+		
+
+		
 	}
 
 }

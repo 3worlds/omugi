@@ -1,6 +1,9 @@
-tree
+
+// header comment
+tree // inline comment1 // inline comment2 
+// new line comment3
 label1 name1 
-	prop1 = Integer(3) 
+	prop1 = StringTable({[1],[1],(some crap),(some other crap)}) 
 label2 name2
 	prop2 = Double(4.1) 
 	label3 name3

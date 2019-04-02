@@ -30,9 +30,12 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing;
 
+import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.COMMENT;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -50,16 +53,25 @@ import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
  *
  */
 public class FileTokenizer implements Tokenizer {
-	
+
 	private Logger log = Logger.getLogger(FileTokenizer.class.getName());
 	private List<String> lines = null;
 	private LineTokenizer tokenizer = null;
-	
+
 	public FileTokenizer(File f) {
 		super();
 		try {
-			lines = Files.readAllLines(f.toPath());
-			String s = lines.get(0).trim();
+			lines = new ArrayList<String>();
+			List<String> tmpLines = Files.readAllLines(f.toPath());
+			// Skip blank lines and comment only lines
+			for (String line : tmpLines) {
+				if (!line.startsWith((COMMENT.prefix())))
+					if (!line.isEmpty())
+						lines.add(line);
+			}
+			// insist that graph type keyword appears first??
+			String s = lines.get(0);
+
 			if (s.startsWith("graph"))
 				tokenizer = new GraphTokenizer(this);
 			else if (s.startsWith("treegraph"))
@@ -67,22 +79,23 @@ public class FileTokenizer implements Tokenizer {
 			else if (s.startsWith("tree"))
 				tokenizer = new TreeTokenizer(this);
 			else
-				log.severe("unrecognized file format - unable to load file \""+f.getName()+"\"");
+				log.severe("unrecognized file format - unable to load file \"" + f.getName() + "\"");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected List<String> lines() {
 		return lines;
 	}
-	
+
 	public void tokenize() {
 		tokenizer.tokenize();
 	}
 
 	/**
 	 * Create an instance of {@link Parser} adapted for this tokenizer
+	 * 
 	 * @return a new instance of Parser
 	 */
 	public Parser parser() {
@@ -94,5 +107,5 @@ public class FileTokenizer implements Tokenizer {
 			return new TreeGraphParser((TreeGraphTokenizer) tokenizer);
 		return null;
 	}
-	
+
 }
