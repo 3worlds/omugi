@@ -33,6 +33,11 @@ package fr.cnrs.iees;
 
 /**
  * Author Ian Davies
+ * 
+ * NOTE: it is important that when calling class.forName(name,initialize,loader), the 
+ * 'initialize' argument is set to true (it means the class will be initialized if not yet
+ * done). Otherwise, no matter if the classLoader knows about the class, it will not find it
+ * and return an error.
  *
  * Date 16 Feb. 2019
  */
