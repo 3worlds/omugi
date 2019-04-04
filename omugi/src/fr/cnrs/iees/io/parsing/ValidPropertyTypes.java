@@ -45,6 +45,9 @@ import au.edu.anu.rscs.aot.collections.tables.IntTable;
 import au.edu.anu.rscs.aot.collections.tables.LongTable;
 import au.edu.anu.rscs.aot.collections.tables.ShortTable;
 import au.edu.anu.rscs.aot.collections.tables.StringTable;
+
+import au.edu.anu.rscs.aot.util.IntegerRange;
+
 /**
  * This class records the property types which are compatible with a given application
  * using SimplePropertyList descendants
@@ -59,6 +62,7 @@ import au.edu.anu.rscs.aot.collections.tables.StringTable;
  *
  */
 // Tested with version 0.0.1 of tests 25/10/2018
+// Tested ok with version 0.0.12 on 4/4/2019
 public class ValidPropertyTypes {
 	
 	/** map of type names giving indexes in other arrays */
@@ -193,7 +197,7 @@ public class ValidPropertyTypes {
 	/** this lists aot table types for fast matching 
 	 * NB: all have a valueOf(String) method */
 	private enum TableTypes {
-		//  class name | 	java class		  								|	default value			
+		//  class name | 	java class		  								  |	default value			
 		DoubleTable		("au.edu.anu.rscs.aot.collections.tables.DoubleTable", 	new DoubleTable(new Dimensioner(1)).clear()),
 		FloatTable		("au.edu.anu.rscs.aot.collections.tables.FloatTable", 	new FloatTable(new Dimensioner(1)).clear()), 
 		StringTable		("au.edu.anu.rscs.aot.collections.tables.StringTable", 	new StringTable(new Dimensioner(1)).clear()),
@@ -206,6 +210,19 @@ public class ValidPropertyTypes {
 		private final String className;
 		private final Object defaultValue;
 		private TableTypes(String className, Object defaultValue) {
+			this.className = className;
+			this.defaultValue = defaultValue;
+		}
+	}
+	
+	/** other utility types */
+	/** NB: all have a valueOf(String) method */
+	private enum AotTypes {
+		//  class name | 	java class		  					|	default value			
+		IntegerRange	("au.edu.anu.rscs.aot.util.IntegerRange",	new IntegerRange(java.lang.Integer.MIN_VALUE,java.lang.Integer.MAX_VALUE));
+		private final String className;
+		private final Object defaultValue;
+		private AotTypes(String className, Object defaultValue) {
 			this.className = className;
 			this.defaultValue = defaultValue;
 		}
@@ -245,12 +262,14 @@ public class ValidPropertyTypes {
 //	}
 
 	/**
-	 * Default initialisation with primitive and table types only.
+	 * Initialisation.
 	 */
 	static {
 		for (PrimitiveTypes pt: PrimitiveTypes.values())
 			recordPropertyType(pt.toString(),pt.className,pt.defaultValue);
 		for (TableTypes pt: TableTypes.values())
+			recordPropertyType(pt.toString(),pt.className,pt.defaultValue);
+		for (AotTypes pt: AotTypes.values())
 			recordPropertyType(pt.toString(),pt.className,pt.defaultValue);
 	}
 	
