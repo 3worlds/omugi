@@ -31,6 +31,8 @@
 package fr.cnrs.iees.properties;
 
 import au.edu.anu.rscs.aot.graph.property.Property;
+import fr.cnrs.iees.properties.impl.ReadOnlyPropertyListImpl;
+import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 /**
  * 
@@ -44,20 +46,26 @@ public interface PropertyListFactory {
 	 * @param properties
 	 * @return
 	 */
-	public ReadOnlyPropertyList makeReadOnlyPropertyList(Property... properties);
+	public default ReadOnlyPropertyList makeReadOnlyPropertyList(Property... properties) {
+		return new ReadOnlyPropertyListImpl(properties);
+	}
 	
 	/**
 	 * Create a read-write property list with property names and values 
 	 * @param properties
 	 * @return
 	 */
-	public SimplePropertyList makePropertyList(Property... properties);
+	public default SimplePropertyList makePropertyList(Property... properties) {
+		return new SimplePropertyListImpl(properties);
+	}
 	
 	/**
 	 * Create a read-write property list with property names, but no values
 	 * @param propertyKeys
 	 * @return
 	 */
-	public SimplePropertyList makePropertyList(String... propertyKeys);
+	public default SimplePropertyList makePropertyList(String... propertyKeys) {
+		return new SimplePropertyListImpl(propertyKeys);
+	}
 
 }

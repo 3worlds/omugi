@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph;
 
 import fr.cnrs.iees.OmugiClassLoader;
+import fr.cnrs.iees.identity.Scoped;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
@@ -58,7 +59,7 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  * @author Jacques Gignoux 7-11-2018
  *
  */
-public interface NodeFactory {
+public interface NodeFactory extends Scoped {
 
 	/**
 	 * Create a Node with no properties. The class ID is set to the default (= the implementing

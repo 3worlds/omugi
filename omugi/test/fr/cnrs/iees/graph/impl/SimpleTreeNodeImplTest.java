@@ -54,7 +54,7 @@ class SimpleTreeNodeImplTest {
 	
 	@BeforeEach
 	private void init() {
-		DefaultGraphFactory f = new DefaultGraphFactory();
+		DefaultTreeFactory f = new DefaultTreeFactory();
 		tn1 = f.makeTreeNode(null);
 		tn2 = f.makeTreeNode(tn1);
 		tn3 = f.makeTreeNode(tn1);

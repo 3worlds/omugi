@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,74 +28,68 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.io.parsing.impl;
+package fr.cnrs.iees.graph.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
-import org.junit.jupiter.api.Test;
-
-import au.edu.anu.rscs.aot.graph.property.Property;
+import fr.cnrs.iees.OmugiClassLoader;
 import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.impl.DefaultTreeFactory;
-import fr.cnrs.iees.io.parsing.impl.ReferenceParser;
-import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
-import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
+import fr.cnrs.iees.identity.IdentityScope;
+import fr.cnrs.iees.identity.impl.LocalScope;
+import fr.cnrs.iees.properties.PropertyListFactory;
 
 /**
+ * A simple factory for tree elements - mainly for testing purposes. Can instantiate any descendant
+ * of TreeNode. Handles treenode labels (must be passed in the constructor)
  * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * @author Jacques Gignoux - 7 nov. 2018
  *
  */
-// TODO: more tests, with real names and labels
-class ReferenceParserTest {
+public class DefaultTreeFactory implements PropertyListFactory, DefaultTreeNodeFactory {
 	
-	String ref;
-	TreeNode node;
-	SimplePropertyList props;
-	DefaultTreeFactory factory = new DefaultTreeFactory(); 
-
-	@Test
-	void testParse() {
-		ref = "+prop4=\"blabla\"+prop5=28.96542/label12:node15/labelDeCadix:/+prop8=false";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		assertEquals(p.toString(),"Reference to match\n");
-		p.parse();
-		assertEquals(p.toString(),"Reference to match\n" + 
-				":\n" + 
-				"	prop8=false\n" + 
-				"labelDeCadix:\n" + 
-				"label12:node15\n" + 
-				":\n" + 
-				"	prop4=blabla\n" + 
-				"	prop5=28.96542\n");
+	private Map<String,Class<? extends TreeNode>> treeNodeLabels = new HashMap<>();
+	private Map<Class<? extends TreeNode>,String> treeNodeClassNames = new HashMap<>();
+	private IdentityScope scope= new LocalScope("DTF");
+	
+	// constructors
+	
+	public DefaultTreeFactory() {
+		super();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public DefaultTreeFactory(Map<String,String> labels) {
+		super();
+		Logger log = Logger.getLogger(DefaultTreeFactory.class.getName());
+		for (String label:labels.keySet()) {
+			try {
+				Class<?> c = Class.forName(labels.get(label),false,OmugiClassLoader.getClassLoader());
+				if (TreeNode.class.isAssignableFrom(c)) {
+					treeNodeLabels.put(label,(Class<? extends TreeNode>) c);
+					treeNodeClassNames.put((Class<? extends TreeNode>) c,label);
+				}
+			} catch (ClassNotFoundException e) {
+				log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
+			}
+		}
 	}
 
-	@Test
-	void testMatches1() {
-		ref = "+prop1=3.4";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		Property prop = new Property("prop1",3.4);
-		props = new SimplePropertyListImpl(prop);
-		node = factory.makeTreeNode(null,props);
-		assertTrue(p.matches(node));
-	}
+	// TreeNodeFactory
 
-	@Test
-	void testMatches2() {
-		ref = "+prop1=3.4/+prop8=false+prop4=\"blabla\"";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		props = new SimplePropertyListImpl(
-			new Property("prop8",false),
-			new Property("prop4","blabla"));
-		node = factory.makeTreeNode(null,props);
-		props = new SimplePropertyListImpl(
-			new Property("prop1",3.4));
-		node.setParent(factory.makeTreeNode(null,props));
-		assertTrue(p.matches(node));
+	public String treeNodeClassName(Class<? extends TreeNode> nodeClass) {
+		return treeNodeClassNames.get(nodeClass);
 	}
+	
+	public Class<? extends TreeNode> treeNodeClass(String label) {
+		return treeNodeLabels.get(label);
+	}
+	
+	// Scoped
 
+	@Override
+	public IdentityScope scope() {
+		return scope;
+	}
 }

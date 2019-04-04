@@ -28,74 +28,17 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.io.parsing.impl;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
-
-import au.edu.anu.rscs.aot.graph.property.Property;
-import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.impl.DefaultTreeFactory;
-import fr.cnrs.iees.io.parsing.impl.ReferenceParser;
-import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
-import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
+package fr.cnrs.iees.identity;
 
 /**
+ * An interface for objects that define a scope for identities. Typically, factories of
+ * objects with a unique identity
  * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * @author Jacques Gignoux - 4 avr. 2019
  *
  */
-// TODO: more tests, with real names and labels
-class ReferenceParserTest {
+public interface Scoped {
 	
-	String ref;
-	TreeNode node;
-	SimplePropertyList props;
-	DefaultTreeFactory factory = new DefaultTreeFactory(); 
-
-	@Test
-	void testParse() {
-		ref = "+prop4=\"blabla\"+prop5=28.96542/label12:node15/labelDeCadix:/+prop8=false";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		assertEquals(p.toString(),"Reference to match\n");
-		p.parse();
-		assertEquals(p.toString(),"Reference to match\n" + 
-				":\n" + 
-				"	prop8=false\n" + 
-				"labelDeCadix:\n" + 
-				"label12:node15\n" + 
-				":\n" + 
-				"	prop4=blabla\n" + 
-				"	prop5=28.96542\n");
-	}
-
-	@Test
-	void testMatches1() {
-		ref = "+prop1=3.4";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		Property prop = new Property("prop1",3.4);
-		props = new SimplePropertyListImpl(prop);
-		node = factory.makeTreeNode(null,props);
-		assertTrue(p.matches(node));
-	}
-
-	@Test
-	void testMatches2() {
-		ref = "+prop1=3.4/+prop8=false+prop4=\"blabla\"";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		props = new SimplePropertyListImpl(
-			new Property("prop8",false),
-			new Property("prop4","blabla"));
-		node = factory.makeTreeNode(null,props);
-		props = new SimplePropertyListImpl(
-			new Property("prop1",3.4));
-		node.setParent(factory.makeTreeNode(null,props));
-		assertTrue(p.matches(node));
-	}
+	public IdentityScope scope();
 
 }

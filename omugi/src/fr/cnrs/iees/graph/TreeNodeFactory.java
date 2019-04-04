@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph;
 
 import fr.cnrs.iees.OmugiClassLoader;
+import fr.cnrs.iees.identity.Scoped;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
@@ -38,7 +39,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  * @author Jacques Gignoux - 20 déc. 2018
  *
  */
-public interface TreeNodeFactory {
+public interface TreeNodeFactory extends Scoped {
 	
 	/**
 	 * Creates a new instance of a {@link TreeNode}, with the argument as its

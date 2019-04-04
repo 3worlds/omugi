@@ -42,35 +42,41 @@ import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.TreeNodeFactory;
 import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.identity.IdentityScope;
+import fr.cnrs.iees.identity.impl.LocalScope;
+import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
  * A factory for TreeGraphs, ie nodes are both Nodes and TreeNodes. Can instantiate any descendant
- * of TreeGraphNode and Edge.
+ * of TreeGraphNode and Edge. Handles node and edge labels (must be passed in the constructor).
  * 
  * @author Jacques Gignoux - 25 janv. 2019
  *
  */
 public class TreeGraphFactory 
-	extends AbstractGraphFactory
-	implements TreeNodeFactory, NodeFactory {
+	implements PropertyListFactory, 
+		DefaultEdgeFactory, 
+		DefaultTreeNodeFactory, 
+		DefaultNodeFactory {
 
+	private Map<String,Class<? extends Edge>> edgeLabels = new HashMap<>();
+	private Map<Class<? extends Edge>,String> edgeClassNames = new HashMap<>();
 	private Map<String,Class<? extends TreeGraphNode>> nodeLabels = new HashMap<>();
-	// I don't understand this. A class may have more than one label eg there are many Labels with a simple AotNode class.
 	private Map<Class<? extends TreeGraphNode>,String> nodeClassNames = new HashMap<>();
-//	private Map<Class<? extends TreeGraphNode>,List<String>> nodeClassNames = new HashMap<>();
-
+	private IdentityScope scope= new LocalScope("TGF");
+	private Logger log = Logger.getLogger(TreeGraphFactory.class.getName());
+	
 	// Constructors ---------------------------------------------------------
 	
 	public TreeGraphFactory() {
-		super("TGF");
-		log = Logger.getLogger(TreeGraphFactory.class.getName());
+		super();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public TreeGraphFactory(Map<String,String> labels) {
-		super("TGF");
+		super();
 		log = Logger.getLogger(DefaultGraphFactory.class.getName());
 		for (String label:labels.keySet()) {
 			try {
@@ -89,15 +95,15 @@ public class TreeGraphFactory
 		}
 	}
 	
-	
 	// NodeFactory ------------------------------------------------------------
 	// CAUTION: all these methods return a free-floating node, i.e. with parent 
 	// not set and no children.
 	// Use with caution (prefer makeTreeNode(...))
 
 	@Override
-	public TreeGraphNode makeNode(String proposedId, ReadOnlyPropertyList props) {
-		TreeGraphNode result = new TreeGraphNode(scope.newId(proposedId),this,this,props);
+	public TreeGraphNode makeNode(String proposedId, 
+			ReadOnlyPropertyList props) {
+		TreeGraphNode result = new TreeGraphNode(scope().newId(proposedId),this,this,props);
 		return result;
 	}
 	
@@ -130,10 +136,11 @@ public class TreeGraphFactory
 	@SuppressWarnings("unchecked")
 	@Override
 	public TreeGraphNode makeNode(Class<? extends Node> nodeClass, 
-			String proposedId, ReadOnlyPropertyList props) {
+			String proposedId, 
+			ReadOnlyPropertyList props) {
 		Constructor<? extends TreeGraphNode> c = 
 			getNodeConstructor((Class<? extends TreeGraphNode>) nodeClass);
-		Identity id = scope.newId(proposedId);
+		Identity id = scope().newId(proposedId);
 		try {
 			TreeGraphNode tgn = c.newInstance(id,this,this,props);
 			return tgn;
@@ -144,12 +151,14 @@ public class TreeGraphFactory
 	}
 
 	@Override
-	public TreeGraphNode makeNode(Class<? extends Node> nodeClass, String proposedId) {
+	public TreeGraphNode makeNode(Class<? extends Node> nodeClass, 
+			String proposedId) {
 		return makeNode(nodeClass,proposedId,null);
 	}
 
 	@Override
-	public TreeGraphNode makeNode(Class<? extends Node> nodeClass, ReadOnlyPropertyList props) {
+	public TreeGraphNode makeNode(Class<? extends Node> nodeClass, 
+			ReadOnlyPropertyList props) {
 		return makeNode(nodeClass,defaultNodeId,props);
 	}
 
@@ -175,14 +184,14 @@ public class TreeGraphFactory
 	
 	@Override
 	public TreeGraphNode makeTreeNode(TreeNode parent, String proposedId, SimplePropertyList properties) {
-		TreeGraphNode result = new TreeGraphNode(scope.newId(proposedId),this,this,properties);
+		TreeGraphNode result = new TreeGraphNode(scope().newId(proposedId),this,this,properties);
 		connectToParent(result,parent);
 		return result;
 	}
 
 	@Override
 	public TreeGraphNode makeTreeNode(TreeNode parent, SimplePropertyList properties) {
-		return makeTreeNode(parent,defaultNodeId,properties);
+		return makeTreeNode(parent,defaultTreeNodeId,properties);
 	}
 	
 	@Override
@@ -192,18 +201,18 @@ public class TreeGraphFactory
 	
 	@Override
 	public TreeGraphNode makeTreeNode(TreeNode parent) {
-		return makeTreeNode(parent,defaultNodeId,null);
+		return makeTreeNode(parent,defaultTreeNodeId,null);
 	}
 
 	@Override
 	public TreeGraphNode makeTreeNode(Class<? extends TreeNode> treeNodeClass, TreeNode parent) {
-		return makeTreeNode(treeNodeClass,parent,defaultNodeId,null);
+		return makeTreeNode(treeNodeClass,parent,defaultTreeNodeId,null);
 	}
 
 	@Override
 	public TreeGraphNode makeTreeNode(Class<? extends TreeNode> treeNodeClass, TreeNode parent,
 			SimplePropertyList properties) {
-		return makeTreeNode(treeNodeClass,parent,defaultNodeId,properties);
+		return makeTreeNode(treeNodeClass,parent,defaultTreeNodeId,properties);
 	}
 
 	@Override
@@ -218,7 +227,7 @@ public class TreeGraphFactory
 			String proposedId,SimplePropertyList properties) {
 		Constructor<? extends TreeGraphNode> c = 
 			getNodeConstructor((Class<? extends TreeGraphNode>) treeNodeClass);
-		Identity id = scope.newId(proposedId);
+		Identity id = scope().newId(proposedId);
 		try {
 			TreeGraphNode tgn = c.newInstance(id,this,this,properties);
 			connectToParent(tgn,parent);
@@ -235,6 +244,13 @@ public class TreeGraphFactory
 	
 	public Class<? extends TreeNode> treeNodeClass(String label) {
 		return nodeLabels.get(label);
+	}
+	
+	// Scoped
+
+	@Override
+	public IdentityScope scope() {
+		return scope;
 	}
 	
 }

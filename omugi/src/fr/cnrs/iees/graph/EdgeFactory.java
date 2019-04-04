@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph;
 
 import fr.cnrs.iees.OmugiClassLoader;
+import fr.cnrs.iees.identity.Scoped;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
@@ -51,7 +52,7 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  *
  * @param <N>
  */
-public interface EdgeFactory {
+public interface EdgeFactory extends Scoped {
 
 	/**
 	 * Create an edge with no properties. The class ID is set to the default (= the implementing
