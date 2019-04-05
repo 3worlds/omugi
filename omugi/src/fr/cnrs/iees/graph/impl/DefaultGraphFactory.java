@@ -63,26 +63,32 @@ public class DefaultGraphFactory
 	
 	public DefaultGraphFactory() {
 		super();
+		scope= new LocalScope("DGF");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public DefaultGraphFactory(Map<String,String> labels) {
+	public DefaultGraphFactory(String scopeId, Map<String,String> labels) {
 		super();
+		if (scopeId!=null)
+			scope = new LocalScope(scopeId);
+		else
+			scope = new LocalScope("DGF");
 		Logger log = Logger.getLogger(DefaultGraphFactory.class.getName());
-		for (String label:labels.keySet()) {
-			try {
-				Class<?> c = Class.forName(labels.get(label),false,OmugiClassLoader.getClassLoader());
-				if (Node.class.isAssignableFrom(c)) {
-					nodeLabels.put(label,(Class<? extends Node>) c);
-					nodeClassNames.put((Class<? extends Node>) c,label);
+		if (labels!=null)
+			for (String label:labels.keySet()) {
+				try {
+					Class<?> c = Class.forName(labels.get(label),true,OmugiClassLoader.getClassLoader());
+					if (Node.class.isAssignableFrom(c)) {
+						nodeLabels.put(label,(Class<? extends Node>) c);
+						nodeClassNames.put((Class<? extends Node>) c,label);
+					}
+					else if (Edge.class.isAssignableFrom(c)) {
+						edgeLabels.put(label,(Class<? extends Edge>) c);
+						edgeClassNames.put((Class<? extends Edge>) c, label);
+					}
+				} catch (ClassNotFoundException e) {
+					log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
 				}
-				else if (Edge.class.isAssignableFrom(c)) {
-					edgeLabels.put(label,(Class<? extends Edge>) c);
-					edgeClassNames.put((Class<? extends Edge>) c, label);
-				}
-			} catch (ClassNotFoundException e) {
-				log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
-			}
 		}
 	}
 

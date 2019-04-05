@@ -52,6 +52,7 @@ public enum TreeProperties {
 																"fr.cnrs.iees.graph.impl.DefaultTreeFactory"),
 	
 	MUTABLE			("mutable",		"java.lang.Boolean",		"false"),
+	SCOPE			("scope",		"java.lang.String",			"DTF"),
 	// others to come ?
 	;
 	

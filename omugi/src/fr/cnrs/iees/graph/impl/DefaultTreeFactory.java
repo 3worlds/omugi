@@ -51,28 +51,34 @@ public class DefaultTreeFactory implements PropertyListFactory, DefaultTreeNodeF
 	
 	private Map<String,Class<? extends TreeNode>> treeNodeLabels = new HashMap<>();
 	private Map<Class<? extends TreeNode>,String> treeNodeClassNames = new HashMap<>();
-	private IdentityScope scope= new LocalScope("DTF");
+	private IdentityScope scope;
 	
 	// constructors
 	
 	public DefaultTreeFactory() {
 		super();
+		scope = new LocalScope("DTF");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public DefaultTreeFactory(Map<String,String> labels) {
+	public DefaultTreeFactory(String scopeId, Map<String,String> labels) {
 		super();
+		if (scopeId!=null)
+			scope = new LocalScope(scopeId);
+		else
+			scope = new LocalScope("DTF");
 		Logger log = Logger.getLogger(DefaultTreeFactory.class.getName());
-		for (String label:labels.keySet()) {
-			try {
-				Class<?> c = Class.forName(labels.get(label),false,OmugiClassLoader.getClassLoader());
-				if (TreeNode.class.isAssignableFrom(c)) {
-					treeNodeLabels.put(label,(Class<? extends TreeNode>) c);
-					treeNodeClassNames.put((Class<? extends TreeNode>) c,label);
+		if (labels!=null)
+			for (String label:labels.keySet()) {
+				try {
+					Class<?> c = Class.forName(labels.get(label),true,OmugiClassLoader.getClassLoader());
+					if (TreeNode.class.isAssignableFrom(c)) {
+						treeNodeLabels.put(label,(Class<? extends TreeNode>) c);
+						treeNodeClassNames.put((Class<? extends TreeNode>) c,label);
+					}
+				} catch (ClassNotFoundException e) {
+					log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
 				}
-			} catch (ClassNotFoundException e) {
-				log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
-			}
 		}
 	}
 

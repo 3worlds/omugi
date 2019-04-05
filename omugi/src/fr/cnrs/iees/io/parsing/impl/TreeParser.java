@@ -185,9 +185,19 @@ public class TreeParser extends MinimalGraphParser {
 		Class<? extends Tree<? extends TreeNode>> treeClass = null;
 		Class<? extends TreeNodeFactory> tFactoryClass = null;
 		Class<? extends PropertyListFactory> plFactoryClass = null;
+		// label to class mappings from tree properties
+		Map<String, String> labels = new HashMap<>();
+		String tfscope = null;
 		// scan tree properties for tree building options
 		for (propSpec p : treeProps) {
-			switch (TreeProperties.propertyForName(p.name)) {
+			TreeProperties tp = TreeProperties.propertyForName(p.name);
+			// unknown properties are considered to be (label,class name) pairs 
+			
+			if (tp==null) {
+				if (p.type.contains("String"))
+					labels.put(p.name, p.value);
+			}
+			else switch (tp) {
 			case CLASS:
 				treeClass = (Class<? extends Tree<? extends TreeNode>>) 
 					getClass(TreeProperties.CLASS, p.value, log, Tree.class);
@@ -205,6 +215,9 @@ public class TreeParser extends MinimalGraphParser {
 				tFactoryClass = (Class<? extends TreeNodeFactory>) 
 					getClass(TreeProperties.TREE_FACTORY, p.value, log, TreeNodeFactory.class);
 				break;
+			case SCOPE:
+				tfscope = p.value;
+				break;
 			default:
 				break;
 			}
@@ -221,9 +234,14 @@ public class TreeParser extends MinimalGraphParser {
 				getClass(TreeProperties.PROP_FACTORY, log, PropertyListFactory.class);
 		// setup the factories
 		try {
-			treeFactory = tFactoryClass.newInstance();
+			if (labels.isEmpty())
+				treeFactory = tFactoryClass.newInstance();
+			else {
+				Constructor<?> cons = tFactoryClass.getConstructor(String.class,Map.class);
+				treeFactory = (TreeNodeFactory) cons.newInstance(tfscope,labels);
+			}
 			propertyListFactory = plFactoryClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (Exception e) {
 			// There should not be any problem here given the previous checks
 			// unless the factory class is flawed
 			e.printStackTrace();

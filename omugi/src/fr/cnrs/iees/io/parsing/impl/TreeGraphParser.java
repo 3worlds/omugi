@@ -113,7 +113,7 @@ public class TreeGraphParser extends MinimalGraphParser {
 			}
 		}
 		// setup the factories
-		graphFactory = new TreeGraphFactory(labels);
+		graphFactory = new TreeGraphFactory(null,labels);
 		propertyListFactory = graphFactory;
 		// make tree nodes
 		Map<String, TreeGraphNode> nodes = new HashMap<>();

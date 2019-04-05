@@ -65,33 +65,38 @@ public class TreeGraphFactory
 	private Map<Class<? extends Edge>,String> edgeClassNames = new HashMap<>();
 	private Map<String,Class<? extends TreeGraphNode>> nodeLabels = new HashMap<>();
 	private Map<Class<? extends TreeGraphNode>,String> nodeClassNames = new HashMap<>();
-	private IdentityScope scope= new LocalScope("TGF");
+	private IdentityScope scope;
 	private Logger log = Logger.getLogger(TreeGraphFactory.class.getName());
 	
 	// Constructors ---------------------------------------------------------
 	
 	public TreeGraphFactory() {
 		super();
+		scope = new LocalScope("TGF");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public TreeGraphFactory(Map<String,String> labels) {
+	public TreeGraphFactory(String scopeId, Map<String,String> labels) {
 		super();
-		log = Logger.getLogger(DefaultGraphFactory.class.getName());
-		for (String label:labels.keySet()) {
-			try {
-				Class<?> c = Class.forName(labels.get(label),false,OmugiClassLoader.getClassLoader());
-				if (TreeGraphNode.class.isAssignableFrom(c)) {
-					nodeLabels.put(label,(Class<? extends TreeGraphNode>) c);
-					nodeClassNames.put((Class<? extends TreeGraphNode>) c,label);
+		if (scopeId!=null)
+			scope = new LocalScope(scopeId);
+		else
+			scope = new LocalScope("TGF");
+		if (labels!=null)
+			for (String label:labels.keySet()) {
+				try {
+					Class<?> c = Class.forName(labels.get(label),true,OmugiClassLoader.getClassLoader());
+					if (TreeGraphNode.class.isAssignableFrom(c)) {
+						nodeLabels.put(label,(Class<? extends TreeGraphNode>) c);
+						nodeClassNames.put((Class<? extends TreeGraphNode>) c,label);
+					}
+					else if (Edge.class.isAssignableFrom(c)) {
+						edgeLabels.put(label,(Class<? extends Edge>) c);
+						edgeClassNames.put((Class<? extends Edge>) c, label);
+					}
+				} catch (ClassNotFoundException e) {
+					log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
 				}
-				else if (Edge.class.isAssignableFrom(c)) {
-					edgeLabels.put(label,(Class<? extends Edge>) c);
-					edgeClassNames.put((Class<? extends Edge>) c, label);
-				}
-			} catch (ClassNotFoundException e) {
-				log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
-			}
 		}
 	}
 	
