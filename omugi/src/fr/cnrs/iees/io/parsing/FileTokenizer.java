@@ -61,7 +61,8 @@ public class FileTokenizer implements Tokenizer {
 	public FileTokenizer(File f) {
 		super();
 		try {
-			lines = preprocess(Files.readAllLines(f.toPath()));
+//			lines = preprocess(Files.readAllLines(f.toPath()));
+			lines = Files.readAllLines(f.toPath());
 			String s = lines.get(0);
 
 			if (s.startsWith("graph"))
