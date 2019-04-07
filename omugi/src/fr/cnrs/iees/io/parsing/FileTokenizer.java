@@ -61,15 +61,7 @@ public class FileTokenizer implements Tokenizer {
 	public FileTokenizer(File f) {
 		super();
 		try {
-			lines = new ArrayList<String>();
-			List<String> tmpLines = Files.readAllLines(f.toPath());
-			// Skip blank lines and comment only lines
-			for (String line : tmpLines) {
-				if (!line.startsWith((COMMENT.prefix())))
-					if (!line.isEmpty())
-						lines.add(line);
-			}
-			// insist that graph type keyword appears first??
+			lines = preprocess(Files.readAllLines(f.toPath()));
 			String s = lines.get(0);
 
 			if (s.startsWith("graph"))
@@ -83,6 +75,38 @@ public class FileTokenizer implements Tokenizer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static List<String> preprocess(List<String> lines) {
+		List<String> result = new ArrayList<>();
+		String concat = "";
+		/*
+		 * Skip blank lines and comment only lines. This ensures graph type is the first
+		 * token in the file.
+		 * 
+		 * Use key symbol "+" for string concatenation.
+		 * 
+		 * Note, preprocessing lines means line numbers are no longer reliable for error
+		 * reporting. Instead, report entire line of tokens to provide error context.
+		 */
+
+		for (String line : lines) {
+			String tmp = line.trim();
+			if (!tmp.isEmpty()) {
+				if (!tmp.startsWith((COMMENT.prefix()))) {
+					// need to look ahead to concatenate strings
+					if (tmp.endsWith("+")) {
+						concat += tmp.substring(0, tmp.length() - 2);
+					} else if (!concat.isEmpty()) {
+						concat += tmp;
+						result.add(concat);
+						concat = "";
+					} else
+						result.add(line);
+				}
+			}
+		}
+		return result;
 	}
 
 	protected List<String> lines() {
@@ -106,6 +130,20 @@ public class FileTokenizer implements Tokenizer {
 		if (TreeGraphTokenizer.class.isAssignableFrom(tokenizer.getClass()))
 			return new TreeGraphParser((TreeGraphTokenizer) tokenizer);
 		return null;
+	}
+	
+	public static void main (String[] args) {
+//		List<String> lines = new ArrayList<>();
+//		lines.add("\t\thasProperty widgetClass");
+//		lines.add("\t\tmustSatisfyQuery widgetClassInValueSetQuery");
+//			isOfClass = String("mustSatisfyQuery")
+//			className = String("IsInValueSetQuery") 
+//			values = StringTable("[0],SingleGridWidget,+
+//			TimeDisplayWidgetfx,+
+//			SimpleSimCtrlWidget,+
+//			TimeSeriesPlotWidgetfx,+
+//			LabelValuePair"})	     
+//		FileTokenizer.preprocess(lines);
 	}
 
 }
