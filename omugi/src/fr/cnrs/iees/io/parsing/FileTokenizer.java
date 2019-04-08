@@ -61,8 +61,8 @@ public class FileTokenizer implements Tokenizer {
 	public FileTokenizer(File f) {
 		super();
 		try {
-//			lines = preprocess(Files.readAllLines(f.toPath()));
-			lines = Files.readAllLines(f.toPath());
+			lines = preprocess(Files.readAllLines(f.toPath()));
+//			lines = Files.readAllLines(f.toPath());
 			String s = lines.get(0);
 
 			if (s.startsWith("graph"))
@@ -97,7 +97,10 @@ public class FileTokenizer implements Tokenizer {
 				if (!tmp.startsWith((COMMENT.prefix()))) {
 					// need to look ahead to concatenate strings
 					if (tmp.endsWith("+")) {
-						concat += tmp.substring(0, tmp.length() - 2);
+						if (concat.isEmpty())
+							concat += line.substring(0, line.length() - 1);						
+						else 
+							concat += tmp.substring(0, tmp.length() - 1);
 					} else if (!concat.isEmpty()) {
 						concat += tmp;
 						result.add(concat);
@@ -134,17 +137,19 @@ public class FileTokenizer implements Tokenizer {
 	}
 	
 	public static void main (String[] args) {
-//		List<String> lines = new ArrayList<>();
-//		lines.add("\t\thasProperty widgetClass");
-//		lines.add("\t\tmustSatisfyQuery widgetClassInValueSetQuery");
-//			isOfClass = String("mustSatisfyQuery")
-//			className = String("IsInValueSetQuery") 
-//			values = StringTable("[0],SingleGridWidget,+
-//			TimeDisplayWidgetfx,+
-//			SimpleSimCtrlWidget,+
-//			TimeSeriesPlotWidgetfx,+
-//			LabelValuePair"})	     
-//		FileTokenizer.preprocess(lines);
+		List<String> lines = new ArrayList<>();
+		lines.add("\t\thasProperty widgetClass");
+		lines.add("\t\tmustSatisfyQuery widgetClassInValueSetQuery");
+		lines.add("\t\t\tisOfClass = String(\"mustSatisfyQuery\")");
+		lines.add("\t\t\tclassName = String(\"IsInValueSetQuery\")"); 
+		lines.add("\t\t\tvalues = StringTable(\"[0],SingleGridWidget,+");
+		lines.add("\t\t\tTimeDisplayWidgetfx,+");
+		lines.add("\t\t\tSimpleSimCtrlWidget,+");
+		lines.add("\t\t\tTimeSeriesPlotWidgetfx,+");
+		lines.add("\t\t\tLabelValuePair\")");    
+		lines = FileTokenizer.preprocess(lines);
+		for (String line: lines)
+			System.out.println(line);
 	}
 
 }
