@@ -48,7 +48,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
+import fr.cnrs.iees.graph.impl.GraphFactory;
 import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
 
 /**
@@ -61,7 +61,7 @@ import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
  */
 class GraphmlExporterTest {
 
-	DefaultGraphFactory f = new DefaultGraphFactory();
+	GraphFactory f = new GraphFactory();
 	// first, a simple graph with no properties
 	Node n1;
 	Node n2, n3, n4;

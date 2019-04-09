@@ -42,12 +42,12 @@ import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
+import fr.cnrs.iees.graph.impl.GraphFactory;
 import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
 
 class ImmutableGraphImplTest {
 
-	DefaultGraphFactory f = new DefaultGraphFactory();
+	GraphFactory f = new GraphFactory();
 	Node n1;
 	Node n2, n3, n4;
 	Edge e1, e2, e3, e4, e5;

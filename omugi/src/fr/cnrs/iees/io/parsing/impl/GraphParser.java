@@ -43,7 +43,7 @@ import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
-import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
+import fr.cnrs.iees.graph.impl.GraphFactory;
 import fr.cnrs.iees.graph.impl.MutableGraphImpl;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
@@ -287,11 +287,11 @@ public class GraphParser extends MinimalGraphParser {
 			nodeFactory = c.newInstance(labels);
 			edgeFactory = eFactoryClass.newInstance();
 			if (eFactoryClass.equals(nFactoryClass))
-				if (nodeFactory instanceof DefaultGraphFactory)
+				if (nodeFactory instanceof GraphFactory)
 					edgeFactory = (EdgeFactory) nodeFactory;
 			propertyListFactory = plFactoryClass.newInstance();
 			if (plFactoryClass.equals(nFactoryClass))
-				if (nodeFactory instanceof DefaultGraphFactory)
+				if (nodeFactory instanceof GraphFactory)
 					propertyListFactory = (PropertyListFactory) nodeFactory;
 		} catch (Exception e) {
 			// There should not be any problem here given the previous checks

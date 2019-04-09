@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.impl.DefaultTreeFactory;
+import fr.cnrs.iees.graph.impl.TreeFactory;
 import fr.cnrs.iees.io.parsing.impl.ReferenceParser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
 import fr.cnrs.iees.properties.SimplePropertyList;
@@ -53,7 +53,7 @@ class ReferenceParserTest {
 	String ref;
 	TreeNode node;
 	SimplePropertyList props;
-	DefaultTreeFactory factory = new DefaultTreeFactory(); 
+	TreeFactory factory = new TreeFactory(); 
 
 	@Test
 	void testParse() {

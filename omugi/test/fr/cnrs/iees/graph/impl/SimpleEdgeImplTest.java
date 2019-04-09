@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Test;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
+import fr.cnrs.iees.graph.impl.GraphFactory;
 
 class SimpleEdgeImplTest {
 
@@ -60,7 +60,7 @@ class SimpleEdgeImplTest {
 	
 	@BeforeEach
 	private void init() {
-		DefaultGraphFactory f = new DefaultGraphFactory();
+		GraphFactory f = new GraphFactory();
 		nodes = new HashMap<String,String>();
 		n1 = f.makeNode();
 		nodes.put(n1.id(), "n1");

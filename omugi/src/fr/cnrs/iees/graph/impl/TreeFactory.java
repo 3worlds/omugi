@@ -35,56 +35,46 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import fr.cnrs.iees.OmugiClassLoader;
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.identity.impl.LocalScope;
 import fr.cnrs.iees.properties.PropertyListFactory;
 
 /**
- * A simple factory for graph elements - Can instantiate any descendant
- * of Node and Edge. Handles node and edge labels (must be passed in the constructor)
+ * A simple factory for tree elements - mainly for testing purposes. Can instantiate any descendant
+ * of TreeNode. Handles treenode labels (must be passed in the constructor)
  * 
  * @author Jacques Gignoux - 7 nov. 2018
  *
  */
-public class DefaultGraphFactory 
-	implements PropertyListFactory, 
-		DefaultEdgeFactory, 
-		DefaultNodeFactory {
+public class TreeFactory implements PropertyListFactory, DefaultTreeNodeFactory {
 	
-	private Map<String,Class<? extends Edge>> edgeLabels = new HashMap<>();
-	private Map<Class<? extends Edge>,String> edgeClassNames = new HashMap<>();
-	private Map<String,Class<? extends Node>> nodeLabels = new HashMap<>();
-	private Map<Class<? extends Node>,String> nodeClassNames = new HashMap<>();
-	private IdentityScope scope= new LocalScope("DGF");
+	private Map<String,Class<? extends TreeNode>> treeNodeLabels = new HashMap<>();
+	private Map<Class<? extends TreeNode>,String> treeNodeClassNames = new HashMap<>();
+	private IdentityScope scope;
 	
 	// constructors
 	
-	public DefaultGraphFactory() {
+	public TreeFactory() {
 		super();
-		scope= new LocalScope("DGF");
+		scope = new LocalScope("DTF");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public DefaultGraphFactory(String scopeId, Map<String,String> labels) {
+	public TreeFactory(String scopeId, Map<String,String> labels) {
 		super();
 		if (scopeId!=null)
 			scope = new LocalScope(scopeId);
 		else
-			scope = new LocalScope("DGF");
-		Logger log = Logger.getLogger(DefaultGraphFactory.class.getName());
+			scope = new LocalScope("DTF");
+		Logger log = Logger.getLogger(TreeFactory.class.getName());
 		if (labels!=null)
 			for (String label:labels.keySet()) {
 				try {
 					Class<?> c = Class.forName(labels.get(label),true,OmugiClassLoader.getClassLoader());
-					if (Node.class.isAssignableFrom(c)) {
-						nodeLabels.put(label,(Class<? extends Node>) c);
-						nodeClassNames.put((Class<? extends Node>) c,label);
-					}
-					else if (Edge.class.isAssignableFrom(c)) {
-						edgeLabels.put(label,(Class<? extends Edge>) c);
-						edgeClassNames.put((Class<? extends Edge>) c, label);
+					if (TreeNode.class.isAssignableFrom(c)) {
+						treeNodeLabels.put(label,(Class<? extends TreeNode>) c);
+						treeNodeClassNames.put((Class<? extends TreeNode>) c,label);
 					}
 				} catch (ClassNotFoundException e) {
 					log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
@@ -92,26 +82,14 @@ public class DefaultGraphFactory
 		}
 	}
 
-	// NodeFactory
+	// TreeNodeFactory
+
+	public String treeNodeClassName(Class<? extends TreeNode> nodeClass) {
+		return treeNodeClassNames.get(nodeClass);
+	}
 	
-	@Override
-	public String nodeClassName(Class<? extends Node> nodeClass) {
-		return nodeClassNames.get(nodeClass);
-	}
-
-	@Override
-	public Class<? extends Node> nodeClass(String label) {
-		return nodeLabels.get(label);
-	}
-		
-	// EdgeFactory
-	@Override
-	public String edgeClassName(Class<? extends Edge> edgeClass) {
-		return edgeClassNames.get(edgeClass);
-	}
-
-	public Class<? extends Edge> edgeClass(String label) {
-		return edgeLabels.get(label);
+	public Class<? extends TreeNode> treeNodeClass(String label) {
+		return treeNodeLabels.get(label);
 	}
 	
 	// Scoped

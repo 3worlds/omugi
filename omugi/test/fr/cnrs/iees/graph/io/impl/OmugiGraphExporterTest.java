@@ -48,7 +48,7 @@ import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
+import fr.cnrs.iees.graph.impl.GraphFactory;
 import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
 import fr.cnrs.iees.graph.impl.TreeGraph;
 import fr.cnrs.iees.graph.io.GraphImporter;
@@ -60,7 +60,7 @@ import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 class OmugiGraphExporterTest {
 
-	DefaultGraphFactory f = new DefaultGraphFactory();
+	GraphFactory f = new GraphFactory();
 	// first, a simple graph with no properties
 	Node n1;
 	Node n2, n3, n4;

@@ -39,7 +39,7 @@ import fr.cnrs.iees.graph.DataNode;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.impl.DataNodeImpl;
-import fr.cnrs.iees.graph.impl.DefaultGraphFactory;
+import fr.cnrs.iees.graph.impl.GraphFactory;
 import fr.cnrs.iees.graph.impl.SimpleNodeImpl;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
@@ -49,7 +49,7 @@ class DataNodeImplTest {
 	private DataNode n1, n3;
 	private Node n2;
 	private SimplePropertyList p;
-	private NodeFactory f = new DefaultGraphFactory();
+	private NodeFactory f = new GraphFactory();
 	
 	@BeforeEach
 	private void init() {
