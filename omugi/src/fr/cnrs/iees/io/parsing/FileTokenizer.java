@@ -54,14 +54,14 @@ import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
  */
 public class FileTokenizer implements Tokenizer {
 
-	private Logger log = Logger.getLogger(FileTokenizer.class.getName());
+	private static Logger log = Logger.getLogger(FileTokenizer.class.getName());
 	private List<String> lines = null;
 	private LineTokenizer tokenizer = null;
 
 	public FileTokenizer(File f) {
 		super();
 		try {
-			lines = preprocess(Files.readAllLines(f.toPath()));
+			lines = preprocess(Files.readAllLines(f.toPath()),log);
 //			lines = Files.readAllLines(f.toPath());
 			String s = lines.get(0);
 
@@ -78,7 +78,7 @@ public class FileTokenizer implements Tokenizer {
 		}
 	}
 
-	private static List<String> preprocess(List<String> lines) {
+	private static List<String> preprocess(List<String> lines,Logger log) {
 		List<String> result = new ArrayList<>();
 		String concat = "";
 		/*
@@ -98,7 +98,7 @@ public class FileTokenizer implements Tokenizer {
 					// need to look ahead to concatenate strings
 					if (tmp.endsWith("+")) {
 						if (concat.isEmpty())
-							concat += line.substring(0, line.length() - 1);						
+							concat += line.substring(0, line.indexOf("+"));						
 						else 
 							concat += tmp.substring(0, tmp.length() - 1);
 					} else if (!concat.isEmpty()) {
@@ -110,6 +110,8 @@ public class FileTokenizer implements Tokenizer {
 				}
 			}
 		}
+		if (!concat.isEmpty())
+			log.severe("File format error: Concatenation of file strings remains unclosed\n"+concat);
 		return result;
 	}
 
@@ -142,12 +144,12 @@ public class FileTokenizer implements Tokenizer {
 		lines.add("\t\tmustSatisfyQuery widgetClassInValueSetQuery");
 		lines.add("\t\t\tisOfClass = String(\"mustSatisfyQuery\")");
 		lines.add("\t\t\tclassName = String(\"IsInValueSetQuery\")"); 
-		lines.add("\t\t\tvalues = StringTable(\"[0],SingleGridWidget,+");
+		lines.add("\t\t\tvalues = StringTable(\"[0],SingleGridWidget,+   ");
 		lines.add("\t\t\tTimeDisplayWidgetfx,+");
 		lines.add("\t\t\tSimpleSimCtrlWidget,+");
 		lines.add("\t\t\tTimeSeriesPlotWidgetfx,+");
 		lines.add("\t\t\tLabelValuePair\")");    
-		lines = FileTokenizer.preprocess(lines);
+		lines = FileTokenizer.preprocess(lines,log);
 		for (String line: lines)
 			System.out.println(line);
 	}
