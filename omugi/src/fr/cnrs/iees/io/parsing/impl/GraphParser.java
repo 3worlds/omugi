@@ -232,7 +232,9 @@ public class GraphParser extends MinimalGraphParser {
 		Class<? extends NodeFactory> nFactoryClass = null;
 		Class<? extends EdgeFactory> eFactoryClass = null;
 		Class<? extends PropertyListFactory> plFactoryClass = null;
+		// labels to class mappings from graph properties
 		Map<String,String> labels = new HashMap<>();
+		String gfscope = null;
 		// scan graph properties for graph building options
 		for (propSpec p:graphProps) {
 			GraphProperties gp = GraphProperties.propertyForName(p.name);
@@ -264,6 +266,9 @@ public class GraphParser extends MinimalGraphParser {
 					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
 						getClass(GraphProperties.CLASS,MutableGraphImpl.class.getName(),log,Graph.class);
 					break;
+				case SCOPE:
+					gfscope = p.value;
+					break;
 				default: 
 					break;
 			}
@@ -283,9 +288,18 @@ public class GraphParser extends MinimalGraphParser {
 				getClass(GraphProperties.PROP_FACTORY,log,PropertyListFactory.class);
 		// setup the factories
 		try {
-			Constructor<? extends NodeFactory> c = nFactoryClass.getConstructor(Map.class);
-			nodeFactory = c.newInstance(labels);
-			edgeFactory = eFactoryClass.newInstance();
+			if (labels.isEmpty()) {
+				nodeFactory = nFactoryClass.newInstance();
+				edgeFactory = eFactoryClass.newInstance();
+			}
+			else {
+				Constructor<? extends NodeFactory> c = 
+					nFactoryClass.getConstructor(String.class,Map.class);
+				nodeFactory = c.newInstance(gfscope,labels);
+				Constructor<? extends EdgeFactory> c2 = 
+						eFactoryClass.getConstructor(String.class,Map.class);
+					edgeFactory = c2.newInstance(gfscope,labels);
+			}
 			if (eFactoryClass.equals(nFactoryClass))
 				if (nodeFactory instanceof GraphFactory)
 					edgeFactory = (EdgeFactory) nodeFactory;

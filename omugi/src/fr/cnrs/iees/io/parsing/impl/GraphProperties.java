@@ -52,6 +52,8 @@ public enum GraphProperties {
 	DIRECTED		("directed",				"java.lang.Boolean",						"true"),
 	/** {@code true} if the graph is mutable */
 	MUTABLE			("mutable",					"java.lang.Boolean",						"false"),
+	/** Default scope for factory */
+	SCOPE			("scope",					"java.lang.String",			"DGF"),
 	// others to come ?
 	;
 	

@@ -43,6 +43,7 @@ import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Tree;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.TreeNodeFactory;
+import fr.cnrs.iees.graph.impl.TreeFactory;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
@@ -192,7 +193,6 @@ public class TreeParser extends MinimalGraphParser {
 		for (propSpec p : treeProps) {
 			TreeProperties tp = TreeProperties.propertyForName(p.name);
 			// unknown properties are considered to be (label,class name) pairs 
-			
 			if (tp==null) {
 				if (p.type.contains("String"))
 					labels.put(p.name, p.value);
@@ -237,10 +237,14 @@ public class TreeParser extends MinimalGraphParser {
 			if (labels.isEmpty())
 				treeFactory = tFactoryClass.newInstance();
 			else {
-				Constructor<?> cons = tFactoryClass.getConstructor(String.class,Map.class);
-				treeFactory = (TreeNodeFactory) cons.newInstance(tfscope,labels);
+				Constructor<? extends TreeNodeFactory> cons = 
+					tFactoryClass.getConstructor(String.class,Map.class);
+				treeFactory = cons.newInstance(tfscope,labels);
 			}
 			propertyListFactory = plFactoryClass.newInstance();
+			if (tFactoryClass.equals(plFactoryClass))
+				if (treeFactory instanceof TreeFactory)
+					propertyListFactory = (PropertyListFactory) treeFactory;
 		} catch (Exception e) {
 			// There should not be any problem here given the previous checks
 			// unless the factory class is flawed
