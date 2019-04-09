@@ -238,7 +238,7 @@ public class TreeParser extends MinimalGraphParser {
 				treeFactory = tFactoryClass.newInstance();
 			else {
 				Constructor<? extends TreeNodeFactory> cons = 
-					tFactoryClass.getConstructor(String.class,Map.class);
+					tFactoryClass.getDeclaredConstructor(String.class,Map.class);
 				treeFactory = cons.newInstance(tfscope,labels);
 			}
 			propertyListFactory = plFactoryClass.newInstance();

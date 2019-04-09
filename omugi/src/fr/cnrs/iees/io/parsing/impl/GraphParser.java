@@ -294,10 +294,10 @@ public class GraphParser extends MinimalGraphParser {
 			}
 			else {
 				Constructor<? extends NodeFactory> c = 
-					nFactoryClass.getConstructor(String.class,Map.class);
+					nFactoryClass.getDeclaredConstructor(String.class,Map.class);
 				nodeFactory = c.newInstance(gfscope,labels);
 				Constructor<? extends EdgeFactory> c2 = 
-						eFactoryClass.getConstructor(String.class,Map.class);
+						eFactoryClass.getDeclaredConstructor(String.class,Map.class);
 					edgeFactory = c2.newInstance(gfscope,labels);
 			}
 			if (eFactoryClass.equals(nFactoryClass))
