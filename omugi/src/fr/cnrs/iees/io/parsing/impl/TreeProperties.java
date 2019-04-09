@@ -45,11 +45,11 @@ public enum TreeProperties {
 	
 	TREE_FACTORY	("tree_factory",			
 									"fr.cnrs.iees.graph.TreeNodeFactory",	
-																"fr.cnrs.iees.graph.impl.DefaultTreeFactory"),
+																"fr.cnrs.iees.graph.impl.TreeFactory"),
 	
 	PROP_FACTORY	("property_list_factory",	
 									"fr.cnrs.iees.properties.PropertyListFactory",	
-																"fr.cnrs.iees.graph.impl.DefaultTreeFactory"),
+																"fr.cnrs.iees.graph.impl.TreeFactory"),
 	
 	MUTABLE			("mutable",		"java.lang.Boolean",		"false"),
 	SCOPE			("scope",		"java.lang.String",			"DTF"),

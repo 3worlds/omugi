@@ -43,11 +43,11 @@ public enum GraphProperties {
 	/** The name of the java {@link Graph} class to instantiate as the graph that will be the result of the parsing */
 	CLASS			("type",					"fr.cnrs.iees.graph.Graph",					"fr.cnrs.iees.graph.impl.ImmutableGraphImpl"),
 	/** The name of the {@link NodeFactory} to use to instantiate the graph nodes */
-	NODE_FACTORY	("node_factory",			"fr.cnrs.iees.graph.NodeFactory",			"fr.cnrs.iees.graph.impl.DefaultGraphFactory"),
+	NODE_FACTORY	("node_factory",			"fr.cnrs.iees.graph.NodeFactory",			"fr.cnrs.iees.graph.impl.GraphFactory"),
 	/** The name of the {@link EdgeFactory} to use to instantiate the graph edges */
-	EDGE_FACTORY	("edge_factory",			"fr.cnrs.iees.graph.EdgeFactory",			"fr.cnrs.iees.graph.impl.DefaultGraphFactory"),
+	EDGE_FACTORY	("edge_factory",			"fr.cnrs.iees.graph.EdgeFactory",			"fr.cnrs.iees.graph.impl.GraphFactory"),
 	/** The name of the {@link PropertyListFactory} to use to instantiate the property lists used in the graph nodes and edges */
-	PROP_FACTORY	("property_list_factory",	"fr.cnrs.iees.properties.PropertyListFactory",	"fr.cnrs.iees.graph.impl.DefaultGraphFactory"),
+	PROP_FACTORY	("property_list_factory",	"fr.cnrs.iees.properties.PropertyListFactory",	"fr.cnrs.iees.graph.impl.GraphFactory"),
 	/** {@code true} if the graph is directed */
 	DIRECTED		("directed",				"java.lang.Boolean",						"true"),
 	/** {@code true} if the graph is mutable */
