@@ -32,6 +32,7 @@ package fr.cnrs.iees.graph;
 
 import java.util.Collection;
 
+import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.ens.biologie.generic.Textable;
 
@@ -116,6 +117,14 @@ public interface GraphElement extends Textable, Identity {
 	 * @param direction the direction in which to search 
 	 * @return the connected Graph containing this instance
 	 */
-	public Collection<? extends Node> traversal(int distance, Direction direction);			
+	public Collection<? extends Node> traversal(int distance, Direction direction);	
+	
+	/**
+	 * This for descendants only.
+	 * @return
+	 */
+	public default String classId() {
+		throw new OmugiException("classId is not defined for Elements - revise your class hierarchy");
+	}
 	
 }
