@@ -192,54 +192,56 @@ public class TreeParser extends MinimalGraphParser {
 		// scan tree properties for tree building options
 		for (propSpec p : treeProps) {
 			TreeProperties tp = TreeProperties.propertyForName(p.name);
-			// unknown properties are considered to be (label,class name) pairs 
-			if (tp==null) {
+			// unknown properties are considered to be (label,class name) pairs
+			if (tp == null) {
 				if (p.type.contains("String"))
 					labels.put(p.name, p.value);
-			}
-			else switch (tp) {
-			case CLASS:
-				treeClass = (Class<? extends Tree<? extends TreeNode>>) 
-					getClass(TreeProperties.CLASS, p.value, log, Tree.class);
-				break;
-			case MUTABLE:
+			} else
+				switch (tp) {
+				case CLASS:
+					treeClass = (Class<? extends Tree<? extends TreeNode>>) getClass(TreeProperties.CLASS, p.value, log,
+							Tree.class);
+					break;
+				case MUTABLE:
 // TODO: implement MutableTreeImpl				
 //				treeClass = (Class<? extends Tree<? extends TreeNode>>) 
 //					getClass(TreeProperties.CLASS,MutableTreeImpl.class.getName());
-				break;
-			case PROP_FACTORY:
-				plFactoryClass = (Class<? extends PropertyListFactory>) 
-					getClass(TreeProperties.PROP_FACTORY, p.value,log,PropertyListFactory.class);
-				break;
-			case TREE_FACTORY:
-				tFactoryClass = (Class<? extends TreeNodeFactory>) 
-					getClass(TreeProperties.TREE_FACTORY, p.value, log, TreeNodeFactory.class);
-				break;
-			case SCOPE:
-				tfscope = p.value;
-				break;
-			default:
-				break;
-			}
+					break;
+				case PROP_FACTORY:
+					plFactoryClass = (Class<? extends PropertyListFactory>) getClass(TreeProperties.PROP_FACTORY,
+							p.value, log, PropertyListFactory.class);
+					break;
+				case TREE_FACTORY:
+					tFactoryClass = (Class<? extends TreeNodeFactory>) getClass(TreeProperties.TREE_FACTORY, p.value,
+							log, TreeNodeFactory.class);
+					break;
+				case SCOPE:
+					tfscope = p.value;
+					break;
+				default:
+					break;
+				}
 		}
 		// use default settings if graph properties were absent
 		if (treeClass == null)
-			treeClass = (Class<? extends Tree<? extends TreeNode>>) 
-				getClass(TreeProperties.CLASS, log, Tree.class);
+			treeClass = (Class<? extends Tree<? extends TreeNode>>) getClass(TreeProperties.CLASS, log, Tree.class);
 		if (tFactoryClass == null)
-			tFactoryClass = (Class<? extends TreeNodeFactory>) 
-				getClass(TreeProperties.TREE_FACTORY, log, TreeNodeFactory.class);
+			tFactoryClass = (Class<? extends TreeNodeFactory>) getClass(TreeProperties.TREE_FACTORY, log,
+					TreeNodeFactory.class);
 		if (plFactoryClass == null)
-			plFactoryClass = (Class<? extends PropertyListFactory>) 
-				getClass(TreeProperties.PROP_FACTORY, log, PropertyListFactory.class);
+			plFactoryClass = (Class<? extends PropertyListFactory>) getClass(TreeProperties.PROP_FACTORY, log,
+					PropertyListFactory.class);
 		// setup the factories
 		try {
-			if (labels.isEmpty())
-				treeFactory = tFactoryClass.newInstance();
-			else {
-				Constructor<? extends TreeNodeFactory> cons = 
-					tFactoryClass.getDeclaredConstructor(String.class,Map.class);
-				treeFactory = cons.newInstance(tfscope,labels);
+			//This maybe an importer so factory may be set already by the parent graph
+			if (treeFactory == null) {
+				if (labels.isEmpty())
+					treeFactory = tFactoryClass.newInstance();
+				else {
+					Constructor<? extends TreeNodeFactory> cons = tFactoryClass.getDeclaredConstructor(String.class,
+							Map.class);
+					treeFactory = cons.newInstance(tfscope, labels);
+				}
 			}
 			propertyListFactory = plFactoryClass.newInstance();
 			if (tFactoryClass.equals(plFactoryClass))
@@ -277,13 +279,12 @@ public class TreeParser extends MinimalGraphParser {
 			}
 			/*-
 			 * Add in any imported graphs.
-			 * Factories should be the same so don't bother
-			 * testing. If not, it will be a case of "crash now or crash later"
-			 * The imported graph does not necessarily have a root.
+			 * Must be the same factory instance
 			 */
 			for (importGraph ig : ns.imports) {
 				TreeNode parent = n;
-				Tree<? extends TreeNode> importTree = (Tree<? extends TreeNode>) ig.graph;
+				// TODO: use this factory somehow
+				Tree<? extends TreeNode> importTree = (Tree<? extends TreeNode>) ig.getGraph(parent.treeNodeFactory());
 				for (TreeNode importNode : importTree.nodes()) {
 					if (importNode.getParent() == null) {
 						importNode.setParent(parent);
@@ -335,6 +336,12 @@ public class TreeParser extends MinimalGraphParser {
 				sb.append("\tparent ").append(n.parent.toString()).append('\n');
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public void setFactory(Object factory) {
+		// Nasty!
+		treeFactory = (TreeNodeFactory) factory;
 	}
 
 }

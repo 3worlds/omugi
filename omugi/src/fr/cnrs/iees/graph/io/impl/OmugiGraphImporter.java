@@ -55,9 +55,15 @@ public class OmugiGraphImporter implements GraphImporter {
 		parser = tokenizer.parser();
 	}
 	
+	
 	@Override
 	public MinimalGraph<?> getGraph() {
 		return parser.graph();
+	}
+
+	// User a parent graph's factory
+	public void setFactory(Object factory) {
+		parser.setFactory(factory);		
 	}
 
 }

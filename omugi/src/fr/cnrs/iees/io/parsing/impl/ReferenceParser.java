@@ -192,4 +192,9 @@ public class ReferenceParser extends Parser {
 		return null;
 	}
 
+	@Override
+	public void setFactory(Object factory) {
+		// Does not have a factory		
+	}
+
 }

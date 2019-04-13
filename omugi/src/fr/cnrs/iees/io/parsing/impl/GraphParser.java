@@ -400,5 +400,11 @@ public class GraphParser extends MinimalGraphParser {
 		}
 		return sb.toString();
 	}
+
+	@Override
+	public void setFactory(Object factory) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

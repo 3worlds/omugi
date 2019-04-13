@@ -43,4 +43,6 @@ public abstract class Parser {
 	
 	public abstract MinimalGraph<?> graph();
 
+	public abstract void setFactory(Object factory);
+
 }
