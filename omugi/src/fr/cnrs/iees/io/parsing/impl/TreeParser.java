@@ -290,10 +290,11 @@ public class TreeParser extends MinimalGraphParser {
 						importNode.setParent(parent);
 						parent.addChild(importNode);
 					}
-					if (nodes.containsKey(importNode.id())) {
-						log.severe("duplicate node found (" + importNode.id() + ") - ignoring the second one");
-					} else
-						nodes.put(importNode.id(), importNode);
+					// Shared scope ensures unique names
+//					if (nodes.containsKey(importNode.id())) {
+//						log.severe("duplicate node found (" + importNode.id() + ") - ignoring the second one");
+//					} else
+//						nodes.put(importNode.id(), importNode);
 				}
 			}
 		}
