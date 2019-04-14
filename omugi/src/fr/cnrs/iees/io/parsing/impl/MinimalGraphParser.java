@@ -83,10 +83,7 @@ public abstract class MinimalGraphParser extends Parser {
 		private OmugiGraphImporter importer;
 
 		public importGraph(File file) {
-			// need an importer with factory supplied. Factories don't have a common
-			// ancestor so its a problem.
 			importer = new OmugiGraphImporter(file);
-			//graph = importer.getGraph();
 		}
 		public MinimalGraph<?>  getGraph(Object factory) {
 			importer.setFactory(factory);
@@ -94,7 +91,7 @@ public abstract class MinimalGraphParser extends Parser {
 		}
 
 		public importGraph(InputStream stream) {
-			// TODO
+			// TODO may need something different when reading from jars
 		}
 	}
 

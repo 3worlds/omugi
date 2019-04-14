@@ -279,22 +279,16 @@ public class TreeParser extends MinimalGraphParser {
 			}
 			/*-
 			 * Add in any imported graphs.
-			 * Must be the same factory instance
+			 * The imported graph must use the parent's factory instance
 			 */
 			for (importGraph ig : ns.imports) {
 				TreeNode parent = n;
-				// TODO: use this factory somehow
 				Tree<? extends TreeNode> importTree = (Tree<? extends TreeNode>) ig.getGraph(parent.treeNodeFactory());
 				for (TreeNode importNode : importTree.nodes()) {
 					if (importNode.getParent() == null) {
 						importNode.setParent(parent);
 						parent.addChild(importNode);
 					}
-					// Shared scope ensures unique names
-//					if (nodes.containsKey(importNode.id())) {
-//						log.severe("duplicate node found (" + importNode.id() + ") - ignoring the second one");
-//					} else
-//						nodes.put(importNode.id(), importNode);
 				}
 			}
 		}
