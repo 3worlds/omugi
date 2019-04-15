@@ -94,8 +94,8 @@ public abstract class EdgeAdapter extends GraphElementAdapter implements Edge {
 	@Override
 	public final Collection<Node> traversal(int distance) {
 		int dist=distance;
-		Collection<Node> result1 = start.traversal(distance);
-		Collection<Node> result2 = end.traversal(dist);
+		Collection<? extends Node> result1 = start.traversal(distance);
+		Collection<? extends Node> result2 = end.traversal(dist);
 		Set<Node> result = new HashSet<Node>();
 		result.addAll(result1);
 		result.addAll(result2);

@@ -34,7 +34,6 @@ import fr.cnrs.iees.graph.DataTreeNode;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.TreeNodeFactory;
 import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
@@ -46,11 +45,11 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 public class DataTreeNodeImpl extends SimpleTreeNodeImpl 
 		implements DataTreeNode {
 		
-	private ReadOnlyPropertyList propertyList = null;
+	private SimplePropertyList propertyList = null;
 
 	// Constructors
 	
-	protected DataTreeNodeImpl(Identity id, ReadOnlyPropertyList props, TreeNodeFactory factory) {
+	protected DataTreeNodeImpl(Identity id, SimplePropertyList props, TreeNodeFactory factory) {
 		super(id,factory);
 		propertyList = props;
 	}
@@ -58,7 +57,7 @@ public class DataTreeNodeImpl extends SimpleTreeNodeImpl
 	// DataTreeNode
 
 	@Override
-	public ReadOnlyPropertyList properties() {
+	public SimplePropertyList properties() {
 		return propertyList;
 	}
 

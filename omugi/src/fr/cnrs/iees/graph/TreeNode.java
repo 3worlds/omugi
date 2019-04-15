@@ -41,7 +41,7 @@ import fr.ens.biologie.generic.Textable;
  * @author Jacques Gignoux - 4 déc. 2018
  *
  */
-public interface TreeNode extends Identity, Textable {
+public interface TreeNode extends Identity, Textable, Specialized {
 	
 	/**
 	 * Gets the parent node. Returns null if this is the tree root.

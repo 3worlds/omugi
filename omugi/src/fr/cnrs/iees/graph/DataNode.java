@@ -30,16 +30,12 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.properties.SimplePropertyList;
-
 /**
  * A Node with read/write data contained in it, accessible as properties.
  *  
  * @author Jacques Gignoux - 29 nov. 2018
  *
  */
-public interface DataNode extends Node {
-	
-	public SimplePropertyList properties();
+public interface DataNode extends Node, DataElement {
 
 }

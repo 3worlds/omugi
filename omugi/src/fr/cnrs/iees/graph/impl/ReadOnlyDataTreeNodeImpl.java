@@ -28,13 +28,60 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph;
+package fr.cnrs.iees.graph.impl;
+
+import fr.cnrs.iees.graph.ReadOnlyDataTreeNode;
+import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.TreeNodeFactory;
+import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
- * A Node with read-only data as a property list
- * @author Jacques Gignoux - 29 janv. 2019
+ * Basic implementation of {@link TreeNode} with read-write properties.
+ * 
+ * @author Jacques Gignoux - 19 déc. 2018
  *
  */
-public interface ReadOnlyDataNode extends Node, ReadOnlyDataElement {
+public class ReadOnlyDataTreeNodeImpl extends SimpleTreeNodeImpl 
+		implements ReadOnlyDataTreeNode {
+		
+	private ReadOnlyPropertyList propertyList = null;
+
+	// Constructors
+	
+	protected ReadOnlyDataTreeNodeImpl(Identity id, ReadOnlyPropertyList props, TreeNodeFactory factory) {
+		super(id,factory);
+		propertyList = props;
+	}
+
+	// DataTreeNode
+
+	@Override
+	public ReadOnlyPropertyList properties() {
+		return propertyList;
+	}
+
+	// Textable
+
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(propertyList.toString());
+		return sb.toString();
+	}
+
+	// TODO: implement toString()
+	@Override
+	public boolean equals(Object obj) {
+		if (!TreeNode.class.isAssignableFrom(obj.getClass()))
+			return false;
+		if (!SimplePropertyList.class.isAssignableFrom(obj.getClass()))
+			return false;
+		TreeNode tn = (TreeNode) obj;
+		SimplePropertyList p = (SimplePropertyList) obj;
+		return (tn.equals(this) && p.equals(this));
+	}
 
 }

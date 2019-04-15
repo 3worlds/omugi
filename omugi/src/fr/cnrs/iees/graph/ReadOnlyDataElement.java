@@ -30,11 +30,19 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+
 /**
- * A Node with read-only data as a property list
- * @author Jacques Gignoux - 29 janv. 2019
+ * For all graph or tree elements that have read-only properties
+ * @author Jacques Gignoux - 15 avr. 2019
  *
  */
-public interface ReadOnlyDataNode extends Node, ReadOnlyDataElement {
-
+public interface ReadOnlyDataElement {
+	
+	/**
+	 * returns its property list
+	 * @return
+	 */
+	public ReadOnlyPropertyList properties();
+	
 }

@@ -36,7 +36,7 @@ package fr.cnrs.iees.graph;
  * <p>Setters make sure the graph stays valid, ie they update the Node edge lists if needed</p>
  *
  */
-public interface Edge extends GraphElement {
+public interface Edge extends GraphElement, Specialized {
 	
 	public static String EDGE_LABEL = "edge";
 	

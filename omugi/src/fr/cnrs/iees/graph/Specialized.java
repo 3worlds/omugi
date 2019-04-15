@@ -31,10 +31,19 @@
 package fr.cnrs.iees.graph;
 
 /**
- * A Node with read-only data as a property list
- * @author Jacques Gignoux - 29 janv. 2019
+ * An interface for specialisations of Node, TreeNode and Edge that may have a named subclass
+ * This method returns the subclass name.
+ * @author Jacques Gignoux - 15 avr. 2019
  *
  */
-public interface ReadOnlyDataNode extends Node, ReadOnlyDataElement {
+public interface Specialized {
+
+	/**
+	 * Default is to return the java class name. Descendants should override this default
+	 * @return
+	 */
+	public default String classId() {
+		return this.getClass().getSimpleName();
+	}
 
 }

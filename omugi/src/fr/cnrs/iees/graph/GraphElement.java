@@ -32,7 +32,6 @@ package fr.cnrs.iees.graph;
 
 import java.util.Collection;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.ens.biologie.generic.Textable;
 
@@ -88,7 +87,7 @@ public interface GraphElement extends Textable, Identity {
 	 * with caution in unconnected Graphs (will not find subgraphs unconnected to this element).
 	 * @return the connected Graph containing this instance
 	 */
-	public default Collection<Node> traversal() {
+	public default Collection<? extends Node> traversal() {
 		return traversal(Integer.MAX_VALUE);
 	}
 
@@ -108,7 +107,7 @@ public interface GraphElement extends Textable, Identity {
 	 * @param distance the number of recursion steps to search
 	 * @return the connected Graph containing this instance
 	 */
-	public Collection<Node> traversal(int distance);
+	public Collection<? extends Node> traversal(int distance);
 
 	/**
 	 * As traversal(), but following only one direction from the starting Element and
@@ -118,13 +117,5 @@ public interface GraphElement extends Textable, Identity {
 	 * @return the connected Graph containing this instance
 	 */
 	public Collection<? extends Node> traversal(int distance, Direction direction);	
-	
-	/**
-	 * This for descendants only.
-	 * @return
-	 */
-	public default String classId() {
-		throw new OmugiException("classId is not defined for Elements - revise your class hierarchy");
-	}
-	
+		
 }

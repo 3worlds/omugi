@@ -30,16 +30,12 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-
 /**
  * A tree node with data
  * 
  * @author Jacques Gignoux - 19 déc. 2018
  *
  */
-public interface DataTreeNode extends TreeNode {
+public interface DataTreeNode extends TreeNode, DataElement {
 	
-	public ReadOnlyPropertyList properties();
-
 }

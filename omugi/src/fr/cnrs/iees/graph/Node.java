@@ -35,7 +35,7 @@ package fr.cnrs.iees.graph;
  * @author gignoux - 17 août 2017
  *
  */
-public interface Node extends GraphElement {
+public interface Node extends GraphElement, Specialized {
 	
 	public static String NODE_LABEL = "node";
 

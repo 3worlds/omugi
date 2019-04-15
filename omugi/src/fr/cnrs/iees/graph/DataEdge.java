@@ -30,16 +30,12 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.properties.SimplePropertyList;
-
 /**
  * An Edge with read/write data contained in it, accessible as properties.
  *  
  * @author Jacques Gignoux - 29 nov. 2018
  *
  */
-public interface DataEdge extends Edge {
-
-	public SimplePropertyList properties();
+public interface DataEdge extends Edge, DataElement {
 	
 }

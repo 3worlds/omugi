@@ -35,6 +35,6 @@ package fr.cnrs.iees.graph;
  * @author Jacques Gignoux - 29 janv. 2019
  *
  */
-public interface ReadOnlyDataNode extends Node, ReadOnlyDataElement {
+public interface ReadOnlyDataTreeNode extends TreeNode, ReadOnlyDataElement {
 
 }

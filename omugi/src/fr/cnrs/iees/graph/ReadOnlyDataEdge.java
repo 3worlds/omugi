@@ -30,16 +30,12 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-
 /**
  * An Edge with read-only data as property list.
  * 
  * @author Jacques Gignoux - 29 janv. 2019
  *
  */
-public interface ReadOnlyDataEdge extends Edge {
-
-	public ReadOnlyPropertyList properties();
+public interface ReadOnlyDataEdge extends Edge, ReadOnlyDataElement {
 
 }
