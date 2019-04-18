@@ -40,6 +40,7 @@ import java.util.List;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
 import fr.cnrs.iees.graph.MinimalGraph;
+import fr.cnrs.iees.graph.ReadOnlyDataElement;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer.token;
@@ -141,9 +142,9 @@ public class ReferenceParser extends Parser {
 			// match property names and values
 			for (propMatch pm:nm.props) {
 				// node has no properties
-				if (!ReadOnlyPropertyList.class.isAssignableFrom(testNode.getClass()))
+				if (!(testNode instanceof ReadOnlyDataElement))
 					return false;
-				ReadOnlyPropertyList pl = (ReadOnlyPropertyList) testNode;
+				ReadOnlyPropertyList pl = ((ReadOnlyDataElement) testNode).properties();
 				// property is not found
 				if (!pl.hasProperty(pm.name))
 					return false;

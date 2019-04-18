@@ -53,7 +53,7 @@ import fr.cnrs.iees.io.parsing.Tokenizer;
  * <p>Since {@code classId} and {@code instanceId} are optional, a reference may match to
  * a set of nodes.</p>
  * 
- * @author Jacques Gignoux - 18 déc. 2018true
+ * @author Jacques Gignoux - 18 déc. 2018
  *
  */
 // Tested OK with version 0.0.3 on 18/12/2018 

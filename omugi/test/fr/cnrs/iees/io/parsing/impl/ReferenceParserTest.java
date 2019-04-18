@@ -97,5 +97,15 @@ class ReferenceParserTest {
 		node.setParent(factory.makeTreeNode(null,props));
 		assertTrue(p.matches(node));
 	}
-
+	
+	@Test
+	void testMatches3() {
+		ref = ":blah";
+		node = factory.makeTreeNode(null, "blah");
+		assertTrue(NodeReference.matchesRef(node, ref));
+		node = factory.makeTreeNode(null, "bluh");
+		assertFalse(NodeReference.matchesRef(node, ref));
+	}
+	
+	
 }
