@@ -53,6 +53,7 @@ import fr.ens.biologie.generic.SaveableAsText;
  *
  */
 // Tested OK but without label:name with version 0.0.4 on 20/12/2018
+// tested OK with version 0.0.5 on 18/4/2019
 public class ReferenceParser extends Parser {
 	
 	//----------------------------------------------------
