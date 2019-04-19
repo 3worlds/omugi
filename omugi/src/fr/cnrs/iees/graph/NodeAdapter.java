@@ -152,24 +152,15 @@ public abstract class NodeAdapter extends GraphElementAdapter implements Node {
 		}
 		return list;
 	}
-	// Please- I would like to override this 
-	// Anyway, shouldn't this call toShortString for edges?
-	@Override
-	public final String toShortString() {
-		return super.toDetailedString();
-	}
 	
 	@Override
 	public String toDetailedString() {
-		String result = super.toDetailedString();
-		result += " " + Direction.IN +"=(";
+		StringBuilder sb = new StringBuilder(toShortString());
 		for (Edge e:getEdges(Direction.IN))
-			result += "["+e.toDetailedString()+"]";
-		result += ") " + Direction.OUT +"=(";
+			sb.append(" ←").append(e.toShortString());
 		for (Edge e:getEdges(Direction.OUT))
-			result += "["+e.toDetailedString()+"]";
-		result += ")";
-		return result;
+			sb.append(" →").append(e.toShortString());
+		return sb.toString();
 	}
 
 	@Override

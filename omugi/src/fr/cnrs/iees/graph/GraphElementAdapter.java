@@ -71,18 +71,13 @@ public abstract class GraphElementAdapter implements GraphElement {
 	// TEXTABLE
 
 	@Override
-	public String toUniqueString() {
-		return id();
-	}
-
-	@Override
-	public String toShortString() {
-		return id();
+	public final String toUniqueString() {
+		return id.universalId();
 	}
 	
 	@Override
 	public String toDetailedString() {
-		return toUniqueString();
+		return toShortString();
 	}
 	
 	// OBJECT

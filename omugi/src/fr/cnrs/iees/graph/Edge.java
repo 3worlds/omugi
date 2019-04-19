@@ -101,5 +101,10 @@ public interface Edge extends GraphElement, Specialized {
 			s = this.getClass().getSimpleName();
 		return s;
 	}
+
+	@Override
+	public default String toShortString() {
+		return classId()+":"+id();
+	}
 	
 }

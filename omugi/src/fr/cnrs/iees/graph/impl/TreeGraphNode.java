@@ -141,11 +141,6 @@ public class TreeGraphNode extends SimpleNodeImpl
 
 	// -------------------  Textable
 
-	@Override
-	public String toUniqueString() {
-		return id();
-	}
-
 	/**
 	 * Displays a TreeGraphNode as follows (on a single line):
 	 * 
@@ -157,29 +152,28 @@ public class TreeGraphNode extends SimpleNodeImpl
 	 *    ←in_node_label:in_node_name    // start node of incoming edge, repeated as needed
 	 * ] 
 	 * </pre>
-	 * <p>e.g.: {@code AOTNode:=[↑AOTNode:1 ↓AOTNode:2 ←AOTNode:2 ←AOTNode: →AOTNode: →AOTNode:1]}
-	 *  (in this case, the name is missing).</p>
+	 * <p>e.g.: {@code Node:0=[↑Node:1 ↓Node:2 ←Node:27 ←Node:4 →Node:5 →Node:18]}</p>
 	 */
 	@Override
 	public String toDetailedString() {
-		StringBuilder sb = new StringBuilder(toUniqueString());
+		StringBuilder sb = new StringBuilder(toShortString());
 		sb.append("=[");
 		if (treenode.getParent()!=null)
-			sb.append("↑").append(treenode.getParent().toUniqueString());
+			sb.append("↑").append(treenode.getParent().toShortString());
 		else
 			sb.append("ROOT");
 		if (treenode.hasChildren()) {
 			for (TreeNode n:treenode.getChildren()) {
-				sb.append(" ↓").append(n.toUniqueString());
+				sb.append(" ↓").append(n.toShortString());
 			}
 		}
 		if (getEdges(Direction.IN).iterator().hasNext()) {
 			for (Edge e:getEdges(Direction.IN))
-				sb.append(" ←").append(e.startNode().toUniqueString());
+				sb.append(" ←").append(e.startNode().toShortString());
 		}
 		if (getEdges(Direction.OUT).iterator().hasNext()) {
 			for (Edge e:getEdges(Direction.OUT))
-				sb.append(" →").append(e.endNode().toUniqueString());
+				sb.append(" →").append(e.endNode().toShortString());
 		}
 		if (properties!=null)
 			if (properties.size()>0)
@@ -193,4 +187,10 @@ public class TreeGraphNode extends SimpleNodeImpl
 		return properties;
 	}
 		
+	// this because this method is found in two ancestors
+	@Override
+	public String toShortString() {
+		return classId()+":"+id();
+	}
+
 }

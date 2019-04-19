@@ -54,4 +54,14 @@ public class DataEdgeImpl extends SimpleEdgeImpl implements DataEdge {
 		return propertyList;
 	}
 	
+	// Textable
+
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(propertyList.toString());
+		return sb.toString();
+	}
+
 }

@@ -171,7 +171,6 @@ public class ImmutableTreeImpl<N extends TreeNode>
 		return toUniqueString() + "(" + size() + " nodes)"; 
 	}
 
-	// TODO: rewrite this - the tree structure is lost
 	@Override
 	public String toDetailedString() {
 		StringBuilder sb = new StringBuilder(toShortString());

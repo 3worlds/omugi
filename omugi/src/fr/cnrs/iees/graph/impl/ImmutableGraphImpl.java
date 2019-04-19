@@ -53,6 +53,7 @@ import fr.ens.biologie.generic.Textable;
  *
  */
 // Tested OK with version 0.0.1 on 7/11/2018
+// Tested OK with version 0.0.13 on 19/4/2019
 public class ImmutableGraphImpl<N extends Node,E extends Edge> 
 		implements Graph<N,E>, Sizeable, Textable {
 
@@ -148,28 +149,25 @@ public class ImmutableGraphImpl<N extends Node,E extends Edge>
 
 	@Override
 	public String toShortString() {
-		return toUniqueString() + "(" + nodes.size() + " nodes / " + nEdges() + " edges)"; 
+		return toUniqueString() + " (" + nodes.size() + " nodes / " + nEdges() + " edges)"; 
 	}
 
 	@Override
 	public String toDetailedString() {
-		String s = toShortString();
-		String z = "";
-		s += " NODES=(";
+		StringBuilder sb = new StringBuilder(toShortString());
+		StringBuilder zb = new StringBuilder();
+		sb.append(" NODES=(");
 		for (N n: nodes.values()) {
-			s += n.toShortString() + ",";
+			sb.append(n.toShortString() + ",");
 			for (Edge e: n.getEdges(Direction.OUT))
-				z += e.toShortString() + ",";
+				zb.append(e.toShortString() + ",");
 		}
-		if (s.length()>0)
-			s = s.substring(0, s.length()-1);
-		if (z.length()>0)
-			z = z.substring(0, z.length()-1);
-		s += ") ";
-		s += "EDGES=(";
-		s += z;
-		s += ")";
-		return s;
+		if (sb.length()>0)
+			sb.deleteCharAt(sb.length()-1);
+		if (zb.length()>0)
+			zb.deleteCharAt(zb.length()-1);
+		sb.append(") EDGES=(").append(zb.toString()).append(')');
+		return sb.toString();
 	}
 
 	// OBJECT

@@ -153,4 +153,9 @@ public interface Node extends GraphElement, Specialized {
 		return s;
 	}
 
+	@Override
+	public default String toShortString() {
+		return classId()+":"+id();
+	}
+
 }

@@ -152,13 +152,8 @@ public abstract class EdgeAdapter extends GraphElementAdapter implements Edge {
 	}
 	
 	@Override
-	public final String toShortString() {
-		return super.toDetailedString();
-	}
-
-	@Override
 	public String toDetailedString() {
-		return super.toDetailedString()+ " ["+start.toShortString()+ "]-->[" + end.toShortString()+"]";
+		return toShortString()+ " ["+start.toShortString()+ "]→[" + end.toShortString()+"]";
 	}
 
 	// Object

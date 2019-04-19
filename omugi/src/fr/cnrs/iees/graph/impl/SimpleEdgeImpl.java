@@ -47,6 +47,7 @@ import fr.cnrs.iees.identity.Identity;
   * @author gignoux - 30 août 2017
  *
  */
+// tested OK with version 0.0.13 on 19/4/2019
 public class SimpleEdgeImpl extends EdgeAdapter {
 
 	protected SimpleEdgeImpl(Identity id, Node start, Node end, EdgeFactory factory) {

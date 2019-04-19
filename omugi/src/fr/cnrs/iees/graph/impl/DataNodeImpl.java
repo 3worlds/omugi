@@ -40,6 +40,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  * @author Jacques Gignoux - 27 nov. 2018
  *
  */
+// tested OK with version 0.0.13 on 19/4/2019
 public class DataNodeImpl extends SimpleNodeImpl
 		implements DataNode {
 

@@ -118,4 +118,9 @@ public interface TreeNode extends Identity, Textable, Specialized {
 		return s;
 	}
 
+	@Override
+	public default String toShortString() {
+		return classId()+":"+id();
+	}
+
 }

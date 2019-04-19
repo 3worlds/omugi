@@ -55,7 +55,8 @@ import fr.ens.biologie.generic.Textable;
  *
  */
 // Trial - replacement by ImmutableTreeGraphImpl
-public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<N>, Graph<N, E>, Textable {
+public class TreeGraph<N extends TreeGraphNode, E extends Edge> 
+		implements Tree<N>, Graph<N, E>, Textable {
 
 	protected Set<N> nodes; // no duplicate nodes permitted - make private with addNode(N Node) and issue
 							// duplicate errors
@@ -199,16 +200,19 @@ public class TreeGraph<N extends TreeGraphNode, E extends Edge> implements Tree<
 
 	@Override
 	public String toDetailedString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(toShortString()).append(" = {");
-		int count = 0;
-		for (N n : nodes) {
-			sb.append(n.toDetailedString());
-			if (count < nodes.size() - 1)
-				sb.append(',');
-			count++;
+		StringBuilder sb = new StringBuilder(toShortString());
+		StringBuilder zb = new StringBuilder();
+		sb.append(" NODES=(");
+		for (N n: nodes) {
+			sb.append(n.toShortString() + ",");
+			for (Edge e: n.getEdges(Direction.OUT))
+				zb.append(e.toShortString() + ",");
 		}
-		sb.append("}");
+		if (sb.length()>0)
+			sb.deleteCharAt(sb.length()-1);
+		if (zb.length()>0)
+			zb.deleteCharAt(zb.length()-1);
+		sb.append(") EDGES=(").append(zb.toString()).append(')');
 		return sb.toString();
 	}
 

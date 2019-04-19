@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.TreeNodeFactory;
 import fr.cnrs.iees.identity.Identity;
@@ -132,37 +131,40 @@ public class SimpleTreeNodeImpl implements TreeNode {
 	}
 
 	// Textable
-
-	@Override
-	public String toUniqueString() {
-		return getClass().getSimpleName()+ " id=" + id();
-	}
-
-	@Override
-	public String toShortString() {
-		return getClass().getSimpleName();
-	}
 	
+	/**
+	 * Displays a TreeNode as follows (on a single line):
+	 * 
+	 * <pre>
+	 * node_label:node_name=[
+	 *    ↑parent_label:parent_name      // the parent node, or ROOT if null
+	 *    ↓child_label:child_name        // child node, repeated as needed
+	 * ] 
+	 * </pre>
+	 * <p>e.g.: {@code Node:0=[↑Node:1 ↓Node:2 ↓Node:3]}</p>
+	 */
 	@Override
 	public String toDetailedString() {
-		StringBuilder sb = new StringBuilder(toUniqueString());
+		StringBuilder sb = new StringBuilder(toShortString());
 		sb.append(' ');
 		if (parent!=null)
-			sb.append(Direction.IN)
-				.append("=(")
-				.append(parent.toUniqueString())
-				.append(") ");
+			sb.append("↑").append(getParent().toShortString());
+		else
+			sb.append("ROOT");
 		if (hasChildren()) {
-			sb.append(Direction.OUT)
-				.append("=(");
-			for (TreeNode child:children)
-				sb.append(child.toUniqueString())
-					.append(' ');
-			sb.append(')');
+			for (TreeNode n:getChildren()) {
+				sb.append(" ↓").append(n.toShortString());
+			}
 		}
 		return sb.toString();
 	}
 
+
+	@Override
+	public final String toUniqueString() {
+		return id.universalId();
+	}
+	
 	@Override
 	public TreeNodeFactory treeNodeFactory() {
 		return factory;
