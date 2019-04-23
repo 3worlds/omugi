@@ -96,6 +96,7 @@ public class ImmutableTreeImpl<N extends TreeNode>
 	public ImmutableTreeImpl(N root) {
 		super();
 		this.root = root;
+		nodeList.add(root);
 		insertAllChildren(root,nodeList);
 		computeDepths(root);
 	}
