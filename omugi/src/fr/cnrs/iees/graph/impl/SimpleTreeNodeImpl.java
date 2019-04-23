@@ -40,12 +40,20 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
 /**
- * Basic implementation of {@link TreeNode} without data and no possibility to set
- * the instance ID (it's entirely automatic).
+ * <p>Basic implementation of {@link TreeNode} without data and no possibility to set
+ * the instance ID (it's entirely automatic).</p>
+ * <p>The {@code setParent(...)} and {@code addChild(...)} methods are here only for housework. <strong>They should
+ * never be used for reorganizing a tree, since they do not perform any check on tree consistency.</strong>
+ * They are here really just to set the connection between TreeNodes.
+ * For a minimal safety, {@code setParent(...)} will only accept to work on a 
+ * TreeNode which parent is null, i.e. it will never re-set a previously set parent. The same
+ * hodls for addChild: the child will be added in a treeNode children list only if it has no 
+ * parent or its parent is that TreeNode. In other words, on freshly constructed treeNodes</p> 
  * 
  * @author Jacques Gignoux - 19 déc. 2018
  *
  */
+// Tested OK with version 0.0.13 on 23/4/2019
 public class SimpleTreeNodeImpl implements TreeNode {
 	
 	private TreeNodeFactory factory = null;
@@ -83,19 +91,21 @@ public class SimpleTreeNodeImpl implements TreeNode {
 
 	@Override
 	public void setParent(TreeNode parent) {
-		this.parent = parent;
-		// Shouldn't this be done here?
-		//parent.addChild(this);
+		// sets the parent only if I had no parent before
+		if (this.parent==null) 
+			this.parent = parent;
 	}
 
 	@Override
-	public Iterable<TreeNode> getChildren() {
+	public Iterable<? extends TreeNode> getChildren() {
 		return children;
 	}
 	
 	@Override
 	public void addChild(TreeNode child) {
-		children.add(child);
+		// only add the child if it has no parent or its parent is me
+		if ((child.getParent()==null)||(child.getParent()==this))
+			children.add(child);
 	}
 
 	@Override
@@ -179,21 +189,23 @@ public class SimpleTreeNodeImpl implements TreeNode {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!TreeNode.class.isAssignableFrom(obj.getClass()))
+		if (obj == this)
+			return true;
+		if (!(obj instanceof TreeNode))
 			return false;
-		// this should be most efficient, but not always possible
-		if (SimpleTreeNodeImpl.class.isAssignableFrom(obj.getClass())) {
-			SimpleTreeNodeImpl stn = (SimpleTreeNodeImpl) obj;
-			return (((stn.parent==null) & (parent==null)) &&
-					stn.parent.equals(parent) &&
-					stn.factory.equals(factory) &&
-					stn.children.equals(children));
-		}
-		// this is the general case
 		TreeNode tn = (TreeNode) obj;
 		if (!tn.treeNodeFactory().equals(factory))
 			return false;
-		if (!tn.getParent().equals(parent))
+		// root vs non-root
+		if ((tn.getParent()==null) && (parent!=null))
+			return false;
+		if ((tn.getParent()!=null) && (parent==null))
+			return false;
+		// both roots
+		if ((parent==null) && (tn.getParent()==null))	
+			; // this is ok - nothing to do
+		// both non-roots
+		else if (!tn.getParent().equals(parent))
 			return false;
 		int count = 0;
 		for (TreeNode child:tn.getChildren()) {
@@ -205,6 +217,5 @@ public class SimpleTreeNodeImpl implements TreeNode {
 			return false;
 		return true;
 	}
-
 
 }

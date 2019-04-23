@@ -175,15 +175,17 @@ public class ImmutableTreeImpl<N extends TreeNode>
 	@Override
 	public String toDetailedString() {
 		StringBuilder sb = new StringBuilder(toShortString());
-		sb.append(" NODES=(");
-		N last = nodeList.get(nodeList.size()-1);
-		for (N n:nodeList) {
-			if (n==last)
-				sb.append(n.toShortString());
-			else
-				sb.append(n.toShortString()).append(',');
+		if (nodeList.size()>0) {
+			sb.append(" NODES=(");
+			N last = nodeList.get(nodeList.size()-1);
+			for (N n:nodeList) {
+				if (n==last)
+					sb.append(n.toShortString());
+				else
+					sb.append(n.toShortString()).append(',');
+			}
+			sb.append(')');
 		}
-		sb.append(')');
 		return sb.toString();
 	}
 

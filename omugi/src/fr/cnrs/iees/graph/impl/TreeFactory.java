@@ -98,4 +98,50 @@ public class TreeFactory implements PropertyListFactory, DefaultTreeNodeFactory 
 	public IdentityScope scope() {
 		return scope;
 	}
+	
+	// local utility methods
+	
+	/**
+	 * utility to check if a searchTarget is found in the child tree of a node
+	 * caution: this uses object equality, ie searches for the actual objects by
+	 * comparing references
+	 * @param node the root of the tree to search
+	 * @param searchTarget the node to search in the tree
+	 * @return true if <strong>searchTarget</strong> was found in the tree rooted at <strong>node</strong>
+	 */
+	public static boolean isInSubTree(TreeNode node, TreeNode searchTarget) {
+		for (TreeNode c:node.getChildren()) {
+			if (c == searchTarget) 
+				return true;
+			else
+				return isInSubTree(c,searchTarget);
+		}
+		return false;
+	}
+
+	/**
+	 *  finds the root of the tree from the links between nodes
+	 * @param node the node to start the search from
+	 * @return the root of the tree containing <strong>node</strong>
+	 */
+	public static TreeNode getRoot(TreeNode node) {
+		if (node!=null) {
+			TreeNode p = node.getParent();
+			if (p==null)
+				return node;
+			return getRoot(p);
+		}
+		return null;
+	}
+	
+	/**
+	 * checks if a search target is found in the tree containing <strong>node</strong>
+	 * @param node
+	 * @param searchTarget
+	 * @return
+	 */
+	public static boolean isInTree(TreeNode node, TreeNode searchTarget) {
+		return isInSubTree(getRoot(node),searchTarget);
+	}
+
 }

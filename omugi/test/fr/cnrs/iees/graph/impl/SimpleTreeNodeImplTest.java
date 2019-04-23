@@ -32,21 +32,24 @@ package fr.cnrs.iees.graph.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.graph.TreeNode;
 
 /**
- * TODO: implement all tests
  * 
  * @author Jacques Gignoux - 9 janv. 2019
  *
  */
 class SimpleTreeNodeImplTest {
 	
-	@SuppressWarnings("unused")
 	private TreeNode tn1, tn2, tn3, tn4;
+	private TreeFactory f;
 	
 	private void show(String method,String text) {
 		System.out.println(method+": "+text);
@@ -54,7 +57,7 @@ class SimpleTreeNodeImplTest {
 	
 	@BeforeEach
 	private void init() {
-		TreeFactory f = new TreeFactory();
+		f = new TreeFactory();
 		tn1 = f.makeTreeNode(null);
 		tn2 = f.makeTreeNode(tn1);
 		tn3 = f.makeTreeNode(tn1);
@@ -63,73 +66,130 @@ class SimpleTreeNodeImplTest {
 
 	@Test
 	void testGetParent() {
-		fail("Not yet implemented");
+		assertEquals(tn1.getParent(),null);
+		assertEquals(tn2.getParent(),tn1);
 	}
 
 	@Test
 	void testSetParent() {
-	
-		fail("Not yet implemented");
+		// this would create a loop in the tree but is prevented because tn2 already has a parent
+		assertEquals(tn2.getParent(),tn1);
+		tn2.setParent(tn4);
+		assertEquals(tn2.getParent(),tn1);
+		// impossible to make itself a parent
+		tn2.setParent(tn2);
+		assertEquals(tn2.getParent(),tn1);
+		// this works because it is a fresh node
+		TreeNode tn5 = new SimpleTreeNodeImpl(f.scope().newId("coucou"),f);
+		assertNull(tn5.getParent());
+		tn5.setParent(tn4);
+		assertEquals(tn5.getParent(),tn4);
+		// however this node was not properly connected: no addChild !
+		// this is because the node must be constructed with treeFactory.makeTreeNode(...)
+		assertFalse(TreeFactory.isInSubTree(tn4,tn5));
 	}
 
 	@Test
 	void testGetChildren() {
-		fail("Not yet implemented");
+		List<TreeNode> l = new LinkedList<TreeNode>();
+		for (TreeNode n:tn1.getChildren()) {
+			show("testGetChildren",n.toShortString());
+			l.add(n);
+		}
+		assertTrue((l.contains(tn2))&&(l.contains(tn3)));
+		assertFalse(l.contains(tn1));
+		assertFalse(l.contains(tn4));
 	}
 
 	@Test
 	void testAddChild() {
-		fail("Not yet implemented");
+		// this wont have any effect because tn3 doesnt have tn2 as parent
+		tn2.addChild(tn3);
+		assertFalse(tn2.hasChild(tn3));
+		// this wont have any effect because tn4 is already child of tn2
+		assertTrue(tn2.hasChild(tn4));
+		tn2.addChild(tn4);
+		assertTrue(tn2.hasChild(tn4));
+		// this works because it is a fresh node
+		TreeNode tn5 = new SimpleTreeNodeImpl(f.scope().newId("coucou"),f);
+		assertFalse(tn2.hasChild(tn5));
+		tn2.addChild(tn5);
+		assertTrue(tn2.hasChild(tn5));
+		// however this node was not properly connected: no setParent !
+		// this is because the node must be constructed with treeFactory.makeTreeNode(...)
+		assertFalse(tn5.getParent()==tn2);
 	}
 
 	@Test
 	void testSetChildrenTreeNodeArray() {
-		fail("Not yet implemented");
+		TreeNode tn5 = new SimpleTreeNodeImpl(f.scope().newId("coucou"),f);
+		TreeNode tn6 = new SimpleTreeNodeImpl(f.scope().newId("coucou"),f);
+		tn3.setChildren(tn5,tn6);
+		assertTrue(tn3.hasChild(tn5));
+		assertTrue(tn3.hasChild(tn6));
 	}
 
 	@Test
 	void testSetChildrenIterableOfTreeNode() {
-		fail("Not yet implemented");
+		TreeNode tn5 = new SimpleTreeNodeImpl(f.scope().newId("coucou"),f);
+		TreeNode tn6 = new SimpleTreeNodeImpl(f.scope().newId("coucou"),f);
+		List<TreeNode> l = new LinkedList<TreeNode>();
+		l.add(tn6); l.add(tn5);
+		Iterable<TreeNode> i = l;
+		tn3.setChildren(i);
+		assertTrue(tn3.hasChild(tn5));
+		assertTrue(tn3.hasChild(tn6));
 	}
 
 	@Test
 	void testSetChildrenCollectionOfTreeNode() {
-		fail("Not yet implemented");
+		TreeNode tn5 = new SimpleTreeNodeImpl(f.scope().newId("coucou"),f);
+		TreeNode tn6 = new SimpleTreeNodeImpl(f.scope().newId("coucou"),f);
+		Collection<TreeNode> l = new LinkedList<TreeNode>();
+		l.add(tn6); l.add(tn5);
+		tn3.setChildren(l);
+		assertTrue(tn3.hasChild(tn5));
+		assertTrue(tn3.hasChild(tn6));
 	}
 
 	@Test
 	void testHasChildren() {
-		fail("Not yet implemented");
+		assertTrue(tn1.hasChildren());
+		assertFalse(tn4.hasChildren());
 	}
 
 	@Test
-	void testInstanceId() {
-		fail("Not yet implemented");
+	void testId() {
+		assertEquals(tn2.id(),"treenode1");
 	}
 
 	@Test
 	void testToUniqueString() {
-		fail("Not yet implemented");
+		show("testToUniqueString",tn1.toUniqueString());
+		assertEquals(tn1.toUniqueString(),"DTF:treenode0");
 	}
 
 	@Test
 	void testToShortString() {
-		fail("Not yet implemented");
+		show("testToShortString",tn1.toShortString());
+		assertEquals(tn1.toShortString(),"SimpleTreeNodeImpl:treenode0");
 	}
 
 	@Test
 	void testToDetailedString() {
-		fail("Not yet implemented");
+		show("testToDetailedString",tn2.toDetailedString());
+		assertEquals(tn2.toDetailedString(),"SimpleTreeNodeImpl:treenode1 ↑SimpleTreeNodeImpl:treenode0 ↓SimpleTreeNodeImpl:treenode3");
 	}
 
 	@Test
 	void testTreeNodeFactory() {
-		fail("Not yet implemented");
+		assertEquals(tn3.treeNodeFactory(),f);
 	}
 
 	@Test
 	void testToString() {
-		fail("Not yet implemented");
+		show("testToString",tn2.toString());
+		assertEquals(tn2.toString(),"[SimpleTreeNodeImpl:treenode1 ↑SimpleTreeNodeImpl:treenode0 ↓SimpleTreeNodeImpl:treenode3]");
 	}
 
 	@Test
@@ -137,6 +197,22 @@ class SimpleTreeNodeImplTest {
 		show("testEqualsObject",tn2.toDetailedString());
 		show("testEqualsObject",tn3.toDetailedString());
 		assertFalse(tn2.equals(tn3));
+		assertFalse(tn1.equals(f));
+		assertFalse(tn1.equals(tn2));
+		assertTrue(tn2.equals(tn2));
+		// same parent, same children, different id, but equal treenodes.
+		TreeNode tn5 = new SimpleTreeNodeImpl(f.scope().newId("coucou"),f);
+		tn5.setParent(tn1);
+		assertTrue(tn5.equals(tn3));
 	}
 
+	@Test
+	void testNChildren() {
+		assertEquals(tn1.nChildren(),2);
+	}
+	
+	@Test
+	void testScope() {
+		assertEquals(tn4.scope(),f.scope());
+	}
 }
