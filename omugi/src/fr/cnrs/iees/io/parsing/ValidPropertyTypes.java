@@ -47,6 +47,7 @@ import au.edu.anu.rscs.aot.collections.tables.ShortTable;
 import au.edu.anu.rscs.aot.collections.tables.StringTable;
 
 import au.edu.anu.rscs.aot.util.IntegerRange;
+import au.edu.anu.rscs.aot.util.StringUtils;
 
 /**
  * This class records the property types which are compatible with a given application
@@ -170,6 +171,23 @@ public class ValidPropertyTypes {
 	static public Iterable<String> types() {
 		return typeIndex.keySet();
 	}
+	
+	/**
+	 * for checking that a type name (ie a String) represents a primitive type.
+	 * Works with full class name (eg java.lang.Integer), short class name (eg Integer)
+	 * or type name (eg int). NB String is considered as a primitive type here.
+	 * @param type
+	 * @return true if primitive or String
+	 */
+	public static boolean isPrimitiveType(String type) {
+		// get this out of the way first ! otherwise "java" or "lang" are primitive types...
+		if ("java.lang.".contains(type))
+			return false;
+		for (PrimitiveTypes pt:PrimitiveTypes.values())
+			if ((pt.className.contains(type))||(pt.className.contains(StringUtils.cap(type))))
+				return true;
+		return false;
+	}
 
 	// DEFAULT TYPES and initialisation
 	
@@ -177,14 +195,14 @@ public class ValidPropertyTypes {
 	 * NB: all have a valueOf(String) method except String which doesnt need one */
 	private enum PrimitiveTypes {
 	//  class name | java class		  	|	default value			
-		Byte		("java.lang.Byte", 		new Byte((byte) 0)),
-		Char		("java.lang.Char", 		new Character(' ')), 
-		Short		("java.lang.Short", 	new Short((short) 0)),
-		Integer		("java.lang.Integer", 	new Integer(0)), 
-		Long		("java.lang.Long", 		new Long(0L)),
-		Float		("java.lang.Float", 	new Float(0f)),
-		Double		("java.lang.Double", 	new Double(0.0)),
-		Boolean		("java.lang.Boolean", 	new Boolean(false)), 
+		Byte		("java.lang.Byte", 		java.lang.Byte.valueOf("0")),
+		Char		("java.lang.Char", 		java.lang.Character.valueOf(' ')), 
+		Short		("java.lang.Short", 	java.lang.Short.valueOf((short) 0)),
+		Integer		("java.lang.Integer", 	java.lang.Integer.valueOf(0)), 
+		Long		("java.lang.Long", 		java.lang.Long.valueOf(0L)),
+		Float		("java.lang.Float", 	java.lang.Float.valueOf(0f)),
+		Double		("java.lang.Double", 	java.lang.Double.valueOf(0.0)),
+		Boolean		("java.lang.Boolean", 	java.lang.Boolean.valueOf("false")), 
 		String		("java.lang.String", 	new String(""));
 		private final String className;
 		private final Object defaultValue;
