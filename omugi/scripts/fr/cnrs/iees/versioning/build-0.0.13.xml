@@ -1,5 +1,5 @@
 <!--===================================================================================
- ant and ivy scripts for project <omugi> version 0.0.14 (Fri May 03 16:40:59 CEST 2019)
+ ant and ivy scripts for project <omugi> version 0.0.13 (Tue Feb 19 08:55:01 CET 2019)
  author: Jacques Gignoux <jacques.gignoux@upmc.fr>
 
  CAUTION: this file is generated - DO NOT EDIT!
@@ -11,7 +11,7 @@
 	<!-- Artifacts are produced in the project lib directory-->
 	<property name="jarRepo" location="${user.dir}/../lib"/>
 
-	<property name="docRepo" location="${user.dir}/../doc/javadoc"/>	<!-- Use this string as the organisation package -->
+	<!-- Use this string as the organisation package -->
 	<property name="org" value="au.edu.anu.rscs.aot"/>
 
 	<!-- The project name -->
@@ -21,13 +21,10 @@
 	<property name="jarlib" location="${jarRepo}/${org}.${project}"/>
 
 	<!-- Tasks -->
-	<target name="makeArtifactDir" description="create directory for jars and doc">
+	<target name="makeArtifactDir" description="create directory for jars">
 		<mkdir dir="${jarlib}"/>
-		<mkdir dir="${docRepo}"/>	</target>
-
-	<target name="cleanDoc" description="cleanup javadoc directory">
-		<delete dir="${docRepo}"/>
 	</target>
+
 	<target name="resolve" description="resolve dependencies and setup publication environment">
 		<ivy:configure/>
 		<ivy:resolve file="scripts/${ivy.dep.file}" conf="${ivy.configurations}"/>
@@ -42,7 +39,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="CNRS/ANU"/>
 				<attribute name="Implementation-Title" value="au.edu.anu.rscs.aot"/>
-				<attribute name="Implementation-Version" value="0.0.14"/>
+				<attribute name="Implementation-Version" value="0.0.13"/>
 				<attribute name="Built-By" value="${user.name}"/>
  			</manifest>
 		</jar>
@@ -54,9 +51,4 @@
 		</ivy:publish>
 	</target>
 
-	<target name="javadoc" description="generate JavaDoc" depends="makeArtifactDir,cleanDoc">
-		<javadoc destdir="${docRepo}">
-			<fileset dir="src"/>
-		</javadoc>
-	</target>
 </project>
