@@ -47,6 +47,7 @@ import fr.cnrs.iees.graph.io.GraphImporter;
  */
 class OmugiGraphImporterTest {
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void testGetGraph() {
 		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>

@@ -41,6 +41,7 @@ import fr.cnrs.iees.io.FileImporter;
 
 class ImportParserTest {
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void test() {
 		String testfile = System.getProperty("user.dir") //
@@ -51,7 +52,7 @@ class ImportParserTest {
 		FileImporter importer = new FileImporter(file);
 		Tree<? extends TreeNode> specs = (Tree<? extends TreeNode>) importer.getGraph();
 		// NOTE: setParent does not add the children
-		int count = 0;
+//		int count = 0;
 		for (TreeNode n : specs.nodes()) {
 			if (n.hasChildren()) {
 				System.out.println(n);

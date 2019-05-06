@@ -289,8 +289,8 @@ public class GraphParser extends MinimalGraphParser {
 		// setup the factories
 		try {
 			if (labels.isEmpty()) {
-				nodeFactory = nFactoryClass.newInstance();
-				edgeFactory = eFactoryClass.newInstance();
+				nodeFactory = nFactoryClass.getDeclaredConstructor().newInstance();
+				edgeFactory = eFactoryClass.getDeclaredConstructor().newInstance();
 			}
 			else {
 				Constructor<? extends NodeFactory> c = 
@@ -303,7 +303,7 @@ public class GraphParser extends MinimalGraphParser {
 			if (eFactoryClass.equals(nFactoryClass))
 				if (nodeFactory instanceof GraphFactory)
 					edgeFactory = (EdgeFactory) nodeFactory;
-			propertyListFactory = plFactoryClass.newInstance();
+			propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
 			if (plFactoryClass.equals(nFactoryClass))
 				if (nodeFactory instanceof GraphFactory)
 					propertyListFactory = (PropertyListFactory) nodeFactory;

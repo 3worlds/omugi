@@ -120,7 +120,7 @@ class BooleanTableTest {
 
 	@Test
 	void testFillWithObject() {
-		Boolean b = new Boolean(true);
+		Boolean b = Boolean.valueOf(true);
 		tb.fillWith(b);
 		for (int i=0; i<tb.size(); i++)
 			assertTrue(tb.getWithFlatIndex(i));

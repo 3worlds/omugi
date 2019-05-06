@@ -236,14 +236,14 @@ public class TreeParser extends MinimalGraphParser {
 			//This maybe an importer so factory may be set already by the parent graph
 			if (treeFactory == null) {
 				if (labels.isEmpty())
-					treeFactory = tFactoryClass.newInstance();
+					treeFactory = tFactoryClass.getDeclaredConstructor().newInstance();
 				else {
 					Constructor<? extends TreeNodeFactory> cons = tFactoryClass.getDeclaredConstructor(String.class,
 							Map.class);
 					treeFactory = cons.newInstance(tfscope, labels);
 				}
 			}
-			propertyListFactory = plFactoryClass.newInstance();
+			propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
 			if (tFactoryClass.equals(plFactoryClass))
 				if (treeFactory instanceof TreeFactory)
 					propertyListFactory = (PropertyListFactory) treeFactory;
