@@ -36,7 +36,6 @@ import java.util.logging.Logger;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
@@ -100,7 +99,7 @@ public interface DefaultEdgeFactory extends EdgeFactory {
 		} catch (Exception e) {
 			try {
 				c = edgeClass.getDeclaredConstructor(Identity.class,Node.class,Node.class,
-					SimplePropertyList.class,NodeFactory.class);
+					SimplePropertyList.class,EdgeFactory.class);
 			} catch (Exception e1) {
 				log.severe(()->"Constructor for class \""+edgeClass.getName()+ "\" not found");
 			}			
