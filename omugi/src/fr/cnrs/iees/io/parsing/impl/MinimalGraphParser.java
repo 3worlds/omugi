@@ -79,13 +79,16 @@ public abstract class MinimalGraphParser extends Parser {
 	}
 
 	public class importGraph {
-		//public MinimalGraph<?> graph;
+		// public MinimalGraph<?> graph;
 		private OmugiGraphImporter importer;
 
 		public importGraph(File file) {
 			importer = new OmugiGraphImporter(file);
 		}
-		public MinimalGraph<?>  getGraph(Object factory) {
+
+		public MinimalGraph<?> getGraph(Object factory) {
+			// these files do not have their own scope or class statements but instead use
+			// the parent node's factory
 			importer.setFactory(factory);
 			return importer.getGraph();
 		}
