@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -30,31 +30,45 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
+import fr.ens.biologie.generic.Textable;
+
 /**
- * An immutable graph (no possibility to add or remove elements as it is now unrelated
- * to List).
- * @author gignoux - 16 août 2017
+ * <p>The root interface for graphs.</p>
+ * <p>A Graph depends on a {@link NodeFactory} and an {@link EdgeFactory} to instantiate its
+ * components ({@link Node}s and {@link Edge}s). Therefore, constructors of implementing classes
+ * must always provide such factories as parameters.</p>
+ * <p>Node and Edge factories can manage more than one graph: when a Node or Edge is instantiated
+ * by a factory, it is added to all its dependendt graphs.</p>
+ * 
+ * @author Jacques Gignoux - 14 mai 2019
  *
+ * @param <N>
+ * @param <E>
  */
-public interface Graph<N extends Node, E extends Edge> extends MinimalGraph<N> {
-	
-	/**
-	 * Read-only accessor to all Edges
-	 * @return an Iterable of all Edges
-	 */
-	public Iterable<E> edges();
-	
-	/**
-	 * Read-only accessor to all root Nodes (if any)
-	 * @return an Iterable on all root Nodes
-	 */
-	public Iterable<N> roots();
-	
-	/**
-	 * Checks if this graph contains a particular Node
-	 * @param node the Node to search for
-	 * @return true if node was found in the graph
-	 */
-	public boolean contains(N node);
-		
+public interface Graph<N extends Node, E extends Edge> 
+		extends NodeSet<N>, EdgeSet<E>, Textable {
+
+	@Override
+	public default String toShortString() {
+		return toUniqueString() + " (" + nNodes() + " nodes / " + nEdges() + " edges)"; 
+	}
+
+	@Override
+	default String toDetailedString() {
+		StringBuilder sb = new StringBuilder(toShortString());
+		StringBuilder zb = new StringBuilder();
+		sb.append(" NODES=(");
+		for (N n: nodes()) {
+			sb.append(n.toShortString() + ",");
+			for (Edge e: n.edges(Direction.OUT))
+				zb.append(e.toShortString() + ",");
+		}
+		if (sb.length()>0)
+			sb.deleteCharAt(sb.length()-1);
+		if (zb.length()>0)
+			zb.deleteCharAt(zb.length()-1);
+		sb.append(") EDGES=(").append(zb.toString()).append(')');
+		return sb.toString();
+	}
+
 }

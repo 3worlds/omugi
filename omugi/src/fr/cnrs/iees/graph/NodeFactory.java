@@ -31,7 +31,6 @@
 package fr.cnrs.iees.graph;
 
 import fr.cnrs.iees.OmugiClassLoader;
-import fr.cnrs.iees.identity.Scoped;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
@@ -59,15 +58,19 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  * @author Jacques Gignoux 7-11-2018
  *
  */
-public interface NodeFactory extends Scoped {
+public interface NodeFactory<N extends Node> {
 
+	public static String defaultNodeId = "node0";
+	
 	/**
 	 * Create a Node with no properties. The class ID is set to the default (= the implementing
 	 * class name). The instance ID is automatically generated and is unique.
 	 * 
 	 * @return 
 	 */
-	public  Node makeNode();
+	public default N makeNode() {
+		return makeNode(defaultNodeId);
+	}
 	
 	/**
 	 * Create a node with properties. The class ID is set to the default (= the implementing
@@ -76,7 +79,9 @@ public interface NodeFactory extends Scoped {
 	 * @param props properties
 	 * @return
 	 */
-	public Node makeNode(ReadOnlyPropertyList props);
+	public default N makeNode(ReadOnlyPropertyList props) {
+		return makeNode(defaultNodeId,props);
+	}
 	
 	/**
 	 * Create a node with no properties and a particular class ID. The instance ID is 
@@ -85,7 +90,7 @@ public interface NodeFactory extends Scoped {
 	 * @param classId the class identifier
 	 * @return
 	 */
-	public Node makeNode(String proposedId);
+	public N makeNode(String proposedId);
 	
 	/**
 	 * Create a node with a particular class ID and properties. The instance ID is automatically 
@@ -95,7 +100,7 @@ public interface NodeFactory extends Scoped {
 	 * @param props properties
 	 * @return
 	 */
-	public Node makeNode(String proposedId, ReadOnlyPropertyList props);
+	public N makeNode(String proposedId, ReadOnlyPropertyList props);
 
 	/**
 	 * returns the "label" of a node class as known by this factory. For use in descendants
@@ -104,7 +109,7 @@ public interface NodeFactory extends Scoped {
 	 * @param nodeClass
 	 * @return
 	 */
-	public default String nodeClassName(Class<? extends Node> nodeClass) {
+	public default String nodeClassName(Class<? extends N> nodeClass) {
 		return nodeClass.getSimpleName();
 	}
 	
@@ -116,9 +121,9 @@ public interface NodeFactory extends Scoped {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public default Class<? extends Node> nodeClass(String label) {
+	public default Class<? extends N> nodeClass(String label) {
 		try {
-			return (Class<? extends Node>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader());
+			return (Class<? extends N>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}
@@ -132,12 +137,21 @@ public interface NodeFactory extends Scoped {
 	 * @param props property list 
 	 * @return a new instance, or null if fails
 	 */
-	public Node makeNode(Class<? extends Node> nodeClass, String proposedId, ReadOnlyPropertyList props);
+	public N makeNode(Class<? extends N> nodeClass, String proposedId, ReadOnlyPropertyList props);
 
-	public Node makeNode(Class<? extends Node> nodeClass, String proposedId);
+	public N makeNode(Class<? extends N> nodeClass, String proposedId);
 
-	public Node makeNode(Class<? extends Node> nodeClass, ReadOnlyPropertyList props);
+	public default N makeNode(Class<? extends N> nodeClass, ReadOnlyPropertyList props) {
+		return makeNode(nodeClass,defaultNodeId,props);
+	}
 
-	public Node makeNode(Class<? extends Node> nodeClass);
+	public default N makeNode(Class<? extends N> nodeClass) {
+		return makeNode(nodeClass,defaultNodeId);
+	}
+
+	public void manageGraph(NodeSet<? extends N> graph);
+	
+	public void unmanageGraph(NodeSet<? extends N> graph);
+
 	
 }

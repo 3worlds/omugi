@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -31,15 +31,14 @@
 package fr.cnrs.iees.graph;
 
 /**
- * The basic features any edge in any graph should have
- * @author gignoux - 17 août 2017
- * <p>Setters make sure the graph stays valid, ie they update the Node edge lists if needed</p>
+ * Ancestor to all Edge classes. NB: Edges are meant to work with a particular type of Node, 
+ * hence the type parameter.
+ * @author Jacques Gignoux - 10 mai 2019
  *
+ * @param <N>
  */
-public interface Edge extends GraphElement, Specialized {
-	
-	public static String EDGE_LABEL = "edge";
-	
+public interface Edge extends Element, Connected<Edge> {
+
 	/**
 	 * Getter for
 	 * @return the start Node of this edge
@@ -58,53 +57,18 @@ public interface Edge extends GraphElement, Specialized {
 	 * @return the opposite end of this edge - null if the argument is not found in this edge
 	 */
 	public Node otherNode(Node other);
-	
-	/**
-	 * Setter for
-	 * @param node the start Node of this edge
-	 */
-	public Edge setStartNode(Node node);
-	
-	/**
-	 * Setter for
-	 * @param node the end Node of this edge
-	 */
-	public Edge setEndNode(Node node);
-	
+
 	/**
 	 * Setter for both start and end Nodes
 	 * @param start the new start node
 	 * @param end the new end node
 	 */
-	public default Edge setNodes (Node start, Node end) {
-		setStartNode(start);
-		setEndNode(end);
-		return this;
-	}
+	public void connect(Node start, Node end);
 
 	/**
-	 * 
-	 * @return the EdgeFactory with which this Edge was instantiated
-	 */
-	public EdgeFactory edgeFactory();
-	
-	
-	/**
-	 * The "label" or "classId" is now a String matching the java class name. The edgeFactory 
-	 * knows this String.
-	 * 
+	 * accessor to the graph which instantiated this edge
 	 * @return
 	 */
-	public default String classId() {
-		String s = edgeFactory().edgeClassName(this.getClass());
-		if (s==null)
-			s = this.getClass().getSimpleName();
-		return s;
-	}
+	public EdgeFactory<? extends Edge> factory();
 
-	@Override
-	public default String toShortString() {
-		return classId()+":"+id();
-	}
-	
 }

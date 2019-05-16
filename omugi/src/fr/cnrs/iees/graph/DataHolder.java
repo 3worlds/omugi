@@ -28,60 +28,27 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.impl;
+package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.graph.ReadOnlyDataTreeNode;
-import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.TreeNodeFactory;
-import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
- * Basic implementation of {@link TreeNode} with read-write properties.
- * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * For all graph or tree elements that have read-write properties
+ * @author Jacques Gignoux - 15 avr. 2019
  *
  */
-public class ReadOnlyDataTreeNodeImpl extends SimpleTreeNodeImpl 
-		implements ReadOnlyDataTreeNode {
-		
-	private ReadOnlyPropertyList propertyList = null;
-
-	// Constructors
+public interface DataHolder extends ReadOnlyDataHolder {
 	
-	protected ReadOnlyDataTreeNodeImpl(Identity id, ReadOnlyPropertyList props, TreeNodeFactory factory) {
-		super(id,factory);
-		propertyList = props;
-	}
-
-	// DataTreeNode
-
 	@Override
-	public ReadOnlyPropertyList properties() {
-		return propertyList;
+	public SimplePropertyList properties();
+	
+	/**
+	 * returns its property list as read-only, for data protection
+	 * @return
+	 */
+	public default ReadOnlyPropertyList readOnlyProperties() {
+		return properties();
 	}
-
-	// Textable
-
-	@Override
-	public String toDetailedString() {
-		StringBuilder sb = new StringBuilder(super.toDetailedString());
-		sb.append(' ');
-		sb.append(propertyList.toString());
-		return sb.toString();
-	}
-
-	// TODO: implement toString()
-	@Override
-	public boolean equals(Object obj) {
-		if (!TreeNode.class.isAssignableFrom(obj.getClass()))
-			return false;
-		if (!SimplePropertyList.class.isAssignableFrom(obj.getClass()))
-			return false;
-		TreeNode tn = (TreeNode) obj;
-		SimplePropertyList p = (SimplePropertyList) obj;
-		return (tn.equals(this) && p.equals(this));
-	}
-
+	
 }

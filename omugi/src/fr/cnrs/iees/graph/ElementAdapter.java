@@ -28,39 +28,87 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.impl;
+package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.graph.NodeFactory;
-import fr.cnrs.iees.graph.ReadOnlyDataNode;
+import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+import fr.cnrs.iees.identity.IdentityScope;
 
-public class ReadOnlyDataNodeImpl extends SimpleNodeImpl implements ReadOnlyDataNode {
+/**
+ * A base implementation of Element with the methods that should be universal in all descendants
+ * @author gignoux - 16 août 2017
+ *
+ */
+public abstract class ElementAdapter implements Element {
 	
-	private ReadOnlyPropertyList propertyList = null;
-	
-	// SimpleNodeImpl
-	
-	protected ReadOnlyDataNodeImpl(Identity id, ReadOnlyPropertyList props, NodeFactory factory) {
-		super(id,factory);
-		propertyList = props;
+	private Identity id = null;
+
+	// Constructors
+
+	// this to prevent construction without an id
+	protected ElementAdapter() {
+		throw new OmugiException("A Graph Element must be created with a valid id");
 	}
-
-	// DataNode
+	
+	// this is the only constructor to use
+	protected ElementAdapter(Identity id) {
+		super();
+		this.id = id;
+	}
+	
+	// IDENTITY
+	
+	@Override
+	public String id() {
+		return id.id();
+	}
+	
+	@Override
+	public IdentityScope scope() {
+		return id.scope();
+	}
+	
+	// TEXTABLE
 
 	@Override
-	public ReadOnlyPropertyList properties() {
-		return propertyList;
+	public final String toUniqueString() {
+		return id.universalId();
 	}
 	
-	// Textable
-
 	@Override
 	public String toDetailedString() {
-		StringBuilder sb = new StringBuilder(super.toDetailedString());
-		sb.append(' ');
-		sb.append(propertyList.toString());
-		return sb.toString();
+		return toShortString();
 	}
+	
+	// OBJECT
+	
+	@Override
+	public final String toString() {
+		return "["+toDetailedString()+"]";
+	}
+
+	// Two elements are equal if they have the same id within their scope
+	@Override
+	public boolean equals(Object obj) {
+		if (obj==null)
+			return false;
+		if (!(obj instanceof Element))
+			return false;
+		Element e = (Element) obj;
+		return (scope().id().equals(e.scope().id()) &&
+				id().equals(e.id()));
+	}
+	
+	// This is important when using HashSets or HahsMaps: to make sure graph elements are only
+	// considered different if they differ by classId+UniqueId, their hashCode must be computed
+	// based on classId+UniqueId. Otherwise Object.hashCode() is called to compute the Hash
+	// for the Map/Set and no subsequent call to .equals() is made, so elements with other
+	// differences than classId+uniqueId will be considered different even if they have the 
+	// same classId+instanceId.
+	@Override
+	public int hashCode() {
+		return id.universalId().hashCode();
+	}
+
 
 }

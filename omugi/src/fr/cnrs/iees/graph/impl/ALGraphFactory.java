@@ -14,17 +14,26 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
-public class TreeGraphFactory extends GraphFactoryAdapter<TreeGraphNode,ALEdge> {
+/**
+ * The factory for ALGraphs (node and edge factory).
+ * A factory manages a list of graphs, i.e. every time a new node/edge is created, it is added
+ * to all graphs in the list. Removal of nodes is treated at the graph level.
+ * 
+ * @author Jacques Gignoux - 13 mai 2019
+ *
+ */
+public class ALGraphFactory extends GraphFactoryAdapter<ALNode,ALEdge> {
 
-	private Logger log = Logger.getLogger(TreeGraphFactory.class.getName());
-	/** the list of graphs managed by this factory */
-	private Set<TreeGraph<TreeGraphNode,ALEdge>> graphs = new HashSet<>();
+	private Logger log = Logger.getLogger(ALGraphFactory.class.getName());
 	
+	/** the list of graphs managed by this factory */
+	private Set<ALGraph<ALNode,ALEdge>> graphs = new HashSet<>();
+
 	/**
 	 * basic constructor, only requires a scope
 	 * @param scopeName the scope identifier, e.g. "GraphFactory"
 	 */
-	public TreeGraphFactory(String scopeName) {
+	public ALGraphFactory(String scopeName) {
 		super(scopeName);
 	}
 	
@@ -33,36 +42,51 @@ public class TreeGraphFactory extends GraphFactoryAdapter<TreeGraphNode,ALEdge> 
 	 * @param scopeName the scope identifier, e.g. "GraphFactory"
 	 * @param labels a Map of (labels,class names) associating a label to a java class name
 	 */
-	public TreeGraphFactory(String scopeName, Map<String,String> labels) {
+	public ALGraphFactory(String scopeName,Map<String,String> labels) {
 		super(scopeName,labels);
 	}
+
+	// NodeFactory
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void manageGraph(NodeSet<? extends ALNode> graph) {
+		if (graph instanceof ALGraph)
+			graphs.add((ALGraph<ALNode, ALEdge>) graph);
+	}
 	
-	private void addNodeToGraphs(TreeGraphNode node) {
-		for (TreeGraph<TreeGraphNode,ALEdge> g:graphs)
+	@Override
+	public void unmanageGraph(NodeSet<? extends ALNode> graph) {
+		graphs.remove(graph);
+	}
+
+	private void addNodeToGraphs(ALNode node) {
+		for (ALGraph<ALNode,ALEdge> g:graphs)
 			g.addNode(node);
 	}
 
 	@Override
-	public TreeGraphNode makeNode(String proposedId) {
-		return new TreeGraphNode(scope.newId(proposedId),this);
-	}
-
-	@Override
-	public TreeGraphNode makeNode(String proposedId, ReadOnlyPropertyList props) {
-		TreeGraphNode result = null;
-		if (props instanceof SimplePropertyList)
-			result =  new TreeGraphDataNode(scope.newId(proposedId),this,(SimplePropertyList) props);
-		else
-			result =  new TreeGraphReadOnlyDataNode(scope.newId(proposedId),this,props);
+	public ALNode makeNode(String proposedId) {
+		ALNode result = new ALNode(scope.newId(proposedId),this);
 		addNodeToGraphs(result);
 		return result;
 	}
 
 	@Override
-	public TreeGraphNode makeNode(Class<? extends TreeGraphNode> nodeClass, String proposedId,
-			ReadOnlyPropertyList props) {
-		TreeGraphNode result = null;
-		Constructor<? extends TreeGraphNode> c = null;
+	public ALNode makeNode(String proposedId, ReadOnlyPropertyList props) {
+		ALNode result = null;
+		if (props instanceof SimplePropertyList)
+			result = new ALDataNode(scope.newId(proposedId),(SimplePropertyList) props,this);
+		else
+			result = new ALReadOnlyDataNode(scope.newId(proposedId),props,this);
+		addNodeToGraphs(result);
+		return result;
+	}
+
+	@Override
+	public ALNode makeNode(Class<? extends ALNode> nodeClass, String proposedId, ReadOnlyPropertyList props) {
+		ALNode result = null;
+		Constructor<? extends ALNode> c = null;
 		try {
 			c = nodeClass.getDeclaredConstructor(Identity.class,
 				ReadOnlyPropertyList.class,
@@ -87,9 +111,9 @@ public class TreeGraphFactory extends GraphFactoryAdapter<TreeGraphNode,ALEdge> 
 	}
 
 	@Override
-	public TreeGraphNode makeNode(Class<? extends TreeGraphNode> nodeClass, String proposedId) {
-		TreeGraphNode result = null;
-		Constructor<? extends TreeGraphNode> c = null;
+	public ALNode makeNode(Class<? extends ALNode> nodeClass, String proposedId) {
+		ALNode result = null;
+		Constructor<? extends ALNode> c = null;
 		try {
 			c = nodeClass.getDeclaredConstructor(Identity.class,NodeFactory.class);
 		} catch (Exception e) {
@@ -105,20 +129,8 @@ public class TreeGraphFactory extends GraphFactoryAdapter<TreeGraphNode,ALEdge> 
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void manageGraph(NodeSet<? extends TreeGraphNode> graph) {
-		if (graph instanceof TreeGraph)
-			graphs.add((TreeGraph<TreeGraphNode, ALEdge>) graph);
-	}
-
-	@Override
-	public void unmanageGraph(NodeSet<? extends TreeGraphNode> graph) {
-		graphs.remove(graph);
-	}
+	// EdgeFactory
 	
-	// NB all makeEdge methods are the same as in ALGraphFactory...
-
 	@Override
 	public ALEdge makeEdge(Node start, Node end, String proposedId) {
 		return new ALEdge(scope.newId(proposedId),start,end,this);
@@ -173,6 +185,5 @@ public class TreeGraphFactory extends GraphFactoryAdapter<TreeGraphNode,ALEdge> 
 		}
 		return null;
 	}
-
 
 }

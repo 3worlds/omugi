@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -30,53 +30,18 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-/**
- * The basic features any Node in any graph should have
- * @author gignoux - 17 août 2017
- *
- */
-public interface Node extends GraphElement, Specialized {
-	
-	public static String NODE_LABEL = "node";
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
+public interface Node extends Element, Connected<Node> {
 
 	/**
-	 * Adds an edge to this Node, in the appropriate direction
-	 * @param edge the edge to add
-	 * @param direction the direction in which to add it
-	 * @return true if edge was successfully added
-	 * <p>CAUTION: does not update the Edge start/end nodes</p>
+	 * Add to this node the connections found in the argument node. 
+	 * @param node the node to copy connections from.
 	 */
-	public boolean addEdge(Edge edge, Direction direction);
-	
-	/**
-	 * Removes an edge from this node, in the appropriate direction list (if known) 
-	 * @param edge the edge to remove
-	 * @param direction the direction list in which to search for it
-	 * @return true if edge was successfully removed
-	 * <p>CAUTION: does not update the Edge start/end nodes</p>
-	 */
-	public boolean removeEdge(Edge edge, Direction direction);
-	
-	/**
-	 * Removes an edge from this Node, without knowing the direction list (slower)
-	 * @param edge the edge to remove
-	 * @return true if edge was successfully removed
-	 * <p>CAUTION: does not update the Edge start/end nodes</p>
-	 */
-	public default boolean removeEdge(Edge edge) {
-		// the | (NOT ||) because of loop edges. otherwise fine.
-		return (removeEdge(edge,Direction.IN)|removeEdge(edge,Direction.OUT));
-	}
-	
-	/**
-	 * Adds an edge to this Node, in the proper direction list ONLY IF edge.startNode() or edge.endNode()
-	 * equals this Node. Otherwise, nothing is inserted.
-	 * @param edge the edge to add
-	 * @return true if edge was successfully added
-	 * <p>CAUTION: does not update the Edge start/end nodes</p>
-	 */
-	public boolean addEdge(Edge edge);
-	
+	public void addConnectionsLike(Node node);
+
 	/**
 	 * Tests if this Node is a leaf (=has no OUT edges)
 	 * @return
@@ -88,34 +53,7 @@ public interface Node extends GraphElement, Specialized {
 	 * @return
 	 */
 	public boolean isRoot();
-	
-	/**
-	 * Read-only accessor to edges according to direction.
-	 * @param direction the direction (IN or OUT)
-	 * @return an immutable list of edges matching the direction
-	 */
-	public Iterable<? extends Edge> getEdges(Direction direction);
-	
-	/**
-	 * Read-only accessor to all edges.
-	 * @return an immutable list of edges 
-	 */
-	public Iterable<? extends Edge> getEdges(); 
-		
-	/**
-	 * 
-	 * @return the degree of this node (=the number of edges)
-	 */
-	public default int degree() {
-		return degree(Direction.IN)+degree(Direction.OUT);
-	}
-	
-	/**
-	 * 
-	 * @return the Nodefactory with which this Node was instantiated
-	 */
-	public NodeFactory nodeFactory();
-	
+
 	/**
 	 * 
 	 * @param direction the direction (IN or OUT)
@@ -123,39 +61,151 @@ public interface Node extends GraphElement, Specialized {
 	 */
 	public int degree(Direction direction);
 
-	@Override
-	public default Node addConnectionsLike(GraphElement element) {
-		Node node = (Node) element;
-		for (Edge e:node.getEdges(Direction.IN)) {
-			EdgeFactory f = (EdgeFactory) e.edgeFactory();
-			f.makeEdge(e.startNode(), this);			
-		}
-		for (Edge e:node.getEdges(Direction.OUT)) {
-			EdgeFactory f = (EdgeFactory) e.edgeFactory();
-			f.makeEdge(this, e.endNode());
-		}
-		return this;
+	/**
+	 * 
+	 * @return the degree of this node (=the number of edges)
+	 */
+	public default int degree() {
+		return degree(Direction.IN)+degree(Direction.OUT);
+	}
+
+	/**
+	 * Read-only accessor to edges according to direction.
+	 * @param direction the direction (IN or OUT)
+	 * @return an immutable list of edges matching the direction
+	 */
+	public Iterable<? extends Edge> edges(Direction direction);
+	
+	/**
+	 * Read-only accessor to all edges.
+	 * @return an immutable list of edges 
+	 */
+	public Iterable<? extends Edge> edges(); 
+	
+	/**
+	 * Read-only accessor to the nodes connected to this node, following direction.
+	 * @param direction the direction (IN or OUT)
+	 * @return an immutable list of nodes matching the direction
+	 */
+	public Iterable<? extends Node> nodes(Direction direction);
+	
+	/**
+	 * Read-only accessor to all nodes connected to this node.
+	 * @return an immutable list of nodes
+	 */
+	public Iterable<? extends Node> nodes();
+
+	/**
+	 * connects this node to end and return the resulting edge (will create an edge).
+	 * @param end the node to connect to
+	 * @return the edge with startNode=this and endNode=end
+	 */
+	public default Edge connectTo(Node end) {
+		return connectTo(Direction.OUT,end);
 	}
 	
 	/**
-	 * The "label" or classId of a Node is a String matching its java class name. It is
-	 * known by the nodeFactory.
-	 * This method should not be overridden.
-	 * 
-	 * Should this, therefore, be in NodeAdapter as final.
-	 * 
+	 * connects this node to node and return the resulting edge (will create an edge),
+	 * according to specified direction.
+	 * @param direction the direction in which to connect
+	 * @param node the node to connect to
+	 * @return the edge 
+	 */
+	public Edge connectTo(Direction direction, Node node);
+	
+	/**
+	 * connects this node to a list of other nodes, with this node = start of the resulting edges.
+	 * @param nodes the list of nodes to connect to.
+	 */
+	public default void connectTo(Iterable<Node> nodes) {
+		connectTo(Direction.OUT,nodes);
+	}
+	
+	/**
+	 * connects this node to a list of other nodes.
+	 * @param direction the direction in which to connect to the nodes
+	 * @param nodes the list of nodes to connect to.
+	 */
+	public void connectTo(Direction direction, Iterable<Node> nodes);
+	
+	/**
+	 * accessor to the graph which instantiated this node
 	 * @return
 	 */
-	public default String classId() {
-		String s = nodeFactory().nodeClassName(this.getClass());
-		if (s==null)
-			s = this.getClass().getSimpleName();
-		return s;
+	public NodeFactory<? extends Node> factory();
+
+	@Override
+	public default void connectLike(Node element) {
+		disconnect();
+		addConnectionsLike(element);
 	}
 
 	@Override
-	public default String toShortString() {
-		return classId()+":"+id();
+	public default void replace(Node element) {
+		addConnectionsLike(element);
+		element.disconnect();
+	}
+	
+	/**
+	 * recursive helper method to construct a traversal
+	 * @param list the list to fill up with nodes (initially empty)
+	 * @param node the node that will be searched next (initially, this one)
+	 * @param distance search depth
+	 * @return a list of Nodes connected to this node within <em>distance</em> steps
+	 */
+	private Collection<Node> traversal(Collection<Node> list, 
+			Node node, 
+			int distance) {
+		if (distance>0) {
+			if (!list.contains(node)) {
+				list.add(node);
+				for (Edge e:node.edges(Direction.IN))
+					traversal(list,e.startNode(),distance-1);
+				for (Edge e:node.edges(Direction.OUT))
+					traversal(list,e.endNode(),distance-1);
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * recursive helper method to construct a traversal - returns a list of Nodes connected to this node
+	 * @param list the list to fill up with nodes (initially empty)
+	 * @param node the node that will be searched next (initially, this one)
+	 * @param distance search depth
+	 * @param direction direction in which to search
+	 * @return a list of Nodes connected to this node within <em>distance</em> steps in direction <em>IN</em> or <em>OUT</em>
+	 */
+	private Collection<Node> traversal(Collection<Node> list, 
+			Node node, 
+			int distance, 
+			Direction direction) {
+		if (distance>0) {
+			if (!list.contains(node)) {
+				list.add(node);
+				for (Edge e:node.edges(direction))
+					if (direction.equals(Direction.OUT))
+						traversal(list,e.endNode(),distance-1,direction);
+					else 
+						traversal(list,e.startNode(),distance-1,direction);
+			}
+		}
+		return list;
 	}
 
+	
+	@Override
+	public default Collection<? extends Node> traversal(int distance) {
+		List<Node> result = new LinkedList<Node>(); 
+		traversal(result,this,distance);
+		return result;
+	}
+
+	@Override
+	public default Collection<? extends Node> traversal(int distance, Direction direction) {
+		List<Node> result = new LinkedList<Node>(); 
+		traversal(result,this,distance,direction);
+		return result;
+	}
+	
 }

@@ -31,7 +31,6 @@
 package fr.cnrs.iees.graph;
 
 import fr.cnrs.iees.OmugiClassLoader;
-import fr.cnrs.iees.identity.Scoped;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
@@ -52,7 +51,9 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  *
  * @param <N>
  */
-public interface EdgeFactory extends Scoped {
+public interface EdgeFactory<E extends Edge> {
+	
+	public static String defaultEdgeId = "edge0";
 
 	/**
 	 * Create an edge with no properties. The class ID is set to the default (= the implementing
@@ -62,8 +63,8 @@ public interface EdgeFactory extends Scoped {
 	 * @param end the end node for this edge
 	 * @return
 	 */
-	public default Edge makeEdge(Node start, Node end) {
-		return makeEdge(start,end,null,null);
+	public default E makeEdge(Node start, Node end) {
+		return makeEdge(start,end,defaultEdgeId);
 	}
 	
 	/**
@@ -75,8 +76,8 @@ public interface EdgeFactory extends Scoped {
 	 * @param props properties
 	 * @return
 	 */
-	public default Edge makeEdge(Node start, Node end, ReadOnlyPropertyList props) {
-		return makeEdge(start,end,null,props);
+	public default E makeEdge(Node start, Node end, ReadOnlyPropertyList props) {
+		return makeEdge(start,end,defaultEdgeId,props);
 	}
 	
 	/**
@@ -90,9 +91,7 @@ public interface EdgeFactory extends Scoped {
 	 * @param instanceId the instance identifier
 	 * @return
 	 */
-	public default Edge makeEdge(Node start, Node end, String proposedId) {
-		return makeEdge(start,end,proposedId,null);
-	}
+	public E makeEdge(Node start, Node end, String proposedId);
 
 	/**
 	 * Create an edge with a particular class ID and instance ID and properties. Implementing
@@ -106,7 +105,7 @@ public interface EdgeFactory extends Scoped {
 	 * @param props properties
 	 * @return 
 	 */
-	public Edge makeEdge(Node start, Node end, String proposedId, ReadOnlyPropertyList props);
+	public E makeEdge(Node start, Node end, String proposedId, ReadOnlyPropertyList props);
 
 	/**
 	 * returns the "label" of an edge class as known by this factory. For use in descendants
@@ -115,7 +114,7 @@ public interface EdgeFactory extends Scoped {
 	 * @param edgeClass
 	 * @return
 	 */
-	public default String edgeClassName(Class<? extends Edge> edgeClass) {
+	public default String edgeClassName(Class<? extends E> edgeClass) {
 		return edgeClass.getSimpleName();
 	}
 	
@@ -125,9 +124,9 @@ public interface EdgeFactory extends Scoped {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public default Class<? extends Edge> edgeClass(String label) {
+	public default Class<? extends E> edgeClass(String label) {
 		try {
-			return (Class<? extends Edge>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader());
+			return (Class<? extends E>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}
@@ -143,16 +142,20 @@ public interface EdgeFactory extends Scoped {
 	 * @param props
 	 * @return
 	 */
-	public Edge makeEdge(Class<? extends Edge> edgeClass, 
+	public E makeEdge(Class<? extends E> edgeClass, 
 		Node start, Node end, String proposedId, ReadOnlyPropertyList props);
 
-	public Edge makeEdge(Class<? extends Edge> edgeClass,
+	public E makeEdge(Class<? extends E> edgeClass,
 		Node start, Node end, String proposedId);
 	
-	public Edge makeEdge(Class<? extends Edge> edgeClass,
-		Node start, Node end, ReadOnlyPropertyList props);
+	public default E makeEdge(Class<? extends E> edgeClass,
+		Node start, Node end, ReadOnlyPropertyList props) {
+		return makeEdge(edgeClass,start,end,defaultEdgeId,props);
+	}
 	
-	public Edge makeEdge(Class<? extends Edge> edgeClass,Node start, Node end);
+	public default E makeEdge(Class<? extends E> edgeClass,Node start, Node end) {
+		return makeEdge(edgeClass,start,end,defaultEdgeId);
+	}
 	
 	
 	

@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,45 +28,21 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph.impl;
+package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.graph.EdgeFactory;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.ReadOnlyDataEdge;
-import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
- * Straightforward implementation of {@linkplain ReadOnlyDataEdge} 
- * @author Jacques Gignoux - 29 nov. 2018
+ * For all graph or tree elements that have read-only properties
+ * @author Jacques Gignoux - 15 avr. 2019
  *
  */
-public class ReadOnlyDataEdgeImpl extends SimpleEdgeImpl implements ReadOnlyDataEdge {
-
-	private ReadOnlyPropertyList propertyList = null;
-
-	// SimpleEdgeImpl
-
-	protected ReadOnlyDataEdgeImpl(Identity id, Node start, Node end, ReadOnlyPropertyList props, EdgeFactory factory) {
-		super(id, start, end, factory);
-		propertyList = props;
-	}
+public interface ReadOnlyDataHolder {
 	
-	// DataEdge
-
-	@Override
-	public ReadOnlyPropertyList properties() {
-		return propertyList;
-	}
-
-	// Textable
-
-	@Override
-	public String toDetailedString() {
-		StringBuilder sb = new StringBuilder(super.toDetailedString());
-		sb.append(' ');
-		sb.append(propertyList.toString());
-		return sb.toString();
-	}
-
+	/**
+	 * returns its property list
+	 * @return
+	 */
+	public ReadOnlyPropertyList properties();
+	
 }
