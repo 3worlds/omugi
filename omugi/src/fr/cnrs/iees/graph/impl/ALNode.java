@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
-import au.edu.anu.rscs.aot.collections.QuickListOfLists;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.ElementAdapter;
@@ -23,6 +23,7 @@ import fr.cnrs.iees.identity.Identity;
  * @author Jacques Gignoux - 10 mai 2019
  *
  */
+// Tested OK with version 0.2.0 on 16/5/2019
 public class ALNode extends ElementAdapter implements Node {
 	
 	// for consistency, a graph using these nodes must use compatible edges
@@ -130,9 +131,9 @@ public class ALNode extends ElementAdapter implements Node {
 
 	@Override
 	public Iterable<? extends Edge> edges() {
-		QuickListOfLists<ALEdge> result = new QuickListOfLists<>();
-		result.addList(edges.get(Direction.IN));
-		result.addList(edges.get(Direction.OUT));
+		Set<Edge> result = new HashSet<>();
+		result.addAll(edges.get(Direction.IN));
+		result.addAll(edges.get(Direction.OUT));
 		return result;
 	}
 
@@ -146,7 +147,7 @@ public class ALNode extends ElementAdapter implements Node {
 
 	@Override
 	public Iterable<? extends Node> nodes() {
-		List<Node> list = new LinkedList<>();
+		Set<Node> list = new HashSet<>();
 		for (ALEdge e:edges.get(Direction.IN))
 			list.add(e.startNode());
 		for (ALEdge e:edges.get(Direction.OUT))
@@ -165,7 +166,7 @@ public class ALNode extends ElementAdapter implements Node {
 	}
 
 	@Override
-	public void connectTo(Direction direction, Iterable<Node> nodes) {
+	public void connectTo(Direction direction, Iterable<? extends Node> nodes) {
 		for (Node n:nodes)
 			connectTo(direction,n);
 	}
@@ -174,5 +175,18 @@ public class ALNode extends ElementAdapter implements Node {
 	public NodeFactory factory() {
 		return factory;
 	}
+	
+	// Textable 
+	
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(toShortString());
+		for (Edge e:edges(Direction.IN))
+			sb.append(" ←").append(e.toShortString());
+		for (Edge e:edges(Direction.OUT))
+			sb.append(" →").append(e.toShortString());
+		return sb.toString();
+	}
+
 
 }

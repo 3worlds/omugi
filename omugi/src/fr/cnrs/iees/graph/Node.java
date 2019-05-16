@@ -117,7 +117,7 @@ public interface Node extends Element, Connected<Node> {
 	 * connects this node to a list of other nodes, with this node = start of the resulting edges.
 	 * @param nodes the list of nodes to connect to.
 	 */
-	public default void connectTo(Iterable<Node> nodes) {
+	public default void connectTo(Iterable<? extends Node> nodes) {
 		connectTo(Direction.OUT,nodes);
 	}
 	
@@ -126,7 +126,7 @@ public interface Node extends Element, Connected<Node> {
 	 * @param direction the direction in which to connect to the nodes
 	 * @param nodes the list of nodes to connect to.
 	 */
-	public void connectTo(Direction direction, Iterable<Node> nodes);
+	public void connectTo(Direction direction, Iterable<? extends Node> nodes);
 	
 	/**
 	 * accessor to the graph which instantiated this node

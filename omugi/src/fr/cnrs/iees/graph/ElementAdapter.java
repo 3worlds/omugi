@@ -80,6 +80,11 @@ public abstract class ElementAdapter implements Element {
 		return toShortString();
 	}
 	
+	@Override
+	public String toShortString() {
+		return classId()+":"+id();
+	}
+	
 	// OBJECT
 	
 	@Override

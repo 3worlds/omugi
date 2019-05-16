@@ -59,6 +59,11 @@ public class SimpleTreeFactory
 		for (Tree<SimpleTreeNode> tree:trees)
 			tree.addNode(node);
 	}
+	
+	@Override
+	public SimpleTreeNode makeNode() {
+		return makeNode(defaultNodeId);
+	}
 
 	@Override
 	public SimpleTreeNode makeNode(String proposedId) {
@@ -68,6 +73,11 @@ public class SimpleTreeFactory
 	}
 
 	@Override
+	public SimpleTreeNode makeNode(ReadOnlyPropertyList props) {
+		return makeNode(defaultNodeId,props);
+	}
+	
+	@Override
 	public SimpleTreeNode makeNode(String proposedId, ReadOnlyPropertyList props) {
 		SimpleTreeNode result = null;
 		if (props instanceof SimplePropertyList)
@@ -76,6 +86,11 @@ public class SimpleTreeFactory
 			result = new SimpleReadOnlyDataTreeNode(scope.newId(proposedId),props,this);
 		addNodeToTrees(result);
 		return result;
+	}
+	
+	@Override
+	public SimpleTreeNode makeNode(Class<? extends Node> nodeClass, ReadOnlyPropertyList props) {
+		return makeNode(nodeClass,defaultNodeId,props);
 	}
 
 	@Override
@@ -103,6 +118,11 @@ public class SimpleTreeFactory
 		}
 		addNodeToTrees(result);
 		return result;
+	}
+
+	@Override
+	public SimpleTreeNode makeNode(Class<? extends Node> nodeClass) {
+		return makeNode(nodeClass,defaultNodeId);
 	}
 
 	@Override

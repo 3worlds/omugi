@@ -1,6 +1,7 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -26,10 +27,10 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 
 	private NodeFactory factory;
 	private SimpleTreeNode parent = null;
-	private Set<SimpleTreeNode> children = null;
+	private Set<SimpleTreeNode> children = new HashSet<>();
 	
 	protected SimpleTreeNode(Identity id, NodeFactory factory) {
-		super();
+		super(id);
 		this.factory = factory;
 	}
 
@@ -38,6 +39,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	@Override
 	public void addConnectionsLike(Node node) {
 		if (node instanceof TreeNode) {
+			getParent().disconnectFrom(this);
 			TreeNode tn = (TreeNode) node;
 			connectParent(tn.getParent());
 			connectChildren(tn.getChildren());
@@ -83,7 +85,8 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 		switch (direction) {
 		case IN:
 			List<SimpleTreeNode> l = new LinkedList<>();
-			l.add(parent);
+			if (parent!=null)
+				l.add(parent);
 			return l;
 		case OUT:
 			return children;
@@ -118,7 +121,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	}
 
 	@Override
-	public void connectTo(Direction direction, Iterable<Node> nodes) {
+	public void connectTo(Direction direction, Iterable<? extends Node> nodes) {
 		throw new OmugiException("connectTo has no effect on TreeNodes - use connectParent or connectChildren instead");
 	}
 
@@ -150,14 +153,15 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	private Collection<SimpleTreeNode> traversal(Collection<SimpleTreeNode> list, 
 			SimpleTreeNode node,
 			int distance) {
+		list.add(node);
 		if (distance>0) {
-			list.add(node);
 			SimpleTreeNode tn = node.getParent();
 			if (tn!=null)
-				return traversal(list,tn,distance-1);
+				if (!(tn==this))
+					traversal(list,tn,distance-1);
 			for (SimpleTreeNode c:node.getChildren())
 				if (!(c==this))
-					return traversal(list,c,distance-1);
+					traversal(list,c,distance-1);
 		}
 		return list;
 	}
@@ -172,10 +176,10 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 			case IN:
 				SimpleTreeNode tn = node.getParent();
 				if (tn!=null)
-					return traversal(list,tn,distance-1,direction);
+					traversal(list,tn,distance-1,direction);
 			case OUT:
 				for (SimpleTreeNode c:node.getChildren())
-					return traversal(list,c,distance-1,direction);
+					traversal(list,c,distance-1,direction);
 			}
 		}
 		return list;
@@ -265,4 +269,34 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 			connectChild(child);
 	}
 
+	// Textable
+	
+	/**
+	 * Displays a TreeNode as follows (on a single line):
+	 * 
+	 * <pre>
+	 * node_label:node_name=[
+	 *    ↑parent_label:parent_name      // the parent node, or ROOT if null
+	 *    ↓child_label:child_name        // child node, repeated as needed
+	 * ] 
+	 * </pre>
+	 * <p>e.g.: {@code Node:0=[↑Node:1 ↓Node:2 ↓Node:3]}</p>
+	 */
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(toShortString());
+		sb.append(' ');
+		if (parent!=null)
+			sb.append("↑").append(getParent().toShortString());
+		else
+			sb.append("ROOT");
+		if (hasChildren()) {
+			for (TreeNode n:getChildren()) {
+				sb.append(" ↓").append(n.toShortString());
+			}
+		}
+		return sb.toString();
+	}
+
+	
 }
