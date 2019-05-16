@@ -132,7 +132,7 @@ public interface Node extends Element, Connected<Node> {
 	 * accessor to the graph which instantiated this node
 	 * @return
 	 */
-	public NodeFactory<? extends Node> factory();
+	public NodeFactory factory();
 
 	@Override
 	public default void connectLike(Node element) {

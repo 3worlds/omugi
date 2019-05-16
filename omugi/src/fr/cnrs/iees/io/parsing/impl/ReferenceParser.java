@@ -39,8 +39,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
-import fr.cnrs.iees.graph.MinimalGraph;
-import fr.cnrs.iees.graph.ReadOnlyDataElement;
+import fr.cnrs.iees.graph.NodeSet;
+import fr.cnrs.iees.graph.ReadOnlyDataHolder;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer.token;
@@ -143,9 +143,9 @@ public class ReferenceParser extends Parser {
 			// match property names and values
 			for (propMatch pm:nm.props) {
 				// node has no properties
-				if (!(testNode instanceof ReadOnlyDataElement))
+				if (!(testNode instanceof ReadOnlyDataHolder))
 					return false;
-				ReadOnlyPropertyList pl = ((ReadOnlyDataElement) testNode).properties();
+				ReadOnlyPropertyList pl = ((ReadOnlyDataHolder) testNode).properties();
 				// property is not found
 				if (!pl.hasProperty(pm.name))
 					return false;
@@ -189,7 +189,7 @@ public class ReferenceParser extends Parser {
 	}
 
 	@Override
-	public MinimalGraph<?> graph() {
+	public NodeSet<?> graph() {
 		// TODO Auto-generated method stub
 		return null;
 	}

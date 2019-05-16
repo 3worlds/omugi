@@ -14,7 +14,7 @@ public class TreeGraphDataNode extends TreeGraphNode implements DataHolder {
 
 	private SimplePropertyList properties;
 	
-	public TreeGraphDataNode(Identity id, GraphFactory<TreeGraphNode, ALEdge> gfactory, SimplePropertyList props) {
+	public TreeGraphDataNode(Identity id, GraphFactory gfactory, SimplePropertyList props) {
 		super(id, gfactory);
 		properties = props;
 	}

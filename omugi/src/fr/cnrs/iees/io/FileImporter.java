@@ -36,7 +36,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.logging.Logger;
 
-import fr.cnrs.iees.graph.MinimalGraph;
+import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.GraphImporter;
 
 import static fr.cnrs.iees.io.GraphFileFormats.*;
@@ -97,13 +97,13 @@ public class FileImporter {
 		return null;
 	}
 	
-	public MinimalGraph<?> getGraph() {
+	public NodeSet<?> getGraph() {
 		if (importer!=null)
 			return importer.getGraph();
 		return null;
 	}
 	
-	public static MinimalGraph<?> loadGraphFromFile(File f){
+	public static NodeSet<?> loadGraphFromFile(File f){
 		return new FileImporter(f).getGraph();
 	}
 

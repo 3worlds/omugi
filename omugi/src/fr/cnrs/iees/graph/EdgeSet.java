@@ -26,7 +26,7 @@ public interface EdgeSet<E extends Edge>  extends Textable {
 	 * The edge factory used to instantiate edges for this graph.
 	 * @return the edge factory
 	 */
-	public EdgeFactory<E> edgeFactory();
+	public EdgeFactory edgeFactory();
 
 	/**
 	 * Use this method to add edges into a graph. This method is usually invoked by

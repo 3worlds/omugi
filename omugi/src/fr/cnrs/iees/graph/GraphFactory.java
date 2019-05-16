@@ -7,7 +7,6 @@ package fr.cnrs.iees.graph;
  * @param <N>
  * @param <E>
  */
-public interface GraphFactory<N extends Node,E extends Edge> 
-		extends NodeFactory<N>, EdgeFactory<E> {
+public interface GraphFactory extends NodeFactory, EdgeFactory {
 
 }

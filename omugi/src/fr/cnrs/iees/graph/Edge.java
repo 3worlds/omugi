@@ -69,6 +69,6 @@ public interface Edge extends Element, Connected<Edge> {
 	 * accessor to the graph which instantiated this edge
 	 * @return
 	 */
-	public EdgeFactory<? extends Edge> factory();
+	public EdgeFactory factory();
 
 }

@@ -41,10 +41,10 @@ import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
-import fr.cnrs.iees.graph.impl.GraphFactory;
-import fr.cnrs.iees.graph.impl.MutableGraphImpl;
+import fr.cnrs.iees.graph.impl.ALGraph;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
@@ -78,7 +78,7 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 //todo: import	
 // Tested OK with version 0.0.1 on 17/12/2018
 // Tested OK with version 0.0.10 on 31/1/2019
-public class GraphParser extends MinimalGraphParser {
+public class GraphParser extends NodeSetParser {
 	
 	private Logger log = Logger.getLogger(GraphParser.class.getName());
 
@@ -264,7 +264,7 @@ public class GraphParser extends MinimalGraphParser {
 					break;
 				case MUTABLE:
 					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-						getClass(GraphProperties.CLASS,MutableGraphImpl.class.getName(),log,Graph.class);
+						getClass(GraphProperties.CLASS,ALGraph.class.getName(),log,Graph.class);
 					break;
 				case SCOPE:
 					gfscope = p.value;
@@ -305,12 +305,20 @@ public class GraphParser extends MinimalGraphParser {
 					edgeFactory = (EdgeFactory) nodeFactory;
 			propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
 			if (plFactoryClass.equals(nFactoryClass))
-				if (nodeFactory instanceof GraphFactory)
+				if (nodeFactory instanceof PropertyListFactory)
 					propertyListFactory = (PropertyListFactory) nodeFactory;
 		} catch (Exception e) {
 			// There should not be any problem here given the previous checks
 			// unless the factory class is flawed
 			e.printStackTrace();
+		}
+		// make graph and have it managed by the factory
+		try {
+			Constructor<?> cons = graphClass.getDeclaredConstructor(Iterable.class);
+			graph = (Graph<? extends Node, ? extends Edge>) cons.newInstance(nodeFactory);
+			nodeFactory.manageGraph(graph); // this will cause new nodes to be added to the graph
+		} catch (Exception e) {
+			log.severe("Graph constructor not found.");
 		}
 		// make nodes
 		Map<String,Node> nodes = new HashMap<>();
@@ -356,13 +364,6 @@ public class GraphParser extends MinimalGraphParser {
 					else
 						edgeFactory.makeEdge(ec,start,end,es.name,makePropertyList(es.props,log));
 			}
-		}
-		// make graph and fill it with nodes
-		try {
-			Constructor<?> cons = graphClass.getConstructor(Iterable.class);
-			graph = (Graph<? extends Node, ? extends Edge>) cons.newInstance(nodes.values()); // pbs with non empty constructors
-		} catch (Exception e) {
-			log.severe("Graph constructor not found.");
 		}
 	}
 	

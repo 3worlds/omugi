@@ -26,7 +26,7 @@ import fr.cnrs.iees.identity.Identity;
 public class ALNode extends ElementAdapter implements Node {
 	
 	// for consistency, a graph using these nodes must use compatible edges
-	private GraphFactory<? extends ALNode,? extends ALEdge> factory;
+	private GraphFactory factory;
 	
 	// the adjacency list for this node, directed.
 	protected EnumMap<Direction,Collection<ALEdge>> edges = null;
@@ -36,7 +36,7 @@ public class ALNode extends ElementAdapter implements Node {
 	 * @param id the identifier for this node
 	 * @param factory the graph which constructs this node
 	 */
-	protected ALNode(Identity id, GraphFactory<? extends ALNode,? extends ALEdge> factory) {
+	protected ALNode(Identity id, GraphFactory factory) {
 		super(id);
 		this.factory = factory;
 		edges = new EnumMap<Direction,Collection<ALEdge>>(Direction.class);
@@ -171,7 +171,7 @@ public class ALNode extends ElementAdapter implements Node {
 	}
 
 	@Override
-	public NodeFactory<? extends Node> factory() {
+	public NodeFactory factory() {
 		return factory;
 	}
 

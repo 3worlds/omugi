@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.NodeSet;
@@ -22,7 +21,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  * @author Jacques Gignoux - 13 mai 2019
  *
  */
-public class ALGraphFactory extends GraphFactoryAdapter<ALNode,ALEdge> {
+public class ALGraphFactory extends GraphFactoryAdapter {
 
 	private Logger log = Logger.getLogger(ALGraphFactory.class.getName());
 	
@@ -50,13 +49,13 @@ public class ALGraphFactory extends GraphFactoryAdapter<ALNode,ALEdge> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void manageGraph(NodeSet<? extends ALNode> graph) {
+	public void manageGraph(NodeSet<? extends Node> graph) {
 		if (graph instanceof ALGraph)
 			graphs.add((ALGraph<ALNode, ALEdge>) graph);
 	}
 	
 	@Override
-	public void unmanageGraph(NodeSet<? extends ALNode> graph) {
+	public void unmanageGraph(NodeSet<? extends Node> graph) {
 		graphs.remove(graph);
 	}
 
@@ -84,9 +83,9 @@ public class ALGraphFactory extends GraphFactoryAdapter<ALNode,ALEdge> {
 	}
 
 	@Override
-	public ALNode makeNode(Class<? extends ALNode> nodeClass, String proposedId, ReadOnlyPropertyList props) {
+	public ALNode makeNode(Class<? extends Node> nodeClass, String proposedId, ReadOnlyPropertyList props) {
 		ALNode result = null;
-		Constructor<? extends ALNode> c = null;
+		Constructor<? extends Node> c = null;
 		try {
 			c = nodeClass.getDeclaredConstructor(Identity.class,
 				ReadOnlyPropertyList.class,
@@ -102,7 +101,7 @@ public class ALGraphFactory extends GraphFactoryAdapter<ALNode,ALEdge> {
 		}
 		Identity id = scope.newId(proposedId);
 		try {
-			result = c.newInstance(id,props,this);
+			result = (ALNode) c.newInstance(id,props,this);
 			addNodeToGraphs(result);
 		} catch (Exception e) {
 			log.severe(()->"Node of class \""+nodeClass.getName()+ "\" could not be instantiated");
@@ -111,9 +110,9 @@ public class ALGraphFactory extends GraphFactoryAdapter<ALNode,ALEdge> {
 	}
 
 	@Override
-	public ALNode makeNode(Class<? extends ALNode> nodeClass, String proposedId) {
+	public ALNode makeNode(Class<? extends Node> nodeClass, String proposedId) {
 		ALNode result = null;
-		Constructor<? extends ALNode> c = null;
+		Constructor<? extends Node> c = null;
 		try {
 			c = nodeClass.getDeclaredConstructor(Identity.class,NodeFactory.class);
 		} catch (Exception e) {
@@ -121,69 +120,12 @@ public class ALGraphFactory extends GraphFactoryAdapter<ALNode,ALEdge> {
 		}
 		Identity id = scope.newId(proposedId);
 		try {
-			result = c.newInstance(id,this);
+			result = (ALNode) c.newInstance(id,this);
 			addNodeToGraphs(result);
 		} catch (Exception e) {
 			log.severe(()->"Node of class \""+nodeClass.getName()+ "\" could not be instantiated");
 		}
 		return result;
-	}
-
-	// EdgeFactory
-	
-	@Override
-	public ALEdge makeEdge(Node start, Node end, String proposedId) {
-		return new ALEdge(scope.newId(proposedId),start,end,this);
-	}
-
-	@Override
-	public ALEdge makeEdge(Node start, Node end, String proposedId, ReadOnlyPropertyList props) {
-		if (props instanceof SimplePropertyList)
-			return new ALDataEdge(scope.newId(proposedId),start,end,(SimplePropertyList)props,this);
-		else
-			return new ALReadOnlyDataEdge(scope.newId(proposedId),start,end,props,this);
-	}
-
-	@Override
-	public ALEdge makeEdge(Class<? extends ALEdge> edgeClass, Node start, Node end, String proposedId,
-			ReadOnlyPropertyList props) {
-		Constructor<? extends ALEdge> c = null;
-		try {
-			c = edgeClass.getDeclaredConstructor(Identity.class,Node.class,Node.class,
-				ReadOnlyPropertyList.class,EdgeFactory.class);
-		} catch (Exception e) {
-			try {
-				c = edgeClass.getDeclaredConstructor(Identity.class,Node.class,Node.class,
-					SimplePropertyList.class,EdgeFactory.class);
-			} catch (Exception e1) {
-				log.severe(()->"Constructor for class \""+edgeClass.getName()+ "\" not found");
-			}			
-		}
-		Identity id = scope.newId(proposedId);
-		try {
-			return c.newInstance(id,start,end,props,this);
-		} catch (Exception e1) {
-			log.severe(()->"Edge of class \""+edgeClass.getName()+ "\" could not be instantiated");
-		}
-		return null;
-	}
-
-	@Override
-	public ALEdge makeEdge(Class<? extends ALEdge> edgeClass, Node start, Node end, String proposedId) {
-		Constructor<? extends ALEdge> c = null;
-		try {
-			c = edgeClass.getDeclaredConstructor(Identity.class,Node.class,Node.class,
-				EdgeFactory.class);
-		} catch (Exception e) {
-			log.severe(()->"Constructor for class \""+edgeClass.getName()+ "\" not found");
-		}
-		Identity id = scope.newId(proposedId);
-		try {
-			return c.newInstance(id,start,end,this);
-		} catch (Exception e1) {
-			log.severe(()->"Edge of class \""+edgeClass.getName()+ "\" could not be instantiated");
-		}
-		return null;
 	}
 
 }

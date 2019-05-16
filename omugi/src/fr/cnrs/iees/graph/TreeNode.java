@@ -79,5 +79,5 @@ public interface TreeNode extends Node {
 	public int nChildren();
 
 	@Override
-	public NodeFactory<? extends TreeNode> factory();
+	public NodeFactory factory();
 }

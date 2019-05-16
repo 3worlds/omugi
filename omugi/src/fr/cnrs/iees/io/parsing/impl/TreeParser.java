@@ -40,10 +40,10 @@ import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.util.Resources;
 import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.Tree;
 import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.TreeNodeFactory;
-import fr.cnrs.iees.graph.impl.TreeFactory;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
@@ -89,7 +89,7 @@ import fr.cnrs.iees.properties.PropertyListFactory;
  * @author Jacques Gignoux - 20 déc. 2018
  *
  */
-public class TreeParser extends MinimalGraphParser {
+public class TreeParser extends NodeSetParser {
 
 	private Logger log = Logger.getLogger(TreeParser.class.getName());
 
@@ -115,7 +115,7 @@ public class TreeParser extends MinimalGraphParser {
 	private propSpec lastProp = null;
 
 	// factories for treenodes and properties
-	private TreeNodeFactory treeFactory = null;
+	private NodeFactory treeFactory = null;
 
 	public TreeParser(TreeTokenizer tokenizer) {
 		super();
@@ -184,7 +184,7 @@ public class TreeParser extends MinimalGraphParser {
 		if (lastNodes == null)
 			parse();
 		Class<? extends Tree<? extends TreeNode>> treeClass = null;
-		Class<? extends TreeNodeFactory> tFactoryClass = null;
+		Class<? extends NodeFactory> tFactoryClass = null;
 		Class<? extends PropertyListFactory> plFactoryClass = null;
 		// label to class mappings from tree properties
 		Map<String, String> labels = new HashMap<>();
@@ -212,8 +212,8 @@ public class TreeParser extends MinimalGraphParser {
 							p.value, log, PropertyListFactory.class);
 					break;
 				case TREE_FACTORY:
-					tFactoryClass = (Class<? extends TreeNodeFactory>) getClass(TreeProperties.TREE_FACTORY, p.value,
-							log, TreeNodeFactory.class);
+					tFactoryClass = (Class<? extends NodeFactory>) getClass(TreeProperties.TREE_FACTORY, p.value,
+							log, NodeFactory.class);
 					break;
 				case SCOPE:
 					tfscope = p.value;
@@ -226,8 +226,8 @@ public class TreeParser extends MinimalGraphParser {
 		if (treeClass == null)
 			treeClass = (Class<? extends Tree<? extends TreeNode>>) getClass(TreeProperties.CLASS, log, Tree.class);
 		if (tFactoryClass == null)
-			tFactoryClass = (Class<? extends TreeNodeFactory>) getClass(TreeProperties.TREE_FACTORY, log,
-					TreeNodeFactory.class);
+			tFactoryClass = (Class<? extends NodeFactory>) getClass(TreeProperties.TREE_FACTORY, log,
+					NodeFactory.class);
 		if (plFactoryClass == null)
 			plFactoryClass = (Class<? extends PropertyListFactory>) getClass(TreeProperties.PROP_FACTORY, log,
 					PropertyListFactory.class);
@@ -238,34 +238,43 @@ public class TreeParser extends MinimalGraphParser {
 				if (labels.isEmpty())
 					treeFactory = tFactoryClass.getDeclaredConstructor().newInstance();
 				else {
-					Constructor<? extends TreeNodeFactory> cons = tFactoryClass.getDeclaredConstructor(String.class,
+					Constructor<? extends NodeFactory> cons = tFactoryClass.getDeclaredConstructor(String.class,
 							Map.class);
 					treeFactory = cons.newInstance(tfscope, labels);
 				}
 			}
 			propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
 			if (tFactoryClass.equals(plFactoryClass))
-				if (treeFactory instanceof TreeFactory)
+				if (treeFactory instanceof PropertyListFactory)
 					propertyListFactory = (PropertyListFactory) treeFactory;
 		} catch (Exception e) {
 			// There should not be any problem here given the previous checks
 			// unless the factory class is flawed
 			e.printStackTrace();
 		}
+		// make tree
+		try {
+			Constructor<?> cons = treeClass.getDeclaredConstructor(Iterable.class);
+			tree = (Tree<? extends TreeNode>) cons.newInstance(treeFactory);
+			treeFactory.manageGraph(tree);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// make tree nodes
 		Map<String, TreeNode> nodes = new HashMap<>();
 		for (treeNodeSpec ns : nodeSpecs) {
 			TreeNode n = null;
-			Class<? extends TreeNode> nc = treeFactory.treeNodeClass(ns.label);
+			Class<? extends Node> nc = treeFactory.nodeClass(ns.label);
 			if (ns.props.isEmpty())
 				if (nc == null)
-					n = treeFactory.makeTreeNode(null, ns.name);
+					n = (TreeNode) treeFactory.makeNode(ns.name);
 				else
-					n = treeFactory.makeTreeNode(nc, null, ns.name);
+					n = (TreeNode) treeFactory.makeNode(nc, ns.name);
 			else if (nc == null)
-				n = treeFactory.makeTreeNode(null, ns.name, makePropertyList(ns.props, log));
+				n = (TreeNode) treeFactory.makeNode(ns.name, makePropertyList(ns.props, log));
 			else
-				n = treeFactory.makeTreeNode(nc, null, ns.name, makePropertyList(ns.props, log));
+				n = (TreeNode) treeFactory.makeNode(nc, ns.name, makePropertyList(ns.props, log));
 			String nodeId = ns.label.trim() + ":" + ns.name.trim();
 			if (nodes.containsKey(nodeId))
 				log.severe("duplicate node found (" + nodeId + ") - ignoring the second one");
@@ -274,8 +283,9 @@ public class TreeParser extends MinimalGraphParser {
 			if (ns.parent != null) {
 				String parentId = ns.parent.label.trim() + ":" + ns.parent.name.trim();
 				TreeNode parent = nodes.get(parentId); // parent has always been treated before
-				n.setParent(parent);
-				parent.addChild(n);
+				n.connectParent(parent);
+//				n.setParent(parent);
+//				parent.addChild(n);
 			}
 			/*-
 			 * Add in any imported graphs.
@@ -283,22 +293,15 @@ public class TreeParser extends MinimalGraphParser {
 			 */
 			for (importGraph ig : ns.imports) {
 				TreeNode parent = n;
-				Tree<? extends TreeNode> importTree = (Tree<? extends TreeNode>) ig.getGraph(parent.treeNodeFactory());
+				Tree<? extends TreeNode> importTree = (Tree<? extends TreeNode>) ig.getGraph(parent.factory());
 				for (TreeNode importNode : importTree.nodes()) {
 					if (importNode.getParent() == null) {
-						importNode.setParent(parent);
-						parent.addChild(importNode);
+						importNode.connectParent(parent);
+//						importNode.setParent(parent);
+//						parent.addChild(importNode);
 					}
 				}
 			}
-		}
-		// make tree
-		try {
-			Constructor<?> cons = treeClass.getConstructor(Iterable.class);
-			tree = (Tree<? extends TreeNode>) cons.newInstance(nodes.values());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -336,7 +339,7 @@ public class TreeParser extends MinimalGraphParser {
 	@Override
 	public void setFactory(Object factory) {
 		// Nasty!
-		treeFactory = (TreeNodeFactory) factory;
+		treeFactory = (NodeFactory) factory;
 	}
 
 }

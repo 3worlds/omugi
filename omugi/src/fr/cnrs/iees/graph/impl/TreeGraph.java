@@ -29,9 +29,9 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	private Set<N> nodes = new HashSet<>();
 	private N root = null;
 	private List<N> roots = new ArrayList<N>(10);
-	private GraphFactory<N,E> factory;
+	private GraphFactory factory;
 	
-	public TreeGraph(GraphFactory<N,E> factory) {
+	public TreeGraph(GraphFactory factory) {
 		super();
 		this.factory = factory;
 		this.factory.manageGraph(this);
@@ -60,7 +60,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	}
 
 	@Override
-	public NodeFactory<N> nodeFactory() {
+	public NodeFactory nodeFactory() {
 		return factory;
 	}
 
@@ -98,7 +98,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	}
 
 	@Override
-	public EdgeFactory<E> edgeFactory() {
+	public EdgeFactory edgeFactory() {
 		return factory;
 	}
 

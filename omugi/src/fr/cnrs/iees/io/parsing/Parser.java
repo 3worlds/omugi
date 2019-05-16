@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing;
 
-import fr.cnrs.iees.graph.MinimalGraph;
+import fr.cnrs.iees.graph.NodeSet;
 
 /**
  * 
@@ -41,7 +41,7 @@ public abstract class Parser {
 	
 	protected abstract void parse();
 	
-	public abstract MinimalGraph<?> graph();
+	public abstract NodeSet<?> graph();
 
 	public abstract void setFactory(Object factory);
 

@@ -23,12 +23,12 @@ public class SimpleTree<N extends SimpleTreeNode> implements Tree<N> {
 	/** the tree roots, if root is not unique **/
 	private List<N> roots = new ArrayList<N>(10);
 	
-	private NodeFactory<N> factory = null;
+	private NodeFactory factory = null;
 	
 	/** the list of nodes */
 	private Set<N> nodes = new HashSet<N>();
 	
-	public SimpleTree(NodeFactory<N> factory) {
+	public SimpleTree(NodeFactory factory) {
 		super();
 		this.factory = factory;
 		this.factory.manageGraph(this);
@@ -104,7 +104,7 @@ public class SimpleTree<N extends SimpleTreeNode> implements Tree<N> {
 	}
 
 	@Override
-	public NodeFactory<N> nodeFactory() {
+	public NodeFactory nodeFactory() {
 		return factory;
 	}
 

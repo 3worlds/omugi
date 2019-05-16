@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.Tree;
@@ -19,7 +20,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  *
  */
 public class SimpleTreeFactory 
-		extends NodeFactoryAdapter<SimpleTreeNode> {
+		extends NodeFactoryAdapter {
 
 	private Logger log = Logger.getLogger(ALGraphFactory.class.getName());
 	private Set<Tree<SimpleTreeNode>> trees = new HashSet<>();
@@ -44,13 +45,13 @@ public class SimpleTreeFactory
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void manageGraph(NodeSet<? extends SimpleTreeNode> graph) {
+	public void manageGraph(NodeSet<? extends Node> graph) {
 		if (graph instanceof SimpleTree)
 			trees.add((SimpleTree<SimpleTreeNode>) graph);
 	}
 
 	@Override
-	public void unmanageGraph(NodeSet<? extends SimpleTreeNode> graph) {
+	public void unmanageGraph(NodeSet<? extends Node> graph) {
 		trees.remove(graph);
 	}
 	
@@ -78,9 +79,9 @@ public class SimpleTreeFactory
 	}
 
 	@Override
-	public SimpleTreeNode makeNode(Class<? extends SimpleTreeNode> nodeClass, String proposedId, ReadOnlyPropertyList props) {
+	public SimpleTreeNode makeNode(Class<? extends Node> nodeClass, String proposedId, ReadOnlyPropertyList props) {
 		SimpleTreeNode result = null;
-		Constructor<? extends SimpleTreeNode> c = null;
+		Constructor<? extends Node> c = null;
 		try {
 			c = nodeClass.getDeclaredConstructor(Identity.class,
 				ReadOnlyPropertyList.class,
@@ -96,7 +97,7 @@ public class SimpleTreeFactory
 		}
 		Identity id = scope.newId(proposedId);
 		try {
-			result = c.newInstance(id,props,this);
+			result = (SimpleTreeNode) c.newInstance(id,props,this);
 		} catch (Exception e) {
 			log.severe(()->"Node of class \""+nodeClass.getName()+ "\" could not be instantiated");
 		}
@@ -105,9 +106,9 @@ public class SimpleTreeFactory
 	}
 
 	@Override
-	public SimpleTreeNode makeNode(Class<? extends SimpleTreeNode> nodeClass, String proposedId) {
+	public SimpleTreeNode makeNode(Class<? extends Node> nodeClass, String proposedId) {
 		SimpleTreeNode result = null;
-		Constructor<? extends SimpleTreeNode> c = null;
+		Constructor<? extends Node> c = null;
 		try {
 			c = nodeClass.getDeclaredConstructor(Identity.class,NodeFactory.class);
 		} catch (Exception e) {
@@ -115,7 +116,7 @@ public class SimpleTreeFactory
 		}
 		Identity id = scope.newId(proposedId);
 		try {
-			result = c.newInstance(id,this);
+			result = (SimpleTreeNode) c.newInstance(id,this);
 		} catch (Exception e) {
 			log.severe(()->"Node of class \""+nodeClass.getName()+ "\" could not be instantiated");
 		}

@@ -18,7 +18,7 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	private TreeNode treenode;
 
 	public TreeGraphNode(Identity id, 
-			GraphFactory<TreeGraphNode,ALEdge> gfactory) {
+			GraphFactory gfactory) {
 		super(id, gfactory);
 		treenode = new SimpleTreeNode(id,gfactory);
 	}
@@ -69,7 +69,7 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	}
 
 	@Override
-	public NodeFactory<? extends TreeNode> factory() {
+	public NodeFactory factory() {
 		return treenode.factory();
 	}
 

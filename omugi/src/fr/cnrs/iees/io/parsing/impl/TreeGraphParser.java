@@ -38,10 +38,11 @@ import java.util.logging.Logger;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.impl.ALEdge;
 import fr.cnrs.iees.graph.impl.TreeGraph;
 import fr.cnrs.iees.graph.impl.TreeGraphFactory;
 import fr.cnrs.iees.graph.impl.TreeGraphNode;
-import fr.cnrs.iees.io.parsing.impl.MinimalGraphParser;
+import fr.cnrs.iees.io.parsing.impl.NodeSetParser;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;
 import fr.cnrs.iees.properties.SimplePropertyList;
@@ -52,7 +53,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  *
  */
 // tested OK with version 0.0.5 on 23/1/2019
-public class TreeGraphParser extends MinimalGraphParser {
+public class TreeGraphParser extends NodeSetParser {
 
 	private Logger log = Logger.getLogger(TreeGraphParser.class.getName());
 
@@ -81,7 +82,7 @@ public class TreeGraphParser extends MinimalGraphParser {
 
 	// the result of this parsing
 	// remind that an TreeGraph is its own Node, Edge and TreeNode factory
-	private TreeGraph<? extends TreeGraphNode, ? extends Edge> graph = null;
+	private TreeGraph<TreeGraphNode,ALEdge> graph = null;
 
 	// lazy init: nothing is done before it's needed
 	/**
@@ -98,7 +99,6 @@ public class TreeGraphParser extends MinimalGraphParser {
 	 * So how do we do imports? We need the graph, a parent node and we need to
 	 * detect the 'import' key word - all this before the graph is complete!
 	 */
-	@SuppressWarnings("unchecked")
 	private void buildGraph() {
 		// parse token if not yet done
 		if (lastItem == null)
@@ -115,25 +115,29 @@ public class TreeGraphParser extends MinimalGraphParser {
 		// setup the factories
 		graphFactory = new TreeGraphFactory(null,labels);
 		propertyListFactory = graphFactory;
+		// make treegraph & record it in factory
+		graph = new TreeGraph<>(graphFactory);
+		graphFactory.manageGraph(graph);
 		// make tree nodes
 		Map<String, TreeGraphNode> nodes = new HashMap<>();
 		for (treeNodeSpec ns : nodeSpecs) {
 			TreeGraphNode n = null;
-			Class<? extends TreeGraphNode> nc = (Class<? extends TreeGraphNode>) graphFactory.nodeClass(ns.label);
+			Class<? extends Node> nc = (Class<? extends Node>) graphFactory.nodeClass(ns.label);
 			if (ns.props.isEmpty())
 				if (nc == null)
-					n = graphFactory.makeTreeNode(null, ns.name);
+					n = graphFactory.makeNode(ns.name);
 				else
-					n = graphFactory.makeTreeNode(nc, null, ns.name);
+					n = graphFactory.makeNode(nc, ns.name);
 			else if (nc == null)
-				n = (TreeGraphNode) graphFactory.makeTreeNode(null, ns.name, makePropertyList(ns.props, log));
+				n = graphFactory.makeNode(ns.name, makePropertyList(ns.props, log));
 			else
-				n = (TreeGraphNode) graphFactory.makeTreeNode(nc, null, ns.name, makePropertyList(ns.props, log));
+				n = graphFactory.makeNode(nc, ns.name, makePropertyList(ns.props, log));
 			if (ns.parent != null) {
 				// the parent has always been set before
 				TreeGraphNode parent = nodes.get(ns.parent.label.trim() + ":" + ns.parent.name.trim());
-				n.setParent(parent);
-				parent.addChild(n);
+				n.connectParent(parent);
+//				n.setParent(parent);
+//				parent.addChild(n);
 			}
 			// this puts the node in the graph
 			String nodeId = (ns.label + ":" + ns.name).replaceAll("\\s", "");
@@ -142,7 +146,6 @@ public class TreeGraphParser extends MinimalGraphParser {
 			else
 				nodes.put(nodeId, n);
 		}
-		graph = new TreeGraph<>(nodes.values());
 		// make cross links
 		for (edgeSpec es : edgeSpecs) {
 			SimplePropertyList pl = null;

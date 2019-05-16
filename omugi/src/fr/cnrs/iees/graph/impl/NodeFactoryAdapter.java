@@ -10,6 +10,7 @@ import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.identity.impl.LocalScope;
+import fr.cnrs.iees.properties.PropertyListFactory;
 
 /**
  * 
@@ -17,10 +18,11 @@ import fr.cnrs.iees.identity.impl.LocalScope;
  *
  * @param <N>
  */
-public abstract class NodeFactoryAdapter<N extends Node> implements NodeFactory<N> {
+public abstract class NodeFactoryAdapter 
+		implements NodeFactory, PropertyListFactory {
 
-	protected Map<String,Class<? extends N>> nodeLabels = new HashMap<>();
-	protected Map<Class<? extends N>,String> nodeClassNames = new HashMap<>();
+	protected Map<String,Class<? extends Node>> nodeLabels = new HashMap<>();
+	protected Map<Class<? extends Node>,String> nodeClassNames = new HashMap<>();
 	protected IdentityScope scope;
 
 	protected NodeFactoryAdapter(String scopeId) {
@@ -40,23 +42,21 @@ public abstract class NodeFactoryAdapter<N extends Node> implements NodeFactory<
 				try {
 					Class<?> c = Class.forName(labels.get(label),true,OmugiClassLoader.getClassLoader());
 					if (Node.class.isAssignableFrom(c)) {
-						nodeLabels.put(label,(Class<? extends N>) c);
-						nodeClassNames.put((Class<? extends N>) c,label);
+						nodeLabels.put(label,(Class<? extends Node>) c);
+						nodeClassNames.put((Class<? extends Node>) c,label);
 					}
 				} catch (ClassNotFoundException e) {
 					log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
 				}
 		}
 	}
-	
-	
 
 	@Override
-	public final String nodeClassName(Class<? extends N> nodeClass) {
+	public final String nodeClassName(Class<? extends Node> nodeClass) {
 		return nodeClassNames.get(nodeClass);
 	}
 
-	public final Class<? extends N> nodeClass(String label) {
+	public final Class<? extends Node> nodeClass(String label) {
 		return nodeLabels.get(label);
 	}
 

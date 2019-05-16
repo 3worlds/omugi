@@ -16,7 +16,7 @@ public class ALReadOnlyDataNode extends ALNode implements ReadOnlyDataHolder {
 	
 	public ALReadOnlyDataNode(Identity id, 
 			ReadOnlyPropertyList props, 
-			GraphFactory<ALNode,? extends ALEdge> factory) {
+			GraphFactory factory) {
 		super(id, factory);
 		properties = props;
 	}

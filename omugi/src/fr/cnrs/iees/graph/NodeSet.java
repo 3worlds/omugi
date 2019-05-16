@@ -60,7 +60,7 @@ public interface NodeSet<N extends Node>  extends Textable {
 	 * The node factory used to instantiate nodes for this graph.
 	 * @return the node factory
 	 */
-	public NodeFactory<N> nodeFactory();
+	public NodeFactory nodeFactory();
 	
 	/**
 	 * Use this method to add nodes into a graph. This method is usually invoked by

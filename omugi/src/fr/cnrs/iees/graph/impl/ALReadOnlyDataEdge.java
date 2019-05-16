@@ -16,7 +16,7 @@ public class ALReadOnlyDataEdge extends ALEdge implements ReadOnlyDataHolder {
 	private ReadOnlyPropertyList properties;
 	
 	public ALReadOnlyDataEdge(Identity id, Node start, Node end, 
-			ReadOnlyPropertyList props, EdgeFactory<ALEdge> graph) {
+			ReadOnlyPropertyList props, EdgeFactory graph) {
 		super(id, start, end, graph);
 		properties = props;
 	}

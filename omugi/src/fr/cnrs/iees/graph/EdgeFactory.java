@@ -51,7 +51,7 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  *
  * @param <N>
  */
-public interface EdgeFactory<E extends Edge> {
+public interface EdgeFactory {
 	
 	public static String defaultEdgeId = "edge0";
 
@@ -63,7 +63,7 @@ public interface EdgeFactory<E extends Edge> {
 	 * @param end the end node for this edge
 	 * @return
 	 */
-	public default E makeEdge(Node start, Node end) {
+	public default Edge makeEdge(Node start, Node end) {
 		return makeEdge(start,end,defaultEdgeId);
 	}
 	
@@ -76,7 +76,7 @@ public interface EdgeFactory<E extends Edge> {
 	 * @param props properties
 	 * @return
 	 */
-	public default E makeEdge(Node start, Node end, ReadOnlyPropertyList props) {
+	public default Edge makeEdge(Node start, Node end, ReadOnlyPropertyList props) {
 		return makeEdge(start,end,defaultEdgeId,props);
 	}
 	
@@ -91,7 +91,7 @@ public interface EdgeFactory<E extends Edge> {
 	 * @param instanceId the instance identifier
 	 * @return
 	 */
-	public E makeEdge(Node start, Node end, String proposedId);
+	public Edge makeEdge(Node start, Node end, String proposedId);
 
 	/**
 	 * Create an edge with a particular class ID and instance ID and properties. Implementing
@@ -105,7 +105,7 @@ public interface EdgeFactory<E extends Edge> {
 	 * @param props properties
 	 * @return 
 	 */
-	public E makeEdge(Node start, Node end, String proposedId, ReadOnlyPropertyList props);
+	public Edge makeEdge(Node start, Node end, String proposedId, ReadOnlyPropertyList props);
 
 	/**
 	 * returns the "label" of an edge class as known by this factory. For use in descendants
@@ -114,7 +114,7 @@ public interface EdgeFactory<E extends Edge> {
 	 * @param edgeClass
 	 * @return
 	 */
-	public default String edgeClassName(Class<? extends E> edgeClass) {
+	public default String edgeClassName(Class<? extends Edge> edgeClass) {
 		return edgeClass.getSimpleName();
 	}
 	
@@ -124,9 +124,9 @@ public interface EdgeFactory<E extends Edge> {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public default Class<? extends E> edgeClass(String label) {
+	public default Class<? extends Edge> edgeClass(String label) {
 		try {
-			return (Class<? extends E>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader());
+			return (Class<? extends Edge>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}
@@ -142,18 +142,18 @@ public interface EdgeFactory<E extends Edge> {
 	 * @param props
 	 * @return
 	 */
-	public E makeEdge(Class<? extends E> edgeClass, 
+	public Edge makeEdge(Class<? extends Edge> edgeClass, 
 		Node start, Node end, String proposedId, ReadOnlyPropertyList props);
 
-	public E makeEdge(Class<? extends E> edgeClass,
+	public Edge makeEdge(Class<? extends Edge> edgeClass,
 		Node start, Node end, String proposedId);
 	
-	public default E makeEdge(Class<? extends E> edgeClass,
+	public default Edge makeEdge(Class<? extends Edge> edgeClass,
 		Node start, Node end, ReadOnlyPropertyList props) {
 		return makeEdge(edgeClass,start,end,defaultEdgeId,props);
 	}
 	
-	public default E makeEdge(Class<? extends E> edgeClass,Node start, Node end) {
+	public default Edge makeEdge(Class<? extends Edge> edgeClass,Node start, Node end) {
 		return makeEdge(edgeClass,start,end,defaultEdgeId);
 	}
 	

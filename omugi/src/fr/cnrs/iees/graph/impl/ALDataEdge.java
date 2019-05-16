@@ -16,7 +16,7 @@ public class ALDataEdge extends ALEdge implements DataHolder {
 	private SimplePropertyList properties;
 	
 	public ALDataEdge(Identity id, Node start, Node end, 
-			SimplePropertyList props, EdgeFactory<ALEdge> graph) {
+			SimplePropertyList props, EdgeFactory graph) {
 		super(id, start, end, graph);
 		properties = props;
 	}

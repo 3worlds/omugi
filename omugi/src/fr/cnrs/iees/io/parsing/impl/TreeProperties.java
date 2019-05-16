@@ -41,7 +41,7 @@ public enum TreeProperties {
 
 	// name			property name	property class				property default value
 	CLASS			("type",					
-									"fr.cnrs.iees.graph.Tree",	"fr.cnrs.iees.graph.impl.ImmutableTreeImpl"),
+									"fr.cnrs.iees.graph.Tree",	"fr.cnrs.iees.graph.impl.SimpleTree"),
 	
 	TREE_FACTORY	("tree_factory",			
 									"fr.cnrs.iees.graph.TreeNodeFactory",	

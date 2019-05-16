@@ -24,11 +24,11 @@ import fr.cnrs.iees.identity.Identity;
  */
 public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 
-	private NodeFactory<? extends TreeNode> factory;
+	private NodeFactory factory;
 	private SimpleTreeNode parent = null;
 	private Set<SimpleTreeNode> children = null;
 	
-	protected SimpleTreeNode(Identity id, NodeFactory<? extends TreeNode> factory) {
+	protected SimpleTreeNode(Identity id, NodeFactory factory) {
 		super();
 		this.factory = factory;
 	}
@@ -218,7 +218,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	}
 
 	@Override
-	public NodeFactory<? extends TreeNode> factory() {
+	public NodeFactory factory() {
 		return factory;
 	}
 

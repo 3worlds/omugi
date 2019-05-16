@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 import au.edu.anu.rscs.aot.collections.tables.Table;
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.OmugiClassLoader;
-import fr.cnrs.iees.graph.MinimalGraph;
+import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
@@ -59,7 +59,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  * @author Jacques Gignoux - 21 janv. 2019
  *
  */
-public abstract class MinimalGraphParser extends Parser {
+public abstract class NodeSetParser extends Parser {
 
 	// ----------------------------------------------------
 	// specifications for a property
@@ -86,7 +86,7 @@ public abstract class MinimalGraphParser extends Parser {
 			importer = new OmugiGraphImporter(file);
 		}
 
-		public MinimalGraph<?> getGraph(Object factory) {
+		public NodeSet<?> getGraph(Object factory) {
 			// these files do not have their own scope or class statements but instead use
 			// the parent node's factory
 			importer.setFactory(factory);

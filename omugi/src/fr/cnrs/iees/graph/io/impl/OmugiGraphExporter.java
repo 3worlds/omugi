@@ -39,20 +39,17 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
-import fr.cnrs.iees.graph.DataEdge;
-import fr.cnrs.iees.graph.DataNode;
+import fr.cnrs.iees.graph.DataHolder;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.ReadOnlyDataEdge;
-import fr.cnrs.iees.graph.ReadOnlyDataNode;
+import fr.cnrs.iees.graph.NodeSet;
+import fr.cnrs.iees.graph.ReadOnlyDataHolder;
 import fr.cnrs.iees.graph.Tree;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.impl.TreeGraph;
 import fr.cnrs.iees.graph.impl.TreeGraphNode;
-import fr.cnrs.iees.graph.DataTreeNode;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
@@ -141,10 +138,10 @@ public class OmugiGraphExporter implements GraphExporter {
 			w.print(SaveableAsText.COLON);
 			w.print(e.endNode().id());
 			w.println(NODE_REF.suffix());
-			if (ReadOnlyDataEdge.class.isAssignableFrom(e.getClass()))
-				writeProperties((ReadOnlyPropertyList)((ReadOnlyDataEdge)e).properties(),w,"");
-			else if (DataEdge.class.isAssignableFrom(e.getClass()))
-				writeProperties((SimplePropertyList)((DataEdge)e).properties(),w,"");
+			if (e instanceof ReadOnlyDataHolder)
+				writeProperties((ReadOnlyPropertyList)((ReadOnlyDataHolder)e).properties(),w,"");
+			else if (e instanceof DataHolder)
+				writeProperties((SimplePropertyList)((DataHolder)e).properties(),w,"");
 		}
 	}
 	
@@ -155,7 +152,7 @@ public class OmugiGraphExporter implements GraphExporter {
 			// export nodes
 			writer.print(COMMENT.prefix());
 			writer.print(' ');
-			writer.print(graph.size());
+			writer.print(graph.nNodes());
 			writer.println(" NODES");
 			int nedges = 0;
 			for (Node n:graph.nodes()) {
@@ -163,10 +160,10 @@ public class OmugiGraphExporter implements GraphExporter {
 				writer.print(LABEL.suffix());
 				writer.println(n.id());
 				// node properties
-				if (ReadOnlyDataNode.class.isAssignableFrom(n.getClass()))
-					writeProperties((ReadOnlyPropertyList)((ReadOnlyDataNode)n).properties(),writer,"");
-				else if (DataNode.class.isAssignableFrom(n.getClass()))
-					writeProperties((SimplePropertyList)((DataNode) n).properties(),writer,"");
+				if (n instanceof ReadOnlyDataHolder)
+					writeProperties(((ReadOnlyDataHolder)n).properties(),writer,"");
+				else if (n instanceof DataHolder)
+					writeProperties(((DataHolder) n).properties(),writer,"");
 				nedges += n.degree(Direction.OUT);
 			}
 			// export edges
@@ -192,12 +189,12 @@ public class OmugiGraphExporter implements GraphExporter {
 		w.print(LABEL.suffix());
 		w.println(node.id());
 		// node properties
-		if (DataTreeNode.class.isAssignableFrom(node.getClass()))
-			writeProperties((SimplePropertyList)((DataTreeNode) node).properties(),w,indent);
-		else
-			if (TreeGraphNode.class.isAssignableFrom(node.getClass()))
-				if (((TreeGraphNode)node).properties()!=null)
-					writeProperties(((TreeGraphNode)node).properties(),w,indent);
+		if (node instanceof ReadOnlyDataHolder)
+			writeProperties(((ReadOnlyDataHolder) node).properties(),w,indent);
+//		else
+//			if (TreeGraphNode.class.isAssignableFrom(node.getClass()))
+//				if (((TreeGraphNode)node).properties()!=null)
+//					writeProperties(((TreeGraphNode)node).properties(),w,indent);
 		for (TreeNode tn: node.getChildren())
 			writeTree(tn,w,depth+1);
 	}
@@ -208,7 +205,7 @@ public class OmugiGraphExporter implements GraphExporter {
 			writeHeader(writer);
 			writer.print(COMMENT.prefix());
 			writer.print(' ');
-			writer.print(tree.size());
+			writer.print(tree.nNodes());
 			writer.println(" NODES");
 			writeTree(tree.root(),writer, 0);
 			writer.close();
@@ -248,7 +245,7 @@ public class OmugiGraphExporter implements GraphExporter {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void exportGraph(MinimalGraph<?> graph) {
+	public void exportGraph(NodeSet<?> graph) {
 		// TreeGraph must be tested first because it's a subclass of Graph and Tree
 		if (TreeGraph.class.isAssignableFrom(graph.getClass())) {
 			header = "treegraph";

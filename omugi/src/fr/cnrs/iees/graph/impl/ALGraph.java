@@ -19,10 +19,10 @@ public class ALGraph<N extends ALNode,E extends ALEdge> implements Graph<N,E> {
 	/** the adjacency list (= list of all nodes, each node storing its edges */
 	private Map<String,N> nodes = new HashMap<>();
 	
-	private GraphFactory<N,E> factory = null;
+	private GraphFactory factory = null;
 	
 	// constructors
-	public ALGraph(GraphFactory<N,E> nfactory) {
+	public ALGraph(GraphFactory nfactory) {
 		super();
 		factory = nfactory;
 		factory.manageGraph(this);
@@ -68,7 +68,7 @@ public class ALGraph<N extends ALNode,E extends ALEdge> implements Graph<N,E> {
 	}
 
 	@Override
-	public NodeFactory<N> nodeFactory() {
+	public NodeFactory nodeFactory() {
 		return factory;
 	}
 
@@ -91,7 +91,7 @@ public class ALGraph<N extends ALNode,E extends ALEdge> implements Graph<N,E> {
 	}
 
 	@Override
-	public EdgeFactory<E> edgeFactory() {
+	public EdgeFactory edgeFactory() {
 		return factory;
 	}
 

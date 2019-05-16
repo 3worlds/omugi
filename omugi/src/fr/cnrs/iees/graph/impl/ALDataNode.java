@@ -16,7 +16,7 @@ public class ALDataNode extends ALNode implements DataHolder {
 	
 	public ALDataNode(Identity id, 
 			SimplePropertyList props, 
-			GraphFactory<ALNode,? extends ALEdge> factory) {
+			GraphFactory factory) {
 		super(id, factory);
 		properties = props;
 	}

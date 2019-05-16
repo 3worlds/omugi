@@ -20,7 +20,7 @@ import fr.cnrs.iees.identity.Identity;
 public class ALEdge extends ElementAdapter implements Edge {
 
 	// for consistency, a graph using these nodes must use compatible edges
-	private EdgeFactory<ALEdge> factory;
+	private EdgeFactory factory;
 	private ALNode start = null;
 	private ALNode end = null;
 
@@ -30,7 +30,7 @@ public class ALEdge extends ElementAdapter implements Edge {
 	 * @param end the end Node
 	 */
 	protected ALEdge(Identity id, Node start, Node end, 
-			EdgeFactory<ALEdge> graph) {
+			EdgeFactory graph) {
 		super(id);
 		this.factory = graph;
 		if ((start instanceof ALNode) && (end instanceof ALNode)) {
@@ -109,7 +109,7 @@ public class ALEdge extends ElementAdapter implements Edge {
 	}
 
 	@Override
-	public EdgeFactory<ALEdge> factory() {
+	public EdgeFactory factory() {
 		return factory;
 	}
 

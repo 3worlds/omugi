@@ -32,7 +32,7 @@ package fr.cnrs.iees.graph.io.impl;
 
 import java.io.File;
 
-import fr.cnrs.iees.graph.MinimalGraph;
+import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.Parser;
@@ -57,7 +57,7 @@ public class OmugiGraphImporter implements GraphImporter {
 	
 	
 	@Override
-	public MinimalGraph<?> getGraph() {
+	public NodeSet<?> getGraph() {
 		return parser.graph();
 	}
 

@@ -31,10 +31,10 @@
 package fr.cnrs.iees.graph.io.impl;
 
 import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.GraphElement;
+import fr.cnrs.iees.graph.Element;
 import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.MinimalGraph;
 import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
@@ -91,7 +91,7 @@ public class GraphmlExporter implements GraphExporter {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void exportGraph(MinimalGraph<?> graph) {
+	public void exportGraph(NodeSet<?> graph) {
 		try {
 			if (Graph.class.isAssignableFrom(graph.getClass()))
 				exportGraph((Graph<? extends Node, ? extends Edge>) graph, new PrintWriter(file));
@@ -129,7 +129,7 @@ public class GraphmlExporter implements GraphExporter {
 		types.put("String", "string");
 	}
 	
-	private String writeData(GraphElement e) {
+	private String writeData(Element e) {
 		if (ReadOnlyPropertyList.class.isAssignableFrom(e.getClass())) {
 			ReadOnlyPropertyList de = (ReadOnlyPropertyList) e;
 			StringBuilder sb = new StringBuilder();

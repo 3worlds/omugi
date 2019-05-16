@@ -41,7 +41,7 @@ package fr.cnrs.iees.io.parsing.impl;
 public enum GraphProperties {
 	// name			property name				property class								property default value
 	/** The name of the java {@link Graph} class to instantiate as the graph that will be the result of the parsing */
-	CLASS			("type",					"fr.cnrs.iees.graph.Graph",					"fr.cnrs.iees.graph.impl.ImmutableGraphImpl"),
+	CLASS			("type",					"fr.cnrs.iees.graph.Graph",					"fr.cnrs.iees.graph.impl.ALGraph"),
 	/** The name of the {@link NodeFactory} to use to instantiate the graph nodes */
 	NODE_FACTORY	("node_factory",			"fr.cnrs.iees.graph.NodeFactory",			"fr.cnrs.iees.graph.impl.GraphFactory"),
 	/** The name of the {@link EdgeFactory} to use to instantiate the graph edges */
