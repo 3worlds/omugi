@@ -30,130 +30,36 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.graph.Tree;
-import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.TreeNodeFactory;
+import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.DataHolder;
+import fr.cnrs.iees.properties.SimplePropertyList;
 
-class ImmutableTreeImplTest {
+/**
+ * This tests could also apply to all DataHolder/ReadOnlyDataholder implementations, but I am lazy
+ * @author Jacques Gignoux - 17 mai 2019
+ *
+ */
+class ALDataNodeTest {
 
-	private TreeNode tn1 = null;
-	private TreeNode tn2 = null;
-	private TreeNode tn3 = null;
-	private Tree<TreeNode> tree = null;
-	
 	private void show(String method,String text) {
 		System.out.println(method+": "+text);
 	}
 
-	@BeforeEach
-	private void init() {
-		TreeNodeFactory tnf = new TreeFactory();
-		tn1 = tnf.makeTreeNode(null);
-		tn2 = tnf.makeTreeNode(tn1);
-		tn3 = tnf.makeTreeNode(tn1);
-		List<TreeNode> l = new ArrayList<TreeNode>();
-		l.add(tn3); l.add(tn2); l.add(tn1);
-		tree = new ImmutableTreeImpl<TreeNode>(l);
-	}
-	
 	@Test
-	void testImmutableTreeImpl() {
-		Tree<TreeNode> tree = new ImmutableTreeImpl<TreeNode>();
-		assertNotNull(tree);
-		assertEquals(tree.size(),0);
-		show("testImmutableTreeImpl",tree.toString());
-	}
-
-	@Test
-	void testImmutableTreeImplIterableOfN() {
-		TreeNodeFactory tnf = new TreeFactory();
-		TreeNode tn1 = tnf.makeTreeNode(null);
-		TreeNode tn2 = tnf.makeTreeNode(tn1);
-		TreeNode tn3 = tnf.makeTreeNode(tn1);
-		List<TreeNode> l = new ArrayList<TreeNode>();
-		l.add(tn3); l.add(tn2); l.add(tn1);
-		Tree<TreeNode> tree = new ImmutableTreeImpl<TreeNode>(l);
-		assertNotNull(tree);
-		assertEquals(tree.size(),3);
-		show("testImmutableTreeImpl",tree.toString());
-	}
-
-	@Test
-	void testImmutableTreeImplN() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSize() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testNodes() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testRoot() {
-		assertTrue(tree.root().equals(tn1));
-	}
-
-	@Test
-	void testLeaves() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testComputeDepths() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testMaxDepth() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testMinDepth() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSubTree() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testFindNodesByReference() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToUniqueString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToShortString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToDetailedString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToString() {
-		fail("Not yet implemented");
+	void testProperties() {
+		ALGraphFactory f = new ALGraphFactory("sgrdt");
+		SimplePropertyList p;
+		p = f.makePropertyList("a","b","c");
+		Node n = f.makeNode(p);
+		show("testProperties",n.toDetailedString());
+		((DataHolder)n).properties().setProperty("a", 12);
+		((DataHolder)n).properties().setProperty("c", "blurp");
+		show("testProperties",((DataHolder)n).properties().toString());
+		assertEquals(((DataHolder)n).properties().getPropertyValue("a"),12);
 	}
 
 }

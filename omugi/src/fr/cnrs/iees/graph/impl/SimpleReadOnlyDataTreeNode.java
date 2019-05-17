@@ -24,4 +24,12 @@ public class SimpleReadOnlyDataTreeNode extends SimpleTreeNode implements ReadOn
 		return properties;
 	}
 
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(properties.toString());
+		return sb.toString();
+	}
+
 }

@@ -14,6 +14,7 @@ import fr.cnrs.iees.graph.NodeFactory;
  * @author Jacques Gignoux - 10 mai 2019
  *
  */
+// tested OK with version 0.2.0 on 17/5/2019
 public class ALGraph<N extends ALNode,E extends ALEdge> implements Graph<N,E> {
 
 	/** the adjacency list (= list of all nodes, each node storing its edges */
@@ -93,6 +94,13 @@ public class ALGraph<N extends ALNode,E extends ALEdge> implements Graph<N,E> {
 	@Override
 	public EdgeFactory edgeFactory() {
 		return factory;
+	}
+	
+	// Object
+	
+	@Override
+	public final String toString() {
+		return "["+toDetailedString()+"]";
 	}
 
 }

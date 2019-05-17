@@ -24,4 +24,12 @@ public class TreeGraphDataNode extends TreeGraphNode implements DataHolder {
 		return properties;
 	}
 
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(properties.toString());
+		return sb.toString();
+	}
+
 }

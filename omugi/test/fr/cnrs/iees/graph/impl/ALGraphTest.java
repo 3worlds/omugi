@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -32,23 +32,19 @@ package fr.cnrs.iees.graph.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.impl.GraphFactory;
 
-class SimpleEdgeImplTest {
+class ALGraphTest {
 
-	Node n1;
-	Node n2, n3, n4;
+	ALNode n1;
+	ALNode n2, n3, n4;
 	Edge e1, e2, e3, e4, e5;
-	Map<String,String> nodes;
+	ALGraphFactory f = null;
+	ALGraph<ALNode,ALEdge> graph = null;
 	
 	// little test graph:
 	//
@@ -57,117 +53,135 @@ class SimpleEdgeImplTest {
 	//              v|
 	//  n1 ---e1--> n2 ---e4--> n3 ---e5--> n4
 	//     <--e2--- 
-	
+
 	@BeforeEach
 	private void init() {
-		GraphFactory f = new GraphFactory();
-		nodes = new HashMap<String,String>();
-		n1 = f.makeNode();
-		nodes.put(n1.id(), "n1");
-		n2 = f.makeNode();
-		nodes.put(n2.id(), "n2");
-		n3 = f.makeNode();
-		nodes.put(n3.id(), "n3");
-		n4 = f.makeNode();
-		nodes.put(n4.id(), "n4");
-		e1 = f.makeEdge(n1,n2);
-		e2 = f.makeEdge(n2,n1);
-		e3 = f.makeEdge(n2,n2);
-		e4 = f.makeEdge(n2,n3);
-		e5 = f.makeEdge(n3,n4);
+		f = new ALGraphFactory("bzt");
+		n1 = f.makeNode("n1");
+		n2 = f.makeNode("n1");
+		n3 = f.makeNode("n1");
+		n4 = f.makeNode("n1");
+		e1 = f.makeEdge(n1,n2,"e1");
+		e2 = f.makeEdge(n2,n1,"e1");
+		e3 = f.makeEdge(n2,n2,"e1");
+		e4 = f.makeEdge(n2,n3,"e1");
+		e5 = f.makeEdge(n3,n4,"e1");
+		graph = new ALGraph<ALNode,ALEdge>(f);
+		graph.addNode(n1);
+		graph.addNode(n2);
+		graph.addNode(n3);
+		graph.addNode(n4);
 	}
-
+	
 	private void show(String method,String text) {
 		System.out.println(method+": "+text);
 	}
-	
+
 	@Test
-	void testSimpleEdgeImpl() {
-		assertNotNull(e1);
+	void testNNodes() {
+		assertEquals(graph.nNodes(),4);
 	}
 
 	@Test
-	void testToDetailedString() {
-		show("testToDetailedString",e5.toDetailedString());
-		assertTrue(e5.toDetailedString().contains(n4.id().toString()));
+	void testNodes() {
+		int i=0;
+		for (Node n:graph.nodes()) {
+			show("testNodes",n.id());
+			i++;
+		}
+		assertEquals(i,4);
 	}
 
 	@Test
-	void testDisconnect() {
-		assertEquals(n2.degree(),5);
-		e4.disconnect();
-		assertEquals(n2.degree(),4);
+	void testEdges() {
+		int i=0;
+		for (Edge e:graph.edges()) {
+			show("testEdges",e.id());
+			i++;
+		}
+		assertEquals(i,5);
 	}
 
 	@Test
-	void testTraversalInt() {
-//		for (Node n:e4.traversal(1))
-//			show("testTraversalInt",nodes.get(n.getId()));
-		assertTrue(e4.traversal(1).contains(n2));
-		assertTrue(e4.traversal(1).contains(n3));
-		assertFalse(e4.traversal(1).contains(n1));
-		assertFalse(e4.traversal(1).contains(n4));
-
-		assertTrue(e4.traversal(2).contains(n2));
-		assertTrue(e4.traversal(2).contains(n3));
-		assertTrue(e4.traversal(2).contains(n1));
-		assertTrue(e4.traversal(2).contains(n4));
-
+	void testRoots() {
+		int i=0;
+		for (Node n:graph.roots()) {
+			show("testRoots",n.toDetailedString());
+			i++;
+		}
+		assertEquals(i,0);
 	}
 
 	@Test
-	void testTraversalIntDirection() {
-//		for (Node n:e2.traversal(3,Direction.IN))
-//			show("testTraversalIntDirection",nodes.get(n.getId()));
-		assertTrue(e2.traversal(3,Direction.IN).contains(n1));
-		assertTrue(e2.traversal(3,Direction.IN).contains(n2));
-		assertFalse(e2.traversal(3,Direction.IN).contains(n3));
-
-		assertTrue(e2.traversal(3,Direction.OUT).contains(n1));
-		assertTrue(e2.traversal(3,Direction.OUT).contains(n2));
-		assertTrue(e2.traversal(3,Direction.OUT).contains(n3));
+	void testLeaves() {
+		int i=0;
+		for (Node n:graph.leaves()) {
+			show("testLeaves",n.toDetailedString());
+			i++;
+		}
+		assertEquals(i,1);
 	}
 
 	@Test
-	void testStartNode() {
-		assertEquals(e1.startNode(),n1);
-		assertEquals(e3.startNode(),n2);
+	void testContains() {
+		assertTrue(graph.contains(n3));
+		// since graph is listening to f, the new nodes are automatically inserted in it
+		ALNode n = f.makeNode("n1");
+		assertTrue(graph.contains(n));
 	}
 
 	@Test
-	void testEndNode() {
-		assertEquals(e1.endNode(),n2);
-		assertEquals(e3.endNode(),n2);
+	void testNEdges() {
+		assertEquals(graph.nEdges(),5);
 	}
 
 	@Test
-	void testOtherNode() {
-		assertEquals(e1.otherNode(n1),n2);
-		assertEquals(e3.otherNode(n2),n2);
+	void testNodeFactory() {
+		assertEquals(graph.nodeFactory(),f);
 	}
 
 	@Test
-	void testSetStartNode() {
-		e2.setStartNode(n1);
-		assertEquals(e2.startNode(),n1);
+	void testAddNode() {
+		graph.addNode(n1);
+		show("testAddNode",graph.toDetailedString());
+		assertEquals(graph.nNodes(),4);
 	}
 
 	@Test
-	void testSetEndNode() {
-		e2.setEndNode(n2);
-		assertEquals(e2.endNode(),n2);
+	void testRemoveNode() {
+		graph.removeNode(n1);
+		show("testRemoveNode",graph.toShortString());
+		assertEquals(graph.nNodes(),3);
+	}
+
+	@Test
+	void testCountEdges() {
+		assertEquals(ALGraph.countEdges(graph.nodes()),5);
+	}
+
+	@Test
+	void testEdgeFactory() {
+		assertEquals(graph.edgeFactory(),f);
+	}
+
+	@Test
+	void testToUniqueString() {
+		show("testToUniqueString",graph.toUniqueString());
 	}
 
 	@Test
 	void testToShortString() {
-		show("testToShortString",e2.toShortString());
-		assertTrue(e2.toShortString().contains(e2.id().toString()));
+		show("testToShortString",graph.toShortString());
+	}
+
+	@Test
+	void testToDetailedString() {
+		show("testToDetailedString",graph.toDetailedString());
 	}
 
 	@Test
 	void testToString() {
-		show("testToString",e2.toString());
-		assertTrue(e2.toString().contains(n2.id().toString()));
+		show("testToString",graph.toString());
 	}
 
 }

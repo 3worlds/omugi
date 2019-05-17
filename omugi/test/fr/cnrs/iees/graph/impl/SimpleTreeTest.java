@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -32,135 +32,155 @@ package fr.cnrs.iees.graph.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.impl.GraphFactory;
-import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
 
-class ImmutableGraphImplTest {
+/**
+ * 
+ * @author Jacques Gignoux - 17 mai 2019
+ *
+ */
+class SimpleTreeTest {
 
-	GraphFactory f = new GraphFactory();
-	Node n1;
-	Node n2, n3, n4;
-	Edge e1, e2, e3, e4, e5;
-	Map<String,String> nodes;
-	ImmutableGraphImpl<Node,Edge> graph;
+	private SimpleTreeNode tn1, tn2, tn3, tn4;
+	private SimpleTreeFactory f;
+	private SimpleTree<SimpleTreeNode> tree = null;
 	
-	// little test graph:
-	//
-	//              e3
-	//              ||
-	//              v|
-	//  n1 ---e1--> n2 ---e4--> n3 ---e5--> n4
-	//     <--e2--- 
-	
-	@BeforeEach
-	private void init() {
-		nodes = new HashMap<String,String>();
-		n1 = f.makeNode();
-		nodes.put(n1.id(), "n1");
-		n2 = f.makeNode();
-		nodes.put(n2.id(), "n2");
-		n3 = f.makeNode();
-		nodes.put(n3.id(), "n3");
-		n4 = f.makeNode();
-		nodes.put(n4.id(), "n4");
-		e1 = f.makeEdge(n1,n2);
-		e2 = f.makeEdge(n2,n1);
-		e3 = f.makeEdge(n2,n2);
-		e4 = f.makeEdge(n2,n3);
-		e5 = f.makeEdge(n3,n4);
-		List<Node> l = new LinkedList<Node>();
-		l.add(n1); l.add(n2);
-		l.add(n3); l.add(n4);
-		graph = new ImmutableGraphImpl<Node,Edge>(l);
-	}
-
 	private void show(String method,String text) {
 		System.out.println(method+": "+text);
 	}
 	
-	@Test
-	void testImmutableGraphImplIterableOfN() {
-		assertNotNull(graph);
+	// simple little tree:
+	//  tn1
+	//  ├─tn2
+	//  │  └─tn4
+	//  └─tn3
+	
+	@BeforeEach
+	private void init() {
+		f = new SimpleTreeFactory("cuckoo");
+		tn1 = f.makeNode("tn1");
+		tn2 = f.makeNode("tn1");
+		tn3 = f.makeNode("tn1");
+		tn4 = f.makeNode("tn1");
+		tn2.connectParent(tn1);
+		tn3.connectParent(tn1);
+		tn4.connectParent(tn2);
+		tree = new SimpleTree<>(f);
+		tree.addNode(tn1);
+		tree.addNode(tn2);
+		tree.addNode(tn3);
+		tree.addNode(tn4);
 	}
 
 	@Test
-	void testNodes() {
+	final void testNodes() {
 		int i=0;
-		for (Node n:graph.nodes()) {
-			show("testNodes",nodes.get(n.id()));
+		for (Node n:tree.nodes()) {
+			show("testNodes",n.id());
 			i++;
 		}
 		assertEquals(i,4);
 	}
 
 	@Test
-	void testEdges() {
+	final void testRoots() {
 		int i=0;
-		for (Edge e:graph.edges()) {
-			show("testEdges",e.id().toString());
+		for (Node n:tree.roots()) {
+			show("testRoots",n.id());
 			i++;
 		}
-		assertEquals(i,5);
-	}
-
-	@SuppressWarnings("unused")
-	@Test
-	void testRoots() {
-		int i=0;
-		for (Node n:graph.roots()) 
-			i++;
-		assertEquals(i,0);
-	}
-
-	@SuppressWarnings("unused")
-	@Test
-	void testLeaves() {
-		int i=0;
-		for (Node n:graph.leaves()) 
-			i++;
 		assertEquals(i,1);
 	}
 
 	@Test
-	void testContains() {
-		assertTrue(graph.contains(n3));
-		Node n = f.makeNode();
-		assertFalse(graph.contains(n));
+	void testLeaves() {
+		int i=0;
+		for (Node n:tree.leaves()) {
+			show("testLeaves",n.toDetailedString());
+			i++;
+		}
+		assertEquals(i,2);
 	}
 
 	@Test
-	void testSize() {
-		assertEquals(graph.size(),4);
+	final void testContains() {
+		assertTrue(tree.contains(tn2));
+		// since tree is listening to f, the new nodes are automatically inserted in it
+		SimpleTreeNode tn = f.makeNode("tn1");
+		assertTrue(tree.contains(tn));
 	}
 
 	@Test
-	void testToUniqueString() {
-		show("testToUniqueString",graph.toUniqueString());
+	final void testRoot() {
+		assertTrue(tree.root().equals(tn1));
 	}
 
 	@Test
-	void testToShortString() {
-		show("testToShortString",graph.toShortString());
+	final void testSubTree() {
+		int i=0;
+		for (Node n:tree.subTree(tn2)) {
+			show("testSubTree",n.toDetailedString());
+			i++;
+		}
+		assertEquals(i,2);
+	}
+
+	@Test
+	final void testAddNode() {
+		tree.addNode(tn3);
+		assertEquals(tree.nNodes(),4);
+		SimpleTreeNode tn = f.makeNode("tn");
+		tree.addNode(tn);
+		assertEquals(tree.nNodes(),5);
+	}
+
+	@Test
+	final void testRemoveNode() {
+		tree.removeNode(tn2);
+		assertEquals(tree.nNodes(),3);
+		tree.removeNode(tn2);
+		assertEquals(tree.nNodes(),3);
+	}
+
+	@Test
+	final void testOnParentChanged() {
+		show("testOnParentChanged",tree.root().toDetailedString());
+		tn2.connectParent(tn4);
+		assertNull(tree.root());
+		int i=0;
+		for (Node n:tree.roots()) {
+			show("testOnParentChanged",n.id());
+			i++;
+		}
+		assertEquals(i,2);
+	}
+
+	@Test
+	final void testNodeFactory() {
+		assertEquals(tree.nodeFactory(),f);
+	}
+
+	@Test
+	final void testNNodes() {
+		assertEquals(tree.nNodes(),4);
+	}
+
+	@Test
+	final void testToUniqueString() {
+		show("testToUniqueString",tree.toUniqueString());
 	}
 
 	@Test
 	void testToDetailedString() {
-		show("testToDetailedString",graph.toDetailedString());
+		show("testToDetailedString",tree.toDetailedString());
 	}
 
 	@Test
 	void testToString() {
-		show("testToString",graph.toString());
+		show("testToString",tree.toString());
 	}
 
 }

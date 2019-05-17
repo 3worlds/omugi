@@ -104,7 +104,7 @@ public interface Connected<T extends Connected<?>> {
 	 * @return the connected Graph containing this instance
 	 */
 	public default Collection<? extends Node> traversal(Direction direction) {
-		return traversal(Integer.MAX_VALUE);
+		return traversal(Integer.MAX_VALUE,direction);
 	}
 
 }

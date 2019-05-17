@@ -144,9 +144,9 @@ public class SimpleTreeFactory
 		return result;
 	}
 
-	protected void onParentChanged(SimpleTreeNode child) {
+	protected void onParentChanged() {
 		for (Tree<SimpleTreeNode> tree:trees)
-			tree.onParentChanged(child);
+			tree.onParentChanged();
 	}
 	
 }

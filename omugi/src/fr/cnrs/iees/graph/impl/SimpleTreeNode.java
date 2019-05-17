@@ -23,6 +23,7 @@ import fr.cnrs.iees.identity.Identity;
  * @author Jacques Gignoux - 10 mai 2019
  *
  */
+// Tested OK with version 0.2.0 on 17/5/2019
 public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 
 	private NodeFactory factory;
@@ -170,16 +171,18 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 			SimpleTreeNode node,
 			int distance,
 			Direction direction) {
+		list.add(node); // there should not be double insertions here
 		if (distance>0) {
-			list.add(node); // there should not be double insertions here
 			switch (direction) {
 			case IN:
 				SimpleTreeNode tn = node.getParent();
 				if (tn!=null)
 					traversal(list,tn,distance-1,direction);
+				break;
 			case OUT:
 				for (SimpleTreeNode c:node.getChildren())
 					traversal(list,c,distance-1,direction);
+				break;
 			}
 		}
 		return list;
@@ -231,13 +234,19 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	public void connectParent(TreeNode parent) {
 		if (parent instanceof SimpleTreeNode)
 			if (this.parent!=parent) {
-				this.parent = (SimpleTreeNode) parent;
-				if (parent!=null)
+				if (parent!=null) {
+					if (parent.getParent()==this) { // this to avoid simple loops where child==parent
+						if (getParent()!=null)
+							getParent().disconnectFrom(this);
+						parent.disconnectFrom(this);
+					}
 					parent.connectChild(this);
+				}
+				this.parent = (SimpleTreeNode) parent;
 				// this is bad code, but will see later if we implement
 				// a complete listening system between nodes and graphs/trees
 				if (factory instanceof SimpleTreeFactory)
-					((SimpleTreeFactory)factory).onParentChanged(this);
+					((SimpleTreeFactory)factory).onParentChanged();
 			}
 	}
 
@@ -246,6 +255,11 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	public void connectChild(TreeNode child) {
 		if (child instanceof SimpleTreeNode)
 			if (!children.contains(child))  {
+				if (getParent()==child) { // this to avoid simple loops where child==parent
+					child.disconnectFrom(this);
+					if (child.getParent()!=null)
+						child.getParent().disconnectFrom(child);
+				}
 				children.add((SimpleTreeNode) child);
 				child.connectParent(this);
 			}

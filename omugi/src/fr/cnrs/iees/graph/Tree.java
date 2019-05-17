@@ -20,7 +20,7 @@ public interface Tree<N extends TreeNode> extends NodeSet<N>, Textable {
 	
 	public Iterable<N> subTree(N node);
 
-	public void onParentChanged(N child);
+	public void onParentChanged();
 	
 	@Override
 	public default String toShortString() {

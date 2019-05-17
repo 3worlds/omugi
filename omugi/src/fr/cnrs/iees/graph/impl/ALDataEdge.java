@@ -25,5 +25,13 @@ public class ALDataEdge extends ALEdge implements DataHolder {
 	public SimplePropertyList properties() {
 		return properties;
 	}
+	
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(properties.toString());
+		return sb.toString();
+	}
 
 }

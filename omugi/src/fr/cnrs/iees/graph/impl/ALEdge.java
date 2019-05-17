@@ -17,6 +17,7 @@ import fr.cnrs.iees.identity.Identity;
  * @author Jacques Gignoux - 10 mai 2019
  *
  */
+// Tested OK with version 0.2.0 on 17/5/2019
 public class ALEdge extends ElementAdapter implements Edge {
 
 	// for consistency, a graph using these nodes must use compatible edges
@@ -132,4 +133,21 @@ public class ALEdge extends ElementAdapter implements Edge {
 		throw new OmugiException("Node " + other + " is not part of edge " + this);
 	}
 
+	// Textable
+	
+	@Override
+	public String toDetailedString() {
+		if (start==null)
+			if (end==null)
+				return toShortString() + " [free-floating edge]";
+			else
+				return toShortString()+ " [NULL]→[" + end.toShortString()+"]";
+		else 
+			if (end==null)
+				return toShortString()+ " ["+start.toShortString()+ "]→[NULL]";
+			else
+				return toShortString()+ " ["+start.toShortString()+ "]→[" + end.toShortString()+"]";
+	}
+
+	
 }

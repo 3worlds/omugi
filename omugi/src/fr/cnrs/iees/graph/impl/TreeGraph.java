@@ -130,17 +130,11 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 
 	// Caution: same code as in SimpleTree
 	@Override
-	public void onParentChanged(N child) {
-		// child is now a root, means it wasnt before
-		if (child.isRoot()) {
-			roots.add(child);
-			resetRoot();
-		}
-		// child has changed parent, maybe it was a root before
-		else if (roots.contains(child)) {
-			roots.remove(child);
-			resetRoot();
-		}
+	public void onParentChanged() {
+		roots.clear();
+		for (N n:Tree.super.roots())
+			roots.add(n);
+		resetRoot();
 	}
 	
 	@Override

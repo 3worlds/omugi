@@ -16,6 +16,7 @@ import fr.cnrs.iees.graph.Tree;
  * @author Jacques Gignoux - 13 mai 2019
  *
  */
+// tested OK with version 0.2.0
 public class SimpleTree<N extends SimpleTreeNode> implements Tree<N> {
 	
 	/** the tree root, if unique - set to null if multiple roots **/
@@ -90,17 +91,11 @@ public class SimpleTree<N extends SimpleTreeNode> implements Tree<N> {
 	}
 
 	@Override
-	public void onParentChanged(N child) {
-		// child is now a root, means it wasnt before
-		if (child.isRoot()) {
-			roots.add(child);
-			resetRoot();
-		}
-		// child has changed parent, maybe it was a root before
-		else if (roots.contains(child)) {
-			roots.remove(child);
-			resetRoot();
-		}
+	public void onParentChanged() {
+		roots.clear();
+		for (N n:Tree.super.roots())
+			roots.add(n);
+		resetRoot();
 	}
 
 	@Override
@@ -120,6 +115,13 @@ public class SimpleTree<N extends SimpleTreeNode> implements Tree<N> {
 		String ptr = super.toString();
 		ptr = ptr.substring(ptr.indexOf('@'));
 		return getClass().getSimpleName()+ptr; 
+	}
+
+	// Object
+	
+	@Override
+	public final String toString() {
+		return "["+toDetailedString()+"]";
 	}
 
 }

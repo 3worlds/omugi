@@ -26,4 +26,12 @@ public class ALReadOnlyDataNode extends ALNode implements ReadOnlyDataHolder {
 		return properties;
 	}
 
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(properties.toString());
+		return sb.toString();
+	}
+
 }

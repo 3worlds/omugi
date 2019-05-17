@@ -11,6 +11,7 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
  * @author Jacques Gignoux - 10 mai 2019
  *
  */
+// tested OK with version 0.2.0 on 17/5/2019
 public class ALReadOnlyDataEdge extends ALEdge implements ReadOnlyDataHolder {
 
 	private ReadOnlyPropertyList properties;
@@ -24,6 +25,14 @@ public class ALReadOnlyDataEdge extends ALEdge implements ReadOnlyDataHolder {
 	@Override
 	public ReadOnlyPropertyList properties() {
 		return properties;
+	}
+
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(properties.toString());
+		return sb.toString();
 	}
 
 }
