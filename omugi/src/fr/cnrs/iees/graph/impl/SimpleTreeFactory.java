@@ -33,13 +33,20 @@ public class SimpleTreeFactory
 	public SimpleTreeFactory(String scopeName,Map<String,String> labels) {
 		super(scopeName,labels);
 	}
-	
+
 	/**
-	 * basic constructor, only requires a scope
+	 * basic constructor with scope only 
 	 * @param scopeName the scope identifier, e.g. "GraphFactory"
 	 */
 	public SimpleTreeFactory(String scopeName) {
 		super(scopeName);
+	}
+	
+	/**
+	 * basic constructor, only requires a scope
+	 */
+	public SimpleTreeFactory() {
+		super("DTF"); // stands for "default tree factory"
 	}
 
 

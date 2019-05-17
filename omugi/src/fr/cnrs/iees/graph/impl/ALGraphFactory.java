@@ -17,6 +17,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  * The factory for ALGraphs (node and edge factory).
  * A factory manages a list of graphs, i.e. every time a new node/edge is created, it is added
  * to all graphs in the list. Removal of nodes is treated at the graph level.
+ * To have different graphs, you must have a different factory (is this a flaw?)
  * 
  * @author Jacques Gignoux - 13 mai 2019
  *
@@ -36,6 +37,13 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 		super(scopeName);
 	}
 	
+	/**
+	 * basic constructor with default scope
+	 */
+	public ALGraphFactory() {
+		super();
+	}
+
 	/**
 	 * constructor with labels for sub-classes of Node and Edge
 	 * @param scopeName the scope identifier, e.g. "GraphFactory"

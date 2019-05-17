@@ -28,6 +28,14 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 	}
 	
 	/**
+	 * basic constructor, only requires a scope
+	 * @param scopeName the scope identifier, e.g. "GraphFactory"
+	 */
+	public TreeGraphFactory() {
+		super("TGF");
+	}
+	
+	/**
 	 * constructor with labels for sub-classes of Node and Edge
 	 * @param scopeName the scope identifier, e.g. "GraphFactory"
 	 * @param labels a Map of (labels,class names) associating a label to a java class name
@@ -43,7 +51,9 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 
 	@Override
 	public TreeGraphNode makeNode(String proposedId) {
-		return new TreeGraphNode(scope.newId(proposedId),this);
+		TreeGraphNode result = new TreeGraphNode(scope.newId(proposedId),this);
+		addNodeToGraphs(result);
+		return result;
 	}
 
 	@Override

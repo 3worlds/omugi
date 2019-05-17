@@ -113,11 +113,11 @@ public class TreeGraphParser extends NodeSetParser {
 			}
 		}
 		// setup the factories
-		graphFactory = new TreeGraphFactory(null,labels);
+		graphFactory = new TreeGraphFactory("TGF",labels);
 		propertyListFactory = graphFactory;
 		// make treegraph & record it in factory
 		graph = new TreeGraph<>(graphFactory);
-		graphFactory.manageGraph(graph);
+		graphFactory.manageGraph(graph); //
 		// make tree nodes
 		Map<String, TreeGraphNode> nodes = new HashMap<>();
 		for (treeNodeSpec ns : nodeSpecs) {

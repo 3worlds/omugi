@@ -33,23 +33,20 @@ package fr.cnrs.iees.graph.io.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import au.edu.anu.rscs.aot.collections.tables.BooleanTable;
 import au.edu.anu.rscs.aot.collections.tables.Dimensioner;
 import au.edu.anu.rscs.aot.collections.tables.Table;
-import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.MinimalGraph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.impl.GraphFactory;
-import fr.cnrs.iees.graph.impl.ImmutableGraphImpl;
+import fr.cnrs.iees.graph.NodeSet;
+import fr.cnrs.iees.graph.impl.ALEdge;
+import fr.cnrs.iees.graph.impl.ALGraph;
+import fr.cnrs.iees.graph.impl.ALGraphFactory;
+import fr.cnrs.iees.graph.impl.ALNode;
 import fr.cnrs.iees.graph.impl.TreeGraph;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.io.FileImporter;
@@ -58,21 +55,26 @@ import fr.cnrs.iees.io.parsing.impl.TreeGraphTokenizer;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
+/**
+ * 
+ * @author Jacques Gignoux - 17 mai 2019
+ *
+ */
 class OmugiGraphExporterTest {
 
-	GraphFactory f = new GraphFactory();
+	ALGraphFactory f = new ALGraphFactory();
+	ALGraphFactory f2 = new ALGraphFactory();
 	// first, a simple graph with no properties
-	Node n1;
-	Node n2, n3, n4;
-	Edge e1, e2, e3, e4, e5;
-	Map<String,String> nodes;
-	ImmutableGraphImpl<Node,Edge> graph;
+	ALNode n1;
+	ALNode n2, n3, n4;
+	ALEdge e1, e2, e3, e4, e5;
+	ALGraph<ALNode,ALEdge> graph;
 	// second, a graph with properties
-	Node dn1, dn2, dn3, dn4;
-	Edge de1, de2, de3, de4, de5;
+	ALNode dn1, dn2, dn3, dn4;
+	ALEdge de1, de2, de3, de4, de5;
 	SimplePropertyList props = new SimplePropertyListImpl("one","two","three");
 	SimplePropertyList prop2 = new SimplePropertyListImpl("four","five","one");
-	ImmutableGraphImpl<Node,Edge> graph2;
+	ALGraph<ALNode,ALEdge> graph2;
 	
 	// little test graph:
 	//
@@ -85,43 +87,46 @@ class OmugiGraphExporterTest {
 	@BeforeEach
 	private void init() {
 		// simple graph
-		nodes = new HashMap<String,String>();
-		n1 = f.makeNode();
-		nodes.put(n1.id(), "n1");
-		n2 = f.makeNode();
-		nodes.put(n2.id(), "n2");
-		n3 = f.makeNode();
-		nodes.put(n3.id(), "n3");
-		n4 = f.makeNode();
-		nodes.put(n4.id(), "n4");
-		e1 = f.makeEdge(n1,n2);
-		e2 = f.makeEdge(n2,n1);
-		e3 = f.makeEdge(n2,n2);
-		e4 = f.makeEdge(n2,n3);
-		e5 = f.makeEdge(n3,n4);
-		List<Node> l = new LinkedList<Node>();
+		n1 = f.makeNode("n1");
+		n2 = f.makeNode("n1");
+		n3 = f.makeNode("n1");
+		n4 = f.makeNode("n1");
+		e1 = (ALEdge) f.makeEdge(n1,n2,"e1");
+		e2 = (ALEdge) f.makeEdge(n2,n1,"e1");
+		e3 = (ALEdge) f.makeEdge(n2,n2,"e1");
+		e4 = (ALEdge) f.makeEdge(n2,n3,"e1");
+		e5 = (ALEdge) f.makeEdge(n3,n4,"e1");
+		List<ALNode> l = new LinkedList<>();
 		l.add(n1); l.add(n2);
 		l.add(n3); l.add(n4);
-		graph = new ImmutableGraphImpl<Node,Edge>(l);
+		graph = new ALGraph<ALNode,ALEdge>(f);
+		graph.addNode(n1);
+		graph.addNode(n2);
+		graph.addNode(n3);
+		graph.addNode(n4);
 		// property graph
 		props.setProperty("one", 1.0F);
 		props.setProperty("two", 2000L);
 		prop2.setProperty("four", (short)4);
 		Table t = new BooleanTable(new Dimensioner(3),new Dimensioner(2));
 		prop2.setProperty("five", t);
-		dn1 = f.makeNode(props);
-		dn2 = f.makeNode(props);
-		dn3 = f.makeNode(props);
-		dn4 = f.makeNode(props);
-		de1 = f.makeEdge(dn1,dn2,prop2);
-		de2 = f.makeEdge(dn2,dn1,prop2);
-		de3 = f.makeEdge(dn2,dn2,prop2);
-		de4 = f.makeEdge(dn2,dn3,prop2);
-		de5 = f.makeEdge(dn3,dn4,prop2);
-		List<Node> l2 = new LinkedList<Node>();
+		dn1 = f2.makeNode("dn1",props);
+		dn2 = f2.makeNode("dn1",props);
+		dn3 = f2.makeNode("dn1",props);
+		dn4 = f2.makeNode("dn1",props);
+		de1 = (ALEdge) f2.makeEdge(dn1,dn2,"de1",prop2);
+		de2 = (ALEdge) f2.makeEdge(dn2,dn1,"de1",prop2);
+		de3 = (ALEdge) f2.makeEdge(dn2,dn2,"de1",prop2);
+		de4 = (ALEdge) f2.makeEdge(dn2,dn3,"de1",prop2);
+		de5 = (ALEdge) f2.makeEdge(dn3,dn4,"de1",prop2);
+		List<ALNode> l2 = new LinkedList<ALNode>();
 		l2.add(dn1); l2.add(dn2);
 		l2.add(dn3); l2.add(dn4);
-		graph2 = new ImmutableGraphImpl<Node,Edge>(l2);
+		graph2 = new ALGraph<ALNode,ALEdge>(f2);
+		graph2.addNode(dn1);
+		graph2.addNode(dn2);
+		graph2.addNode(dn3);
+		graph2.addNode(dn4);
 	}
 	
 	@Test
@@ -167,7 +172,7 @@ node D89EF3043496-000001683D5742F8-0000
 		// attempt to reimport graph
 		GraphImporter gi = new OmugiGraphImporter(f);
 		Graph<?,?> g = (Graph<?, ?>) gi.getGraph();
-		assertEquals(graph.size(),4);
+		assertEquals(graph.nNodes(),4);
 //		System.out.println(gi.getGraph().toString());
 		// re-save to bidon3.ugg - should contain the same thing as bidon2.ugg
 		testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
@@ -236,7 +241,7 @@ node D89EF3043496-000001683D574316-0002
 				+ File.separator + "bidon.ugt";
 		File f = new File(testfile);
 		FileImporter gi = new FileImporter(f);
-		MinimalGraph<?> tree = gi.getGraph();
+		NodeSet<?> tree = gi.getGraph();
 		testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
 				+ File.separator + "test" 
 				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 

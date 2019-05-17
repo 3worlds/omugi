@@ -254,7 +254,7 @@ public class TreeParser extends NodeSetParser {
 		}
 		// make tree
 		try {
-			Constructor<?> cons = treeClass.getDeclaredConstructor(Iterable.class);
+			Constructor<?> cons = treeClass.getDeclaredConstructor(NodeFactory.class);
 			tree = (Tree<? extends TreeNode>) cons.newInstance(treeFactory);
 			treeFactory.manageGraph(tree);
 		} catch (Exception e) {

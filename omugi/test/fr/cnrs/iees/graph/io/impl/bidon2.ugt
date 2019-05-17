@@ -1,21 +1,21 @@
-tree // saved by OmugiGraphExporter on Fri Feb 01 15:30:45 CET 2019
+tree // saved by OmugiGraphExporter on Fri May 17 16:39:22 CEST 2019
 
 // 12 NODES
-DataTreeNodeImpl node1
+SimpleDataTreeNode node1
 	prop1 = java.lang.Integer(3)
 	prop2 = java.lang.Double(4.2)
-	SimpleTreeNodeImpl node6
-		SimpleTreeNodeImpl node10
-		DataTreeNodeImpl node11
-			truc = java.lang.String("machin")
-			DataTreeNodeImpl node12
-				plop = java.lang.Integer(12)
-		SimpleTreeNodeImpl node7
-			SimpleTreeNodeImpl node8
-				SimpleTreeNodeImpl node9
-	DataTreeNodeImpl node5
+	SimpleDataTreeNode node5
 		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
-	SimpleTreeNodeImpl node2
-		SimpleTreeNodeImpl 
-		DataTreeNodeImpl node3
-			prop4 = java.lang.String("coucou")
+	SimpleTreeNode node2
+		SimpleDataTreeNode node3
+			prop4 = java.lang.String(coucou)
+		SimpleTreeNode 
+	SimpleTreeNode node6
+		SimpleDataTreeNode node11
+			truc = java.lang.String(machin)
+			SimpleDataTreeNode node12
+				plop = java.lang.Integer(12)
+		SimpleTreeNode node10
+		SimpleTreeNode node7
+			SimpleTreeNode node8
+				SimpleTreeNode node9

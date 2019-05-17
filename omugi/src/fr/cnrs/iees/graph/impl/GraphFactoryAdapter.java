@@ -33,6 +33,10 @@ public abstract class GraphFactoryAdapter
 		super(scopeId);
 	}
 
+	protected GraphFactoryAdapter() {
+		super("DGF"); // for "default graph factory"
+	}
+
 	@SuppressWarnings("unchecked")
 	protected GraphFactoryAdapter(String scopeId, Map<String,String> labels) {
 		super(scopeId);

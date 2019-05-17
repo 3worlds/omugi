@@ -35,6 +35,7 @@ import fr.cnrs.iees.graph.Element;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeSet;
+import fr.cnrs.iees.graph.ReadOnlyDataHolder;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
@@ -60,6 +61,7 @@ import au.edu.anu.rscs.aot.collections.tables.Table;
 // Problem: keys must be saved BEFORE the graph as per the xml schema
 // tested with version 0.0.4 OK on 20/12/2018 (fixed previous bug)
 // tested OK with version 0.0.10 on 31/1/2019
+// tested OK with version 0.2.0 on 17/5/2019
 public class GraphmlExporter implements GraphExporter {
 
 	// the output file
@@ -130,14 +132,14 @@ public class GraphmlExporter implements GraphExporter {
 	}
 	
 	private String writeData(Element e) {
-		if (ReadOnlyPropertyList.class.isAssignableFrom(e.getClass())) {
-			ReadOnlyPropertyList de = (ReadOnlyPropertyList) e;
+		if (ReadOnlyDataHolder.class.isAssignableFrom(e.getClass())) {
+			ReadOnlyPropertyList de = ((ReadOnlyDataHolder)e).properties();
 			StringBuilder sb = new StringBuilder();
 			for (String key: de.getKeysAsSet()) {
 				// record element property/attribute name and type
-				if (Node.class.isAssignableFrom(de.getClass()))
+				if (Node.class.isAssignableFrom(e.getClass()))
 					nodeKeys.put(key, ValidPropertyTypes.getType(de.getPropertyClassName(key)));
-				else if (Edge.class.isAssignableFrom(de.getClass()))
+				else if (Edge.class.isAssignableFrom(e.getClass()))
 					edgeKeys.put(key, ValidPropertyTypes.getType(de.getPropertyClassName(key)));
 				// write element data
 				sb.append("      <data key=\"")
