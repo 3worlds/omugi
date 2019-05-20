@@ -78,6 +78,7 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 //todo: import	
 // Tested OK with version 0.0.1 on 17/12/2018
 // Tested OK with version 0.0.10 on 31/1/2019
+// tested OK with version 0.2.0 on 20/5/2019
 public class GraphParser extends NodeSetParser {
 	
 	private Logger log = Logger.getLogger(GraphParser.class.getName());
@@ -314,7 +315,7 @@ public class GraphParser extends NodeSetParser {
 		}
 		// make graph and have it managed by the factory
 		try {
-			Constructor<?> cons = graphClass.getDeclaredConstructor(Iterable.class);
+			Constructor<?> cons = graphClass.getDeclaredConstructor(GraphFactory.class);
 			graph = (Graph<? extends Node, ? extends Edge>) cons.newInstance(nodeFactory);
 			nodeFactory.manageGraph(graph); // this will cause new nodes to be added to the graph
 		} catch (Exception e) {

@@ -79,9 +79,10 @@ class GraphParserTest {
 			"prop1 = Integer(0)"};
 
 	String[] otherTest = {"graph // checking the new ids\n", 
-			"  node=String(\"fr.cnrs.iees.graph.impl.SimpleNodeImpl\")\n",
-			"  pnode=String(\"fr.cnrs.iees.graph.impl.DataNodeImpl\")\n",
-			"  edge=String(\"fr.cnrs.iees.graph.impl.SimpleEdgeImpl\")\n", 
+			"  scope=String(\"otherTest\")",
+			"  node=String(\"fr.cnrs.iees.graph.impl.ALNode\")\n",
+			"  pnode=String(\"fr.cnrs.iees.graph.impl.ALDataNode\")\n",
+			"  edge=String(\"fr.cnrs.iees.graph.impl.ALEdge\")\n", 
 			"  mutable=Boolean(true)\n",
 			"\n",
 			"// nodes\n", 
@@ -129,11 +130,11 @@ class GraphParserTest {
 		GraphParser gp = new GraphParser(new GraphTokenizer(test));
 		Graph<?,?> g = gp.graph();
 //		System.out.println(g.toString());
-		assertEquals(g.size(),4);
+		assertEquals(g.nNodes(),4);
 		gp = new GraphParser(new GraphTokenizer(testWithErrors));
 		g = gp.graph();
 //		System.out.println(g.toString());
-		assertEquals(g.size(),4);
+		assertEquals(g.nNodes(),4);
 	}
 
 	@Test
@@ -143,9 +144,10 @@ class GraphParserTest {
 //		System.out.println(gp.toString());
 		assertEquals(gp.toString(),"Graph specification\n" + 
 				"Graph properties:\n" + 
-				"	node:String=fr.cnrs.iees.graph.impl.SimpleNodeImpl\n" + 
-				"	pnode:String=fr.cnrs.iees.graph.impl.DataNodeImpl\n" + 
-				"	edge:String=fr.cnrs.iees.graph.impl.SimpleEdgeImpl\n" + 
+				"	scope:String=otherTest\n" + 
+				"	node:String=fr.cnrs.iees.graph.impl.ALNode\n" + 
+				"	pnode:String=fr.cnrs.iees.graph.impl.ALDataNode\n" + 
+				"	edge:String=fr.cnrs.iees.graph.impl.ALEdge\n" + 
 				"	mutable:Boolean=true\n" + 
 				"Nodes:\n" + 
 				"	pnode:\n" + 
@@ -160,17 +162,16 @@ class GraphParserTest {
 				"Edges:\n" + 
 				"	edge:name1 [pnode:-->node:name2]\n" + 
 				"	edge:name2 [pnode:-->node:name2]\n" + 
-				"	edge: [node:name2-->node:name3]\n" + 
-				"");
+				"	edge: [node:name2-->node:name3]\n");
 	}
 	
 	@Test
 	void testGraph2() {
 		GraphParser gp = new GraphParser(new GraphTokenizer(otherTest));
 		Graph<?,?> g = gp.graph();
-//		System.out.println(g.toString());
-		assertEquals(g.size(),4); // 4 nodes
-		assertEquals(g.getClass().getSimpleName(),"MutableGraphImpl");
+		System.out.println(g.toString());
+		assertEquals(g.nNodes(),4); // 4 nodes
+		assertEquals(g.getClass().getSimpleName(),"ALGraph");
 	}		
 	
 }

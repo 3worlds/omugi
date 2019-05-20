@@ -33,7 +33,8 @@ package fr.cnrs.iees.io;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import org.junit.jupiter.api.Test;
-import fr.cnrs.iees.graph.MinimalGraph;
+
+import fr.cnrs.iees.graph.NodeSet;
 
 /**
  * 
@@ -51,9 +52,9 @@ class FileImporterTest {
 		File file = new File(testfile);
 		assertTrue(file.exists());
 		FileImporter fi = new FileImporter(file);
-		MinimalGraph<?> g = fi.getGraph();
+		NodeSet<?> g = fi.getGraph();
 		assertNotNull(g);
-		assertEquals(g.size(),4);
+		assertEquals(g.nNodes(),4);
 	}
 
 	@Test
@@ -65,9 +66,9 @@ class FileImporterTest {
 		File file = new File(testfile);
 		assertTrue(file.exists());
 		FileImporter fi = new FileImporter(file);
-		MinimalGraph<?> g = fi.getGraph();
+		NodeSet<?> g = fi.getGraph();
 		assertNotNull(g);
-		assertEquals(g.size(),4);
+		assertEquals(g.nNodes(),4);
 	}
 
 	@Test
@@ -79,9 +80,9 @@ class FileImporterTest {
 		File file = new File(testfile);
 		assertTrue(file.exists());
 		FileImporter fi = new FileImporter(file);
-		MinimalGraph<?> g = fi.getGraph();
+		NodeSet<?> g = fi.getGraph();
 		assertNotNull(g);
-		assertEquals(g.size(),12);
+		assertEquals(g.nNodes(),12);
 	}
 
 	@Test
@@ -94,9 +95,9 @@ class FileImporterTest {
 		assertTrue(file.exists());
 		// this doesnt work because the graphImporter cannot be found by the classLoader in this library
 		FileImporter fi = new FileImporter(file);
-		MinimalGraph<?> g = fi.getGraph();
+		NodeSet<?> g = fi.getGraph();
 		assertNotNull(g);
-		assertEquals(g.size(),11);
+		assertEquals(g.nNodes(),11);
 	}
 	
 	@Test
@@ -108,9 +109,9 @@ class FileImporterTest {
 		File file = new File(testfile);
 		assertTrue(file.exists());
 		FileImporter fi = new FileImporter(file);
-		MinimalGraph<?> g = fi.getGraph();
+		NodeSet<?> g = fi.getGraph();
 		assertNotNull(g);
-		assertEquals(g.size(),11);
+		assertEquals(g.nNodes(),11);
 	}
 	
 }

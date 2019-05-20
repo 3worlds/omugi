@@ -131,7 +131,7 @@ class GraphTokenizerTest {
 				"PROPERTY_VALUE:2.0\n" + 
 				"PROPERTY_NAME:prop3\n" + 
 				"PROPERTY_TYPE:String\n" + 
-				"PROPERTY_VALUE:\"blabla\"\n" + 
+				"PROPERTY_VALUE:blabla\n" + 
 				"PROPERTY_NAME:prop4\n" + 
 				"PROPERTY_TYPE:Boolean\n" + 
 				"PROPERTY_VALUE:true\n" + 
@@ -171,7 +171,7 @@ class GraphTokenizerTest {
 				"PROPERTY_VALUE:2.0\n" + 
 				"PROPERTY_NAME:prop3\n" + 
 				"PROPERTY_TYPE:String\n" + 
-				"PROPERTY_VALUE:\"blabla\"\n" + 
+				"PROPERTY_VALUE:blabla\n" + 
 				"PROPERTY_NAME:prop4\n" + 
 				"PROPERTY_TYPE:Boolkean\n" + 
 				"PROPERTY_VALUE:true\n" + 
@@ -224,7 +224,7 @@ class GraphTokenizerTest {
 				"PROPERTY_VALUE:2.0\n" + 
 				"PROPERTY_NAME:prop3\n" + 
 				"PROPERTY_TYPE:String\n" + 
-				"PROPERTY_VALUE:\"blabla\"\n" + 
+				"PROPERTY_VALUE:blabla\n" + 
 				"PROPERTY_NAME:prop4\n" + 
 				"PROPERTY_TYPE:Boolean\n" + 
 				"PROPERTY_VALUE:true\n" + 

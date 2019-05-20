@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
@@ -97,12 +97,12 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 		try {
 			c = nodeClass.getDeclaredConstructor(Identity.class,
 				ReadOnlyPropertyList.class,
-				NodeFactory.class);
+				GraphFactory.class);
 		} catch (Exception e) {
 			try {
 				c = nodeClass.getDeclaredConstructor(Identity.class,
 					SimplePropertyList.class,
-					NodeFactory.class);
+					GraphFactory.class);
 			} catch (Exception e1) {
 				log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
 			}			
@@ -122,7 +122,7 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 		ALNode result = null;
 		Constructor<? extends Node> c = null;
 		try {
-			c = nodeClass.getDeclaredConstructor(Identity.class,NodeFactory.class);
+			c = nodeClass.getDeclaredConstructor(Identity.class,GraphFactory.class);
 		} catch (Exception e) {
 			log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
 		}

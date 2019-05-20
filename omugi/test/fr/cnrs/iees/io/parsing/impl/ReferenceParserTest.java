@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.impl.TreeFactory;
+import fr.cnrs.iees.graph.impl.SimpleTreeFactory;
 import fr.cnrs.iees.io.parsing.impl.ReferenceParser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
 import fr.cnrs.iees.properties.SimplePropertyList;
@@ -53,7 +53,7 @@ class ReferenceParserTest {
 	String ref;
 	TreeNode node;
 	SimplePropertyList props;
-	TreeFactory factory = new TreeFactory(); 
+	SimpleTreeFactory factory = new SimpleTreeFactory("aa"); 
 
 	@Test
 	void testParse() {
@@ -79,7 +79,7 @@ class ReferenceParserTest {
 		ReferenceParser p = tk.parser();
 		Property prop = new Property("prop1",3.4);
 		props = new SimplePropertyListImpl(prop);
-		node = factory.makeTreeNode(null,props);
+		node = factory.makeNode(props);
 		assertTrue(p.matches(node));
 	}
 
@@ -91,19 +91,19 @@ class ReferenceParserTest {
 		props = new SimplePropertyListImpl(
 			new Property("prop8",false),
 			new Property("prop4","blabla"));
-		node = factory.makeTreeNode(null,props);
+		node = factory.makeNode(props);
 		props = new SimplePropertyListImpl(
 			new Property("prop1",3.4));
-		node.setParent(factory.makeTreeNode(null,props));
+		node.connectParent(factory.makeNode(props));
 		assertTrue(p.matches(node));
 	}
 	
 	@Test
 	void testMatches3() {
 		ref = ":blah";
-		node = factory.makeTreeNode(null, "blah");
+		node = factory.makeNode("blah");
 		assertTrue(NodeReference.matchesRef(node, ref));
-		node = factory.makeTreeNode(null, "bluh");
+		node = factory.makeNode("bluh");
 		assertFalse(NodeReference.matchesRef(node, ref));
 	}
 	
