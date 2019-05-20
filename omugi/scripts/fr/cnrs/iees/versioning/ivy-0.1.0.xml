@@ -1,5 +1,5 @@
 <!--===================================================================================
- ant and ivy scripts for project <omugi> version 0.2.0 (Mon May 20 17:04:29 CEST 2019)
+ ant and ivy scripts for project <omugi> version 0.1.0 (Mon May 06 14:37:42 CEST 2019)
  author: Jacques Gignoux <jacques.gignoux@upmc.fr>
 
  CAUTION: this file is generated - DO NOT EDIT!
@@ -13,7 +13,7 @@
 
 	<info	organisation="au.edu.anu.rscs.aot"
 			module="omugi"
-			revision="0.2.0"
+			revision="0.1.0"
 			status="integration">
 		<license name="gpl3" url="https://www.gnu.org/licenses/gpl-3.0.txt"/>
 		<description>This module is 'one more ultimate graph implementation'. It implements various kinds of graph, from verylight weight to elaborate, dynamic, graphs that can be used for data management or simulation</description>
