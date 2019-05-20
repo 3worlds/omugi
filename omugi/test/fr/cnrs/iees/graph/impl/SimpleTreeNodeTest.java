@@ -152,9 +152,9 @@ class SimpleTreeNodeTest {
 
 	@Test
 	void testDisconnect() {
-		tn2.disconnect();
+		tn1.disconnect();
 		assertTrue(tn2.isRoot());
-		assertTrue(tn4.isRoot());
+		assertTrue(tn3.isRoot());
 	}
 
 	@Test

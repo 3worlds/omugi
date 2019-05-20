@@ -27,8 +27,8 @@ import fr.cnrs.iees.identity.Identity;
 public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 
 	private NodeFactory factory;
-	private SimpleTreeNode parent = null;
-	private Set<SimpleTreeNode> children = new HashSet<>();
+	private TreeNode parent = null;
+	private Set<TreeNode> children = new HashSet<>();
 	
 	protected SimpleTreeNode(Identity id, NodeFactory factory) {
 		super(id);
@@ -40,10 +40,16 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	@Override
 	public void addConnectionsLike(Node node) {
 		if (node instanceof TreeNode) {
-			getParent().disconnectFrom(this);
+			if (parent!=null)
+				parent.disconnectFrom(this);
 			TreeNode tn = (TreeNode) node;
+			List<TreeNode> chlist = new LinkedList<>();
+			for (TreeNode c:tn.getChildren())
+				chlist.add(c);
+			for (TreeNode c:chlist)
+				tn.disconnectFrom(c);
 			connectParent(tn.getParent());
-			connectChildren(tn.getChildren());
+			connectChildren(chlist);
 		}
 	}
 
@@ -85,7 +91,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	public Iterable<? extends Node> nodes(Direction direction) {
 		switch (direction) {
 		case IN:
-			List<SimpleTreeNode> l = new LinkedList<>();
+			List<TreeNode> l = new LinkedList<>();
 			if (parent!=null)
 				l.add(parent);
 			return l;
@@ -100,7 +106,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 		if (parent==null)
 			return children;
 		else {
-			List<SimpleTreeNode> l = new LinkedList<>();
+			List<TreeNode> l = new LinkedList<>();
 			l.addAll(children);
 			l.add(parent);
 			return l;
@@ -130,16 +136,20 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	public void disconnect() {
 		if (parent!=null)
 			disconnectFrom(parent);
-		if (!children.isEmpty())
+		if (!children.isEmpty()) {
 			for (TreeNode child:children)
-				disconnectFrom(child);
+				child.connectParent(null);
+			children.clear();
+		}
+				
 	}
 
 	// caution: cross recursion
+	// cannot be called in a loop on children --> concurrent modification exception
 	@Override
 	public void disconnectFrom(Node node) {
-		if (node instanceof SimpleTreeNode) {
-			SimpleTreeNode tn = (SimpleTreeNode) node;
+		if (node instanceof TreeNode) {
+			TreeNode tn = (TreeNode) node;
 			if (tn==parent) {
 				parent = null;
 				tn.disconnectFrom(this);
@@ -151,36 +161,36 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 		}
 	}
 
-	private Collection<SimpleTreeNode> traversal(Collection<SimpleTreeNode> list, 
-			SimpleTreeNode node,
+	private Collection<TreeNode> traversal(Collection<TreeNode> list, 
+			TreeNode node,
 			int distance) {
 		list.add(node);
 		if (distance>0) {
-			SimpleTreeNode tn = node.getParent();
+			TreeNode tn = node.getParent();
 			if (tn!=null)
 				if (!(tn==this))
 					traversal(list,tn,distance-1);
-			for (SimpleTreeNode c:node.getChildren())
+			for (TreeNode c:node.getChildren())
 				if (!(c==this))
 					traversal(list,c,distance-1);
 		}
 		return list;
 	}
 	
-	private Collection<SimpleTreeNode> traversal(Collection<SimpleTreeNode> list, 
-			SimpleTreeNode node,
+	private Collection<TreeNode> traversal(Collection<TreeNode> list, 
+			TreeNode node,
 			int distance,
 			Direction direction) {
 		list.add(node); // there should not be double insertions here
 		if (distance>0) {
 			switch (direction) {
 			case IN:
-				SimpleTreeNode tn = node.getParent();
+				TreeNode tn = node.getParent();
 				if (tn!=null)
 					traversal(list,tn,distance-1,direction);
 				break;
 			case OUT:
-				for (SimpleTreeNode c:node.getChildren())
+				for (TreeNode c:node.getChildren())
 					traversal(list,c,distance-1,direction);
 				break;
 			}
@@ -190,14 +200,14 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	
 	@Override
 	public Collection<? extends Node> traversal(int distance) {
-		Collection<SimpleTreeNode> list = new LinkedList<>();
+		Collection<TreeNode> list = new LinkedList<>();
 		list = traversal(list,this,distance);
 		return list;
 	}
 
 	@Override
 	public Collection<? extends Node> traversal(int distance, Direction direction) {
-		Collection<SimpleTreeNode> list = new LinkedList<>();
+		Collection<TreeNode> list = new LinkedList<>();
 		list = traversal(list,this,distance,direction);
 		return list;
 	}
@@ -205,12 +215,12 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	// TreeNode
 
 	@Override
-	public SimpleTreeNode getParent() {
+	public TreeNode getParent() {
 		return parent;
 	}
 
 	@Override
-	public Iterable<? extends SimpleTreeNode> getChildren() {
+	public Iterable<? extends TreeNode> getChildren() {
 		return children;
 	}
 
@@ -232,55 +242,35 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	// caution: cross recursion with connectChild
 	@Override
 	public void connectParent(TreeNode parent) {
-		if (parent instanceof SimpleTreeNode)
-			if (this.parent!=parent) {
-				if (parent!=null) {
-					if (parent.getParent()==this) { // this to avoid simple loops where child==parent
-						if (getParent()!=null)
-							getParent().disconnectFrom(this);
-						parent.disconnectFrom(this);
-					}
-					parent.connectChild(this);
+		if (this.parent!=parent) {
+			if (parent!=null) {
+				if (parent.getParent()==this) { // this to avoid simple loops where child==parent
+					if (getParent()!=null)
+						getParent().disconnectFrom(this);
+					parent.disconnectFrom(this);
 				}
-				this.parent = (SimpleTreeNode) parent;
-				// this is bad code, but will see later if we implement
-				// a complete listening system between nodes and graphs/trees
-				if (factory instanceof SimpleTreeFactory)
-					((SimpleTreeFactory)factory).onParentChanged();
+				parent.connectChild(this);
 			}
+			this.parent = parent;
+			// this is bad code, but will see later if we implement
+			// a complete listening system between nodes and graphs/trees
+			if (factory instanceof SimpleTreeFactory)
+				((SimpleTreeFactory)factory).onParentChanged();
+		}
 	}
 
 	// caution: cross recursion with connectParent
 	@Override
 	public void connectChild(TreeNode child) {
-		if (child instanceof SimpleTreeNode)
-			if (!children.contains(child))  {
-				if (getParent()==child) { // this to avoid simple loops where child==parent
-					child.disconnectFrom(this);
-					if (child.getParent()!=null)
-						child.getParent().disconnectFrom(child);
-				}
-				children.add((SimpleTreeNode) child);
-				child.connectParent(this);
+		if (!children.contains(child))  {
+			if (getParent()==child) { // this to avoid simple loops where child==parent
+				child.disconnectFrom(this);
+				if (child.getParent()!=null)
+					child.getParent().disconnectFrom(child);
 			}
-	}
-
-	@Override
-	public void connectChildren(TreeNode... children) {
-		for (TreeNode child:children)
-			connectChild(child);
-	}
-
-	@Override
-	public void connectChildren(Iterable<? extends TreeNode> children) {
-		for (TreeNode child:children)
-			connectChild(child);
-	}
-
-	@Override
-	public void connectChildren(Collection<? extends TreeNode> children) {
-		for (TreeNode child:children)
-			connectChild(child);
+			children.add(child);
+			child.connectParent(this);
+		}
 	}
 
 	// Textable

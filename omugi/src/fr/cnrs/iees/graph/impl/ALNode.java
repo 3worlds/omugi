@@ -67,7 +67,7 @@ public class ALNode extends ElementAdapter implements Node {
 	// Node
 	
 	@Override
-	public final void disconnect() {
+	public void disconnect() {
 		for (ALEdge e:edges.get(Direction.IN)) 
 			e.startNode().removeEdge(e,Direction.OUT);
 		for (ALEdge e:edges.get(Direction.OUT)) 
@@ -98,14 +98,11 @@ public class ALNode extends ElementAdapter implements Node {
 
 	@Override
 	public void addConnectionsLike(Node node) {
-		if (node instanceof ALNode) {
-			ALNode al = (ALNode) node;
-			for (ALEdge e:al.edges(Direction.IN)) {
-				factory.makeEdge(e.startNode(), this);			
-			}
-			for (ALEdge e:al.edges(Direction.OUT)) {
-				factory.makeEdge(this, e.endNode());
-			}
+		for (Edge e:node.edges(Direction.IN)) {
+			factory.makeEdge(e.startNode(), this);			
+		}
+		for (Edge e:node.edges(Direction.OUT)) {
+			factory.makeEdge(this, e.endNode());
 		}
 	}
 
@@ -182,9 +179,9 @@ public class ALNode extends ElementAdapter implements Node {
 	public String toDetailedString() {
 		StringBuilder sb = new StringBuilder(toShortString());
 		for (Edge e:edges(Direction.IN))
-			sb.append(" ←").append(e.toShortString());
+			sb.append(" ←").append(e.startNode().toShortString());
 		for (Edge e:edges(Direction.OUT))
-			sb.append(" →").append(e.toShortString());
+			sb.append(" →").append(e.endNode().toShortString());
 		return sb.toString();
 	}
 

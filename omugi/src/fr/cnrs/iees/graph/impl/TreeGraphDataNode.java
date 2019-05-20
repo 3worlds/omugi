@@ -10,6 +10,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  * @author Jacques Gignoux - 15 mai 2019
  *
  */
+// tested OK with version 0.2.0 on 20/5/2019
 public class TreeGraphDataNode extends TreeGraphNode implements DataHolder {
 
 	private SimplePropertyList properties;

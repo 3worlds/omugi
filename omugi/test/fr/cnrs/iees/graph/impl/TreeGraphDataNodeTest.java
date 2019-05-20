@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,64 +28,49 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.graph;
+package fr.cnrs.iees.graph.impl;
 
-import java.util.Collection;
+import static org.junit.jupiter.api.Assertions.*;
 
-public interface TreeNode extends Node {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-	/**
-	 * Gets the parent node. Returns null if this is the tree root.
-	 * @return the parent of this node
-	 */
-	public TreeNode getParent();
-	
-	/**
-	 * Set the argument as this node's parent. CAUTION: no consistency checks! this is the
-	 * tree's job.
-	 * 
-	 * @param parent the parent node
-	 */
-	void connectParent(TreeNode parent);
-	
-	/**
-	 * Gets the children nodes.
-	 * @return the list of children nodes.
-	 */
-	public Iterable<? extends TreeNode> getChildren();
-	
-	/**
-	 * Adds a node as a child. CAUTION: no consistency checks! this is the
-	 * tree's job.
-	 * 
-	 * @param child the node to add
-	 */
-	public void connectChild(TreeNode child);
-	
-	/**
-	 * Adds a set of nodes as children
-	 * @param children the nodes to add
-	 */
-	public default void connectChildren(TreeNode... children) {
-		for (TreeNode child:children)
-			connectChild(child);
-	}
-	
-	public default void connectChildren(Iterable<? extends TreeNode> children) {
-		for (TreeNode child:children)
-			connectChild(child);
+import fr.cnrs.iees.graph.DataHolder;
+import fr.cnrs.iees.properties.SimplePropertyList;
+
+/**
+ * 
+ * @author Jacques Gignoux - 20 mai 2019
+ *
+ */
+class TreeGraphDataNodeTest {
+
+	private TreeGraphFactory f = null;
+	private TreeGraphNode n1;
+
+	@BeforeEach
+	private void init() {
+		f = new TreeGraphFactory("Grtz");
+		SimplePropertyList p;
+		p = f.makePropertyList("a","b","c");
+		p.setProperty("a", 12);
+		p.setProperty("c", "blurp");
+		n1 = f.makeNode("n1",p);
 	}
 
-	public default void connectChildren(Collection<? extends TreeNode> children) {
-		for (TreeNode child:children)
-			connectChild(child);
-	}
 	
-	public boolean hasChildren();
+	private void show(String method,String text) {
+		System.out.println(method+": "+text);
+	}
 
-	/**
-	 * Gets the number of children of this TreeNode
-	 * @return the number of child nodes
-	 */
-	public int nChildren();
+	@Test
+	final void testToDetailedString() {
+		show("testToDetailedString",n1.toDetailedString());
+	}
+
+	@Test
+	final void testProperties() {
+		assertEquals(((DataHolder)n1).properties().getPropertyValue("a"),12);
+	}
+
 }

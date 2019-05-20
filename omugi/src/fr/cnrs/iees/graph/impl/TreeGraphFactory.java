@@ -125,5 +125,10 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 	public void unmanageGraph(NodeSet<? extends Node> graph) {
 		graphs.remove(graph);
 	}
+
+	protected void onParentChanged() {
+		for (TreeGraph<TreeGraphNode,ALEdge> tg:graphs) 
+			tg.onParentChanged();
+	}
 	
 }

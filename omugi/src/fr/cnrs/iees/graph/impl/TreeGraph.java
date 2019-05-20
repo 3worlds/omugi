@@ -23,6 +23,7 @@ import fr.ens.biologie.generic.Textable;
  * @param <N>
  * @param <E>
  */
+// tested OK with version 0.2.0 on 20/5/2019
 public class TreeGraph<N extends TreeGraphNode,E extends ALEdge> 
 	implements Tree<N>, EdgeSet<E>, Textable {
 
@@ -67,7 +68,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	@Override
 	public void addNode(N node) {
 		if (nodes.add(node))
-			if (node.isRoot()) {
+			if (node.getParent()==null) {
 				roots.add(node);
 				resetRoot();
 			}
@@ -105,7 +106,8 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	// slow
 	@Override
 	public int nEdges() {
-		return ALGraph.countEdges(nodes);
+		// a tree has nNodes()-1 edges
+		return ALGraph.countEdges(nodes)-nNodes()+1;
 	}
 
 	@Override
@@ -128,12 +130,13 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 		return result;
 	}
 
-	// Caution: same code as in SimpleTree
+	// Caution: different code from SimpleTree
 	@Override
 	public void onParentChanged() {
 		roots.clear();
-		for (N n:Tree.super.roots())
-			roots.add(n);
+		for (N n:nodes)
+			if (n.getParent()==null) // this is the 'tree only' check for root
+				roots.add(n);
 		resetRoot();
 	}
 	
