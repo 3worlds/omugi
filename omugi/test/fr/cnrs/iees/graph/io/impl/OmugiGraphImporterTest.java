@@ -53,9 +53,7 @@ class OmugiGraphImporterTest {
 		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
 			+ File.separator + "test" 
 			+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
-//			+ File.separator + "treegraph.utg";
-
-		+ File.separator + "sameLevelTree.ugt";
+			+ File.separator + "treegraph.utg";
 		File file = new File(testfile);
 		assertTrue(file.exists());
 		GraphImporter importer = new OmugiGraphImporter(file);
@@ -67,6 +65,26 @@ class OmugiGraphImporterTest {
 		assertNotNull(tree);
 	}
 
+	// testing a multi-root tree
+	@SuppressWarnings("unchecked")
+	@Test
+	void testGetGraph2() {
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+			+ File.separator + "test" 
+			+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+			+ File.separator + "sameLevelTree.ugt";
+		File file = new File(testfile);
+		assertTrue(file.exists());
+		GraphImporter importer = new OmugiGraphImporter(file);
+		Tree<? extends TreeNode> tree = (Tree<? extends TreeNode>)importer.getGraph();
+		String indent = "";
+		for (TreeNode node:tree.nodes()) {
+			printTree(node,indent);
+		}
+		assertNotNull(tree);
+	}
+
+	
 	private void printTree(TreeNode parent,String indent) {
 		if (parent.getParent()!=null)
 			System.out.println(indent+parent.getParent().id()+"->"+parent.id());

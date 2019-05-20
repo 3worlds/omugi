@@ -1,0 +1,34 @@
+treegraph // saved by OmugiGraphExporter on Mon May 20 16:56:52 CEST 2019
+
+// TREE
+TreeGraphNode 3Worlds
+	TreeGraphDataNode ecology
+		a = java.lang.Object(null)
+		b = java.lang.Object(null)
+		TreeGraphNode growth
+		TreeGraphDataNode animal
+			x = java.lang.Object(null)
+			y = java.lang.Object(null)
+			z = java.lang.Object(null)
+		TreeGraphDataNode plant
+			x = java.lang.Object(null)
+			y = java.lang.Object(null)
+			z = java.lang.Object(null)
+		TreeGraphDataNode entity
+			i = java.lang.Object(null)
+			j = java.lang.Object(null)
+			k = java.lang.Object(null)
+			l = java.lang.Object(null)
+		TreeGraphNode my simulator
+	TreeGraphNode my experiment
+	TreeGraphNode codeSource
+		TreeGraphDataNode some computation
+			a = java.lang.Object(null)
+			b = java.lang.Object(null)
+		TreeGraphNode D89EF3043496-000001686FF6BA12-0000
+
+// CROSS-LINKS
+[TreeGraphNode:growth] ALEdge  [TreeGraphDataNode:animal]
+[TreeGraphNode:growth] ALEdge 1_1 [TreeGraphDataNode:some computation]
+[TreeGraphNode:growth] ALEdge 1 [TreeGraphDataNode:plant]
+[TreeGraphDataNode:entity] ALEdge random name [TreeGraphDataNode:animal]

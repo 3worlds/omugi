@@ -1,41 +1,41 @@
-graph // saved by OmugiGraphExporter on Fri Feb 01 15:30:45 CET 2019
+graph // saved by OmugiGraphExporter on Mon May 20 16:56:52 CEST 2019
 
 // 4 NODES
-DataNodeImpl node4
+ALDataNode dn1
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
-DataNodeImpl node5
+ALDataNode dn3
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
-DataNodeImpl node6
+ALDataNode dn2
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
-DataNodeImpl node7
+ALDataNode dn4
 	one = java.lang.Float(1.0)
 	three = java.lang.Object(null)
 	two = java.lang.Long(2000)
 
 // 5 EDGES
-[DataNodeImpl:node4] DataEdgeImpl edge5 [DataNodeImpl:node5]
+[ALDataNode:dn1] ALDataEdge de1 [ALDataNode:dn2]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[DataNodeImpl:node5] DataEdgeImpl edge8 [DataNodeImpl:node6]
+[ALDataNode:dn3] ALDataEdge de5 [ALDataNode:dn4]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[DataNodeImpl:node5] DataEdgeImpl edge6 [DataNodeImpl:node4]
+[ALDataNode:dn2] ALDataEdge de4 [ALDataNode:dn3]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[DataNodeImpl:node5] DataEdgeImpl edge7 [DataNodeImpl:node5]
+[ALDataNode:dn2] ALDataEdge de2 [ALDataNode:dn1]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[DataNodeImpl:node6] DataEdgeImpl edge9 [DataNodeImpl:node7]
+[ALDataNode:dn2] ALDataEdge de3 [ALDataNode:dn2]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
