@@ -79,7 +79,7 @@ class TreeParserTest {
 				"label2:node2\n" + 
 				"	parent label1:node1\n" + 
 				"label3:node3\n" + 
-				"	prop4:String=\"coucou\"\n" + 
+				"	prop4:String=coucou\n" + 
 				"	parent label2:node2\n" + 
 				"label4:\n" + 
 				"	parent label2:node2\n" + 
@@ -97,7 +97,7 @@ class TreeParserTest {
 				"label10:node10\n" + 
 				"	parent label6:node6\n" + 
 				"label11:node11\n" + 
-				"	truc:String=\"machin\"\n" + 
+				"	truc:String=machin\n" + 
 				"	parent label6:node6\n" + 
 				"label12:node12\n" + 
 				"	plop:Integer=12\n" + 

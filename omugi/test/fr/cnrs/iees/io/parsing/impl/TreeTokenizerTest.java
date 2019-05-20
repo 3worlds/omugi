@@ -83,7 +83,7 @@ class TreeTokenizerTest {
 				"2 NAME:node3\n" + 
 				"3 PROPERTY_NAME:prop4\n" + 
 				"3 PROPERTY_TYPE:String\n" + 
-				"3 PROPERTY_VALUE:\"coucou\"\n" + 
+				"3 PROPERTY_VALUE:coucou\n" + 
 				"1 LABEL:label5\n" + 
 				"1 NAME:node5\n" + 
 				"2 PROPERTY_NAME:table\n" + 
@@ -107,7 +107,7 @@ class TreeTokenizerTest {
 				"3 NAME:node12\n" + 
 				"3 PROPERTY_NAME:truc\n" + 
 				"3 PROPERTY_TYPE:String\n" + 
-				"3 PROPERTY_VALUE:\"machin\"\n" + 
+				"3 PROPERTY_VALUE:machin\n" + 
 				"4 PROPERTY_NAME:plop\n" + 
 				"4 PROPERTY_TYPE:Integer\n" + 
 				"4 PROPERTY_VALUE:12\n");
