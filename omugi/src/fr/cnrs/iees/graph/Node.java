@@ -208,4 +208,13 @@ public interface Node extends Element, Connected<Node> {
 		return result;
 	}
 	
+	@Override
+	public default String classId() {
+		String s = factory().nodeClassName(this.getClass());
+		if (s!=null)
+			return s;
+		else
+			return Element.super.classId();
+	}
+	
 }

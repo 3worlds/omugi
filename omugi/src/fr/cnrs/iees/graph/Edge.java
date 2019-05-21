@@ -71,4 +71,14 @@ public interface Edge extends Element, Connected<Edge> {
 	 */
 	public EdgeFactory factory();
 
+	
+	@Override
+	public default String classId() {
+		String s = factory().edgeClassName(this.getClass());
+		if (s!=null)
+			return s;
+		else
+			return Element.super.classId();
+	}
+
 }
