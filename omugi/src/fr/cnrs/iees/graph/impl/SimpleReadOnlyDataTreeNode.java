@@ -1,5 +1,6 @@
 package fr.cnrs.iees.graph.impl;
 
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.ReadOnlyDataHolder;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
@@ -14,7 +15,7 @@ public class SimpleReadOnlyDataTreeNode extends SimpleTreeNode implements ReadOn
 	private ReadOnlyPropertyList properties;
 
 	public SimpleReadOnlyDataTreeNode(Identity id, 
-			ReadOnlyPropertyList props, SimpleTreeFactory factory) {
+			ReadOnlyPropertyList props, NodeFactory factory) {
 		super(id, factory);
 		properties = props;
 	}

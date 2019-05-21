@@ -1,6 +1,7 @@
 package fr.cnrs.iees.graph.impl;
 
 import fr.cnrs.iees.graph.DataHolder;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
@@ -14,7 +15,7 @@ public class SimpleDataTreeNode extends SimpleTreeNode implements DataHolder {
 	private SimplePropertyList properties;
 
 	public SimpleDataTreeNode(Identity id, SimplePropertyList props, 
-			SimpleTreeFactory factory) {
+			NodeFactory factory) {
 		super(id, factory);
 		properties = props;
 	}
