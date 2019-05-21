@@ -161,14 +161,15 @@ class ALEdgeTest {
 		show("testReplace",n3.toDetailedString());
 		show("testReplace",n4.toDetailedString());
 		assertEquals(e6.toDetailedString(),"ALEdge:e6 [ALNode:n3]→[ALNode:n4]");
-		assertEquals(n3.toDetailedString(),"ALNode:n3 ←ALEdge:e4 →ALEdge:e6");
-		assertEquals(n4.toDetailedString(),"ALNode:n4 ←ALEdge:e6");
+		assertEquals(n3.toDetailedString(),"ALNode:n3 ←ALNode:n2 →ALNode:n4");
+		assertEquals(n4.toDetailedString(),"ALNode:n4 ←ALNode:n3");
 	}
 
 	@Test
 	void testOtherNode() {
 		assertEquals(e1.otherNode(n1),n2);
 		assertEquals(e3.otherNode(n2),n2);
+		assertNull(e3.otherNode(n4));
 	}
 
 	@Test

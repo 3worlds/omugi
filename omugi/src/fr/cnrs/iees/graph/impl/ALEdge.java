@@ -130,7 +130,8 @@ public class ALEdge extends ElementAdapter implements Edge {
 	public ALNode otherNode(Node other) {
 		if (other.equals(end)) return start;
 		else if (other.equals(start)) return end;
-		throw new OmugiException("Node " + other + " is not part of edge " + this);
+		else return null;
+//		throw new OmugiException("Node " + other + " is not part of edge " + this);
 	}
 
 	// Textable
