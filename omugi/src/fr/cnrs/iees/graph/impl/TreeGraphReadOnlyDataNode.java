@@ -14,8 +14,9 @@ public class TreeGraphReadOnlyDataNode extends TreeGraphNode implements ReadOnly
 
 	private ReadOnlyPropertyList properties;
 	
-	public TreeGraphReadOnlyDataNode(Identity id, GraphFactory gfactory,
-			ReadOnlyPropertyList props) {
+	public TreeGraphReadOnlyDataNode(Identity id,
+			ReadOnlyPropertyList props, 
+			GraphFactory gfactory) {
 		super(id, gfactory);
 		props = properties;
 	}

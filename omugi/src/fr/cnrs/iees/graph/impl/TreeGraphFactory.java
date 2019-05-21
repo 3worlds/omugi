@@ -60,9 +60,9 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 	public TreeGraphNode makeNode(String proposedId, ReadOnlyPropertyList props) {
 		TreeGraphNode result = null;
 		if (props instanceof SimplePropertyList)
-			result =  new TreeGraphDataNode(scope.newId(proposedId),this,(SimplePropertyList) props);
+			result =  new TreeGraphDataNode(scope.newId(proposedId),(SimplePropertyList) props,this);
 		else
-			result =  new TreeGraphReadOnlyDataNode(scope.newId(proposedId),this,props);
+			result =  new TreeGraphReadOnlyDataNode(scope.newId(proposedId),props,this);
 		addNodeToGraphs(result);
 		return result;
 	}
