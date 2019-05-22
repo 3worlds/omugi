@@ -83,6 +83,11 @@ public class TreeGraphTokenizer extends LineTokenizer {
 		splitLines();
 	}
 	
+	public TreeGraphTokenizer(List<String> lines) {
+		super(lines);
+		splitLines();
+	}
+
 	@Override
 	public void tokenize() {
 		ttk.tokenize();

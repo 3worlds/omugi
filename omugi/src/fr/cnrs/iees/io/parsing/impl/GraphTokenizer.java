@@ -122,6 +122,10 @@ public class GraphTokenizer extends LineTokenizer {
 		super(lines);
 	}
 	
+	public GraphTokenizer(List<String> lines) {
+		super(lines);
+	}
+	
 	public boolean hasNext() {
 		if (tokenlist.size()>0)
 			if (tokenIndex<tokenlist.size())

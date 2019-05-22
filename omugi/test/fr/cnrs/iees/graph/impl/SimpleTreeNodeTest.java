@@ -316,6 +316,7 @@ class SimpleTreeNodeTest {
 		assertEquals(tn2.toString(),"[SimpleTreeNode:tn2 ↑SimpleTreeNode:tn1 ↓SimpleTreeNode:tn4]");
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	void testEqualsObject() {
 		show("testEqualsObject",tn2.toDetailedString());

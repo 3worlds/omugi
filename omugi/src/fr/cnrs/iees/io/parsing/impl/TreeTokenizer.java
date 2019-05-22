@@ -183,6 +183,10 @@ public class TreeTokenizer extends LineTokenizer {
 		super(lines);
 	}
 
+	public TreeTokenizer(List<String> lines) {
+		super(lines);
+	}
+
 	public boolean hasNext() {
 		if (tokenlist.size() > 0)
 			if (tokenIndex < tokenlist.size())

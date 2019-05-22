@@ -85,6 +85,10 @@ public abstract class NodeSetParser extends Parser {
 		public importGraph(File file) {
 			importer = new OmugiGraphImporter(file);
 		}
+		
+		public importGraph(Parser parser) {
+			importer = new OmugiGraphImporter(parser);
+		}
 
 		public NodeSet<?> getGraph(Object factory) {
 			// these files do not have their own scope or class statements but instead use

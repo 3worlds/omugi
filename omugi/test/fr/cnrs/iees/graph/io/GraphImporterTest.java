@@ -28,78 +28,34 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.io.parsing;
+package fr.cnrs.iees.graph.io;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import static org.junit.jupiter.api.Assertions.*;
 
-import fr.cnrs.iees.io.parsing.impl.TreeGraphTokens;
+import org.junit.jupiter.api.Test;
+
+import fr.cnrs.iees.graph.NodeSet;
+import fr.cnrs.iees.io.parsing.impl.TreeParser;
 
 /**
- * An abstract ancestor for tokenizers based on multi-line text. This class assumes that
- * the token come in a list of Strings (lines), and that a token is always fully contained
- * in a single line String.
  * 
- * @author Jacques Gignoux - 7 déc. 2018
+ * @author Jacques Gignoux - 22 mai 2019
  *
  */
-public abstract class LineTokenizer implements Tokenizer {
-	
-	//----------------------------------------------------
-	public class token {
-		public TreeGraphTokens type;
-		public String value;
-		
-		public token(TreeGraphTokens type, String value) {
-			super();
-			this.type = type;
-			this.value = value;
-		}
-		
-		@Override
-		public String toString() {
-			return type+":"+value;
-		}
-	}
-	//----------------------------------------------------
-	
-	protected List<String> lines;
-	
-	// This array lists the words that are placed at the top of a file according
-	// to the graph type.
-	private static String[] fileHeaders = {"graph","tree","treegraph","aot"};
-	// this for expanding this list in descendants
-	protected Set<String> fheaders = new HashSet<String>();
-		
-	public LineTokenizer(FileTokenizer parent) {
-		super();
-		lines = parent.lines();
-		for (String s:fileHeaders)
-			fheaders.add(s);
-	}
-	
-	protected boolean isFileHeader(String s) {
-		return fheaders.contains(s);
-	}
-	
-	protected LineTokenizer(List<String> lines) {
-		super();
-		this.lines = lines;
-		for (String s:fileHeaders)
-			fheaders.add(s);
-	}
-	
-	// for debugging only
-	protected LineTokenizer(String[] lines) {
-		super();
-		this.lines = new ArrayList<>(lines.length);
-		for (int i=0; i<lines.length; i++)
-			this.lines.add(lines[i]);
-		for (String s:fileHeaders)
-			fheaders.add(s);
+class GraphImporterTest {
 
+	@Test
+	final void testImportGraphString() {
+		NodeSet<?> graph = GraphImporter.importGraph("fr/cnrs/iees/io/parsing/impl/importgraph.ugt");
+		System.out.println(graph.toDetailedString());
+		assertNotNull(graph);
 	}
-	
+
+	@Test
+	final void testImportGraphStringClassOfQ() {
+		NodeSet<?> graph = GraphImporter.importGraph("importgraph.ugt",TreeParser.class);
+		System.out.println(graph.toDetailedString());
+		assertNotNull(graph);
+	}
+
 }

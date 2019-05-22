@@ -31,7 +31,6 @@
 package fr.cnrs.iees.graph.io.impl;
 
 import java.io.File;
-
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.io.parsing.FileTokenizer;
@@ -55,6 +54,10 @@ public class OmugiGraphImporter implements GraphImporter {
 		parser = tokenizer.parser();
 	}
 	
+	public OmugiGraphImporter(Parser parser) {
+		super();
+		this.parser = parser;
+	}
 	
 	@Override
 	public NodeSet<?> getGraph() {

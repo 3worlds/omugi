@@ -150,9 +150,17 @@ public class TreeParser extends NodeSetParser {
 				nodeSpecs.add(lastNodes[level]);
 				break;
 			case IMPORT_RESOURCE:
-				lastNodes[tk.level - 1].imports.add(new importGraph(Resources.getPackagedFile(tk.value)));
+//				lastNodes[tk.level - 1].imports.add(new importGraph(Resources.getPackagedFile(tk.value)));
+				// This is highly likely NOT to work because one must know the context: tree or treegraph ?
+				// and what about edges in the case of a treegraph ?
+				// assuming only a tree part is added here. But it's going to be false in many cases
+				lastNodes[tk.level - 1].imports.add(
+					new importGraph(
+						new TreeParser(
+							new TreeTokenizer(Resources.getTextResource(tk.value)))));
 				break;
 			case IMPORT_FILE:
+//				lastNodes[tk.level - 1].imports.add(new importGraph(new File(tk.value)));
 				lastNodes[tk.level - 1].imports.add(new importGraph(new File(tk.value)));
 				break;
 			case PROPERTY_NAME:
@@ -202,10 +210,7 @@ public class TreeParser extends NodeSetParser {
 					treeClass = (Class<? extends Tree<? extends TreeNode>>) getClass(TreeProperties.CLASS, p.value, log,
 							Tree.class);
 					break;
-				case MUTABLE:
-// TODO: implement MutableTreeImpl				
-//				treeClass = (Class<? extends Tree<? extends TreeNode>>) 
-//					getClass(TreeProperties.CLASS,MutableTreeImpl.class.getName());
+				case MUTABLE: // deprecated
 					break;
 				case PROP_FACTORY:
 					plFactoryClass = (Class<? extends PropertyListFactory>) getClass(TreeProperties.PROP_FACTORY,
