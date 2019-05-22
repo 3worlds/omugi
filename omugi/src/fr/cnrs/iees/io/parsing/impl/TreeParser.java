@@ -157,7 +157,8 @@ public class TreeParser extends NodeSetParser {
 				lastNodes[tk.level - 1].imports.add(
 					new importGraph(
 						new TreeParser(
-							new TreeTokenizer(Resources.getTextResource(tk.value)))));
+							new TreeTokenizer(Resources.getTextResource(
+								Resources.getPackagedFileName(tk.value))))));
 				break;
 			case IMPORT_FILE:
 //				lastNodes[tk.level - 1].imports.add(new importGraph(new File(tk.value)));
