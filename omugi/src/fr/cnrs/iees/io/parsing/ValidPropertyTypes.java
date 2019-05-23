@@ -50,20 +50,23 @@ import au.edu.anu.rscs.aot.util.IntegerRange;
 import au.edu.anu.rscs.aot.util.StringUtils;
 
 /**
- * This class records the property types which are compatible with a given application
+ * <p>This class records the property types which are compatible with a given application
  * using SimplePropertyList descendants
  * By default it contains only primitive and table types.
- * It is meant to remain a singleton class (ie no instances).
+ * It is meant to remain a singleton class (ie no instances).</p>
  * 
- * TODO: this class shouldnt mess up with the property type hierarchy, it's only here 
+ * <p>TODO: this class shouldnt mess up with the property type hierarchy, it's only here 
  * for saving/loading property lists from text messages / files.
- * It must be kept independent
+ * It must be kept independent</p>
+ * 
+ * <p>The test case  {@link ValidPropertyTypesTest} shows all the major use case and expected behaviour</p>
  * 
  * @author Jacques Gignoux - 25-10-2018
  *
  */
 // Tested with version 0.0.1 of tests 25/10/2018
 // Tested ok with version 0.0.12 on 4/4/2019
+// Much better tested with version 0.2.0 on 23/5/2019
 public class ValidPropertyTypes {
 	
 	/** map of type names giving indexes in other arrays */
@@ -116,6 +119,8 @@ public class ValidPropertyTypes {
 	 * @return the value as an instance of Object
 	 */
 	static public Object getDefaultValue(String type) {
+		if (type.contains("."))
+			type = classTypes.get(type);
 		Integer i = typeIndex.get(type);
 		if (i!=null)
 			return defaults.get(i);
@@ -128,6 +133,8 @@ public class ValidPropertyTypes {
 	 * @return true if valid
 	 */
 	static public boolean isValid(String type) {
+		if (type.contains("."))
+			type = classTypes.get(type);
 		return (typeIndex.containsKey(type));
 	}
 		
@@ -138,7 +145,9 @@ public class ValidPropertyTypes {
 	 * @return
 	 */
 	static public String typeOf(Object o) {
-		return classTypes.get(o.getClass().getName());
+		if (o!=null)
+			return classTypes.get(o.getClass().getName());
+		return null;
 	}
 	
 	/**
@@ -148,7 +157,10 @@ public class ValidPropertyTypes {
 	 */
 	static public String getType(String javaClassName) {
 		if (!javaClassName.contains("."))
-			return javaClassName;
+			if (typeIndex.containsKey(javaClassName))
+				return javaClassName;
+			else 
+				return null;
 		return classTypes.get(javaClassName);
 	}
 	
@@ -285,6 +297,14 @@ public class ValidPropertyTypes {
 	static {
 		for (PrimitiveTypes pt: PrimitiveTypes.values())
 			recordPropertyType(pt.toString(),pt.className,pt.defaultValue);
+		typeIndex.put("byte", typeIndex.get("Byte"));		
+		typeIndex.put("char", typeIndex.get("Char"));
+		typeIndex.put("short", typeIndex.get("Short"));		
+		typeIndex.put("int", typeIndex.get("Integer"));		
+		typeIndex.put("long", typeIndex.get("Long"));		
+		typeIndex.put("float", typeIndex.get("Float"));		
+		typeIndex.put("double", typeIndex.get("Double"));		
+		typeIndex.put("boolean", typeIndex.get("Boolean"));		
 		for (TableTypes pt: TableTypes.values())
 			recordPropertyType(pt.toString(),pt.className,pt.defaultValue);
 		for (AotTypes pt: AotTypes.values())
