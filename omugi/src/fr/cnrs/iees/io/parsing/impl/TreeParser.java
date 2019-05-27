@@ -31,7 +31,6 @@
 package fr.cnrs.iees.io.parsing.impl;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -89,7 +88,20 @@ import fr.cnrs.iees.properties.PropertyListFactory;
  * @author Jacques Gignoux - 20 déc. 2018
  *
  */
+//Tested OK with version 0.2.1 on 27/5/2019
 public class TreeParser extends NodeSetParser {
+	
+	// setup of default tree properties and property types for this parser
+	static {
+		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.SimpleTree");
+		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.SimpleTreeFactory");
+		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.SimpleTreeFactory");
+		defaultGraphProperties.put(SCOPE, 			"DTF");
+		graphPropertyTypes.put(CLASS,			Tree.class);
+		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
+		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
+		graphPropertyTypes.put(SCOPE, 			String.class);
+	}
 
 	private Logger log = Logger.getLogger(TreeParser.class.getName());
 
@@ -113,9 +125,6 @@ public class TreeParser extends NodeSetParser {
 	private itemType lastItem = null;
 	private treeNodeSpec[] lastNodes = null;
 	private propSpec lastProp = null;
-
-	// factories for treenodes and properties
-	private NodeFactory treeFactory = null;
 
 	public TreeParser(TreeTokenizer tokenizer) {
 		super();
@@ -172,7 +181,8 @@ public class TreeParser extends NodeSetParser {
 				lastProp.type = tk.value;
 				break;
 			case PROPERTY_VALUE:
-				lastProp.value = tk.value;
+				lastProp.value = tk.value// Tested OK with version 0.2.1 on 27/5/2019
+;
 				if (lastItem == itemType.TREE)
 					treeProps.add(lastProp);
 				// i.e if not a graph property
@@ -190,97 +200,27 @@ public class TreeParser extends NodeSetParser {
 	// builds the tree from the parsed data
 	@SuppressWarnings("unchecked")
 	private void buildTree() {
+		// parse tokens if not yet done
 		if (lastNodes == null)
 			parse();
-		Class<? extends Tree<? extends TreeNode>> treeClass = null;
-		Class<? extends NodeFactory> tFactoryClass = null;
-		Class<? extends PropertyListFactory> plFactoryClass = null;
-		// label to class mappings from tree properties
-		Map<String, String> labels = new HashMap<>();
-		String tfscope = null;
-		// scan tree properties for tree building options
-		for (propSpec p : treeProps) {
-			TreeProperties tp = TreeProperties.propertyForName(p.name);
-			// unknown properties are considered to be (label,class name) pairs
-			if (tp == null) {
-				if (p.type.contains("String"))
-					labels.put(p.name, p.value);
-			} else
-				switch (tp) {
-				case CLASS:
-					treeClass = (Class<? extends Tree<? extends TreeNode>>) getClass(TreeProperties.CLASS, p.value, log,
-							Tree.class);
-					break;
-				case MUTABLE: // deprecated
-					break;
-				case PROP_FACTORY:
-					plFactoryClass = (Class<? extends PropertyListFactory>) getClass(TreeProperties.PROP_FACTORY,
-							p.value, log, PropertyListFactory.class);
-					break;
-				case TREE_FACTORY:
-					tFactoryClass = (Class<? extends NodeFactory>) getClass(TreeProperties.TREE_FACTORY, p.value,
-							log, NodeFactory.class);
-					break;
-				case SCOPE:
-					tfscope = p.value;
-					break;
-				default:
-					break;
-				}
-		}
-		// use default settings if graph properties were absent
-		if (treeClass == null)
-			treeClass = (Class<? extends Tree<? extends TreeNode>>) getClass(TreeProperties.CLASS, log, Tree.class);
-		if (tFactoryClass == null)
-			tFactoryClass = (Class<? extends NodeFactory>) getClass(TreeProperties.TREE_FACTORY, log,
-					NodeFactory.class);
-		if (plFactoryClass == null)
-			plFactoryClass = (Class<? extends PropertyListFactory>) getClass(TreeProperties.PROP_FACTORY, log,
-					PropertyListFactory.class);
-		// setup the factories
-		try {
-			//This maybe an importer so factory may be set already by the parent graph
-			if (treeFactory == null) {
-				if (labels.isEmpty())
-					treeFactory = tFactoryClass.getDeclaredConstructor().newInstance();
-				else {
-					Constructor<? extends NodeFactory> cons = tFactoryClass.getDeclaredConstructor(String.class,
-							Map.class);
-					treeFactory = cons.newInstance(tfscope, labels);
-				}
-			}
-			propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
-			if (tFactoryClass.equals(plFactoryClass))
-				if (treeFactory instanceof PropertyListFactory)
-					propertyListFactory = (PropertyListFactory) treeFactory;
-		} catch (Exception e) {
-			// There should not be any problem here given the previous checks
-			// unless the factory class is flawed
-			e.printStackTrace();
-		}
-		// make tree
-		try {
-			Constructor<?> cons = treeClass.getDeclaredConstructor(NodeFactory.class);
-			tree = (Tree<? extends TreeNode>) cons.newInstance(treeFactory);
-			treeFactory.manageGraph(tree);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// setup factories and tree
+		processGraphProperties(treeProps,log);
+		setupFactories(log);
+		tree = (Tree<? extends TreeNode>) setupGraph(log);
 		// make tree nodes
 		Map<String, TreeNode> nodes = new HashMap<>();
 		for (treeNodeSpec ns : nodeSpecs) {
 			TreeNode n = null;
-			Class<? extends Node> nc = treeFactory.nodeClass(ns.label);
+			Class<? extends Node> nc = nodeFactory.nodeClass(ns.label);
 			if (ns.props.isEmpty())
 				if (nc == null)
-					n = (TreeNode) treeFactory.makeNode(ns.name);
+					n = (TreeNode) nodeFactory.makeNode(ns.name);
 				else
-					n = (TreeNode) treeFactory.makeNode(nc, ns.name);
+					n = (TreeNode) nodeFactory.makeNode(nc, ns.name);
 			else if (nc == null)
-				n = (TreeNode) treeFactory.makeNode(ns.name, makePropertyList(ns.props, log));
+				n = (TreeNode) nodeFactory.makeNode(ns.name, makePropertyList(ns.props, log));
 			else
-				n = (TreeNode) treeFactory.makeNode(nc, ns.name, makePropertyList(ns.props, log));
+				n = (TreeNode) nodeFactory.makeNode(nc, ns.name, makePropertyList(ns.props, log));
 			String nodeId = ns.label.trim() + ":" + ns.name.trim();
 			if (nodes.containsKey(nodeId))
 				log.severe("duplicate node found (" + nodeId + ") - ignoring the second one");
@@ -290,8 +230,6 @@ public class TreeParser extends NodeSetParser {
 				String parentId = ns.parent.label.trim() + ":" + ns.parent.name.trim();
 				TreeNode parent = nodes.get(parentId); // parent has always been treated before
 				n.connectParent(parent);
-//				n.setParent(parent);
-//				parent.addChild(n);
 			}
 			/*-
 			 * Add in any imported graphs.
@@ -345,7 +283,7 @@ public class TreeParser extends NodeSetParser {
 	@Override
 	public void setFactory(Object factory) {
 		// Nasty!
-		treeFactory = (NodeFactory) factory;
+		nodeFactory = (NodeFactory) factory;
 	}
 
 }

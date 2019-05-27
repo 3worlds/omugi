@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing.impl;
 
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,10 +40,8 @@ import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
-import fr.cnrs.iees.graph.impl.ALGraph;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
@@ -79,7 +76,22 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 // Tested OK with version 0.0.1 on 17/12/2018
 // Tested OK with version 0.0.10 on 31/1/2019
 // tested OK with version 0.2.0 on 20/5/2019
-public class GraphParser extends NodeSetParser {
+// Tested OK with version 0.2.1 on 27/5/2019
+public class GraphParser extends EdgeAndNodeSetParser {
+	
+	// setup of default graph properties for this parser
+	static {
+		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.ALGraph");
+		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
+		defaultGraphProperties.put(EDGE_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
+		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
+		defaultGraphProperties.put(SCOPE, 			"DGF");
+		graphPropertyTypes.put(CLASS,			Graph.class);
+		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
+		graphPropertyTypes.put(EDGE_FACTORY, 	EdgeFactory.class);
+		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
+		graphPropertyTypes.put(SCOPE, 			String.class);
+	}
 	
 	private Logger log = Logger.getLogger(GraphParser.class.getName());
 
@@ -94,10 +106,6 @@ public class GraphParser extends NodeSetParser {
 	
 	// the tokenizer used to read the file
 	private GraphTokenizer tokenizer = null;
-	
-	// the factories used to build the graph
-	private NodeFactory nodeFactory = null;
-	private EdgeFactory edgeFactory = null;
 	
 	// the list of specifications built from the token list
 	private List<propSpec> graphProps = new LinkedList<propSpec>();
@@ -226,101 +234,13 @@ public class GraphParser extends NodeSetParser {
 	// builds the graph from the parsed data
 	@SuppressWarnings("unchecked")
 	private void buildGraph() {
-		// parse token if not yet done
+		// parse tokens if not yet done
 		if (lastItem==null)
 			parse();
-		Class<? extends Graph<? extends Node, ? extends Edge>> graphClass = null;
-		Class<? extends NodeFactory> nFactoryClass = null;
-		Class<? extends EdgeFactory> eFactoryClass = null;
-		Class<? extends PropertyListFactory> plFactoryClass = null;
-		// labels to class mappings from graph properties
-		Map<String,String> labels = new HashMap<>();
-		String gfscope = null;
-		// scan graph properties for graph building options
-		for (propSpec p:graphProps) {
-			GraphProperties gp = GraphProperties.propertyForName(p.name);
-			if (gp==null) { // all other properties are considered to be (label,class name) pairs
-				if (p.type.contains("String"))
-					labels.put(p.name,p.value);
-			}
-			else switch (gp)  {
-				case CLASS:
-					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-						getClass(GraphProperties.CLASS,p.value,log,Graph.class);
-					break;
-				case NODE_FACTORY:
-					nFactoryClass = (Class<? extends NodeFactory>) 
-						getClass(GraphProperties.NODE_FACTORY,p.value,log,NodeFactory.class);
-					break;
-				case EDGE_FACTORY:
-					eFactoryClass = (Class<? extends EdgeFactory>) 
-						getClass(GraphProperties.EDGE_FACTORY,p.value,log,EdgeFactory.class);
-					break;
-				case PROP_FACTORY:
-					plFactoryClass = (Class<? extends PropertyListFactory>) 
-						getClass(GraphProperties.PROP_FACTORY,p.value,log,PropertyListFactory.class);
-					break;
-				case DIRECTED:
-					// TODO
-					break;
-				case MUTABLE:
-					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-						getClass(GraphProperties.CLASS,ALGraph.class.getName(),log,Graph.class);
-					break;
-				case SCOPE:
-					gfscope = p.value;
-					break;
-				default: 
-					break;
-			}
-		}
-		// use default settings if graph properties were absent
-		if (graphClass==null)
-			graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-				getClass(GraphProperties.CLASS,log,Graph.class);
-		if (nFactoryClass==null)
-			nFactoryClass = (Class<? extends NodeFactory>) 
-				getClass(GraphProperties.NODE_FACTORY,log,NodeFactory.class);
-		if (eFactoryClass==null)
-			eFactoryClass = (Class<? extends EdgeFactory>) 
-				getClass(GraphProperties.EDGE_FACTORY,log,EdgeFactory.class);
-		if (plFactoryClass==null)
-			plFactoryClass = (Class<? extends PropertyListFactory>) 
-				getClass(GraphProperties.PROP_FACTORY,log,PropertyListFactory.class);
-		// setup the factories
-		try {
-			if (labels.isEmpty()) {
-				nodeFactory = nFactoryClass.getDeclaredConstructor().newInstance();
-				edgeFactory = eFactoryClass.getDeclaredConstructor().newInstance();
-			}
-			else {
-				Constructor<? extends NodeFactory> c = 
-					nFactoryClass.getDeclaredConstructor(String.class,Map.class);
-				nodeFactory = c.newInstance(gfscope,labels);
-				Constructor<? extends EdgeFactory> c2 = 
-						eFactoryClass.getDeclaredConstructor(String.class,Map.class);
-					edgeFactory = c2.newInstance(gfscope,labels);
-			}
-			if (eFactoryClass.equals(nFactoryClass))
-				if (nodeFactory instanceof GraphFactory)
-					edgeFactory = (EdgeFactory) nodeFactory;
-			propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
-			if (plFactoryClass.equals(nFactoryClass))
-				if (nodeFactory instanceof PropertyListFactory)
-					propertyListFactory = (PropertyListFactory) nodeFactory;
-		} catch (Exception e) {
-			// There should not be any problem here given the previous checks
-			// unless the factory class is flawed
-			e.printStackTrace();
-		}
-		// make graph and have it managed by the factory
-		try {
-			Constructor<?> cons = graphClass.getDeclaredConstructor(GraphFactory.class);
-			graph = (Graph<? extends Node, ? extends Edge>) cons.newInstance(nodeFactory);
-			nodeFactory.manageGraph(graph); // this will cause new nodes to be added to the graph
-		} catch (Exception e) {
-			log.severe("Graph constructor not found.");
-		}
+		// setup factories and graph
+		processGraphProperties(graphProps,log);
+		setupFactories(log);
+		graph = (Graph<? extends Node, ? extends Edge>) setupGraph(log);
 		// make nodes
 		Map<String,Node> nodes = new HashMap<>();
 		for (nodeSpec ns: nodeSpecs) {

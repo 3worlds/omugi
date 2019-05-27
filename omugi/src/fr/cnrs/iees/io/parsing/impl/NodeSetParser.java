@@ -34,15 +34,22 @@ import static fr.cnrs.iees.io.parsing.TextGrammar.*;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.OmugiClassLoader;
+import fr.cnrs.iees.graph.Edge;
+import fr.cnrs.iees.graph.Graph;
+import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
 import fr.cnrs.iees.io.parsing.Parser;
@@ -60,7 +67,15 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  *
  */
 public abstract class NodeSetParser extends Parser {
-
+	
+	// constants and defaults
+	protected final static String CLASS = "type";
+	protected final static String NODE_FACTORY = "node_factory";
+	protected final static String PROP_FACTORY = "property_list_factory";
+	protected final static String SCOPE = "scope";
+	protected static Map<String,String> defaultGraphProperties = new HashMap<>();
+	protected static Map<String,Class<?>> graphPropertyTypes = new HashMap<>();
+	
 	// ----------------------------------------------------
 	// specifications for a property
 	public class propSpec {
@@ -77,7 +92,9 @@ public abstract class NodeSetParser extends Parser {
 			super();
 		}
 	}
-
+	
+	// ----------------------------------------------------
+	// specifications for an import
 	public class importGraph {
 		// public MinimalGraph<?> graph;
 		private OmugiGraphImporter importer;
@@ -129,28 +146,20 @@ public abstract class NodeSetParser extends Parser {
 			super();
 		}
 	}
-
+	
 	// ----------------------------------------------------
-	// specifications for an edge
-	public class edgeSpec {
-		public String label;
-		public String name;
-		public String start;
-		public String end;
-		public List<propSpec> props = new LinkedList<propSpec>();
-
-		@Override // for debugging only
-		public String toString() {
-			return label + ":" + name + " [" + start + "-->" + end + "]";
-		}
-
-		public edgeSpec() {
-			super();
-		}
-	}
-
+	// local fields
+	Class<? extends NodeSet<? extends Node>> graphClass = null;
+	Class<? extends NodeFactory> nFactoryClass = null;
+	Class<? extends PropertyListFactory> plFactoryClass = null;
+	Map<String,String> labels = new HashMap<>();
+	String theScope = null;
+	
 	// ----------------------------------------------------
+	
+	// fields for descendants
 	protected PropertyListFactory propertyListFactory = null;
+	protected NodeFactory nodeFactory = null;
 
 	// builds a propertyList from specs
 	protected SimplePropertyList makePropertyList(List<propSpec> props, Logger log) {
@@ -212,57 +221,26 @@ public abstract class NodeSetParser extends Parser {
 		return propertyListFactory.makePropertyList(pp);
 	}
 
-	// gets a class from the tree properties
-	protected Class<?> getClass(TreeProperties gp, String value, Logger log, Class<?> superClass) {
-		Class<?> result = null;
-		if (value != null)
-			try {
-				Class<?> c = Class.forName(value, true, OmugiClassLoader.getClassLoader());
-				if (superClass.isAssignableFrom(c))
-					result = c;
-				else
-					log.severe("graph property \"" + gp.propertyName() + "\" does not refer to a valid type ("
-							+ gp.propertyType() + ") - using default type (" + gp.defaultValue() + ")");
-			} catch (ClassNotFoundException e) {
-				log.severe("graph property \"" + gp.propertyName()
-						+ "\" does not refer to a valid java class - using default type (" + gp.defaultValue() + ")");
-			}
-		if (result == null)
-			try {
-				result = Class.forName(gp.defaultValue(), false, OmugiClassLoader.getClassLoader());
-			} catch (ClassNotFoundException e) {
-				// this is an error in GraphProperties.[...].defaultValue - fix code with a
-				// correct class name
-				e.printStackTrace();
-			}
-		// this will always return a valid, non null class - if problems, it will throw
-		// an exception
-		return result;
-	}
-
-	// gets a default class from the graph properties
-	protected Class<?> getClass(TreeProperties gp, Logger log, Class<?> superClass) {
-		return getClass(gp, null, log, superClass);
-	}
-
 	// gets a class from the graph properties
-	protected Class<?> getClass(GraphProperties gp, String value, Logger log, Class<?> superClass) {
+	protected Class<?> getClass(String gp, String value, Logger log) {
 		Class<?> result = null;
 		if (value != null)
 			try {
+				Class<?> superClass = graphPropertyTypes.get(gp);
 				Class<?> c = Class.forName(value, true, OmugiClassLoader.getClassLoader());
 				if (superClass.isAssignableFrom(c))
 					result = c;
 				else
-					log.severe("graph property \"" + gp.propertyName() + "\" does not refer to a valid type ("
-							+ gp.propertyType() + ") - using default type (" + gp.defaultValue() + ")");
+					log.severe("graph property \"" + gp + "\" does not refer to a valid type ("
+							+ graphPropertyTypes.get(gp) + ") - using default type (" + defaultGraphProperties.get(gp) + ")");
 			} catch (ClassNotFoundException e) {
-				log.severe("graph property \"" + gp.propertyName()
-						+ "\" does not refer to a valid java class - using default type (" + gp.defaultValue() + ")");
+				log.severe("graph property \"" + gp
+						+ "\" does not refer to a valid java class - using default type (" + defaultGraphProperties.get(gp) + ")");
 			}
 		if (result == null)
 			try {
-				result = Class.forName(gp.defaultValue(), false, OmugiClassLoader.getClassLoader());
+//				result = Class.forName(gp.defaultValue(), false, OmugiClassLoader.getClassLoader());
+				result = Class.forName(defaultGraphProperties.get(gp), false, OmugiClassLoader.getClassLoader());
 			} catch (ClassNotFoundException e) {
 				// this is an error in GraphProperties.[...].defaultValue - fix code with a
 				// correct class name
@@ -274,8 +252,86 @@ public abstract class NodeSetParser extends Parser {
 	}
 
 	// gets a default class from the graph properties
-	protected Class<?> getClass(GraphProperties gp, Logger log, Class<?> superClass) {
-		return getClass(gp, null, log, superClass);
+	protected Class<?> getClass(String gp, Logger log) {
+		return getClass(gp, null, log);
 	}
 
+	// setup the NodeFactory and PropertyList factory
+	// NB: MUST be called AFTER processGraphProperties(...)
+	@SuppressWarnings("unchecked")
+	protected void setupFactories(Logger log) {
+		if (nFactoryClass==null)
+			nFactoryClass = (Class<? extends NodeFactory>) 
+				getClass(NODE_FACTORY,log);
+		if (plFactoryClass==null)
+			plFactoryClass = (Class<? extends PropertyListFactory>) 
+				getClass(PROP_FACTORY,log);
+		// setup the factories
+		try {
+			if (labels.isEmpty()) {
+				nodeFactory = nFactoryClass.getDeclaredConstructor().newInstance();
+			}
+			else {
+				Constructor<? extends NodeFactory> c = 
+					nFactoryClass.getDeclaredConstructor(String.class,Map.class);
+				nodeFactory = c.newInstance(theScope,labels);
+			}
+			propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
+			if (plFactoryClass.equals(nFactoryClass))
+				if (nodeFactory instanceof PropertyListFactory)
+					propertyListFactory = (PropertyListFactory) nodeFactory;
+		} catch (Exception e) {
+			// There should not be any problem here given the previous checks
+			// unless the factory class is flawed
+			e.printStackTrace();
+		}
+	}
+	
+	// setup the graph
+	// NB: must be called AFTER setupFactories;
+	@SuppressWarnings("unchecked")
+	protected NodeSet<? extends Node> setupGraph(Logger log) {
+		NodeSet<? extends Node> result = null;
+		if (graphClass == null)
+			graphClass = (Class<? extends NodeSet<? extends Node>>) getClass(CLASS, log);
+		try {
+			Constructor<?> cons = graphClass.getDeclaredConstructor(NodeFactory.class);
+			result = (NodeSet<? extends Node>) cons.newInstance(nodeFactory);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void processGraphProperties(List<propSpec> graphProps, Logger log) {
+		for (propSpec p:graphProps) {
+			String gp = (p.name);
+			if (gp==null) { // all other properties are considered to be (label,class name) pairs
+				if (p.type.contains("String"))
+					labels.put(p.name,p.value);
+			}
+			else switch (gp)  {
+				case CLASS:
+					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
+						getClass(CLASS,p.value,log);
+					break;
+				case NODE_FACTORY:
+					nFactoryClass = (Class<? extends NodeFactory>) 
+						getClass(NODE_FACTORY,p.value,log);
+					break;
+				case PROP_FACTORY:
+					plFactoryClass = (Class<? extends PropertyListFactory>) 
+						getClass(PROP_FACTORY,p.value,log);
+					break;
+				case SCOPE:
+					theScope = p.value;
+					break;
+				default: 
+					break;
+			}
+		}
+	}
+	
 }

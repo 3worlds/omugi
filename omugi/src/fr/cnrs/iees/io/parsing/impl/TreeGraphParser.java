@@ -37,14 +37,15 @@ import java.util.logging.Logger;
 
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Edge;
+import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.impl.ALEdge;
 import fr.cnrs.iees.graph.impl.TreeGraph;
-import fr.cnrs.iees.graph.impl.TreeGraphFactory;
 import fr.cnrs.iees.graph.impl.TreeGraphNode;
-import fr.cnrs.iees.io.parsing.impl.NodeSetParser;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;
+import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
@@ -53,7 +54,22 @@ import fr.cnrs.iees.properties.SimplePropertyList;
  *
  */
 // tested OK with version 0.0.5 on 23/1/2019
-public class TreeGraphParser extends NodeSetParser {
+// tested OK with version 0.2.1 on 27/5/2019
+public class TreeGraphParser extends EdgeAndNodeSetParser {
+
+	// setup of default graph properties for this parser
+	static {
+		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.TreeGraph");
+		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
+		defaultGraphProperties.put(EDGE_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
+		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
+		defaultGraphProperties.put(SCOPE, 			"TGDF");
+		graphPropertyTypes.put(CLASS,			TreeGraph.class);
+		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
+		graphPropertyTypes.put(EDGE_FACTORY, 	EdgeFactory.class);
+		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
+		graphPropertyTypes.put(SCOPE, 			String.class);
+	}
 
 	private Logger log = Logger.getLogger(TreeGraphParser.class.getName());
 
@@ -77,9 +93,6 @@ public class TreeGraphParser extends NodeSetParser {
 	private treeNodeSpec[] lastNodes = null;
 	private edgeSpec lastEdge = null;
 
-	// factories for treenodes and edges
-	protected TreeGraphFactory graphFactory = null;
-
 	// the result of this parsing
 	// remind that an TreeGraph is its own Node, Edge and TreeNode factory
 	private TreeGraph<TreeGraphNode,ALEdge> graph = null;
@@ -99,45 +112,32 @@ public class TreeGraphParser extends NodeSetParser {
 	 * So how do we do imports? We need the graph, a parent node and we need to
 	 * detect the 'import' key word - all this before the graph is complete!
 	 */
+	@SuppressWarnings("unchecked")
 	private void buildGraph() {
-		// parse token if not yet done
+		// parse tokens if not yet done
 		if (lastItem == null)
 			parse();
-		// scan graph properties for label properties
-		Map<String, String> labels = new HashMap<>();
-		for (propSpec p : graphProps) {
-			GraphProperties gp = GraphProperties.propertyForName(p.name);
-			if (gp == null) { // all other properties are considered to be (label,class name) pairs
-				if (p.type.contains("String"))
-					labels.put(p.name, p.value);
-			}
-		}
-		// setup the factories
-		graphFactory = new TreeGraphFactory("TGF",labels);
-		propertyListFactory = graphFactory;
-		// make treegraph & record it in factory
-		graph = new TreeGraph<>(graphFactory);
-		graphFactory.manageGraph(graph); //
+		processGraphProperties(graphProps,log);
+		setupFactories(log);
+		graph = (TreeGraph<TreeGraphNode, ALEdge>) setupGraph(log);
 		// make tree nodes
 		Map<String, TreeGraphNode> nodes = new HashMap<>();
 		for (treeNodeSpec ns : nodeSpecs) {
 			TreeGraphNode n = null;
-			Class<? extends Node> nc = (Class<? extends Node>) graphFactory.nodeClass(ns.label);
+			Class<? extends Node> nc = (Class<? extends Node>) nodeFactory.nodeClass(ns.label);
 			if (ns.props.isEmpty())
 				if (nc == null)
-					n = graphFactory.makeNode(ns.name);
+					n = (TreeGraphNode) nodeFactory.makeNode(ns.name);
 				else
-					n = graphFactory.makeNode(nc, ns.name);
+					n = (TreeGraphNode) nodeFactory.makeNode(nc, ns.name);
 			else if (nc == null)
-				n = graphFactory.makeNode(ns.name, makePropertyList(ns.props, log));
+				n = (TreeGraphNode) nodeFactory.makeNode(ns.name, makePropertyList(ns.props, log));
 			else
-				n = graphFactory.makeNode(nc, ns.name, makePropertyList(ns.props, log));
+				n = (TreeGraphNode) nodeFactory.makeNode(nc, ns.name, makePropertyList(ns.props, log));
 			if (ns.parent != null) {
 				// the parent has always been set before
 				TreeGraphNode parent = nodes.get(ns.parent.label.trim() + ":" + ns.parent.name.trim());
 				n.connectParent(parent);
-//				n.setParent(parent);
-//				parent.addChild(n);
 			}
 			// this puts the node in the graph
 			String nodeId = (ns.label + ":" + ns.name).replaceAll("\\s", "");
@@ -160,16 +160,16 @@ public class TreeGraphParser extends NodeSetParser {
 			if (end == null)
 				log.severe("end node \"" + ref + "\" not found for edge \"" + es.label + ":" + es.name + "\"");
 			if ((start != null) && (end != null)) {
-				Class<? extends Edge> ec = graphFactory.edgeClass(es.label);
+				Class<? extends Edge> ec = edgeFactory.edgeClass(es.label);
 				if (pl == null)
 					if (ec == null)
-						graphFactory.makeEdge(start, end, es.name);
+						edgeFactory.makeEdge(start, end, es.name);
 					else
-						graphFactory.makeEdge(ec, start, end, es.name);
+						edgeFactory.makeEdge(ec, start, end, es.name);
 				else if (ec == null)
-					graphFactory.makeEdge(start, end, es.name, pl);
+					edgeFactory.makeEdge(start, end, es.name, pl);
 				else
-					graphFactory.makeEdge(ec, start, end, es.name, pl);
+					edgeFactory.makeEdge(ec, start, end, es.name, pl);
 			}
 		}
 	}
