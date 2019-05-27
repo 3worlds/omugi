@@ -107,11 +107,11 @@ public interface GraphImporter {
 		GraphImporter importer = null;
 		if (s.startsWith("graph"))
 			importer = new OmugiGraphImporter(new GraphParser(new GraphTokenizer(lines)));
-		if (s.startsWith("tree"))
-			importer = new OmugiGraphImporter(new TreeParser(new TreeTokenizer(lines)));
-		if (s.startsWith("treegraph"))
+		else if (s.startsWith("treegraph"))
 			importer = new OmugiGraphImporter(new TreeGraphParser(new TreeGraphTokenizer(lines)));
-		for (String l:lines)
+		else if (s.startsWith("tree"))
+			importer = new OmugiGraphImporter(new TreeParser(new TreeTokenizer(lines)));
+		else for (String l:lines)
 			if (l.contains("http://graphml.graphdrawing.org/xmlns"))
 				log.warning("GRAPHML importer not yet implemented");
 		return importer.getGraph();
