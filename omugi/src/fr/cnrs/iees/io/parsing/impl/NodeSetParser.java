@@ -260,23 +260,27 @@ public abstract class NodeSetParser extends Parser {
 	// NB: MUST be called AFTER processGraphProperties(...)
 	@SuppressWarnings("unchecked")
 	protected void setupFactories(Logger log) {
-		if (nFactoryClass==null)
-			nFactoryClass = (Class<? extends NodeFactory>) 
-				getClass(NODE_FACTORY,log);
-		if (plFactoryClass==null)
-			plFactoryClass = (Class<? extends PropertyListFactory>) 
-				getClass(PROP_FACTORY,log);
+		if (nodeFactory==null) // else keep it !
+			if (nFactoryClass==null)
+				nFactoryClass = (Class<? extends NodeFactory>) 
+					getClass(NODE_FACTORY,log);
+		if (propertyListFactory==null)
+			if (plFactoryClass==null)
+				plFactoryClass = (Class<? extends PropertyListFactory>) 
+					getClass(PROP_FACTORY,log);
 		// setup the factories
 		try {
-			if (labels.isEmpty()) {
-				nodeFactory = nFactoryClass.getDeclaredConstructor().newInstance();
-			}
-			else {
-				Constructor<? extends NodeFactory> c = 
-					nFactoryClass.getDeclaredConstructor(String.class,Map.class);
-				nodeFactory = c.newInstance(theScope,labels);
-			}
-			propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
+			if (nodeFactory==null)
+				if (labels.isEmpty()) {
+					nodeFactory = nFactoryClass.getDeclaredConstructor().newInstance();
+				}
+				else {
+					Constructor<? extends NodeFactory> c = 
+						nFactoryClass.getDeclaredConstructor(String.class,Map.class);
+					nodeFactory = c.newInstance(theScope,labels);
+				}
+			if (propertyListFactory==null)
+				propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
 			if (plFactoryClass.equals(nFactoryClass))
 				if (nodeFactory instanceof PropertyListFactory)
 					propertyListFactory = (PropertyListFactory) nodeFactory;

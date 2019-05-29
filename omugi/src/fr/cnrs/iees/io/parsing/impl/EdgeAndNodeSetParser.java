@@ -76,18 +76,20 @@ public abstract class EdgeAndNodeSetParser extends NodeSetParser {
 	@SuppressWarnings("unchecked")
 	protected void setupFactories(Logger log) {
 		super.setupFactories(log);
-		if (eFactoryClass==null)
-			eFactoryClass = (Class<? extends EdgeFactory>) 
-				getClass(EDGE_FACTORY,log);
+		if (edgeFactory==null)
+			if (eFactoryClass==null)
+				eFactoryClass = (Class<? extends EdgeFactory>) 
+					getClass(EDGE_FACTORY,log);
 		try {
-			if (labels.isEmpty()) {
-				edgeFactory = eFactoryClass.getDeclaredConstructor().newInstance();
-			}
-			else {
-				Constructor<? extends EdgeFactory> c2 = 
-					eFactoryClass.getDeclaredConstructor(String.class,Map.class);
-				edgeFactory = c2.newInstance(theScope,labels);
-			}
+			if (edgeFactory==null)
+				if (labels.isEmpty()) {
+					edgeFactory = eFactoryClass.getDeclaredConstructor().newInstance();
+				}
+				else {
+					Constructor<? extends EdgeFactory> c2 = 
+						eFactoryClass.getDeclaredConstructor(String.class,Map.class);
+					edgeFactory = c2.newInstance(theScope,labels);
+				}
 			if (eFactoryClass.equals(nFactoryClass))
 				if (nodeFactory instanceof GraphFactory)
 					edgeFactory = (EdgeFactory) nodeFactory;
