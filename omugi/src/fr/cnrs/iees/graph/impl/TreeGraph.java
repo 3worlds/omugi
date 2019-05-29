@@ -170,4 +170,11 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 		return sb.toString();
 	}
 
+	// Object
+	
+	@Override
+	public final String toString() {
+		return "["+toDetailedString()+"]";
+	}
+
 }
