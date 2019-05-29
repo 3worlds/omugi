@@ -311,29 +311,27 @@ public abstract class NodeSetParser extends Parser {
 	@SuppressWarnings("unchecked")
 	protected void processGraphProperties(List<propSpec> graphProps, Logger log) {
 		for (propSpec p:graphProps) {
-			String gp = (p.name);
-			if (gp==null) { // all other properties are considered to be (label,class name) pairs
+			switch (p.name)  {
+			case CLASS:
+				graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
+					getClass(CLASS,p.value,log);
+				break;
+			case NODE_FACTORY:
+				nFactoryClass = (Class<? extends NodeFactory>) 
+					getClass(NODE_FACTORY,p.value,log);
+				break;
+			case PROP_FACTORY:
+				plFactoryClass = (Class<? extends PropertyListFactory>) 
+					getClass(PROP_FACTORY,p.value,log);
+				break;
+			case SCOPE:
+				theScope = p.value;
+				break;
+			// all other properties are considered to be (label,class name) pairs
+			default: 
 				if (p.type.contains("String"))
 					labels.put(p.name,p.value);
-			}
-			else switch (gp)  {
-				case CLASS:
-					graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-						getClass(CLASS,p.value,log);
-					break;
-				case NODE_FACTORY:
-					nFactoryClass = (Class<? extends NodeFactory>) 
-						getClass(NODE_FACTORY,p.value,log);
-					break;
-				case PROP_FACTORY:
-					plFactoryClass = (Class<? extends PropertyListFactory>) 
-						getClass(PROP_FACTORY,p.value,log);
-					break;
-				case SCOPE:
-					theScope = p.value;
-					break;
-				default: 
-					break;
+				break;
 			}
 		}
 	}
