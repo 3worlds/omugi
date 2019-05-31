@@ -207,14 +207,23 @@ public class ValidPropertyTypes {
 	 * NB: all have a valueOf(String) method except String which doesnt need one */
 	private enum PrimitiveTypes {
 	//  class name | java class		  	|	default value			
+		// Byte: a very, very short integer [-128 ; 127]
 		Byte		("java.lang.Byte", 		java.lang.Byte.valueOf("0")),
+		// Char: a character value (16-bit Unicode = UTF16, i.e. 65535 different values)
 		Char		("java.lang.Char", 		java.lang.Character.valueOf(' ')), 
+		// Short: a short integer [-32768; 32767]
 		Short		("java.lang.Short", 	java.lang.Short.valueOf((short) 0)),
+		// Integer: an integer [-2147483648; 2147483647]
 		Integer		("java.lang.Integer", 	java.lang.Integer.valueOf(0)), 
+		// Long: a long integer [-9223372036854775808; 9223372036854775807]
 		Long		("java.lang.Long", 		java.lang.Long.valueOf(0L)),
+		// Float: a single precision floating point number (4 10^-38^ to 3.4 10^38^) with 6 significant digits
 		Float		("java.lang.Float", 	java.lang.Float.valueOf(0f)),
+		// Double: a single precision floating point number (4 10^-38^ to 3.4 10^38^) with 15 significant digits
 		Double		("java.lang.Double", 	java.lang.Double.valueOf(0.0)),
+		// Boolean: a logical value {true, false}
 		Boolean		("java.lang.Boolean", 	java.lang.Boolean.valueOf("false")), 
+		// String: a text string
 		String		("java.lang.String", 	new String(""));
 		private final String className;
 		private final Object defaultValue;

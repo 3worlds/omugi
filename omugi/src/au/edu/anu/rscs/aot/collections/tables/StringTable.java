@@ -75,7 +75,7 @@ public class StringTable extends TableAdapter {
 			result.data[i] = s;
 			i++;
 		}
-		result.data[i] = ss;
+		result.data[i] = ss.trim();
 		return result;
 	}
 	
