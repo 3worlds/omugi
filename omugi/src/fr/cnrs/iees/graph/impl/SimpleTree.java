@@ -8,6 +8,7 @@ import java.util.Set;
 
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.Tree;
 
@@ -17,7 +18,7 @@ import fr.cnrs.iees.graph.Tree;
  *
  */
 // tested OK with version 0.2.0
-public class SimpleTree<N extends SimpleTreeNode> implements Tree<N> {
+public class SimpleTree<N extends TreeNode> implements Tree<N> {
 	
 	/** the tree root, if unique - set to null if multiple roots **/
 	private N root = null;
@@ -46,7 +47,7 @@ public class SimpleTree<N extends SimpleTreeNode> implements Tree<N> {
 	}
 
 	@Override
-	public boolean contains(SimpleTreeNode node) {
+	public boolean contains(TreeNode node) {
 		return nodes.contains(node);
 	}
 
@@ -57,7 +58,7 @@ public class SimpleTree<N extends SimpleTreeNode> implements Tree<N> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<N> subTree(SimpleTreeNode node) {
+	public Iterable<N> subTree(TreeNode node) {
 		List<N> result = new LinkedList<N>();
 		for (Node n:node.traversal(Direction.OUT))
 			result.add((N) n);
