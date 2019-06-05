@@ -79,20 +79,6 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 // Tested OK with version 0.2.1 on 27/5/2019
 public class GraphParser extends EdgeAndNodeSetParser {
 	
-	// setup of default graph properties for this parser
-	static {
-		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.ALGraph");
-		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
-		defaultGraphProperties.put(EDGE_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
-		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
-		defaultGraphProperties.put(SCOPE, 			"DGF");
-		graphPropertyTypes.put(CLASS,			Graph.class);
-		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
-		graphPropertyTypes.put(EDGE_FACTORY, 	EdgeFactory.class);
-		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
-		graphPropertyTypes.put(SCOPE, 			String.class);
-	}
-	
 	private Logger log = Logger.getLogger(GraphParser.class.getName());
 
 	//----------------------------------------------------
@@ -125,6 +111,17 @@ public class GraphParser extends EdgeAndNodeSetParser {
 	public GraphParser(GraphTokenizer tokenizer) {
 		super();
 		this.tokenizer =tokenizer;
+		// setup of default graph properties for this parser
+		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.ALGraph");
+		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
+		defaultGraphProperties.put(EDGE_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
+		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
+		defaultGraphProperties.put(SCOPE, 			"DGF");
+		graphPropertyTypes.put(CLASS,			Graph.class);
+		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
+		graphPropertyTypes.put(EDGE_FACTORY, 	EdgeFactory.class);
+		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
+		graphPropertyTypes.put(SCOPE, 			String.class);
 	}
 	
 	/**

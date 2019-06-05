@@ -91,18 +91,6 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 //Tested OK with version 0.2.1 on 27/5/2019
 public class TreeParser extends NodeSetParser {
 	
-	// setup of default tree properties and property types for this parser
-	static {
-		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.SimpleTree");
-		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.SimpleTreeFactory");
-		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.SimpleTreeFactory");
-		defaultGraphProperties.put(SCOPE, 			"DTF");
-		graphPropertyTypes.put(CLASS,			Tree.class);
-		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
-		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
-		graphPropertyTypes.put(SCOPE, 			String.class);
-	}
-
 	private Logger log = Logger.getLogger(TreeParser.class.getName());
 
 	// ----------------------------------------------------
@@ -129,6 +117,15 @@ public class TreeParser extends NodeSetParser {
 	public TreeParser(TreeTokenizer tokenizer) {
 		super();
 		this.tokenizer = tokenizer;
+		// setup of default tree properties and property types for this parser
+		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.SimpleTree");
+		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.SimpleTreeFactory");
+		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.SimpleTreeFactory");
+		defaultGraphProperties.put(SCOPE, 			"DTF");
+		graphPropertyTypes.put(CLASS,			Tree.class);
+		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
+		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
+		graphPropertyTypes.put(SCOPE, 			String.class);
 	}
 
 	@Override

@@ -57,20 +57,6 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 // tested OK with version 0.2.1 on 27/5/2019
 public class TreeGraphParser extends EdgeAndNodeSetParser {
 
-	// setup of default graph properties for this parser
-	static {
-		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.TreeGraph");
-		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
-		defaultGraphProperties.put(EDGE_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
-		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
-		defaultGraphProperties.put(SCOPE, 			"TGDF");
-		graphPropertyTypes.put(CLASS,			TreeGraph.class);
-		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
-		graphPropertyTypes.put(EDGE_FACTORY, 	EdgeFactory.class);
-		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
-		graphPropertyTypes.put(SCOPE, 			String.class);
-	}
-
 	private Logger log = Logger.getLogger(TreeGraphParser.class.getName());
 
 	// ----------------------------------------------------
@@ -106,6 +92,17 @@ public class TreeGraphParser extends EdgeAndNodeSetParser {
 	public TreeGraphParser(TreeGraphTokenizer tokenizer) {
 		super();
 		this.tokenizer = tokenizer;
+		// setup of default graph properties for this parser
+		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.TreeGraph");
+		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
+		defaultGraphProperties.put(EDGE_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
+		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
+		defaultGraphProperties.put(SCOPE, 			"TGDF");
+		graphPropertyTypes.put(CLASS,			TreeGraph.class);
+		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
+		graphPropertyTypes.put(EDGE_FACTORY, 	EdgeFactory.class);
+		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
+		graphPropertyTypes.put(SCOPE, 			String.class);
 	}
 
 	/*

@@ -73,8 +73,8 @@ public abstract class NodeSetParser extends Parser {
 	protected final static String NODE_FACTORY = "node_factory";
 	protected final static String PROP_FACTORY = "property_list_factory";
 	protected final static String SCOPE = "scope";
-	protected static Map<String,String> defaultGraphProperties = new HashMap<>();
-	protected static Map<String,Class<?>> graphPropertyTypes = new HashMap<>();
+	protected final Map<String,String> defaultGraphProperties = new HashMap<>();
+	protected final Map<String,Class<?>> graphPropertyTypes = new HashMap<>();
 	
 	// ----------------------------------------------------
 	// specifications for a property
