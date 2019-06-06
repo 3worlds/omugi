@@ -18,7 +18,10 @@ public interface Tree<N extends TreeNode> extends NodeSet<N>, Textable {
 	 */
 	public N root();
 	
-	public Iterable<N> subTree(N node);
+	@SuppressWarnings("unchecked")
+	public default Iterable<N> subTree(N node) {
+		return (Iterable<N>) node.subTree();
+	}
 
 	public void onParentChanged();
 	

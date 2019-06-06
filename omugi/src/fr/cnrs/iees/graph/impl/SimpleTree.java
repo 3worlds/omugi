@@ -2,12 +2,9 @@ package fr.cnrs.iees.graph.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import fr.cnrs.iees.graph.Direction;
-import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.Tree;
@@ -54,15 +51,6 @@ public class SimpleTree<N extends TreeNode> implements Tree<N> {
 	@Override
 	public N root() {
 		return root;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Iterable<N> subTree(TreeNode node) {
-		List<N> result = new LinkedList<N>();
-		for (Node n:node.traversal(Direction.OUT))
-			result.add((N) n);
-		return result;
 	}
 
 	@Override

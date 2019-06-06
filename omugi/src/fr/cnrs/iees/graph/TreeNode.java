@@ -32,6 +32,8 @@ package fr.cnrs.iees.graph;
 
 import java.util.Collection;
 
+import au.edu.anu.rscs.aot.collections.QuickListOfLists;
+
 public interface TreeNode extends Node {
 
 	/**
@@ -88,4 +90,16 @@ public interface TreeNode extends Node {
 	 * @return the number of child nodes
 	 */
 	public int nChildren();
+	
+	@SuppressWarnings("unchecked")
+	public default Iterable<? extends TreeNode> subTree() {
+		QuickListOfLists<TreeNode> result = new QuickListOfLists<>();
+		if (hasChildren()) {
+			result.addList((Iterable<TreeNode>) getChildren());
+			for (TreeNode child: getChildren()) 
+				result.addList((Iterable<TreeNode>) child.subTree());
+		}
+		return result;
+	}
+	
 }
