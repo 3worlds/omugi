@@ -31,8 +31,8 @@
 package fr.cnrs.iees.graph;
 
 import java.util.Collection;
-
-import au.edu.anu.rscs.aot.collections.QuickListOfLists;
+import java.util.LinkedList;
+import java.util.List;
 
 public interface TreeNode extends Node {
 
@@ -91,14 +91,21 @@ public interface TreeNode extends Node {
 	 */
 	public int nChildren();
 	
-	@SuppressWarnings("unchecked")
+	// recursive
+	private void subTree(List<TreeNode> list, TreeNode parent) {
+		list.add(parent);
+		if (parent.hasChildren())
+			for (TreeNode tn:parent.getChildren())
+				subTree(list,tn);
+	}
+	
+	/**
+	 * 
+	 * @return the subtree starting at this node (=this node + all its children's children)
+	 */
 	public default Iterable<? extends TreeNode> subTree() {
-		QuickListOfLists<TreeNode> result = new QuickListOfLists<>();
-		if (hasChildren()) {
-			result.addList((Iterable<TreeNode>) getChildren());
-			for (TreeNode child: getChildren()) 
-				result.addList((Iterable<TreeNode>) child.subTree());
-		}
+		List<TreeNode> result = new LinkedList<TreeNode>();
+		subTree(result,this);
 		return result;
 	}
 	
