@@ -258,7 +258,8 @@ public class ValidPropertyTypes {
 	/** NB: all have a valueOf(String) method */
 	private enum AotTypes {
 		//  class name | 	java class		  					|	default value			
-		IntegerRange	("au.edu.anu.rscs.aot.util.IntegerRange",	new IntegerRange(java.lang.Integer.MIN_VALUE,java.lang.Integer.MAX_VALUE));
+		IntegerRange	("au.edu.anu.rscs.aot.util.IntegerRange",	new IntegerRange(java.lang.Integer.MIN_VALUE,java.lang.Integer.MAX_VALUE)),
+		Interval		("fr.ens.biologie.generic.utils.Interval",	fr.ens.biologie.generic.utils.Interval.open(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
 		private final String className;
 		private final Object defaultValue;
 		private AotTypes(String className, Object defaultValue) {
