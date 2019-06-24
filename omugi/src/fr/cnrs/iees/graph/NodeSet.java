@@ -96,5 +96,12 @@ public interface NodeSet<N extends Node>  extends Textable {
 		sb.append(')');
 		return sb.toString();
 	}
+	
+	/**
+	 * finds in the list the node with the specified id, null if not found
+	 * @param id the id to look for
+	 * @return the node
+	 */
+	public N find(String id);
 
 }

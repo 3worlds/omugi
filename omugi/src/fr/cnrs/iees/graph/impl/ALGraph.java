@@ -103,4 +103,9 @@ public class ALGraph<N extends ALNode,E extends ALEdge> implements Graph<N,E> {
 		return "["+toDetailedString()+"]";
 	}
 
+	@Override
+	public N find(String id) {
+		return nodes.get(id);
+	}
+
 }

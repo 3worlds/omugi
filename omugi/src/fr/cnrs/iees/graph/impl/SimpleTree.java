@@ -1,10 +1,9 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-
+import java.util.Map;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.Tree;
@@ -25,7 +24,7 @@ public class SimpleTree<N extends TreeNode> implements Tree<N> {
 	private NodeFactory factory = null;
 	
 	/** the list of nodes */
-	private Set<N> nodes = new HashSet<N>();
+	private Map<String,N> nodes = new HashMap<String,N>();
 	
 	public SimpleTree(NodeFactory factory) {
 		super();
@@ -35,7 +34,7 @@ public class SimpleTree<N extends TreeNode> implements Tree<N> {
 
 	@Override
 	public Iterable<N> nodes() {
-		return nodes;
+		return nodes.values();
 	}
 
 	@Override
@@ -45,7 +44,7 @@ public class SimpleTree<N extends TreeNode> implements Tree<N> {
 
 	@Override
 	public boolean contains(TreeNode node) {
-		return nodes.contains(node);
+		return nodes.values().contains(node);
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class SimpleTree<N extends TreeNode> implements Tree<N> {
 
 	@Override
 	public void addNode(N node) {
-		if (nodes.add(node))
+		if (nodes.put(node.id(),node)!=node)
 			if (node.isRoot()) {
 				roots.add(node);
 				resetRoot();
@@ -71,7 +70,7 @@ public class SimpleTree<N extends TreeNode> implements Tree<N> {
 
 	@Override
 	public void removeNode(N node) {
-		nodes.remove(node);
+		nodes.remove(node.id());
 		if (roots.contains(node))
 			roots.remove(node);
 		if (root==node)
@@ -111,6 +110,11 @@ public class SimpleTree<N extends TreeNode> implements Tree<N> {
 	@Override
 	public final String toString() {
 		return "["+toDetailedString()+"]";
+	}
+
+	@Override
+	public N find(String id) {
+		return nodes.get(id);
 	}
 
 }

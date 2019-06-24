@@ -1,11 +1,10 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-
+import java.util.Map;
 import au.edu.anu.rscs.aot.collections.QuickListOfLists;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.EdgeFactory;
@@ -27,7 +26,7 @@ import fr.ens.biologie.generic.Textable;
 public class TreeGraph<N extends TreeGraphNode,E extends ALEdge> 
 	implements Tree<N>, EdgeSet<E>, Textable {
 
-	private Set<N> nodes = new HashSet<>();
+	private Map<String,N> nodes = new HashMap<>();
 	private N root = null;
 	private List<N> roots = new ArrayList<N>(10);
 	private GraphFactory factory;
@@ -47,7 +46,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	
 	@Override
 	public Iterable<N> nodes() {
-		return nodes;
+		return nodes.values();
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 
 	@Override
 	public boolean contains(N node) {
-		return nodes.contains(node);
+		return nodes.values().contains(node);
 	}
 
 	@Override
@@ -67,7 +66,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 
 	@Override
 	public void addNode(N node) {
-		if (nodes.add(node))
+		if (nodes.put(node.id(),node)!=node)
 			if (node.getParent()==null) {
 				roots.add(node);
 				resetRoot();
@@ -76,7 +75,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 
 	@Override
 	public void removeNode(N node) {
-		nodes.remove(node);
+		nodes.remove(node.id());
 		if (roots.contains(node))
 			roots.remove(node);
 		if (root==node)
@@ -93,7 +92,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	@Override
 	public Iterable<E> edges() {
 		QuickListOfLists<E> edges = new QuickListOfLists<>();
-		for (N n:nodes)
+		for (N n:nodes.values())
 			edges.addList((Iterable<E>) n.edges(Direction.OUT));
 		return edges;
 	}
@@ -107,7 +106,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	@Override
 	public int nEdges() {
 		// a tree has nNodes()-1 edges
-		return ALGraph.countEdges(nodes)-nNodes()+1;
+		return ALGraph.countEdges(nodes.values())-nNodes()+1;
 	}
 
 	@Override
@@ -134,7 +133,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	@Override
 	public void onParentChanged() {
 		roots.clear();
-		for (N n:nodes)
+		for (N n:nodes.values())
 			if (n.getParent()==null) // this is the 'tree only' check for root
 				roots.add(n);
 		resetRoot();
@@ -157,7 +156,7 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 		StringBuilder sb = new StringBuilder(toShortString());
 		StringBuilder zb = new StringBuilder();
 		sb.append(" NODES=(");
-		for (N n: nodes) {
+		for (N n: nodes.values()) {
 			sb.append(n.toShortString() + ",");
 			for (ALEdge e: n.edges(Direction.OUT))
 				zb.append(e.toShortString() + ",");
@@ -175,6 +174,11 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	@Override
 	public final String toString() {
 		return "["+toDetailedString()+"]";
+	}
+
+	@Override
+	public N find(String id) {
+		return nodes.get(id);
 	}
 
 }
