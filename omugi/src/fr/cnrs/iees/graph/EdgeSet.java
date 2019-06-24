@@ -66,5 +66,7 @@ public interface EdgeSet<E extends Edge>  extends Textable {
 		sb.append(')');
 		return sb.toString();
 	}
+	
+	public E findEdge(String id);
 
 }

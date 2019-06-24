@@ -102,6 +102,6 @@ public interface NodeSet<N extends Node>  extends Textable {
 	 * @param id the id to look for
 	 * @return the node
 	 */
-	public N find(String id);
+	public N findNode(String id);
 
 }

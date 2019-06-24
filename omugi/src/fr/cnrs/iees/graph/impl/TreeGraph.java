@@ -177,8 +177,17 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	}
 
 	@Override
-	public N find(String id) {
+	public N findNode(String id) {
 		return nodes.get(id);
+	}
+
+	// slow and inefficient in this implementation
+	@Override
+	public E findEdge(String id) {
+		for (E e:edges())
+			if (e.id().equals(id))
+				return e;
+		return null;
 	}
 
 }

@@ -113,7 +113,7 @@ public class SimpleTree<N extends TreeNode> implements Tree<N> {
 	}
 
 	@Override
-	public N find(String id) {
+	public N findNode(String id) {
 		return nodes.get(id);
 	}
 
