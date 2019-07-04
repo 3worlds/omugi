@@ -44,7 +44,7 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 		super(scopeName,labels);
 	}
 	
-	private void addNodeToGraphs(TreeGraphNode node) {
+	protected void addNodeToGraphs(TreeGraphNode node) {
 		for (TreeGraph<TreeGraphNode,ALEdge> g:graphs)
 			g.addNode(node);
 	}
