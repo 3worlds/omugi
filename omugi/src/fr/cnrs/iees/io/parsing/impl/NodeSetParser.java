@@ -71,7 +71,7 @@ public abstract class NodeSetParser extends Parser {
 	// constants and defaults
 	protected final static String CLASS = "type";
 	protected final static String NODE_FACTORY = "node_factory";
-	protected final static String PROP_FACTORY = "property_list_factory";
+//	protected final static String PROP_FACTORY = "property_list_factory";
 	protected final static String SCOPE = "scope";
 	protected final Map<String,String> defaultGraphProperties = new HashMap<>();
 	protected final Map<String,Class<?>> graphPropertyTypes = new HashMap<>();
@@ -158,11 +158,11 @@ public abstract class NodeSetParser extends Parser {
 	// ----------------------------------------------------
 	
 	// fields for descendants
-	protected PropertyListFactory propertyListFactory = null;
+//	protected PropertyListFactory propertyListFactory = null;
 	protected NodeFactory nodeFactory = null;
 
 	// builds a propertyList from specs
-	protected SimplePropertyList makePropertyList(List<propSpec> props, Logger log) {
+	protected SimplePropertyList makePropertyList(PropertyListFactory plf, List<propSpec> props, Logger log) {
 		List<Property> pl = new LinkedList<Property>();
 		for (propSpec p : props) {
 			String className = ValidPropertyTypes.getJavaClassName(p.type);
@@ -218,7 +218,7 @@ public abstract class NodeSetParser extends Parser {
 		int i = 0;
 		for (Property p : pl)
 			pp[i++] = p;
-		return propertyListFactory.makePropertyList(pp);
+		return plf.makePropertyList(pp);
 	}
 
 	// gets a class from the graph properties
@@ -264,10 +264,10 @@ public abstract class NodeSetParser extends Parser {
 			if (nFactoryClass==null)
 				nFactoryClass = (Class<? extends NodeFactory>) 
 					getClass(NODE_FACTORY,log);
-		if (propertyListFactory==null)
-			if (plFactoryClass==null)
-				plFactoryClass = (Class<? extends PropertyListFactory>) 
-					getClass(PROP_FACTORY,log);
+//		if (propertyListFactory==null)
+//			if (plFactoryClass==null)
+//				plFactoryClass = (Class<? extends PropertyListFactory>) 
+//					getClass(PROP_FACTORY,log);
 		// setup the factories
 		try {
 			if (nodeFactory==null)
@@ -279,11 +279,11 @@ public abstract class NodeSetParser extends Parser {
 						nFactoryClass.getDeclaredConstructor(String.class,Map.class);
 					nodeFactory = c.newInstance(theScope,labels);
 				}
-			if (propertyListFactory==null)
-				propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
-			if (plFactoryClass.equals(nFactoryClass))
-				if (nodeFactory instanceof PropertyListFactory)
-					propertyListFactory = (PropertyListFactory) nodeFactory;
+//			if (propertyListFactory==null)
+//				propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
+//			if (plFactoryClass.equals(nFactoryClass))
+//				if (nodeFactory instanceof PropertyListFactory)
+//					propertyListFactory = (PropertyListFactory) nodeFactory;
 		} catch (Exception e) {
 			// There should not be any problem here given the previous checks
 			// unless the factory class is flawed
@@ -320,10 +320,10 @@ public abstract class NodeSetParser extends Parser {
 				nFactoryClass = (Class<? extends NodeFactory>) 
 					getClass(NODE_FACTORY,p.value,log);
 				break;
-			case PROP_FACTORY:
-				plFactoryClass = (Class<? extends PropertyListFactory>) 
-					getClass(PROP_FACTORY,p.value,log);
-				break;
+//			case PROP_FACTORY:
+//				plFactoryClass = (Class<? extends PropertyListFactory>) 
+//					getClass(PROP_FACTORY,p.value,log);
+//				break;
 			case SCOPE:
 				theScope = p.value;
 				break;

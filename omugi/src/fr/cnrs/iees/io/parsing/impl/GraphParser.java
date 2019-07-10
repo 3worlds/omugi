@@ -115,12 +115,12 @@ public class GraphParser extends EdgeAndNodeSetParser {
 		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.ALGraph");
 		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
 		defaultGraphProperties.put(EDGE_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
-		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
+//		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.ALGraphFactory");
 		defaultGraphProperties.put(SCOPE, 			"DGF");
 		graphPropertyTypes.put(CLASS,			Graph.class);
 		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
 		graphPropertyTypes.put(EDGE_FACTORY, 	EdgeFactory.class);
-		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
+//		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
 		graphPropertyTypes.put(SCOPE, 			String.class);
 	}
 	
@@ -250,9 +250,11 @@ public class GraphParser extends EdgeAndNodeSetParser {
 					n = nodeFactory.makeNode(nc,ns.name);
 			else
 				if (nc==null)
-					n = nodeFactory.makeNode(ns.name,makePropertyList(ns.props,log));
+					n = nodeFactory.makeNode(ns.name,
+						makePropertyList(nodeFactory.nodePropertyFactory(),ns.props,log));
 				else
-					n = nodeFactory.makeNode(nc,ns.name,makePropertyList(ns.props,log));
+					n = nodeFactory.makeNode(nc,ns.name,
+						makePropertyList(nodeFactory.nodePropertyFactory(),ns.props,log));
 			String nodeId = (ns.label+":"+ns.name).replaceAll("\\s","");
 			if (nodes.containsKey(nodeId))
 				log.severe(()->"duplicate node found ("+") - ignoring the second one");
@@ -278,9 +280,11 @@ public class GraphParser extends EdgeAndNodeSetParser {
 						edgeFactory.makeEdge(ec,start,end,es.name);
 				else 
 					if (ec==null)
-						edgeFactory.makeEdge(start,end,es.name,makePropertyList(es.props,log));
+						edgeFactory.makeEdge(start,end,es.name,
+							makePropertyList(edgeFactory.edgePropertyFactory(),es.props,log));
 					else
-						edgeFactory.makeEdge(ec,start,end,es.name,makePropertyList(es.props,log));
+						edgeFactory.makeEdge(ec,start,end,es.name,
+							makePropertyList(edgeFactory.edgePropertyFactory(),es.props,log));
 			}
 		}
 	}

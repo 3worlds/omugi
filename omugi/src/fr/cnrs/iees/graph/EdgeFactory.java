@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph;
 
 import fr.cnrs.iees.OmugiClassLoader;
+import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
@@ -157,6 +158,12 @@ public interface EdgeFactory {
 		return makeEdge(edgeClass,start,end,defaultEdgeId);
 	}
 	
-	
+	/**
+	 * 
+	 * @return the propertyListfactory used with this edgeFactory
+	 */
+	public default PropertyListFactory edgePropertyFactory() {
+		return new PropertyListFactory() {};
+	}
 	
 }

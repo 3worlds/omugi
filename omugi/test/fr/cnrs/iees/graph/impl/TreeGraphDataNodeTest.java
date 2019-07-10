@@ -52,7 +52,7 @@ class TreeGraphDataNodeTest {
 	private void init() {
 		f = new TreeGraphFactory("Grtz");
 		SimplePropertyList p;
-		p = f.makePropertyList("a","b","c");
+		p = f.nodePropertyFactory().makePropertyList("a","b","c");
 		p.setProperty("a", 12);
 		p.setProperty("c", "blurp");
 		n1 = f.makeNode("n1",p);

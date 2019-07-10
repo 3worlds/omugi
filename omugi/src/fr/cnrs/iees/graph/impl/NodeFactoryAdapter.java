@@ -10,7 +10,6 @@ import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.identity.impl.LocalScope;
-import fr.cnrs.iees.properties.PropertyListFactory;
 
 /**
  * 
@@ -19,7 +18,7 @@ import fr.cnrs.iees.properties.PropertyListFactory;
  * @param <N>
  */
 public abstract class NodeFactoryAdapter 
-		implements NodeFactory, PropertyListFactory {
+		implements NodeFactory {
 
 	protected Map<String,Class<? extends Node>> nodeLabels = new HashMap<>();
 	protected Map<Class<? extends Node>,String> nodeClassNames = new HashMap<>();

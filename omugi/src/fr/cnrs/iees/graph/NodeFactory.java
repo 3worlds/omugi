@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph;
 
 import fr.cnrs.iees.OmugiClassLoader;
+import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
@@ -152,6 +153,14 @@ public interface NodeFactory {
 	public void manageGraph(NodeSet<? extends Node> graph);
 	
 	public void unmanageGraph(NodeSet<? extends Node> graph);
+
+	/**
+	 * 
+	 * @return the propertyListfactory used with this NodeFactory
+	 */
+	public default PropertyListFactory nodePropertyFactory() {
+		return new PropertyListFactory() {};
+	}
 
 	
 }

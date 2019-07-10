@@ -120,11 +120,11 @@ public class TreeParser extends NodeSetParser {
 		// setup of default tree properties and property types for this parser
 		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.SimpleTree");
 		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.SimpleTreeFactory");
-		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.SimpleTreeFactory");
+//		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.SimpleTreeFactory");
 		defaultGraphProperties.put(SCOPE, 			"DTF");
 		graphPropertyTypes.put(CLASS,			Tree.class);
 		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
-		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
+//		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
 		graphPropertyTypes.put(SCOPE, 			String.class);
 	}
 
@@ -215,9 +215,11 @@ public class TreeParser extends NodeSetParser {
 				else
 					n = (TreeNode) nodeFactory.makeNode(nc, ns.name);
 			else if (nc == null)
-				n = (TreeNode) nodeFactory.makeNode(ns.name, makePropertyList(ns.props, log));
+				n = (TreeNode) nodeFactory.makeNode(ns.name, 
+					makePropertyList(nodeFactory.nodePropertyFactory(),ns.props, log));
 			else
-				n = (TreeNode) nodeFactory.makeNode(nc, ns.name, makePropertyList(ns.props, log));
+				n = (TreeNode) nodeFactory.makeNode(nc, ns.name, 
+					makePropertyList(nodeFactory.nodePropertyFactory(),ns.props, log));
 			String nodeId = ns.label.trim() + ":" + ns.name.trim();
 			if (nodes.containsKey(nodeId))
 				log.severe("duplicate node found (" + nodeId + ") - ignoring the second one");

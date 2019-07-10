@@ -53,7 +53,7 @@ class ALDataNodeTest {
 	void testProperties() {
 		ALGraphFactory f = new ALGraphFactory("sgrdt");
 		SimplePropertyList p;
-		p = f.makePropertyList("a","b","c");
+		p = f.nodePropertyFactory().makePropertyList("a","b","c");
 		Node n = f.makeNode(p);
 		show("testProperties",n.toDetailedString());
 		((DataHolder)n).properties().setProperty("a", 12);

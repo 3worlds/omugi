@@ -45,7 +45,6 @@ import fr.cnrs.iees.graph.impl.TreeGraph;
 import fr.cnrs.iees.graph.impl.TreeGraphNode;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;
-import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
@@ -96,12 +95,12 @@ public class TreeGraphParser extends EdgeAndNodeSetParser {
 		defaultGraphProperties.put(CLASS, 			"fr.cnrs.iees.graph.impl.TreeGraph");
 		defaultGraphProperties.put(NODE_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
 		defaultGraphProperties.put(EDGE_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
-		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
+//		defaultGraphProperties.put(PROP_FACTORY, 	"fr.cnrs.iees.graph.impl.TreeGraphFactory");
 		defaultGraphProperties.put(SCOPE, 			"TGDF");
 		graphPropertyTypes.put(CLASS,			TreeGraph.class);
 		graphPropertyTypes.put(NODE_FACTORY, 	NodeFactory.class);
 		graphPropertyTypes.put(EDGE_FACTORY, 	EdgeFactory.class);
-		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
+//		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
 		graphPropertyTypes.put(SCOPE, 			String.class);
 	}
 
@@ -128,9 +127,11 @@ public class TreeGraphParser extends EdgeAndNodeSetParser {
 				else
 					n = (TreeGraphNode) nodeFactory.makeNode(nc, ns.name);
 			else if (nc == null)
-				n = (TreeGraphNode) nodeFactory.makeNode(ns.name, makePropertyList(ns.props, log));
+				n = (TreeGraphNode) nodeFactory.makeNode(ns.name, 
+					makePropertyList(nodeFactory.nodePropertyFactory(),ns.props, log));
 			else
-				n = (TreeGraphNode) nodeFactory.makeNode(nc, ns.name, makePropertyList(ns.props, log));
+				n = (TreeGraphNode) nodeFactory.makeNode(nc, ns.name, 
+					makePropertyList(nodeFactory.nodePropertyFactory(),ns.props, log));
 			if (ns.parent != null) {
 				// the parent has always been set before
 				TreeGraphNode parent = nodes.get(ns.parent.label.trim() + ":" + ns.parent.name.trim());
@@ -147,7 +148,7 @@ public class TreeGraphParser extends EdgeAndNodeSetParser {
 		for (edgeSpec es : edgeSpecs) {
 			SimplePropertyList pl = null;
 			if (!es.props.isEmpty())
-				pl = makePropertyList(es.props, log);
+				pl = makePropertyList(edgeFactory.edgePropertyFactory(),es.props,log);
 			String ref = es.start.replaceAll("\\s", "");
 			Node start = nodes.get(ref);
 			if (start == null)
