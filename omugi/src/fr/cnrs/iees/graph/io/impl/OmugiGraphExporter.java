@@ -51,8 +51,10 @@ import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.impl.TreeGraph;
 import fr.cnrs.iees.graph.impl.TreeGraphNode;
 import fr.cnrs.iees.graph.io.GraphExporter;
+import fr.cnrs.iees.properties.ExtendablePropertyList;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.properties.impl.ExtendablePropertyListImpl;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**
@@ -221,10 +223,19 @@ public class OmugiGraphExporter implements GraphExporter {
 				+" on "+now+"\n");
 	}
 	
+//	node_factory = String("au.edu.anu.twcore.root.TwConfigFactory")
+//	edge_factory = String("au.edu.anu.twcore.root.TwConfigFactory")
 	protected void exportTreeGraph(TreeGraph<? extends TreeGraphNode, ? extends Edge> graph) {
 		try {
 			PrintWriter writer = new PrintWriter(file);
 			writeHeader(writer);
+			// Write factories
+			ExtendablePropertyList gp = new ExtendablePropertyListImpl();
+			if (graph.edgeFactory()!=null)
+				gp.addProperty("edge_factory",graph.edgeFactory().getClass().getName());
+			if (graph.nodeFactory()!=null)
+				gp.addProperty("node_factory", graph.nodeFactory().getClass().getName());
+			writeProperties(gp, writer, "");
 			// 1. export tree
 			writer.print(COMMENT.prefix());
 			writer.print(' ');
