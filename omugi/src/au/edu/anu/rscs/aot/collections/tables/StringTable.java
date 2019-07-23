@@ -34,7 +34,7 @@ import fr.ens.biologie.generic.DataContainer;
 
 /** initial code by Shayne */
 public class StringTable extends TableAdapter {
-	
+
 	protected String[] data;
 
 	public StringTable(Dimensioner... dimensions) {
@@ -55,7 +55,6 @@ public class StringTable extends TableAdapter {
 		return result;
 	}
 
-	
 	public StringTable cloneStructure(String initialValue) {
 		StringTable result = cloneStructure();
 		result.fillWith(initialValue);
@@ -63,22 +62,22 @@ public class StringTable extends TableAdapter {
 	}
 
 	public static StringTable valueOf(String value, char[][] bdel, char[] isep) {
-		String ss = TableAdapter.getBlockContent(value,bdel[TABLEix]);
-		String d = ss.substring(0,ss.indexOf(bdel[DIMix][BLOCK_CLOSE])+1);
-		StringTable result = new StringTable(readDimensioners(d,bdel[DIMix],isep[DIMix]));
-		ss = ss.substring(ss.indexOf(bdel[DIMix][BLOCK_CLOSE])+1); 
+		String ss = TableAdapter.getBlockContent(value, bdel[TABLEix]);
+		String d = ss.substring(0, ss.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
+		StringTable result = new StringTable(readDimensioners(d, bdel[DIMix], isep[DIMix]));
+		ss = ss.substring(ss.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
 		String s = null;
-		int i=0;
-		while (ss.indexOf(isep[TABLEix])>0) {
-			s = ss.substring(0,ss.indexOf(isep[TABLEix]));
-			ss = ss.substring(ss.indexOf(isep[TABLEix])+1);
+		int i = 0;
+		while (ss.indexOf(isep[TABLEix]) > 0) {
+			s = ss.substring(0, ss.indexOf(isep[TABLEix]));
+			ss = ss.substring(ss.indexOf(isep[TABLEix]) + 1);
 			result.data[i] = s;
 			i++;
 		}
 		result.data[i] = ss.trim();
 		return result;
 	}
-	
+
 	@Override
 	public String elementToString(int flatIndex) {
 		return data[flatIndex];
@@ -99,23 +98,23 @@ public class StringTable extends TableAdapter {
 		fillWith("");
 		return this;
 	}
-	
+
 	public StringTable fillWith(String value) {
-		for (int i=0; i<data.length; i++)
+		for (int i = 0; i < data.length; i++)
 			data[i] = value;
 		return this;
 	}
 
 	@Override
 	public DataContainer fillWith(Object value) {
-		return fillWith((String)value);
+		return fillWith((String) value);
 	}
 
 	@Override
 	public TableAdapter copy(Table from) {
 		if (String.class.isAssignableFrom(from.contentType())) {
-			StringTable st = (StringTable)from;
-			for (int i=0; i<data.length; i++)
+			StringTable st = (StringTable) from;
+			for (int i = 0; i < data.length; i++)
 				data[i] = st.data[i];
 		}
 		return this;
@@ -148,6 +147,17 @@ public class StringTable extends TableAdapter {
 
 	public void set(String value, Object... indexes) {
 		data[getFlatIndex(indexes)] = value;
+	}
+
+	// maybe this could be generalized but for many tables it is not very useful
+	public boolean contains(String str) {
+		for (int i = 0; i < flatSize; i++) {
+			String s = getWithFlatIndex(i);
+			// here, 'contains' means the table has a string *equal* to str
+			if (s.equals(str))
+				return true;
+		}
+		return false;
 	}
 
 }
