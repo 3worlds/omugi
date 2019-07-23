@@ -41,6 +41,8 @@ import java.util.Set;
  * @author Jacques Gignoux - 28 janv. 2019
  *
  */
+// I need this interface to provide for proposing an id given an id - IDD!
+// That is, to employ the given alg but NOT add the id to the list
 public interface IdentityScope {
 	
 	/**
@@ -61,6 +63,8 @@ public interface IdentityScope {
 	 * @return a new Identity instance, unique over this scope
 	 */
 	public Identity newId();
+	
+	public Identity proposeId(String proposedId);
 	
 	/**
 	 * makes a new instance of an Identity, unique over this scope. The default method
