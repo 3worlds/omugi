@@ -74,7 +74,7 @@ public class SimpleTreeFactory
 
 	@Override
 	public SimpleTreeNode makeNode(String proposedId) {
-		SimpleTreeNode result = new SimpleTreeNode(scope.newId(proposedId),this);
+		SimpleTreeNode result = new SimpleTreeNode(scope.newId(true,proposedId),this);
 		addNodeToTrees(result);
 		return result;
 	}
@@ -88,9 +88,9 @@ public class SimpleTreeFactory
 	public SimpleTreeNode makeNode(String proposedId, ReadOnlyPropertyList props) {
 		SimpleTreeNode result = null;
 		if (props instanceof SimplePropertyList)
-			result = new SimpleDataTreeNode(scope.newId(proposedId),(SimplePropertyList) props,this);
+			result = new SimpleDataTreeNode(scope.newId(true,proposedId),(SimplePropertyList) props,this);
 		else
-			result = new SimpleReadOnlyDataTreeNode(scope.newId(proposedId),props,this);
+			result = new SimpleReadOnlyDataTreeNode(scope.newId(true,proposedId),props,this);
 		addNodeToTrees(result);
 		return result;
 	}
@@ -117,7 +117,7 @@ public class SimpleTreeFactory
 				log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
 			}			
 		}
-		Identity id = scope.newId(proposedId);
+		Identity id = scope.newId(true,proposedId);
 		try {
 			result = (SimpleTreeNode) c.newInstance(id,props,this);
 		} catch (Exception e) {
@@ -141,7 +141,7 @@ public class SimpleTreeFactory
 		} catch (Exception e) {
 			log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
 		}
-		Identity id = scope.newId(proposedId);
+		Identity id = scope.newId(true,proposedId);
 		try {
 			result = (SimpleTreeNode) c.newInstance(id,this);
 		} catch (Exception e) {

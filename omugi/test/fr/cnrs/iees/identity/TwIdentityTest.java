@@ -44,12 +44,12 @@ class TwIdentityTest {
 		Identity id, id2;
 		IdentityScope scope = new LocalScope();
 		
-		id = scope.newId("test class");
-		id2 = scope.newId("test class");
+		id = scope.newId(true,"test class");
+		id2 = scope.newId(true,"test class");
 		assertTrue(!id.id().equals(id2.id()));
 
-		id = scope.newId(this.getClass().getSimpleName());
-		id2 = scope.newId(this.getClass().getSimpleName());
+		id = scope.newId(true,this.getClass().getSimpleName());
+		id2 = scope.newId(true,this.getClass().getSimpleName());
 		assertTrue(!id.id().equals(id2.id()));
 
 //		id = new GUIDIdentity(scope);

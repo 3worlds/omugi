@@ -326,7 +326,7 @@ class SimpleTreeNodeTest {
 		assertFalse(tn1.equals(tn2));
 		assertTrue(tn2.equals(tn2));
 		// same parent, same children, different id, hence different treenodes.
-		TreeNode tn5 = new SimpleTreeNode(f.scope.newId("coucou"),f);
+		TreeNode tn5 = new SimpleTreeNode(f.scope.newId(true,"coucou"),f);
 		tn5.connectParent(tn1);
 		assertFalse(tn5.equals(tn3));
 	}

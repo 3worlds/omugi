@@ -62,15 +62,15 @@ public abstract class GraphFactoryAdapter
 	
 	@Override
 	public Edge makeEdge(Node start, Node end, String proposedId) {
-		return new ALEdge(scope.newId(proposedId),start,end,this);
+		return new ALEdge(scope.newId(true,proposedId),start,end,this);
 	}
 
 	@Override
 	public Edge makeEdge(Node start, Node end, String proposedId, ReadOnlyPropertyList props) {
 		if (props instanceof SimplePropertyList)
-			return new ALDataEdge(scope.newId(proposedId),start,end,(SimplePropertyList)props,this);
+			return new ALDataEdge(scope.newId(true,proposedId),start,end,(SimplePropertyList)props,this);
 		else
-			return new ALReadOnlyDataEdge(scope.newId(proposedId),start,end,props,this);
+			return new ALReadOnlyDataEdge(scope.newId(true,proposedId),start,end,props,this);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public abstract class GraphFactoryAdapter
 				log.severe(()->"Constructor for class \""+edgeClass.getName()+ "\" not found");
 			}			
 		}
-		Identity id = scope.newId(proposedId);
+		Identity id = scope.newId(true,proposedId);
 		try {
 			return c.newInstance(id,start,end,props,this);
 		} catch (Exception e1) {
@@ -106,7 +106,7 @@ public abstract class GraphFactoryAdapter
 		} catch (Exception e) {
 			log.severe(()->"Constructor for class \""+edgeClass.getName()+ "\" not found");
 		}
-		Identity id = scope.newId(proposedId);
+		Identity id = scope.newId(true,proposedId);
 		try {
 			return c.newInstance(id,start,end,this);
 		} catch (Exception e1) {

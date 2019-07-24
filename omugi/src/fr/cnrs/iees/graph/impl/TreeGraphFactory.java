@@ -51,7 +51,7 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 
 	@Override
 	public TreeGraphNode makeNode(String proposedId) {
-		TreeGraphNode result = new TreeGraphNode(scope.newId(proposedId),this);
+		TreeGraphNode result = new TreeGraphNode(scope.newId(true,proposedId),this);
 		addNodeToGraphs(result);
 		return result;
 	}
@@ -60,9 +60,9 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 	public TreeGraphNode makeNode(String proposedId, ReadOnlyPropertyList props) {
 		TreeGraphNode result = null;
 		if (props instanceof SimplePropertyList)
-			result =  new TreeGraphDataNode(scope.newId(proposedId),(SimplePropertyList) props,this);
+			result =  new TreeGraphDataNode(scope.newId(true,proposedId),(SimplePropertyList) props,this);
 		else
-			result =  new TreeGraphReadOnlyDataNode(scope.newId(proposedId),props,this);
+			result =  new TreeGraphReadOnlyDataNode(scope.newId(true,proposedId),props,this);
 		addNodeToGraphs(result);
 		return result;
 	}
@@ -85,7 +85,7 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 				log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
 			}			
 		}
-		Identity id = scope.newId(proposedId);
+		Identity id = scope.newId(true,proposedId);
 		try {
 			result = (TreeGraphNode) c.newInstance(id,props,this);
 			addNodeToGraphs(result);
@@ -104,7 +104,7 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 		} catch (Exception e) {
 			log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
 		}
-		Identity id = scope.newId(proposedId);
+		Identity id = scope.newId(true,proposedId);
 		try {
 			result = (TreeGraphNode) c.newInstance(id,this);
 			addNodeToGraphs(result);

@@ -46,15 +46,15 @@ class SimpleIdentityTest {
 		assertEquals(scope.newId().toString(),"1_1");
 		assertEquals(scope.newId().toString(),"1_2");
 		assertEquals(scope.newId().toString(),"1_3");
-		assertEquals(scope.newId("toto").toString(),"toto");
-		assertEquals(scope.newId("toto").toString(),"toto1");
-		assertEquals(scope.newId("toto").toString(),"toto2");
-		assertEquals(scope.newId("toto",":tata",":titi").toString(),"toto:tata:titi");
+		assertEquals(scope.newId(true,"toto").toString(),"toto");
+		assertEquals(scope.newId(true,"toto").toString(),"toto1");
+		assertEquals(scope.newId(true,"toto").toString(),"toto2");
+		assertEquals(scope.newId(true,"toto",":tata",":titi").toString(),"toto:tata:titi");
 		assertEquals(scope.newId().toString(),"1_4");
-		assertEquals(scope.newId("toto",":tata",":titi").toString(),"toto:tata:titi1");
+		assertEquals(scope.newId(true,"toto",":tata",":titi").toString(),"toto:tata:titi1");
 		assertEquals(scope.newId().universalId(),"LocalScope:1_5");
 		IdentityScope scope2 = new LocalScope();
-		assertEquals(scope2.newId("toto").universalId(),"LocalScope1:toto");
+		assertEquals(scope2.newId(true,"toto").universalId(),"LocalScope1:toto");
 		IdentityScope scope3 = new UniversalScope("LocalScope");
 		assertEquals(scope3.id(),"LocalScope2");
 	}

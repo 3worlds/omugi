@@ -61,30 +61,30 @@ public class LocalScope implements IdentityScope {
 	
 	@Override
 	public Identity newId() {
-		return newId("");
+		return newId(true,"");
 	}
 	
 	@Override
-	public Identity newId(String proposedId) {
+	public Identity newId(boolean addToScope,String proposedId) {
 		SimpleIdentity result = null;
 		if (!ids.contains(proposedId)) {
 			result = new SimpleIdentity(proposedId,this);
-			ids.add(proposedId);
+			if (addToScope) ids.add(proposedId);
 		}
 		else {
 			String s = UniqueString.makeString(proposedId,ids);
 			result = new SimpleIdentity(s,this);
-			ids.add(s);
+			if (addToScope) ids.add(s);
 		}
 		return result;
 	}
 	
 	@Override
-	public Identity newId(String... proposedIdComponents) {
+	public Identity newId(boolean addToScope,String... proposedIdComponents) {
 		StringBuilder sb = new StringBuilder();
 		for (String s:proposedIdComponents)
 			sb.append(s);
-		return newId(sb.toString());
+		return newId(addToScope,sb.toString());
 	}
 
 	@Override

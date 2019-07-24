@@ -74,7 +74,7 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 
 	@Override
 	public ALNode makeNode(String proposedId) {
-		ALNode result = new ALNode(scope.newId(proposedId),this);
+		ALNode result = new ALNode(scope.newId(true,proposedId),this);
 		addNodeToGraphs(result);
 		return result;
 	}
@@ -83,9 +83,9 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 	public ALNode makeNode(String proposedId, ReadOnlyPropertyList props) {
 		ALNode result = null;
 		if (props instanceof SimplePropertyList)
-			result = new ALDataNode(scope.newId(proposedId),(SimplePropertyList) props,this);
+			result = new ALDataNode(scope.newId(true,proposedId),(SimplePropertyList) props,this);
 		else
-			result = new ALReadOnlyDataNode(scope.newId(proposedId),props,this);
+			result = new ALReadOnlyDataNode(scope.newId(true,proposedId),props,this);
 		addNodeToGraphs(result);
 		return result;
 	}
@@ -107,7 +107,7 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 				log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
 			}			
 		}
-		Identity id = scope.newId(proposedId);
+		Identity id = scope.newId(true,proposedId);
 		try {
 			result = (ALNode) c.newInstance(id,props,this);
 			addNodeToGraphs(result);
@@ -126,7 +126,7 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 		} catch (Exception e) {
 			log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
 		}
-		Identity id = scope.newId(proposedId);
+		Identity id = scope.newId(true,proposedId);
 		try {
 			result = (ALNode) c.newInstance(id,this);
 			addNodeToGraphs(result);

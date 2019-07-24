@@ -63,7 +63,7 @@ public class PairLocalScope implements IdentityScope {
 	 * The first argument is the label, all other arguments are concatenated into a name.
 	 */
 	@Override
-	public Identity newId(String... proposedIdComponents) {
+	public Identity newId(boolean addToScope, String... proposedIdComponents) {
 		PairIdentity result = null;
 		String label = proposedIdComponents[0];
 		String name = "";
@@ -72,12 +72,12 @@ public class PairLocalScope implements IdentityScope {
 		String id = label+PairIdentity.LABEL_NAME_SEPARATOR+name;
 		if (!names.contains(name)) {
 			result = new PairIdentity(label,name,this);
-			names.add(id);
+			if (addToScope) names.add(id);
 		}
 		else {
 			String s = UniqueString.makeString(name,names);
 			result = new PairIdentity(label,s,this);
-			names.add(s);
+			if (addToScope) names.add(s);
 		}
 		return result;
 	}
@@ -86,11 +86,11 @@ public class PairLocalScope implements IdentityScope {
 	 * returns a new identity based on label only - creates name with increasing numbers if required
 	 */
 	@Override
-	public Identity newId(String proposedId) {
+	public Identity newId(boolean addToScope,String proposedId) {
 		String[] s = new String[2];
 		s[0] = proposedId;
 		s[1] = "";
-		return newId(s);
+		return newId(addToScope,s);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class PairLocalScope implements IdentityScope {
 	 */
 	@Override
 	public Identity newId() {
-		return newId("","");
+		return newId(true,"","");
 	}
 
 	@Override

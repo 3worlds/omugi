@@ -64,7 +64,6 @@ public interface IdentityScope {
 	 */
 	public Identity newId();
 	
-	public Identity proposeId(String proposedId);
 	
 	/**
 	 * makes a new instance of an Identity, unique over this scope. The default method
@@ -74,7 +73,7 @@ public interface IdentityScope {
 	 * @param proposedId a base for the id to be computed
 	 * @return a new Identity instance, unique over this scope
 	 */
-	public default Identity newId(String proposedId) {
+	public default Identity newId(boolean addToScope,String proposedId) {
 		return newId();
 	}
 	
@@ -86,7 +85,7 @@ public interface IdentityScope {
 	 * @param proposedIdComponents a base for the id to be computed
 	 * @return a new Identity instance, unique over this scope
 	 */
-	public default Identity newId(String... proposedIdComponents) {
+	public default Identity newId(boolean addToScope,String... proposedIdComponents) {
 		return newId();
 	}
 
