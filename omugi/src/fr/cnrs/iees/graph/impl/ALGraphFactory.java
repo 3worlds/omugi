@@ -136,4 +136,10 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 		return result;
 	}
 
+	@Override
+	public void removeNode(Node node) {
+		for (ALGraph<ALNode,ALEdge> g:graphs)
+			g.removeNode((ALNode) node);	
+	}
+
 }

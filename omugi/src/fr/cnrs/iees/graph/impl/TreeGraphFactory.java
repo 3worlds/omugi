@@ -48,6 +48,7 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 		for (TreeGraph<TreeGraphNode,ALEdge> g:graphs)
 			g.addNode(node);
 	}
+	
 
 	@Override
 	public TreeGraphNode makeNode(String proposedId) {
@@ -129,6 +130,12 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 	protected void onParentChanged() {
 		for (TreeGraph<TreeGraphNode,ALEdge> tg:graphs) 
 			tg.onParentChanged();
+	}
+
+	@Override
+	public void removeNode(Node node) {
+		for (TreeGraph<TreeGraphNode,ALEdge> g:graphs)
+			g.removeNode((TreeGraphNode) node);		
 	}
 	
 }

@@ -153,6 +153,8 @@ public interface NodeFactory {
 	public void manageGraph(NodeSet<? extends Node> graph);
 	
 	public void unmanageGraph(NodeSet<? extends Node> graph);
+	
+	public void removeNode(Node node);
 
 	/**
 	 * 

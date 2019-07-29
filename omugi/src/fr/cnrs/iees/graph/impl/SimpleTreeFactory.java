@@ -155,5 +155,11 @@ public class SimpleTreeFactory
 		for (Tree<SimpleTreeNode> tree:trees)
 			tree.onParentChanged();
 	}
+
+	@Override
+	public void removeNode(Node node) {
+		for (Tree<SimpleTreeNode> tree:trees)
+			tree.removeNode((SimpleTreeNode) node);		
+	}
 	
 }
