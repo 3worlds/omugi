@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import fr.cnrs.iees.OmugiException;
+import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
 
@@ -184,7 +185,7 @@ public class TreeTokenizer extends LineTokenizer {
 	}
 
 	public TreeTokenizer(List<String> lines) {
-		super(lines);
+		super(GraphImporter.preprocess( lines));
 	}
 
 	public boolean hasNext() {

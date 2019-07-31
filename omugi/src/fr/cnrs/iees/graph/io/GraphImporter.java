@@ -65,7 +65,7 @@ public interface GraphImporter {
     
     public static Logger log = Logger.getLogger(GraphImporter.class.getName());
     
-	private static List<String> preprocess(List<String> lines) {
+	public static List<String> preprocess(List<String> lines) {
 		List<String> result = new ArrayList<>();
 		String concat = "";
 		/*
