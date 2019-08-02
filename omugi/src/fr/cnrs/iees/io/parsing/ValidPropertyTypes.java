@@ -81,6 +81,23 @@ public class ValidPropertyTypes {
 	/** default constructor is private to prevent instantiation */
 	private ValidPropertyTypes() {};
 	
+	public static void toStrings() {
+		System.out.println("classTypes<Full,short>------------------");
+		for (String key:classTypes.keySet())
+			System.out.println(key+"\t"+classTypes.get(key));
+		System.out.println("typeIndess<short,idxt>------------------");
+		for (String key:typeIndex.keySet())
+			System.out.println(key+"\t"+typeIndex.get(key));
+		
+		for (String klass:classes)
+			System.out.println(classes.indexOf(klass)+"\t"+klass);
+		for (Object o:defaults)
+			System.out.println(defaults.indexOf(o)+"\t"+o);
+		
+		
+		
+	}
+	
 	/**
 	 * records a property type as valid. "Valid" means suitable for later use in
 	 * PropertyList by the targeted application.
@@ -320,5 +337,7 @@ public class ValidPropertyTypes {
 		for (AotTypes pt: AotTypes.values())
 			recordPropertyType(pt.toString(),pt.className,pt.defaultValue);
 	}
-	
+	public static void main(String[] args) {
+		ValidPropertyTypes.toStrings();
+	}
 }
