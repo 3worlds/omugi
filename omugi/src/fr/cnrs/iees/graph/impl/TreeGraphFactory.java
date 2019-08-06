@@ -83,7 +83,7 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 					SimplePropertyList.class,
 					GraphFactory.class);
 			} catch (Exception e1) {
-				log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found");
+				log.severe(()->"Constructor for class \""+nodeClass.getName()+ "\" not found.\n"+e1);
 			}			
 		}
 		Identity id = scope.newId(true,proposedId);
@@ -91,7 +91,8 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 			result = (TreeGraphNode) c.newInstance(id,props,this);
 			addNodeToGraphs(result);
 		} catch (Exception e) {
-			log.severe(()->"Node of class \""+nodeClass.getName()+ "\" could not be instantiated");
+			log.severe(()->"Node of class \""+nodeClass.getName()+ "\" could not be instantiated.");
+			e.printStackTrace();
 		}
 		return result;
 	}
