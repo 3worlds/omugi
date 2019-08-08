@@ -138,6 +138,7 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 
 	@Override
 	public void removeNode(Node node) {
+		scope.removeId(node.id());
 		for (ALGraph<ALNode,ALEdge> g:graphs)
 			g.removeNode((ALNode) node);	
 	}
