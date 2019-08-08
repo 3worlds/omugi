@@ -279,19 +279,10 @@ public class ValidPropertyTypes {
 //		Inet4Address	("java.net.Inet4Address", 	java.net.Inet4Address.getLoopbackAddress()),
 //		StringList		("au.edu.anu.rscs.aot.util.StringList", 
 //													new StringList("")),
-//		DataElementType	("fr.ens.biologie.threeWorlds.resources.core.constants.DataElementType", 
-//													fr.ens.biologie.threeWorlds.resources.core.constants.DataElementType.Double), 
-//		// has valueOf(String) method
-//		IntegerRange	("au.edu.anu.rscs.aot.util.IntegerRange",
-//													new IntegerRange(java.lang.Integer.MIN_VALUE,java.lang.Integer.MAX_VALUE)),
 //		Version			("au.edu.anu.rscs.aot.util.Version", 	
 //													new Version("0.0")),
-//		FileType		("fr.ens.biologie.threeWorlds.resources.core.constants.FileType", 
-//													new FileType("")),
 //		StatisticalAggregatesSet("fr.ens.biologie.threeWorlds.resources.core.constants.StatisticalAggregatesSet", 
 //				                                    new StatisticalAggregatesSet(StatisticalAggregates.MEAN)),
-//		DateTimeType    ("fr.ens.biologie.threeWorlds.resources.core.constants.DateTimeType", 
-//				                                    new DateTimeType(0L));
 //
 //		private final String className;
 //		private final Object defaultValue;
