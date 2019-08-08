@@ -49,4 +49,20 @@ public interface Tree<N extends TreeNode> extends NodeSet<N>, Textable {
 		return sb.toString();
 	}
 
+	/**
+	 * Prints a nice hierarchical view of a tree (multi-line)
+	 * 
+	 * @param parent the node where to start the print
+	 * @param indent the String used to indent nodes according to hierarchy
+	 */
+	public static void printTree(TreeNode parent, String indent) {
+		System.out.println(indent + parent.classId() + ":" + parent.id());
+		if (parent instanceof ReadOnlyDataHolder)
+			for (String key : ((ReadOnlyDataHolder) parent).properties().getKeysAsSet())
+				System.out.println(indent + "    " + "-(" + key + "="
+						+ ((ReadOnlyDataHolder) parent).properties().getPropertyValue(key) + ")");
+		for (TreeNode child : parent.getChildren())
+			printTree(child, indent + "    ");
+	}
+
 }
