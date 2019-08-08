@@ -135,6 +135,7 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 
 	@Override
 	public void removeNode(Node node) {
+		scope.removeId(node.id());
 		for (TreeGraph<TreeGraphNode,ALEdge> g:graphs)
 			g.removeNode((TreeGraphNode) node);		
 	}

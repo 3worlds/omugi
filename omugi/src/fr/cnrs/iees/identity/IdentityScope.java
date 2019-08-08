@@ -34,9 +34,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A scope over which Identities are guaranteed to be unique.
- * Note: every scope has a unique id over the application scope so that merging items
- * from different scopes is always possible
+ * A scope over which Identities are guaranteed to be unique. Note: every scope
+ * has a unique id over the application scope so that merging items from
+ * different scopes is always possible
  * 
  * @author Jacques Gignoux - 28 janv. 2019
  *
@@ -44,49 +44,52 @@ import java.util.Set;
 // I need this interface to provide for proposing an id given an id - IDD!
 // That is, to employ the given alg but NOT add the id to the list
 public interface IdentityScope {
-	
+
 	/**
 	 * This field to make sure all scope instances have a different id
 	 */
 	static final Set<String> scopeIds = new HashSet<String>();
-	
+
 	/**
 	 * returns
+	 * 
 	 * @return the scope id within the application context
 	 */
 	public String id();
 
 	/**
-	 * makes a new instance of an Identity, unique over this scope.
-	 * NOTE: implementations of this method should never return null
+	 * makes a new instance of an Identity, unique over this scope. NOTE:
+	 * implementations of this method should never return null
 	 * 
 	 * @return a new Identity instance, unique over this scope
 	 */
 	public Identity newId();
-	
-	
+
 	/**
-	 * makes a new instance of an Identity, unique over this scope. The default method
-	 * ignores the argument.
-	 * NOTE: implementations of this method should never return null
+	 * makes a new instance of an Identity, unique over this scope. The default
+	 * method ignores the argument. NOTE: implementations of this method should
+	 * never return null
 	 * 
 	 * @param proposedId a base for the id to be computed
 	 * @return a new Identity instance, unique over this scope
 	 */
-	public default Identity newId(boolean addToScope,String proposedId) {
+	public default Identity newId(boolean addToScope, String proposedId) {
 		return newId();
 	}
-	
+
 	/**
-	 * makes a new instance of an Identity, unique over this scope. The default method
-	 * ignores the arguments.
-	 * NOTE: implementations of this method should never return null
+	 * makes a new instance of an Identity, unique over this scope. The default
+	 * method ignores the arguments. NOTE: implementations of this method should
+	 * never return null
 	 * 
 	 * @param proposedIdComponents a base for the id to be computed
 	 * @return a new Identity instance, unique over this scope
 	 */
-	public default Identity newId(boolean addToScope,String... proposedIdComponents) {
+	public default Identity newId(boolean addToScope, String... proposedIdComponents) {
 		return newId();
 	}
+
+	
+	public void removeId(String id);
 
 }

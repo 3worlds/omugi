@@ -33,6 +33,7 @@ package fr.cnrs.iees.identity.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.utils.UniqueString;
@@ -81,6 +82,12 @@ public class PairLocalScope implements IdentityScope {
 		}
 		return result;
 	}
+	@Override
+	public void removeId(String id) {
+		if (!names.remove(id))
+			throw new OmugiException("Attempt to remove an id which does not exist ["+id+"]");		
+	}
+
 	
 	/**
 	 * returns a new identity based on label only - creates name with increasing numbers if required
@@ -105,5 +112,6 @@ public class PairLocalScope implements IdentityScope {
 	public java.lang.String id() {
 		return id;
 	}
+
 
 }

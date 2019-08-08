@@ -30,6 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.identity.impl;
 
+import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.utils.UniqueString;
@@ -58,6 +59,12 @@ public class UniversalScope implements IdentityScope {
 		id = UniqueString.makeString(name,scopeIds);
 		scopeIds.add(id);
 	}
+	@Override
+	public void removeId(String id) {
+		if (!scopeIds.remove(id))
+			throw new OmugiException("Attempt to remove an id which does not exist ["+id+"]");
+	}
+
 	
 	@Override
 	public Identity newId() {
@@ -68,5 +75,6 @@ public class UniversalScope implements IdentityScope {
 	public java.lang.String id() {
 		return id;
 	}
+
 
 }
