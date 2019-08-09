@@ -59,7 +59,7 @@ import fr.ens.biologie.generic.SaveableAsText;
 
 /**
  * An exporter into omugi text format for graphs and trees
- *  
+ * 
  * @author Jacques Gignoux - 14 déc. 2018
  *
  */
@@ -68,27 +68,27 @@ import fr.ens.biologie.generic.SaveableAsText;
 public class OmugiGraphExporter implements GraphExporter {
 
 	private Logger log = Logger.getLogger(OmugiGraphExporter.class.getName());
-	
+
 	// the keyword to put at the head of the saved file
 	protected String header = "graph";
-	
+
 	// the output file
 	protected File file;
-	
+
 	// Constructors
-	
+
 	public OmugiGraphExporter(File file) {
 		this.file = file;
 	}
-	
+
 	public OmugiGraphExporter(String fileName) {
 		this.file = new File(fileName);
 	}
-	
-	//=====================================
-	
+
+	// =====================================
+
 	private void writeProperties(ReadOnlyPropertyList props, PrintWriter w, String indent) {
-		for (String key: props.getKeysAsSet()) {
+		for (String key : props.getKeysAsSet()) {
 			w.print('\t'); // indentation for readability
 			w.print(indent); // indentation for trees
 			w.print(key);
@@ -98,7 +98,7 @@ public class OmugiGraphExporter implements GraphExporter {
 			w.print(props.getPropertyClassName(key));
 			w.print(PROPERTY_TYPE.suffix());
 			Object value = props.getPropertyValue(key);
-			if (value!=null) {
+			if (value != null) {
 				if (SaveableAsText.class.isAssignableFrom(value.getClass()))
 					// table properties
 					if (Table.class.isAssignableFrom(value.getClass())) {
@@ -108,23 +108,22 @@ public class OmugiGraphExporter implements GraphExporter {
 						char[] isep = new char[2];
 						isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
 						isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
-						w.print(((Table)value).toSaveableString(bdel,isep));
+						w.print(((Table) value).toSaveableString(bdel, isep));
 					}
-				// other saveable properties
+					// other saveable properties
 					else
-						w.print(((SaveableAsText)value).toSaveableString());
+						w.print(((SaveableAsText) value).toSaveableString());
 				// primitive types
 				else
 					w.print(value.toString());
-			}
-			else
+			} else
 				w.print("null");
 			w.println(PROPERTY_VALUE.suffix());
 		}
 	}
-	
+
 	private void exportEdges(Iterable<? extends Edge> edges, PrintWriter w) {
-		for (Edge e:edges) {
+		for (Edge e : edges) {
 			w.print(NODE_REF.prefix());
 			w.print(e.startNode().classId());
 			w.print(SaveableAsText.COLON);
@@ -141,12 +140,12 @@ public class OmugiGraphExporter implements GraphExporter {
 			w.print(e.endNode().id());
 			w.println(NODE_REF.suffix());
 			if (e instanceof ReadOnlyDataHolder)
-				writeProperties((ReadOnlyPropertyList)((ReadOnlyDataHolder)e).properties(),w,"");
+				writeProperties((ReadOnlyPropertyList) ((ReadOnlyDataHolder) e).properties(), w, "");
 			else if (e instanceof DataHolder)
-				writeProperties((SimplePropertyList)((DataHolder)e).properties(),w,"");
+				writeProperties((SimplePropertyList) ((DataHolder) e).properties(), w, "");
 		}
 	}
-	
+
 	private void exportGraph(Graph<? extends Node, ? extends Edge> graph) {
 		try {
 			PrintWriter writer = new PrintWriter(file);
@@ -157,15 +156,15 @@ public class OmugiGraphExporter implements GraphExporter {
 			writer.print(graph.nNodes());
 			writer.println(" NODES");
 			int nedges = 0;
-			for (Node n:graph.nodes()) {
+			for (Node n : graph.nodes()) {
 				writer.print(n.classId());
 				writer.print(LABEL.suffix());
 				writer.println(n.id());
 				// node properties
 				if (n instanceof ReadOnlyDataHolder)
-					writeProperties(((ReadOnlyDataHolder)n).properties(),writer,"");
+					writeProperties(((ReadOnlyDataHolder) n).properties(), writer, "");
 				else if (n instanceof DataHolder)
-					writeProperties(((DataHolder) n).properties(),writer,"");
+					writeProperties(((DataHolder) n).properties(), writer, "");
 				nedges += n.degree(Direction.OUT);
 			}
 			// export edges
@@ -174,17 +173,17 @@ public class OmugiGraphExporter implements GraphExporter {
 			writer.print(' ');
 			writer.print(nedges);
 			writer.println(" EDGES");
-			exportEdges(graph.edges(),writer);
+			exportEdges(graph.edges(), writer);
 			writer.close();
 		} catch (FileNotFoundException e) {
-			log.severe(()->"cannot save graph to file \""+file.getPath()+"\" - file not found");
+			log.severe(() -> "cannot save graph to file \"" + file.getPath() + "\" - file not found");
 		}
 	}
-	
+
 	// recursive
 	private void writeTree(TreeNode node, PrintWriter w, int depth) {
 		String indent = "";
-		for (int i=0; i<depth; i++)
+		for (int i = 0; i < depth; i++)
 			indent += "\t";
 		w.print(indent);
 		w.print(node.classId());
@@ -192,15 +191,15 @@ public class OmugiGraphExporter implements GraphExporter {
 		w.println(node.id());
 		// node properties
 		if (node instanceof ReadOnlyDataHolder)
-			writeProperties(((ReadOnlyDataHolder) node).properties(),w,indent);
+			writeProperties(((ReadOnlyDataHolder) node).properties(), w, indent);
 //		else
 //			if (TreeGraphNode.class.isAssignableFrom(node.getClass()))
 //				if (((TreeGraphNode)node).properties()!=null)
 //					writeProperties(((TreeGraphNode)node).properties(),w,indent);
-		for (TreeNode tn: node.getChildren())
-			writeTree(tn,w,depth+1);
+		for (TreeNode tn : node.getChildren())
+			writeTree(tn, w, depth + 1);
 	}
-	
+
 	private void exportTree(Tree<? extends TreeNode> tree) {
 		try {
 			PrintWriter writer = new PrintWriter(file);
@@ -209,66 +208,64 @@ public class OmugiGraphExporter implements GraphExporter {
 			writer.print(' ');
 			writer.print(tree.nNodes());
 			writer.println(" NODES");
-			writeTree(tree.root(),writer, 0);
+			for (TreeNode root : tree.roots())
+			  writeTree(tree.root(), writer, 0);
 			writer.close();
 		} catch (FileNotFoundException e) {
-			log.severe(()->"cannot save graph to file \""+file.getPath()+"\" - file not found");
+			log.severe(() -> "cannot save graph to file \"" + file.getPath() + "\" - file not found");
 		}
 	}
-	
+
 	protected void writeHeader(PrintWriter pw) {
 		Date now = new Date();
-		pw.println(header+" "+ COMMENT.prefix()+" saved by "
-				+this.getClass().getSimpleName()
-				+" on "+now+"\n");
+		pw.println(
+				header + " " + COMMENT.prefix() + " saved by " + this.getClass().getSimpleName() + " on " + now + "\n");
 	}
-	
-//	node_factory = String("au.edu.anu.twcore.root.TwConfigFactory")
-//	edge_factory = String("au.edu.anu.twcore.root.TwConfigFactory")
+
 	protected void exportTreeGraph(TreeGraph<? extends TreeGraphNode, ? extends Edge> graph) {
 		try {
 			PrintWriter writer = new PrintWriter(file);
 			writeHeader(writer);
 			// Write factories
 			ExtendablePropertyList gp = new ExtendablePropertyListImpl();
-			if (graph.edgeFactory()!=null)
-				gp.addProperty("edge_factory",graph.edgeFactory().getClass().getName());
-			if (graph.nodeFactory()!=null)
+			if (graph.edgeFactory() != null)
+				gp.addProperty("edge_factory", graph.edgeFactory().getClass().getName());
+			if (graph.nodeFactory() != null)
 				gp.addProperty("node_factory", graph.nodeFactory().getClass().getName());
 			writeProperties(gp, writer, "");
 			// 1. export tree
 			writer.print(COMMENT.prefix());
 			writer.print(' ');
 			writer.println("TREE");
-			if (graph.root()!=null)
-				writeTree(graph.root(),writer, 0);
+			for (TreeNode root:graph.roots())
+				writeTree(root, writer, 0);
+			//if (graph.root() != null)
+//				writeTree(graph.root(), writer, 0);
 			// 2. export edge list
 			writer.println();
 			writer.print(COMMENT.prefix());
 			writer.print(' ');
 			writer.println("CROSS-LINKS");
-			exportEdges(graph.edges(),writer);
+			exportEdges(graph.edges(), writer);
 			writer.close();
 		} catch (FileNotFoundException e) {
-			log.severe(()->"cannot save treegraph to file \""+file.getPath()+"\" - file not found");
+			log.severe(() -> "cannot save treegraph to file \"" + file.getPath() + "\" - file not found");
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void exportGraph(NodeSet<?> graph) {
 		// TreeGraph must be tested first because it's a subclass of Graph and Tree
 		if (TreeGraph.class.isAssignableFrom(graph.getClass())) {
 			header = "treegraph";
-			exportTreeGraph((TreeGraph<? extends TreeGraphNode, ? extends Edge>)graph);
-		}
-		else if (Graph.class.isAssignableFrom(graph.getClass())) {
+			exportTreeGraph((TreeGraph<? extends TreeGraphNode, ? extends Edge>) graph);
+		} else if (Graph.class.isAssignableFrom(graph.getClass())) {
 			header = "graph";
-			exportGraph((Graph<? extends Node, ? extends Edge>)graph);
-		}
-		else if (Tree.class.isAssignableFrom(graph.getClass())) {
+			exportGraph((Graph<? extends Node, ? extends Edge>) graph);
+		} else if (Tree.class.isAssignableFrom(graph.getClass())) {
 			header = "tree";
-			exportTree((Tree<? extends TreeNode>)graph);
+			exportTree((Tree<? extends TreeNode>) graph);
 		}
 	}
 

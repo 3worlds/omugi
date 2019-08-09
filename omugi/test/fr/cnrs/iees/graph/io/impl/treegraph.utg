@@ -1,5 +1,7 @@
-treegraph // saved by OmugiGraphExporter on Mon May 20 16:56:52 CEST 2019
+treegraph // saved by OmugiGraphExporter on Fri Aug 09 10:29:34 AEST 2019
 
+	edge_factory = java.lang.String(fr.cnrs.iees.graph.impl.TreeGraphFactory)
+	node_factory = java.lang.String(fr.cnrs.iees.graph.impl.TreeGraphFactory)
 // TREE
 TreeGraphNode 3Worlds
 	TreeGraphDataNode ecology
