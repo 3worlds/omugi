@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeSet;
@@ -139,6 +140,8 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 	@Override
 	public void removeNode(Node node) {
 		scope.removeId(node.id());
+		for (Edge e: node.edges())
+			scope.removeId(e.id());
 		for (ALGraph<ALNode,ALEdge> g:graphs)
 			g.removeNode((ALNode) node);	
 	}
