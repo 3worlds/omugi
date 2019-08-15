@@ -179,6 +179,8 @@ public interface NodeFactory {
 	 * 
 	 * By typecasting the factories of these node and edge classes we have access to
 	 * protected members i.e. scopeId and can safely do this operation
+	 * 
+	 * Except 'graphs' is private!
 	 */
 	public void removeNode(Node node);
 
