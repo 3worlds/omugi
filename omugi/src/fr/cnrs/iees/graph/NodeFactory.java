@@ -35,26 +35,42 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
- * <p>An interface to give a Graph the ability to create Nodes in an appropriate way.</p>
+ * <p>
+ * An interface to give a Graph the ability to create Nodes in an appropriate
+ * way.
+ * </p>
  * 
- * <p>Although nodes and edges could in theory exist without the context of a graph, as soon as
- * one starts to instantiate them a graph starts to exist. If we want to put some constraints on this graph 
- * (e.g. directed/undirected graph, acyclic graph, tree, multigraph, etc.) then we must be 
- * able to constrain node and edge creation, and a generic public constructor for edges and nodes
- * does not allow this. Even worse, it could break the graph rules unintentionnally. To secure
- * this, nodes and edges must exist only within the context of a graph.</p>
+ * <p>
+ * Although nodes and edges could in theory exist without the context of a
+ * graph, as soon as one starts to instantiate them a graph starts to exist. If
+ * we want to put some constraints on this graph (e.g. directed/undirected
+ * graph, acyclic graph, tree, multigraph, etc.) then we must be able to
+ * constrain node and edge creation, and a generic public constructor for edges
+ * and nodes does not allow this. Even worse, it could break the graph rules
+ * unintentionnally. To secure this, nodes and edges must exist only within the
+ * context of a graph.
+ * </p>
  * 
- * <p>But sometimes it makes sense that a node belongs to more than one graph. In order to allow
- * for this possibility, we separate the node creation ability from the node addition into the graph.
- * This way, a node made by one graph could be added to another. Each Node or Edge will record
- * which factory created it, but not which graphs it belongs to. This way, other instances of the
- * same type can be made by calling the initial factory.</p> 
+ * <p>
+ * But sometimes it makes sense that a node belongs to more than one graph. In
+ * order to allow for this possibility, we separate the node creation ability
+ * from the node addition into the graph. This way, a node made by one graph
+ * could be added to another. Each Node or Edge will record which factory
+ * created it, but not which graphs it belongs to. This way, other instances of
+ * the same type can be made by calling the initial factory.
+ * </p>
  * 
- * <p>All graph elements (nodes and edges) are uniquely identified by a class ID / instance ID
- * pair. This pair is used for deciding if nodes / edges are equal (Object.equals(...) method).</p>
+ * <p>
+ * All graph elements (nodes and edges) are uniquely identified by a class ID /
+ * instance ID pair. This pair is used for deciding if nodes / edges are equal
+ * (Object.equals(...) method).
+ * </p>
  * 
- * <p>Typically, a NodeFactory should have a constructor taking a {@link Graph} as a parameter
- * so that Node creation is consistent with the current graph context.</p> 
+ * <p>
+ * Typically, a NodeFactory should have a constructor taking a {@link Graph} as
+ * a parameter so that Node creation is consistent with the current graph
+ * context.
+ * </p>
  * 
  * @author Jacques Gignoux 7-11-2018
  *
@@ -62,50 +78,52 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 public interface NodeFactory {
 
 	public static String defaultNodeId = "node0";
-	
+
 	/**
-	 * Create a Node with no properties. The class ID is set to the default (= the implementing
-	 * class name). The instance ID is automatically generated and is unique.
+	 * Create a Node with no properties. The class ID is set to the default (= the
+	 * implementing class name). The instance ID is automatically generated and is
+	 * unique.
 	 * 
-	 * @return 
+	 * @return
 	 */
 	public default Node makeNode() {
 		return makeNode(defaultNodeId);
 	}
-	
+
 	/**
-	 * Create a node with properties. The class ID is set to the default (= the implementing
-	 * class name). The instance ID is automatically generated and is unique.
+	 * Create a node with properties. The class ID is set to the default (= the
+	 * implementing class name). The instance ID is automatically generated and is
+	 * unique.
 	 * 
 	 * @param props properties
 	 * @return
 	 */
 	public default Node makeNode(ReadOnlyPropertyList props) {
-		return makeNode(defaultNodeId,props);
+		return makeNode(defaultNodeId, props);
 	}
-	
+
 	/**
-	 * Create a node with no properties and a particular class ID. The instance ID is 
-	 * automatically generated and is unique.
+	 * Create a node with no properties and a particular class ID. The instance ID
+	 * is automatically generated and is unique.
 	 * 
 	 * @param classId the class identifier
 	 * @return
 	 */
 	public Node makeNode(String proposedId);
-	
+
 	/**
-	 * Create a node with a particular class ID and properties. The instance ID is automatically 
-	 * generated and is unique.
+	 * Create a node with a particular class ID and properties. The instance ID is
+	 * automatically generated and is unique.
 	 * 
 	 * @param classId the class identifier
-	 * @param props properties
+	 * @param props   properties
 	 * @return
 	 */
 	public Node makeNode(String proposedId, ReadOnlyPropertyList props);
 
 	/**
-	 * returns the "label" of a node class as known by this factory. For use in descendants
-	 * which use labels to identify node class types.
+	 * returns the "label" of a node class as known by this factory. For use in
+	 * descendants which use labels to identify node class types.
 	 * 
 	 * @param nodeClass
 	 * @return
@@ -113,10 +131,10 @@ public interface NodeFactory {
 	public default String nodeClassName(Class<? extends Node> nodeClass) {
 		return nodeClass.getSimpleName();
 	}
-	
+
 	/**
-	 * returns the class type matching a node "label". Default behaviour is to pretend
-	 * label is a class name in the package fr.cnrs.iees.graph.impl
+	 * returns the class type matching a node "label". Default behaviour is to
+	 * pretend label is a class name in the package fr.cnrs.iees.graph.impl
 	 * 
 	 * @param label
 	 * @return
@@ -124,7 +142,8 @@ public interface NodeFactory {
 	@SuppressWarnings("unchecked")
 	public default Class<? extends Node> nodeClass(String label) {
 		try {
-			return (Class<? extends Node>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader());
+			return (Class<? extends Node>) Class.forName("fr.cnrs.iees.graph.impl." + label, false,
+					OmugiClassLoader.getClassLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}
@@ -133,9 +152,9 @@ public interface NodeFactory {
 	/**
 	 * Create a node of a particular node sub-class passed as the first argument
 	 * 
-	 * @param nodeClass the Node subclass to instantiate
+	 * @param nodeClass  the Node subclass to instantiate
 	 * @param proposedId the proposed unique id
-	 * @param props property list 
+	 * @param props      property list
 	 * @return a new instance, or null if fails
 	 */
 	public Node makeNode(Class<? extends Node> nodeClass, String proposedId, ReadOnlyPropertyList props);
@@ -143,17 +162,24 @@ public interface NodeFactory {
 	public Node makeNode(Class<? extends Node> nodeClass, String proposedId);
 
 	public default Node makeNode(Class<? extends Node> nodeClass, ReadOnlyPropertyList props) {
-		return makeNode(nodeClass,defaultNodeId,props);
+		return makeNode(nodeClass, defaultNodeId, props);
 	}
 
 	public default Node makeNode(Class<? extends Node> nodeClass) {
-		return makeNode(nodeClass,defaultNodeId);
+		return makeNode(nodeClass, defaultNodeId);
 	}
 
 	public void manageGraph(NodeSet<? extends Node> graph);
-	
+
 	public void unmanageGraph(NodeSet<? extends Node> graph);
-	
+
+	/*
+	 * TODO: to avoid trashing the purity of this, we could provide a method just to
+	 * TwConfigFactory and VisualNode factory to do this.
+	 * 
+	 * By typecasting the factories of these node and edge classes we have access to
+	 * protected members i.e. scopeId and can safely do this operation
+	 */
 	public void removeNode(Node node);
 
 	/**
@@ -161,8 +187,8 @@ public interface NodeFactory {
 	 * @return the propertyListfactory used with this NodeFactory
 	 */
 	public default PropertyListFactory nodePropertyFactory() {
-		return new PropertyListFactory() {};
+		return new PropertyListFactory() {
+		};
 	}
 
-	
 }
