@@ -156,11 +156,5 @@ public class SimpleTreeFactory
 			tree.onParentChanged();
 	}
 
-	@Override
-	public void removeNode(Node node) {
-		scope.removeId(node.id());
-		for (Tree<SimpleTreeNode> tree:trees)
-			tree.removeNode((SimpleTreeNode) node);		
-	}
 	
 }

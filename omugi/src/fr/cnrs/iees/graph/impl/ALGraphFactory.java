@@ -28,7 +28,7 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 	private Logger log = Logger.getLogger(ALGraphFactory.class.getName());
 	
 	/** the list of graphs managed by this factory */
-	private Set<ALGraph<ALNode,ALEdge>> graphs = new HashSet<>();
+	protected Set<ALGraph<ALNode,ALEdge>> graphs = new HashSet<>();
 
 	/**
 	 * basic constructor, only requires a scope
@@ -137,13 +137,5 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 		return result;
 	}
 
-	@Override
-	public void removeNode(Node node) {
-		scope.removeId(node.id());
-		for (Edge e: node.edges())
-			scope.removeId(e.id());
-		for (ALGraph<ALNode,ALEdge> g:graphs)
-			g.removeNode((ALNode) node);	
-	}
 
 }

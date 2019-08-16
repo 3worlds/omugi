@@ -173,17 +173,6 @@ public interface NodeFactory {
 
 	public void unmanageGraph(NodeSet<? extends Node> graph);
 
-	/*
-	 * TODO: to avoid trashing the purity of this, we could provide a method just to
-	 * TwConfigFactory and VisualNode factory to do this.
-	 * 
-	 * By typecasting the factories of these node and edge classes we have access to
-	 * protected members i.e. scopeId and can safely do this operation
-	 * 
-	 * Except 'graphs' is private!
-	 */
-	public void removeNode(Node node);
-
 	/**
 	 * 
 	 * @return the propertyListfactory used with this NodeFactory

@@ -18,7 +18,7 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 
 	private Logger log = Logger.getLogger(TreeGraphFactory.class.getName());
 	/** the list of graphs managed by this factory */
-	private Set<TreeGraph<TreeGraphNode, ALEdge>> graphs = new HashSet<>();
+	protected Set<TreeGraph<TreeGraphNode, ALEdge>> graphs = new HashSet<>();
 
 	/**
 	 * basic constructor, only requires a scope
@@ -132,17 +132,5 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 			tg.onParentChanged();
 	}
 
-	@Override
-	public void removeNode(Node node) {
-		/*
-		 * Its important for graph editors that all trace of a deleted element be
-		 * removed for the system.
-		 */
-		scope.removeId(node.id());
-		for (Edge e : node.edges())
-			scope.removeId(e.id());
-		for (TreeGraph<TreeGraphNode, ALEdge> g : graphs)
-			g.removeNode((TreeGraphNode) node);
-	}
 
 }
