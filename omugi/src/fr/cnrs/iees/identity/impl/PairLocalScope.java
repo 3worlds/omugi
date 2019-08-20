@@ -44,6 +44,8 @@ import fr.ens.biologie.generic.utils.UniqueString;
  * @author Jacques Gignoux - 28 janv. 2019
  *
  */
+
+// TODO can this be removed now? (IDD)
 public class PairLocalScope implements IdentityScope {
 	
 	private String id;
