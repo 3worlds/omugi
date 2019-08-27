@@ -31,24 +31,41 @@
 
 package fr.cnrs.iees;
 
+import java.net.URL;
+import java.net.URLClassLoader;
+
 /**
  * Author Ian Davies
  * 
- * NOTE: it is important that when calling class.forName(name,initialize,loader), the 
- * 'initialize' argument is set to true (it means the class will be initialized if not yet
- * done). Otherwise, no matter if the classLoader knows about the class, it will not find it
- * and return an error.
+ * NOTE: it is important that when calling
+ * class.forName(name,initialize,loader), the 'initialize' argument is set to
+ * true (it means the class will be initialized if not yet done). Otherwise, no
+ * matter if the classLoader knows about the class, it will not find it and
+ * return an error.
  *
  * Date 16 Feb. 2019
  */
 public class OmugiClassLoader {
-	// JG - 2/4/2019 If this is static, it is set at compile time ? then it's going to be wrong
+	// JG - 2/4/2019 If this is static, it is set at compile time ? then it's going
+	// to be wrong
 //	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-	
+
 //	private static ClassLoader classLoader =ClassLoader.getSystemClassLoader();
-	public static ClassLoader getClassLoader() {
-//		return classLoader;
-		return Thread.currentThread().getContextClassLoader();
+	// cf https://community.oracle.com/thread/4011800
+	private static ClassLoader urlcl;// = new URLClassLoader(urlarrayofextrajarsordirs));
+
+	public static void setURLClassLoader(URL... paths) {
+		// This is temporary. Set in mr.Main.
+		if (urlcl!=null)
+			throw new OmugiException("Can only set the url classLoader once.");
+		urlcl = new URLClassLoader(paths);
+	}
+
+	public static ClassLoader getClassLoader(boolean useURL) {
+		if (useURL)
+			return urlcl;
+		else
+			return Thread.currentThread().getContextClassLoader();
 	}
 
 }

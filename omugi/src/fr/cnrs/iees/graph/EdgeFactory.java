@@ -127,7 +127,7 @@ public interface EdgeFactory {
 	@SuppressWarnings("unchecked")
 	public default Class<? extends Edge> edgeClass(String label) {
 		try {
-			return (Class<? extends Edge>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader());
+			return (Class<? extends Edge>) Class.forName("fr.cnrs.iees.graph.impl."+label,false,OmugiClassLoader.getClassLoader(false));
 		} catch (ClassNotFoundException e) {
 			return null;
 		}

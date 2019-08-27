@@ -39,7 +39,7 @@ public abstract class NodeFactoryAdapter
 		if (labels!=null)
 			for (String label:labels.keySet()) {
 				try {
-					Class<?> c = Class.forName(labels.get(label),true,OmugiClassLoader.getClassLoader());
+					Class<?> c = Class.forName(labels.get(label),true,OmugiClassLoader.getClassLoader(false));
 					if (Node.class.isAssignableFrom(c)) {
 						nodeLabels.put(label,(Class<? extends Node>) c);
 						nodeClassNames.put((Class<? extends Node>) c,label);
