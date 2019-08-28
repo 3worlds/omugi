@@ -17,36 +17,37 @@ import fr.cnrs.iees.identity.impl.LocalScope;
  *
  * @param <N>
  */
-public abstract class NodeFactoryAdapter 
-		implements NodeFactory {
+public abstract class NodeFactoryAdapter implements NodeFactory {
 
-	protected Map<String,Class<? extends Node>> nodeLabels = new HashMap<>();
-	protected Map<Class<? extends Node>,String> nodeClassNames = new HashMap<>();
+	protected Map<String, Class<? extends Node>> nodeLabels = new HashMap<>();
+	protected Map<Class<? extends Node>, String> nodeClassNames = new HashMap<>();
 	protected IdentityScope scope;
 
 	protected NodeFactoryAdapter(String scopeId) {
 		super();
-		if (scopeId!=null)
+		if (scopeId != null)
 			scope = new LocalScope(scopeId);
 		else
 			throw new OmugiException("A factory requires a valid scope name");
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	protected NodeFactoryAdapter(String scopeId, Map<String,String> labels) {
+	protected NodeFactoryAdapter(String scopeId, Map<String, String> labels) {
 		this(scopeId);
 		Logger log = Logger.getLogger(NodeFactoryAdapter.class.getName());
-		if (labels!=null)
-			for (String label:labels.keySet()) {
+		ClassLoader classLoader = OmugiClassLoader.getClassLoader();
+		if (labels != null) {
+			for (String label : labels.keySet()) {
 				try {
-					Class<?> c = Class.forName(labels.get(label),true,OmugiClassLoader.getClassLoader());
+					Class<?> c = Class.forName(labels.get(label), true, classLoader);
 					if (Node.class.isAssignableFrom(c)) {
-						nodeLabels.put(label,(Class<? extends Node>) c);
-						nodeClassNames.put((Class<? extends Node>) c,label);
+						nodeLabels.put(label, (Class<? extends Node>) c);
+						nodeClassNames.put((Class<? extends Node>) c, label);
 					}
 				} catch (ClassNotFoundException e) {
-					log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
+					log.severe(() -> "Class \"" + labels.get(label) + "\" for label \"" + label + "\" not found");
 				}
+			}
 		}
 	}
 

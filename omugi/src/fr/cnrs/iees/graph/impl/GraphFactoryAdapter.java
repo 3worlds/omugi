@@ -40,10 +40,11 @@ public abstract class GraphFactoryAdapter
 	@SuppressWarnings("unchecked")
 	protected GraphFactoryAdapter(String scopeId, Map<String,String> labels) {
 		super(scopeId);
-		if (labels!=null)
+		if (labels!=null) {
+			ClassLoader classLoader = OmugiClassLoader.getClassLoader();
 			for (String label:labels.keySet()) {
 				try {
-					Class<?> c = Class.forName(labels.get(label),true,OmugiClassLoader.getClassLoader());
+					Class<?> c = Class.forName(labels.get(label),true,classLoader);
 					if (Node.class.isAssignableFrom(c)) {
 						nodeLabels.put(label,(Class<? extends Node>) c);
 						nodeClassNames.put((Class<? extends Node>) c,label);
@@ -56,6 +57,7 @@ public abstract class GraphFactoryAdapter
 					log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
 				}
 		}
+	}
 	}
 
 	// EdgeFactory
