@@ -54,10 +54,11 @@ public class OmugiClassLoader {
 	private OmugiClassLoader() {
 	};
 
-	private static URL paths[];
+//	private static URL paths[];
+	private static ClassLoader installedClassLoader;
 
-	public static void setURLPaths(URL[] ps) {
-		paths = ps;
+	public static void setClassLoader(ClassLoader classLoader) {
+		installedClassLoader = classLoader;
 	}
 
 	public static ClassLoader getClassLoader() {
@@ -65,11 +66,10 @@ public class OmugiClassLoader {
 	}
 
 	public static ClassLoader getURLClassLoader() {
-		if (paths == null)
-			throw new OmugiException("URL paths must be set before calling 'getURLClassLoader'");
-		ClassLoader parent = getClassLoader();
-		URLClassLoader result = new URLClassLoader(paths, parent);
-		return result;
+		if (installedClassLoader == null)
+			throw new OmugiException("URL classLoader not installed");
+		return installedClassLoader;
+
 	}
 
 }
