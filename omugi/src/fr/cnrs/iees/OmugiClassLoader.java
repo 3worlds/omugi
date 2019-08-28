@@ -31,6 +31,8 @@
 
 package fr.cnrs.iees;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 
 /**
  * Author Ian Davies
@@ -48,8 +50,26 @@ package fr.cnrs.iees;
 // cf https://community.oracle.com/thread/4011800
 //private static ClassLoader urlcl;// = new URLClassLoader(urlarrayofextrajarsordirs));
 public class OmugiClassLoader {
+
+	private OmugiClassLoader() {
+	};
+
+	private static URL paths[];
+
+	public void setURLPaths(URL[] ps) {
+		paths = ps;
+	}
+
 	public static ClassLoader getClassLoader() {
 		return Thread.currentThread().getContextClassLoader();
+	}
+
+	public static ClassLoader getURLClassLoader() {
+		if (paths == null)
+			throw new OmugiException("URL paths must be set before calling 'getURLClassLoader'");
+		ClassLoader parent = getClassLoader();
+		URLClassLoader result = new URLClassLoader(paths, parent);
+		return result;
 	}
 
 }
