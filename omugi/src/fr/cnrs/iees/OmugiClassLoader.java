@@ -56,7 +56,7 @@ public class OmugiClassLoader {
 
 	private static URL paths[];
 
-	public void setURLPaths(URL[] ps) {
+	public static void setURLPaths(URL[] ps) {
 		paths = ps;
 	}
 
