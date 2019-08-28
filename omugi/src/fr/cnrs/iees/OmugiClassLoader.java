@@ -31,8 +31,6 @@
 
 package fr.cnrs.iees;
 
-import java.net.URL;
-import java.net.URLClassLoader;
 
 /**
  * Author Ian Davies
@@ -45,27 +43,13 @@ import java.net.URLClassLoader;
  *
  * Date 16 Feb. 2019
  */
+//import java.net.URL;
+//import java.net.URLClassLoader;
+// cf https://community.oracle.com/thread/4011800
+//private static ClassLoader urlcl;// = new URLClassLoader(urlarrayofextrajarsordirs));
 public class OmugiClassLoader {
-	// JG - 2/4/2019 If this is static, it is set at compile time ? then it's going
-	// to be wrong
-//	private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-//	private static ClassLoader classLoader =ClassLoader.getSystemClassLoader();
-	// cf https://community.oracle.com/thread/4011800
-	private static ClassLoader urlcl;// = new URLClassLoader(urlarrayofextrajarsordirs));
-
-	public static void setURLClassLoader(URL... paths) {
-		// This is temporary. Set in mr.Main.
-		if (urlcl!=null)
-			throw new OmugiException("Can only set the url classLoader once.");
-		urlcl = new URLClassLoader(paths);
-	}
-
-	public static ClassLoader getClassLoader(boolean useURL) {
-		if (useURL)
-			return urlcl;
-		else
-			return Thread.currentThread().getContextClassLoader();
+	public static ClassLoader getClassLoader() {
+		return Thread.currentThread().getContextClassLoader();
 	}
 
 }
