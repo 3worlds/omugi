@@ -171,7 +171,7 @@ public abstract class NodeSetParser extends Parser {
 			else {
 				Object o = null;
 				try {
-					Class<?> c = Class.forName(className, false, OmugiClassLoader.getClassLoader());
+					Class<?> c = Class.forName(className, false, OmugiClassLoader.getAppClassLoader());
 					// if method present, instantiate object with valueOf()
 					for (Method m : c.getMethods())
 						if (m.getName().equals("valueOf")) {
@@ -227,7 +227,7 @@ public abstract class NodeSetParser extends Parser {
 		if (value != null)
 			try {
 				Class<?> superClass = graphPropertyTypes.get(gp);
-				Class<?> c = Class.forName(value, true, OmugiClassLoader.getClassLoader());
+				Class<?> c = Class.forName(value, true, OmugiClassLoader.getAppClassLoader());
 				if (superClass.isAssignableFrom(c))
 					result = c;
 				else
@@ -240,7 +240,7 @@ public abstract class NodeSetParser extends Parser {
 		if (result == null)
 			try {
 //				result = Class.forName(gp.defaultValue(), false, OmugiClassLoader.getClassLoader());
-				result = Class.forName(defaultGraphProperties.get(gp), false, OmugiClassLoader.getClassLoader());
+				result = Class.forName(defaultGraphProperties.get(gp), false, OmugiClassLoader.getAppClassLoader());
 			} catch (ClassNotFoundException e) {
 				// this is an error in GraphProperties.[...].defaultValue - fix code with a
 				// correct class name

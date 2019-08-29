@@ -35,7 +35,7 @@ public abstract class NodeFactoryAdapter implements NodeFactory {
 	protected NodeFactoryAdapter(String scopeId, Map<String, String> labels) {
 		this(scopeId);
 		Logger log = Logger.getLogger(NodeFactoryAdapter.class.getName());
-		ClassLoader classLoader = OmugiClassLoader.getClassLoader();
+		ClassLoader classLoader = OmugiClassLoader.getAppClassLoader();
 		if (labels != null) {
 			for (String label : labels.keySet()) {
 				try {

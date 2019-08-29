@@ -143,7 +143,7 @@ public interface NodeFactory {
 	public default Class<? extends Node> nodeClass(String label) {
 		try {
 			return (Class<? extends Node>) Class.forName("fr.cnrs.iees.graph.impl." + label, false,
-					OmugiClassLoader.getClassLoader());
+					OmugiClassLoader.getAppClassLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}

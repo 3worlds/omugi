@@ -41,7 +41,7 @@ public abstract class GraphFactoryAdapter
 	protected GraphFactoryAdapter(String scopeId, Map<String,String> labels) {
 		super(scopeId);
 		if (labels!=null) {
-			ClassLoader classLoader = OmugiClassLoader.getClassLoader();
+			ClassLoader classLoader = OmugiClassLoader.getAppClassLoader();
 			for (String label:labels.keySet()) {
 				try {
 					Class<?> c = Class.forName(labels.get(label),true,classLoader);

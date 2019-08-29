@@ -31,6 +31,8 @@
 
 package fr.cnrs.iees;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -54,20 +56,35 @@ public class OmugiClassLoader {
 	private OmugiClassLoader() {
 	};
 
-//	private static URL paths[];
 	private static ClassLoader installedClassLoader;
 
-	public static void setClassLoader(ClassLoader classLoader) {
-		installedClassLoader = classLoader;
+// to avoid problems, I replaced this method by the next - JG	
+//	public static void setClassLoader(ClassLoader classLoader) {
+//		installedClassLoader = classLoader;
+//	}
+	
+	// This will enable to access classes defined in jars 
+	public static void setJarClassLoader(File...jarFiles) {
+		try {
+			URL[] paths = new URL[jarFiles.length];
+			for (int i=0; i<jarFiles.length; i++)
+			paths[i] = jarFiles[i].toURI().toURL();
+			installedClassLoader = new URLClassLoader(paths, getAppClassLoader());
+		} catch (MalformedURLException e) {
+			// If the files exist there shouldnt be any problem here
+			e.printStackTrace();
+		}
 	}
 
-	public static ClassLoader getClassLoader() {
+	// This will return the application classLoader
+	public static ClassLoader getAppClassLoader() {
 		return Thread.currentThread().getContextClassLoader();
 	}
 
-	public static ClassLoader getURLClassLoader() {
+	// This will return the classLoader for the jars previously passed
+	public static ClassLoader getJarClassLoader() {
 		if (installedClassLoader == null)
-			throw new OmugiException("URL classLoader not installed");
+			throw new OmugiException("JAR classLoader not installed");
 		return installedClassLoader;
 
 	}
