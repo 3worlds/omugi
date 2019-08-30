@@ -64,6 +64,10 @@ public class OmugiClassLoader {
 //	}
 	
 	// This will enable to access classes defined in jars 
+	// NOTE: When running from Jar, calling this will add duplicate classes.
+	// Therefore, setJarClassLoader should not be called in this case.
+	// Therefore, this should not be done here.
+	// If running from jar, installedClassLoader should return getAppClassLoader
 	public static void setJarClassLoader(File...jarFiles) {
 		try {
 			URL[] paths = new URL[jarFiles.length];
@@ -84,7 +88,8 @@ public class OmugiClassLoader {
 	// This will return the classLoader for the jars previously passed
 	public static ClassLoader getJarClassLoader() {
 		if (installedClassLoader == null)
-			throw new OmugiException("JAR classLoader not installed");
+			//throw new OmugiException("JAR classLoader not installed");
+			return getAppClassLoader();
 		return installedClassLoader;
 
 	}
