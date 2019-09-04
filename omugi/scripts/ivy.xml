@@ -30,7 +30,7 @@
 	</publications>
 
 	<dependencies>
-		<dependency org="fr.ens.biologie" name="generics" rev="[0.1.4,)"/>
+		<dependency org="fr.ens.biologie" name="generics" rev="[0.1.10,)"/>
 	</dependencies>
 
 </ivy-module>
