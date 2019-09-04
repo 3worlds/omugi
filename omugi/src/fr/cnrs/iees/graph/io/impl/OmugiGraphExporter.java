@@ -209,7 +209,7 @@ public class OmugiGraphExporter implements GraphExporter {
 			writer.print(tree.nNodes());
 			writer.println(" NODES");
 			for (TreeNode root : tree.roots())
-			  writeTree(tree.root(), writer, 0);
+			  writeTree(root, writer, 0);
 			writer.close();
 		} catch (FileNotFoundException e) {
 			log.severe(() -> "cannot save graph to file \"" + file.getPath() + "\" - file not found");
