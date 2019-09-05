@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeSet;
