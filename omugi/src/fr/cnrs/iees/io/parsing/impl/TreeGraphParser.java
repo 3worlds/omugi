@@ -46,6 +46,7 @@ import fr.cnrs.iees.graph.impl.TreeGraphNode;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;
 import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * 
@@ -56,7 +57,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 // tested OK with version 0.2.1 on 27/5/2019
 public class TreeGraphParser extends EdgeAndNodeSetParser {
 
-	private Logger log = Logger.getLogger(TreeGraphParser.class.getName());
+	private static Logger log = Logging.getLogger(TreeGraphParser.class);
 
 	// ----------------------------------------------------
 	// which type of item is currently being constructed

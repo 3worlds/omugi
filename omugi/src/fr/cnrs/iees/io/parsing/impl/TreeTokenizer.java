@@ -40,6 +40,7 @@ import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * <p>
@@ -149,7 +150,7 @@ label1 node1
 // Tested OK with version 0.0.4 on 20/12/2018
 public class TreeTokenizer extends LineTokenizer {
 
-	private Logger log = Logger.getLogger(TreeTokenizer.class.getName());
+	private static Logger log = Logging.getLogger(TreeTokenizer.class);
 
 	// ----------------------------------------------------
 	public class treeToken extends token {

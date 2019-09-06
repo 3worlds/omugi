@@ -45,6 +45,7 @@ import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * <p>A replacement parser for Shayne's 'UniversalParser'. Simpler. Maybe Faster. 
@@ -79,7 +80,7 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 // Tested OK with version 0.2.1 on 27/5/2019
 public class GraphParser extends EdgeAndNodeSetParser {
 	
-	private Logger log = Logger.getLogger(GraphParser.class.getName());
+	private static Logger log = Logging.getLogger(GraphParser.class);
 
 	//----------------------------------------------------
 	// which type of item is currently being constructed

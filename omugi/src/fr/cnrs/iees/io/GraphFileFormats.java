@@ -40,6 +40,7 @@ import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.graph.io.impl.GraphmlExporter;
 import fr.cnrs.iees.graph.io.impl.OmugiGraphExporter;
 import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * List of all supported graph file formats for import / export 
@@ -74,7 +75,7 @@ public enum GraphFileFormats {
 	private final String extension;
 	private final String description;
 	private final String url;
-	private static Logger log = Logger.getLogger(GraphFileFormats.class.getName());
+	private static Logger log = Logging.getLogger(GraphFileFormats.class);
 
 	private GraphFileFormats(String extension, String description, String url) {
 		this.extension = extension;

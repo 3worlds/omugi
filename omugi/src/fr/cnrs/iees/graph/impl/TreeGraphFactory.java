@@ -12,10 +12,11 @@ import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.ens.biologie.generic.utils.Logging;
 
 public class TreeGraphFactory extends GraphFactoryAdapter {
 
-	private Logger log = Logger.getLogger(TreeGraphFactory.class.getName());
+	private static Logger log = Logging.getLogger(TreeGraphFactory.class);
 	/** the list of graphs managed by this factory */
 	protected Set<TreeGraph<TreeGraphNode, ALEdge>> graphs = new HashSet<>();
 

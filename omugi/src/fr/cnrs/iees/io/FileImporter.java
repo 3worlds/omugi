@@ -38,6 +38,7 @@ import java.util.logging.Logger;
 
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.GraphImporter;
+import fr.ens.biologie.generic.utils.Logging;
 
 import static fr.cnrs.iees.io.GraphFileFormats.*;
 
@@ -53,7 +54,7 @@ import static fr.cnrs.iees.io.GraphFileFormats.*;
 public class FileImporter {
 	
 	private GraphImporter importer = null;
-	private static Logger log = Logger.getLogger(FileImporter.class.getName());
+	private static Logger log = Logging.getLogger(FileImporter.class);
 	
 	public FileImporter(File infile) {
 		super();

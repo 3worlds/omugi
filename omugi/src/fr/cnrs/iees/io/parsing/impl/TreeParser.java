@@ -46,6 +46,7 @@ import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * <p>
@@ -91,7 +92,7 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 //Tested OK with version 0.2.1 on 27/5/2019
 public class TreeParser extends NodeSetParser {
 	
-	private Logger log = Logger.getLogger(TreeParser.class.getName());
+	private static Logger log = Logging.getLogger(TreeParser.class);
 
 	// ----------------------------------------------------
 	// which type of item is currently being constructed

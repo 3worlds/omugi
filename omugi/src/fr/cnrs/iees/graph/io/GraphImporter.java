@@ -43,6 +43,7 @@ import fr.cnrs.iees.io.parsing.impl.TreeGraphParser;
 import fr.cnrs.iees.io.parsing.impl.TreeGraphTokenizer;
 import fr.cnrs.iees.io.parsing.impl.TreeParser;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
+import fr.ens.biologie.generic.utils.Logging;
 
 import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.COMMENT;
 
@@ -63,7 +64,7 @@ public interface GraphImporter {
     
     // static methods to use
     
-    public static Logger log = Logger.getLogger(GraphImporter.class.getName());
+    public static Logger log = Logging.getLogger(GraphImporter.class);
     
 	public static List<String> preprocess(List<String> lines) {
 		List<String> result = new ArrayList<>();

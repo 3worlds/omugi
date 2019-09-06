@@ -13,6 +13,7 @@ import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * 
@@ -25,7 +26,7 @@ public abstract class GraphFactoryAdapter
 		extends NodeFactoryAdapter 
 		implements GraphFactory {
 
-	private Logger log = Logger.getLogger(GraphFactoryAdapter.class.getName());
+	private static Logger log = Logging.getLogger(GraphFactoryAdapter.class);
 	protected Map<String,Class<? extends Edge>> edgeLabels = new HashMap<>();
 	protected Map<Class<? extends Edge>,String> edgeClassNames = new HashMap<>();
 

@@ -13,6 +13,7 @@ import fr.cnrs.iees.graph.Tree;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * The factory for simple trees - caution: this is NOT an Edge factory
@@ -22,7 +23,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 public class SimpleTreeFactory 
 		extends NodeFactoryAdapter {
 
-	private Logger log = Logger.getLogger(ALGraphFactory.class.getName());
+	private static Logger log = Logging.getLogger(ALGraphFactory.class);
 	private Set<Tree<SimpleTreeNode>> trees = new HashSet<>();
 
 	/**

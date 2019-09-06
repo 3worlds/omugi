@@ -56,6 +56,7 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.ExtendablePropertyListImpl;
 import fr.ens.biologie.generic.SaveableAsText;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * An exporter into omugi text format for graphs and trees
@@ -67,7 +68,7 @@ import fr.ens.biologie.generic.SaveableAsText;
 // tested OK with version 0.0.10 on 31/1/2019
 public class OmugiGraphExporter implements GraphExporter {
 
-	private Logger log = Logger.getLogger(OmugiGraphExporter.class.getName());
+	private static Logger log = Logging.getLogger(OmugiGraphExporter.class);
 
 	// the keyword to put at the head of the saved file
 	protected String header = "graph";

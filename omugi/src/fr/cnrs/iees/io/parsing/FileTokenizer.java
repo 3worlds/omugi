@@ -45,6 +45,7 @@ import fr.cnrs.iees.io.parsing.impl.TreeGraphParser;
 import fr.cnrs.iees.io.parsing.impl.TreeGraphTokenizer;
 import fr.cnrs.iees.io.parsing.impl.TreeParser;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * A Tokenizer for text files in the omugi format.
@@ -54,7 +55,7 @@ import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
  */
 public class FileTokenizer implements Tokenizer {
 
-	private static Logger log = Logger.getLogger(FileTokenizer.class.getName());
+	private static Logger log = Logging.getLogger(FileTokenizer.class);
 	private List<String> lines = null;
 	private LineTokenizer tokenizer = null;
 

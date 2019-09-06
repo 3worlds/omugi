@@ -10,6 +10,7 @@ import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.identity.impl.LocalScope;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * 
@@ -19,6 +20,7 @@ import fr.cnrs.iees.identity.impl.LocalScope;
  */
 public abstract class NodeFactoryAdapter implements NodeFactory {
 
+	private static Logger log = Logging.getLogger(NodeFactoryAdapter.class);
 	protected Map<String, Class<? extends Node>> nodeLabels = new HashMap<>();
 	protected Map<Class<? extends Node>, String> nodeClassNames = new HashMap<>();
 	protected IdentityScope scope;
@@ -34,7 +36,6 @@ public abstract class NodeFactoryAdapter implements NodeFactory {
 	@SuppressWarnings("unchecked")
 	protected NodeFactoryAdapter(String scopeId, Map<String, String> labels) {
 		this(scopeId);
-		Logger log = Logger.getLogger(NodeFactoryAdapter.class.getName());
 		ClassLoader classLoader = OmugiClassLoader.getAppClassLoader();
 		if (labels != null) {
 			for (String label : labels.keySet()) {
