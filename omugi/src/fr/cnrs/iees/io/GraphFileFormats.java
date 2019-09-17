@@ -62,6 +62,7 @@ public enum GraphFileFormats {
 	TRE         (".tre", /*            */"3Worlds hierachical graph", ""),
 	GOMUGI      (".ugg", /*            */"omugi 'any graph' format", ""),
 	TOMUGI      (".ugt", /*            */"omugi tree format", ""),
+	TGOMUGI     (".utg", /*            */"omugi treegraph format tree with cross-links)", ""),
 	GRAPHML		(".graphml .xml",/*    */"GraphML file format", 	"http://graphml.graphdrawing.org/")
 // others to come:
 //		GML
@@ -138,6 +139,7 @@ public enum GraphFileFormats {
 					return null;
 				case GOMUGI:
 				case TOMUGI:
+				case TGOMUGI:
 					return new OmugiGraphImporter(f);
 			}
 		return null;
