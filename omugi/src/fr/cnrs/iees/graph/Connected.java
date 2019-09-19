@@ -33,6 +33,8 @@ package fr.cnrs.iees.graph;
 import java.util.Collection;
 
 /**
+ * Interface for connected elements that are used to construct a graph, i.e. ancestor to the
+ * {@linkplain Node} and {@linkplain Edge} interfaces.
  * 
  * @author Jacques Gignoux - 9 mai 2019
  *

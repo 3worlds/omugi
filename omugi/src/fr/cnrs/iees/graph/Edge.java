@@ -31,11 +31,9 @@
 package fr.cnrs.iees.graph;
 
 /**
- * Ancestor to all Edge classes. NB: Edges are meant to work with a particular type of Node, 
+ * Ancestor to all Edge classes. NB: Edges are meant to work with a particular type of {@linkplain Node}, 
  * hence the type parameter.
  * @author Jacques Gignoux - 10 mai 2019
- *
- * @param <N>
  */
 public interface Edge extends Element, Connected<Edge> {
 

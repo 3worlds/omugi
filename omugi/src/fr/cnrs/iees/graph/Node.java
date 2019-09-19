@@ -34,6 +34,15 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
+
+/**
+ * Ancestor to all Node classes. NB: Nodes are meant to work with a particular type of {@linkplain Edge}, 
+ * hence the type parameter.
+ * 
+ * @author Jacques Gignoux - 10 mai 2019
+ *
+ */
 public interface Node extends Element, Connected<Node> {
 
 	/**
@@ -112,6 +121,23 @@ public interface Node extends Element, Connected<Node> {
 	 * @return the edge 
 	 */
 	public Edge connectTo(Direction direction, Node node);
+	
+	/**
+	 * connects this node to node and return the resulting edge (will create an edge),
+	 * according to specified direction, adding the property list to the Edge if the
+	 * EdgeFactory supports it.
+	 * By default, this method ignores the edgeProperty argument
+	 * 
+	 * 
+	 * @param direction the direction in which to connect
+	 * @param node the node to connect to
+	 * @param edgeProperties the property list to attach to the edge
+	 * @return the edge 
+	 */
+	public default Edge connectTo(Direction direction, Node node, ReadOnlyPropertyList edgeProperties) {
+		return connectTo(direction,node);
+	}
+
 	
 	/**
 	 * connects this node to a list of other nodes, with this node = start of the resulting edges.

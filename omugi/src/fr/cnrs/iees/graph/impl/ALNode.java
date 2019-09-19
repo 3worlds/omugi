@@ -15,6 +15,7 @@ import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
  * <p>AL stands for "Adjacency List". This class of Node records its links to its neighbouring nodes
@@ -163,6 +164,18 @@ public class ALNode extends ElementAdapter implements Node {
 	}
 
 	@Override
+	public Edge connectTo(Direction direction, Node node, ReadOnlyPropertyList edgeProperties) {
+		Edge result = null;
+		if (direction==Direction.IN)
+			result = factory.makeEdge(node,this,edgeProperties);
+		else if (direction==Direction.OUT)
+			result = factory.makeEdge(this,node,edgeProperties);
+		return result;
+	}
+
+
+	
+	@Override
 	public void connectTo(Direction direction, Iterable<? extends Node> nodes) {
 		for (Node n:nodes)
 			connectTo(direction,n);
@@ -184,6 +197,5 @@ public class ALNode extends ElementAdapter implements Node {
 			sb.append(" →").append(e.endNode().toShortString());
 		return sb.toString();
 	}
-
 
 }
