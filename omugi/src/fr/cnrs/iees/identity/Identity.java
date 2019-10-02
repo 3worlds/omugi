@@ -30,6 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.identity;
 
+import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**
@@ -62,6 +63,16 @@ public interface Identity {
 		return scope().id()+SaveableAsText.COLON+id();
 	}
 	
-	public void rename(String oldId, String newId);
+	/**
+	 * renames an id to another one - CAUTION: this is for very limited use cases and should be
+	 * avoided as far as possible because it breaks the id immutability paradigm. The default
+	 * implementation throws an Exception.
+	 * 
+	 * @param oldId
+	 * @param newId
+	 */
+	public default void rename(String oldId, String newId) {
+		throw new OmugiException("Renaming should only be used in exceptional circumstances");
+	}
 
 }
