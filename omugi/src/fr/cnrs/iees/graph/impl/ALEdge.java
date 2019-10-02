@@ -149,6 +149,15 @@ public class ALEdge extends ElementAdapter implements Edge {
 			else
 				return toShortString()+ " ["+start.toShortString()+ "]→[" + end.toShortString()+"]";
 	}
+	/*
+	 * renaming can only take if the id is a SimpleIdentity and if the old id exists
+	 * and the new does not exist.
+	 */
+
+	@Override
+	public void rename(String oldId, String newId) {
+		id.rename(oldId, newId);
+	}
 
 	
 }

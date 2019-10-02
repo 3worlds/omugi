@@ -32,6 +32,7 @@ package fr.cnrs.iees.identity.impl;
 
 import java.util.UUID;
 
+import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
@@ -68,6 +69,12 @@ public final class GUIDIdentity implements Identity{
 	@Override
 	public String toString() {
 		return id;
+	}
+
+	@Override
+	public void rename(String oldId, String newId) {
+		throw new OmugiException("Renaming of '"+this.getClass().getSimpleName()+"' is not implemented.");
+		
 	}
 
 }

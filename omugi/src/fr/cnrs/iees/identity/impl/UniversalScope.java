@@ -61,8 +61,7 @@ public class UniversalScope implements IdentityScope {
 	}
 	@Override
 	public void removeId(String id) {
-		if (!scopeIds.remove(id))
-			throw new OmugiException("Attempt to remove an id which does not exist ["+id+"]");
+		throw new OmugiException("removing an id from '"+this.getClass().getSimpleName()+"' is not implemented  ["+id+"]");		
 	}
 
 	
@@ -74,6 +73,16 @@ public class UniversalScope implements IdentityScope {
 	@Override
 	public java.lang.String id() {
 		return id;
+	}
+
+	@Override
+	public boolean contains(String id) {
+		throw new OmugiException("Querying ids in'"+this.getClass().getSimpleName()+"' is not implemented  ["+id+"]");		
+	}
+
+	@Override
+	public void addId(String newId) {
+		throw new OmugiException("Adding an id to '"+this.getClass().getSimpleName()+"' is not implemented  ["+newId+"]");				
 	}
 
 

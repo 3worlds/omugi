@@ -91,5 +91,13 @@ public interface IdentityScope {
 
 	
 	public void removeId(String id);
+	
+	public boolean contains(String id);
+
+	public void addId(String newId);
+
+	
+	
+	
 
 }

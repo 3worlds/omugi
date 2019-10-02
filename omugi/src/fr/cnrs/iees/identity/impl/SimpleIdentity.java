@@ -30,6 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.identity.impl;
 
+import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
@@ -39,12 +40,14 @@ import fr.cnrs.iees.identity.IdentityScope;
  *
  */
 public final class SimpleIdentity implements Identity {
-	
-	private final String id;
+
+	private String id;
 	private final IdentityScope scope;
 
 	/**
-	 * protected constructor, as all instantiations should be made through the scope.
+	 * protected constructor, as all instantiations should be made through the
+	 * scope.
+	 * 
 	 * @param scope
 	 */
 	protected SimpleIdentity(String id, IdentityScope scope) {
@@ -66,6 +69,32 @@ public final class SimpleIdentity implements Identity {
 	@Override
 	public String toString() {
 		return id;
+	}
+	/*
+	 * renaming can only take if:
+	 * 
+	 * 1) the id is a SimpleIdentity;
+	 * 
+	 * 2) It is contained in a LocalScope;
+	 * 
+	 * 3) If the old id exists, and:
+	 * 
+	 * 4) if the new Id does not exist.
+	 * 
+	 * A better approach may be to implement an editable interface for these
+	 * classes.
+	 */
+
+	@Override
+	public void rename(String oldId, String newId) {
+		if (!scope.contains(oldId))
+			throw new OmugiException("Attempt to rename a non-existent id from '" + oldId + "' to '" + newId + "'");
+		if (scope.contains(newId))
+			throw new OmugiException(
+					"Attempt to rename an id to one that already exists from '" + oldId + "' to '" + newId + "'");
+		this.id = newId;
+		scope.removeId(oldId);
+		scope.addId(newId);
 	}
 
 }

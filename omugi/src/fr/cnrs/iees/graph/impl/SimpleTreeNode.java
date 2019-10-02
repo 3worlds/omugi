@@ -15,10 +15,9 @@ import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.identity.Identity;
 
 /**
- * basic TreeNode implementation.
- * By convention Direction.IN = up the tree (to parent) and 
- * Direction.OUT = down the tree (to children)
- * NB All constructors must be protected.
+ * basic TreeNode implementation. By convention Direction.IN = up the tree (to
+ * parent) and Direction.OUT = down the tree (to children) NB All constructors
+ * must be protected.
  * 
  * @author Jacques Gignoux - 10 mai 2019
  *
@@ -29,24 +28,26 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	private NodeFactory factory;
 	private TreeNode parent = null;
 	private Set<TreeNode> children = new HashSet<>();
-	
+
 	protected SimpleTreeNode(Identity id, NodeFactory factory) {
 		super(id);
 		this.factory = factory;
 	}
 
-	// NB: this method will disconnect node from its children since connectChild(...)
-	// will reset the child's parent to the new parent (a child can only have one parent)
+	// NB: this method will disconnect node from its children since
+	// connectChild(...)
+	// will reset the child's parent to the new parent (a child can only have one
+	// parent)
 	@Override
 	public void addConnectionsLike(Node node) {
 		if (node instanceof TreeNode) {
-			if (parent!=null)
+			if (parent != null)
 				parent.disconnectFrom(this);
 			TreeNode tn = (TreeNode) node;
 			List<TreeNode> chlist = new LinkedList<>();
-			for (TreeNode c:tn.getChildren())
+			for (TreeNode c : tn.getChildren())
 				chlist.add(c);
-			for (TreeNode c:chlist)
+			for (TreeNode c : chlist)
 				tn.disconnectFrom(c);
 			connectParent(tn.getParent());
 			connectChildren(chlist);
@@ -60,14 +61,14 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 
 	@Override
 	public boolean isRoot() {
-		return (parent==null);
+		return (parent == null);
 	}
 
 	@Override
 	public int degree(Direction direction) {
 		switch (direction) {
 		case IN:
-			if (parent==null)
+			if (parent == null)
 				return 0;
 			else
 				return 1;
@@ -92,7 +93,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 		switch (direction) {
 		case IN:
 			List<TreeNode> l = new LinkedList<>();
-			if (parent!=null)
+			if (parent != null)
 				l.add(parent);
 			return l;
 		case OUT:
@@ -103,7 +104,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 
 	@Override
 	public Iterable<? extends Node> nodes() {
-		if (parent==null)
+		if (parent == null)
 			return children;
 		else {
 			List<TreeNode> l = new LinkedList<>();
@@ -120,7 +121,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 			case IN:
 				connectParent((SimpleTreeNode) node);
 				break;
-			case OUT: 
+			case OUT:
 				connectChild((SimpleTreeNode) node);
 				break;
 			}
@@ -134,14 +135,14 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 
 	@Override
 	public void disconnect() {
-		if (parent!=null)
+		if (parent != null)
 			disconnectFrom(parent);
 		if (!children.isEmpty()) {
-			for (TreeNode child:children)
+			for (TreeNode child : children)
 				child.connectParent(null);
 			children.clear();
 		}
-				
+
 	}
 
 	// caution: cross recursion
@@ -150,7 +151,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	public void disconnectFrom(Node node) {
 		if (node instanceof TreeNode) {
 			TreeNode tn = (TreeNode) node;
-			if (tn==parent) {
+			if (tn == parent) {
 				parent = null;
 				tn.disconnectFrom(this);
 			}
@@ -161,57 +162,53 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 		}
 	}
 
-	private Collection<TreeNode> traversal(Collection<TreeNode> list, 
-			TreeNode node,
-			int distance) {
+	private Collection<TreeNode> traversal(Collection<TreeNode> list, TreeNode node, int distance) {
 		list.add(node);
-		if (distance>0) {
+		if (distance > 0) {
 			TreeNode tn = node.getParent();
-			if (tn!=null)
-				if (!(tn==this))
-					traversal(list,tn,distance-1);
-			for (TreeNode c:node.getChildren())
-				if (!(c==this))
-					traversal(list,c,distance-1);
+			if (tn != null)
+				if (!(tn == this))
+					traversal(list, tn, distance - 1);
+			for (TreeNode c : node.getChildren())
+				if (!(c == this))
+					traversal(list, c, distance - 1);
 		}
 		return list;
 	}
-	
-	private Collection<TreeNode> traversal(Collection<TreeNode> list, 
-			TreeNode node,
-			int distance,
+
+	private Collection<TreeNode> traversal(Collection<TreeNode> list, TreeNode node, int distance,
 			Direction direction) {
 		list.add(node); // there should not be double insertions here
-		if (distance>0) {
+		if (distance > 0) {
 			switch (direction) {
 			case IN:
 				TreeNode tn = node.getParent();
-				if (tn!=null)
-					traversal(list,tn,distance-1,direction);
+				if (tn != null)
+					traversal(list, tn, distance - 1, direction);
 				break;
 			case OUT:
-				for (TreeNode c:node.getChildren())
-					traversal(list,c,distance-1,direction);
+				for (TreeNode c : node.getChildren())
+					traversal(list, c, distance - 1, direction);
 				break;
 			}
 		}
 		return list;
 	}
-	
+
 	@Override
 	public Collection<? extends Node> traversal(int distance) {
 		Collection<TreeNode> list = new LinkedList<>();
-		list = traversal(list,this,distance);
+		list = traversal(list, this, distance);
 		return list;
 	}
 
 	@Override
 	public Collection<? extends Node> traversal(int distance, Direction direction) {
 		Collection<TreeNode> list = new LinkedList<>();
-		list = traversal(list,this,distance,direction);
+		list = traversal(list, this, distance, direction);
 		return list;
 	}
-	
+
 	// TreeNode
 
 	@Override
@@ -242,10 +239,10 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	// caution: cross recursion with connectChild
 	@Override
 	public void connectParent(TreeNode parent) {
-		if (this.parent!=parent) {
-			if (parent!=null) {
-				if (parent.getParent()==this) { // this to avoid simple loops where child==parent
-					if (getParent()!=null)
+		if (this.parent != parent) {
+			if (parent != null) {
+				if (parent.getParent() == this) { // this to avoid simple loops where child==parent
+					if (getParent() != null)
 						getParent().disconnectFrom(this);
 					parent.disconnectFrom(this);
 				}
@@ -255,17 +252,17 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 			// this is bad code, but will see later if we implement
 			// a complete listening system between nodes and graphs/trees
 			if (factory instanceof SimpleTreeFactory)
-				((SimpleTreeFactory)factory).onParentChanged();
+				((SimpleTreeFactory) factory).onParentChanged();
 		}
 	}
 
 	// caution: cross recursion with connectParent
 	@Override
 	public void connectChild(TreeNode child) {
-		if (!children.contains(child))  {
-			if (getParent()==child) { // this to avoid simple loops where child==parent
+		if (!children.contains(child)) {
+			if (getParent() == child) { // this to avoid simple loops where child==parent
 				child.disconnectFrom(this);
-				if (child.getParent()!=null)
+				if (child.getParent() != null)
 					child.getParent().disconnectFrom(child);
 			}
 			children.add(child);
@@ -274,7 +271,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	}
 
 	// Textable
-	
+
 	/**
 	 * Displays a TreeNode as follows (on a single line):
 	 * 
@@ -282,25 +279,35 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	 * node_label:node_name=[
 	 *    ↑parent_label:parent_name      // the parent node, or ROOT if null
 	 *    ↓child_label:child_name        // child node, repeated as needed
-	 * ] 
+	 * ]
 	 * </pre>
-	 * <p>e.g.: {@code Node:0=[↑Node:1 ↓Node:2 ↓Node:3]}</p>
+	 * <p>
+	 * e.g.: {@code Node:0=[↑Node:1 ↓Node:2 ↓Node:3]}
+	 * </p>
 	 */
 	@Override
 	public String toDetailedString() {
 		StringBuilder sb = new StringBuilder(toShortString());
 		sb.append(' ');
-		if (parent!=null)
+		if (parent != null)
 			sb.append("↑").append(getParent().toShortString());
 		else
 			sb.append("ROOT");
 		if (hasChildren()) {
-			for (TreeNode n:getChildren()) {
+			for (TreeNode n : getChildren()) {
 				sb.append(" ↓").append(n.toShortString());
 			}
 		}
 		return sb.toString();
 	}
 
-	
+	/*
+	 * renaming can only take if the id is a SimpleIdentity and if the old id exists
+	 * and the new does not exist.
+	 */
+	@Override
+	public void rename(String oldId, String newId) {
+		id.rename(oldId, newId);
+	}
+
 }

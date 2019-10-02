@@ -41,7 +41,8 @@ import fr.cnrs.iees.identity.IdentityScope;
  */
 public abstract class ElementAdapter implements Element {
 	
-	private Identity id = null;
+	/* now protected to allow restricted id renaming.*/
+	protected Identity id = null;
 
 	// Constructors
 
@@ -114,6 +115,8 @@ public abstract class ElementAdapter implements Element {
 	public int hashCode() {
 		return id.universalId().hashCode();
 	}
+	
+	
 
 
 }

@@ -197,5 +197,14 @@ public class ALNode extends ElementAdapter implements Node {
 			sb.append(" →").append(e.endNode().toShortString());
 		return sb.toString();
 	}
+	/*
+	 * renaming can only take if the id is a SimpleIdentity and if the old id exists
+	 * and the new does not exist.
+	 */
+
+	@Override
+	public void rename(String oldId, String newId) {
+		id.rename(oldId, newId);	
+	}
 
 }

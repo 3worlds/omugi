@@ -61,5 +61,7 @@ public interface Identity {
 	public default String universalId() {
 		return scope().id()+SaveableAsText.COLON+id();
 	}
+	
+	public void rename(String oldId, String newId);
 
 }

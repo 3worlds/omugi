@@ -98,5 +98,15 @@ public class LocalScope implements IdentityScope {
 		return id;
 	}
 
+	@Override
+	public boolean contains(String id) {
+		return ids.contains(id);
+	}
+
+	@Override
+	public void addId(String newId) {
+		ids.add(newId);
+	}
+
 
 }
