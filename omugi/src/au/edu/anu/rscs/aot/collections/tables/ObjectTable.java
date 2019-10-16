@@ -83,7 +83,6 @@ public class ObjectTable<T> extends TableAdapter {
 	@Override
 	public ObjectTable<T> cloneStructure() {
 		ObjectTable<T> result = new ObjectTable<T>(getDimensioners());
-		System.out.println(result.getClass());
 		return result;
 	}
 
