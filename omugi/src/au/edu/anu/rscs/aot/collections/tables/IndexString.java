@@ -58,8 +58,8 @@ public class IndexString {
 	private IndexString() {	}
 	
 	// works out the indices to extract in a single dimension
-	private static int[] extractDimIndices(int dim, String indexString, Table table) {
-		int tableDimLength = table.getDimensioners()[dim].getLength();
+	private static int[] extractDimIndices(int dim, String indexString, int tableDimLength) {
+//		int tableDimLength = table.getDimensioners()[dim].getLength();
 		int[] result = new int[tableDimLength];
 		// if a minus sign is found, means indices must be excluded
 		boolean exclude = indexString.contains("-");
@@ -128,7 +128,17 @@ public class IndexString {
 		return lr;
 	}
 	
-	// takes only the index string as an argument, ie [...]
+	/**
+	 * This method converts a string describing an index range to a list of indices
+	 * usable by the {@linkplain Table} class and its descendants.
+	 * 
+	 * @param indexString the String containing the index description - e.g. [1:3,2:3,]
+	 * @param table the {@code Table} this string applies to - e.g. {@code new BooleanTable(new Dimensioner(4), 
+	 * new Dimensioner(5), new Dimensioner(3))}
+	 * @return an array of array of indices of the same dimension as the table - e.g.
+	 * [[1,2,0] [1,2,1] [1,2,2] [1,3,0] [1,3,1] [1,3,2] [2,2,0] [2,2,1] [2,2,2] [2,3,0] [2,3,1]
+	 *  [2,3,2] [3,2,0] [3,2,1] [3,2,2] [3,3,0] [3,3,1] [3,3,2]]
+	 */
 	public static int[][] stringToIndex(String indexString, Table table) {
 		int[][] result = null; 
 		// blank or null string = all indices 
@@ -146,12 +156,50 @@ public class IndexString {
 					+ " has "+ ds.length +" dimensions while table has "+table.ndim());
 			int[][] dimIndices = new int[ds.length][];
 			for (int i=0; i<ds.length; i++)
-				dimIndices[i] = extractDimIndices(i,ds[i],table);
+				dimIndices[i] = extractDimIndices(i,ds[i],table.getDimensioners()[i].getLength());
 			result = new int[1][];
 			result = allIndices(dimIndices).toArray(result);
 		}
 		return result;
 	}
+
+	/**
+	 * This method converts a string describing an index range to a list of indices
+	 * usable by the {@linkplain Table} class and its descendants.
+	 * 
+	 * @param indexString the String containing the index description - e.g. [1:3,2:3,]
+	 * @param dim the dimensions of the table this string applies to - e.g. 4,5,3
+	 * @return an array of array of indices of the same dimension as the table - e.g.
+	 * [[1,2,0] [1,2,1] [1,2,2] [1,3,0] [1,3,1] [1,3,2] [2,2,0] [2,2,1] [2,2,2] [2,3,0] [2,3,1]
+	 *  [2,3,2] [3,2,0] [3,2,1] [3,2,2] [3,3,0] [3,3,1] [3,3,2]]
+	 */
+	public static int[][] stringToIndex(String indexString, int...dim) {
+		int[][] result = null; 
+		// blank or null string = all indices 
+		if ((indexString==null)|(indexString.isEmpty())|(indexString.isBlank())) {
+			int size = 1;
+			for (int i=0; i<dim.length; i++)
+				size *= dim[i];
+			result = new int[size][dim.length];
+			for (int i=0; i<size; i++)
+				result[i] = extractDimIndices(i,"",dim[i]);
+		}
+		else {
+			String s = indexString.strip();
+			s = s.substring(1,s.length()-1);
+			String[] ds = s.split(",",-1);
+			if (ds.length != dim.length)
+				throw new OmugiException("Index string " + indexString
+					+ " has "+ ds.length +" dimensions while table has "+dim.length);
+			int[][] dimIndices = new int[ds.length][];
+			for (int i=0; i<ds.length; i++)
+				dimIndices[i] = extractDimIndices(i,ds[i],dim[i]);
+			result = new int[1][];
+			result = allIndices(dimIndices).toArray(result);
+		}
+		return result;
+	}
+
 	
 	public static String indexToString(int[][] index, Table table) {
 		// TODO: implement this later...
