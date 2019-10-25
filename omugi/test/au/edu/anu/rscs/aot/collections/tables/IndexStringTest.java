@@ -128,6 +128,35 @@ class IndexStringTest {
 		show("testStringToIndex11",result);
 	}
 
+	@Test
+	final void testStringToIndex12() {
+		result = IndexString.stringToIndex("[]",3);
+		assertEquals(result.length,3);
+		show("testStringToIndex12",result);
+	}
+
+	@Test
+	final void testStringToIndex13() {
+		result = IndexString.stringToIndex("[-1]",3);
+		assertEquals(result.length,2);
+		show("testStringToIndex13",result);
+	}
+
+	@Test
+	final void testStringToIndex14() {
+		result = IndexString.stringToIndex("",3);
+		assertEquals(result.length,3);
+		show("testStringToIndex14",result);
+	}
+	
+	@Test
+	final void testStringToIndex15() {
+		Table t = new StringTable(new Dimensioner(3));
+		result = IndexString.stringToIndex("",t);
+		assertEquals(result.length,3);
+		show("testStringToIndex15",result);
+	}
+
 	
 	@Test
 	final void testIndexToString() {

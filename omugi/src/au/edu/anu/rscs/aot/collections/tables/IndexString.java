@@ -175,28 +175,26 @@ public class IndexString {
 	 */
 	public static int[][] stringToIndex(String indexString, int...dim) {
 		int[][] result = null; 
+		String s = null;
 		// blank or null string = all indices 
 		if ((indexString==null)|(indexString.isEmpty())|(indexString.isBlank())) {
-			int size = 1;
-			for (int i=0; i<dim.length; i++)
-				size *= dim[i];
-			result = new int[size][dim.length];
-			for (int i=0; i<size; i++)
-				result[i] = extractDimIndices(i,"",dim[i]);
+			s = "[";
+			for (int i=0; i<dim.length-1;i++)
+				s +=",";
+			s+="]";
 		}
-		else {
-			String s = indexString.strip();
-			s = s.substring(1,s.length()-1);
-			String[] ds = s.split(",",-1);
-			if (ds.length != dim.length)
-				throw new OmugiException("Index string " + indexString
-					+ " has "+ ds.length +" dimensions while table has "+dim.length);
-			int[][] dimIndices = new int[ds.length][];
-			for (int i=0; i<ds.length; i++)
-				dimIndices[i] = extractDimIndices(i,ds[i],dim[i]);
-			result = new int[1][];
-			result = allIndices(dimIndices).toArray(result);
-		}
+		else
+			s = indexString.strip();
+		s = s.substring(1,s.length()-1);
+		String[] ds = s.split(",",-1);
+		if (ds.length != dim.length)
+			throw new OmugiException("Index string " + indexString
+				+ " has "+ ds.length +" dimensions while table has "+dim.length);
+		int[][] dimIndices = new int[ds.length][];
+		for (int i=0; i<ds.length; i++)
+			dimIndices[i] = extractDimIndices(i,ds[i],dim[i]);
+		result = new int[1][];
+		result = allIndices(dimIndices).toArray(result);
 		return result;
 	}
 
