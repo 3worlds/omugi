@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import fr.cnrs.iees.OmugiException;
 
@@ -58,7 +59,7 @@ import fr.cnrs.iees.OmugiException;
 public class IndexString {
 	
 	// separator char for dimensions (possible alt.: "][") - caution, regexp
-	private static String dimSep = "\\|";
+	private static String dimSep = "|";
 	// separator char for cells in one dimension (possible alt.: ";")
 	private static String cellSep = ",";
 	// sequence character (possible alt.: "..")
@@ -81,12 +82,12 @@ public class IndexString {
 				result[i] = i;
 		// a list of indices (exclude doesnt work here)
 		else if (indexString.contains(cellSep)) {
-			String[] s = indexString.split(cellSep);
+			String[] s = indexString.split(Pattern.quote(cellSep));
 			SortedSet<Integer> li = new TreeSet<>();
 			for (int i=0; i<s.length; i++)
 				// between commas there may be :'s
 				if (s[i].contains(seq)) {
-					String[] ss = s[i].split(seq);
+					String[] ss = s[i].split(Pattern.quote(seq));
 					int min = Math.abs(Integer.valueOf(ss[0]));
 					int max = Math.abs(Integer.valueOf(ss[1]));
 					if ((min<0)|(max>tableDimLength-1))
@@ -104,7 +105,7 @@ public class IndexString {
 		}
 		// a range of indices
 		else if (indexString.contains(seq)) {
-			String[] s = indexString.split(seq);
+			String[] s = indexString.split(Pattern.quote(seq));
 			int min = Math.abs(Integer.valueOf(s[0]));
 			int max = Math.abs(Integer.valueOf(s[1]));
 			if ((min<0)|(max>tableDimLength-1))
@@ -185,7 +186,7 @@ public class IndexString {
 		else {
 			String s = indexString.strip();
 			s = s.substring(1,s.length()-1);
-			String[] ds = s.split(dimSep,-1);
+			String[] ds = s.split(Pattern.quote(dimSep),-1);
 			if (ds.length != table.ndim())
 				throw new OmugiException("Index string " + indexString
 					+ " has "+ ds.length +" dimensions while table has "+table.ndim());
@@ -204,7 +205,7 @@ public class IndexString {
 	 * 
 	 * @param indexString the String containing the index description - e.g. [1:3,2:3,]
 	 * @param dim the dimensions of the table this string applies to - e.g. 4,5,3
-	 * @return an array of array of indices of the same dimension as the table - e.g.
+	 * @return an array of arrays of indices of the same dimension as the table - e.g.
 	 * [[1,2,0] [1,2,1] [1,2,2] [1,3,0] [1,3,1] [1,3,2] [2,2,0] [2,2,1] [2,2,2] [2,3,0] [2,3,1]
 	 *  [2,3,2] [3,2,0] [3,2,1] [3,2,2] [3,3,0] [3,3,1] [3,3,2]]
 	 */
@@ -221,7 +222,7 @@ public class IndexString {
 		else
 			s = indexString.strip();
 		s = s.substring(1,s.length()-1);
-		String[] ds = s.split(dimSep,-1);
+		String[] ds = s.split(Pattern.quote(dimSep),-1);
 		if (ds.length != dim.length)
 			throw new OmugiException("Index string " + indexString
 				+ " has "+ ds.length +" dimensions while table has "+dim.length);
@@ -233,10 +234,74 @@ public class IndexString {
 		return result;
 	}
 
-	
-	public static String indexToString(int[][] index, Table table) {
-		// TODO: implement this later...
-		return null;
+	/**
+	 * CAUTION: this is NOT performing the reverse operation to stringToIndex(...) as the factoring out
+	 * of a table of indices is not unique and tricky to work out. This uses a ndim arrays of indices
+	 * selected in each of the dimensions independently and works out the global String matching
+	 * these.
+	 * Assumes indices are provided in proper order.
+	 * 
+	 * @param index a ndim-list of indices to search for in every dimension
+	 * @param table ndim dimension sizes
+	 * @return the matching String
+	 */
+	public static String indexToString(int[][] index, int...dim) {
+		if ((index==null)&(dim==null))
+			return ""; // whole table - whatever this means
+		if (index.length!=dim.length)
+			throw new OmugiException("Size of index list (" + index.length +
+				")not matching number of dimensions (" + dim.length + ")");
+		StringBuilder sb = new StringBuilder();
+		boolean wholeTable = true;
+		for (int i=0; i< dim.length; i++)
+			if ((index[i]!=null) && (index[i].length != dim[i])) 
+				wholeTable = false;
+		if (wholeTable)
+			return "";
+		sb.append("[");
+		for (int i=0; i< dim.length; i++)
+			if (index[i]==null) { // means whole dimension
+				if (i<dim.length-1)
+					sb.append(dimSep);
+			}
+			else if (index[i].length == dim[i]) { // same
+				if (i<dim.length-1)
+					sb.append("][");
+			}
+			else {
+				int last = index[i][0];
+				sb.append(last);
+				int j=1;
+				String sep = seq;
+				while (j<index[i].length) {
+					if (index[i][j]!=index[i][j-1]+1) {
+						if (last!=index[i][0])
+							sb.append(sep).append(last);
+						sep = cellSep;
+					}
+					else {
+						if (sep==cellSep)
+							if (last!=index[i][0])
+								sb.append(sep).append(last);
+						sep = seq;
+					}
+					last = index[i][j];
+					j++;
+				}
+				if (last!=index[i][0])
+					sb.append(sep).append(last);
+				if (i<dim.length-1)
+					sb.append(dimSep);
+			}
+		sb.append("]");
+		return sb.toString();
 	}
 
+	public static String indexToString(int[][] index, Table table) {
+		int[] dim = new int[table.ndim()];
+		for (int i=0; i<dim.length; i++)
+			dim[i] = table.getDimensioners()[i].getLength();
+		return indexToString(index,dim);
+	}
+	
 }

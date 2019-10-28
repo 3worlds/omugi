@@ -55,6 +55,10 @@ class IndexStringTest {
 		System.out.println("]");
 	}
 	
+	private void show(String method, String s) {
+		System.out.println(method+": \""+s+"\"");
+	}
+	
 	@Test
 	final void testStringToIndex1() {
 		result = IndexString.stringToIndex("",table);
@@ -172,8 +176,35 @@ class IndexStringTest {
 	}
 	
 	@Test
-	final void testIndexToString() {
-		fail("Not yet implemented");
+	final void testIndexToString1() {
+		int[] dim = null;
+		String result = IndexString.indexToString(null,dim);
+		assertTrue(result.isEmpty());
+		show("testIndexToString1",result);
+	}
+
+	@Test
+	final void testIndexToString2() {
+		int[][] index = {{0,1,2,4}};
+		String result = IndexString.indexToString(index,5);
+		assertEquals(result,"[0:2,4]");
+		show("testIndexToString2",result);
+	}
+	
+	@Test
+	final void testIndexToString3() {
+		int[][] index = {{0,1,2,4},{2,4,5,6,8,9,11},null};
+		String result = IndexString.indexToString(index,5,12,8);
+		assertEquals(result,"[0:2,4|2,4:6,8:9,11|]");
+		show("testIndexToString3",result);
+	}
+
+	@Test
+	final void testIndexToString4() {
+		int[][] index = {{124}};
+		String result = IndexString.indexToString(index,126);
+		assertEquals(result,"[124]");
+		show("testIndexToString4",result);
 	}
 
 }
