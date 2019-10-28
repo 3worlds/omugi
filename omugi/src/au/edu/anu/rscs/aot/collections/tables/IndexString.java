@@ -33,6 +33,8 @@ package au.edu.anu.rscs.aot.collections.tables;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import fr.cnrs.iees.OmugiException;
 
@@ -40,11 +42,12 @@ import fr.cnrs.iees.OmugiException;
  * <p>A Class to specify a set of multidimensional indexes using a string with a R-like syntax, i.e.:</p>
  * <p>example for a 3D table "TABLE" of dimensions 3,5,2:</p>
  * <ul>
- * <li>TABLE[,,] or TABLE = the whole table (all indices)</li>
- * <li>TABLE[2,4,1] = cell (2,4,1) of the table</li>
- * <li>TABLE[,4,1] = cells (0,4,1) (1,4,1) and (2,4,1), ie all items in dimension 1</li>
- * <li>TABLE[3,,] = all items in dimensions 2 and 3, cell 3 only in dimension 1</li>
+ * <li>TABLE[||] or TABLE = the whole table (all indices)</li>
+ * <li>TABLE[2|4|1] = cell (2,4,1) of the table</li>
+ * <li>TABLE[|4|1] = cells (0,4,1) (1,4,1) and (2,4,1), ie all items in dimension 1</li>
+ * <li>TABLE[3||] = all items in dimensions 2 and 3, cell 3 only in dimension 1</li>
  * <li>1:3 = specifies a range of indices in one dimension, in this case indices 1, 2 and 3</li>
+ * <li>1,3,7 = specifies the three indexes in one dimension, in this case indices 1, 3 and 7</li>
  * <li>-2 = all indices in the dimension except index 2</li>
  * <li>-1:3 = all indicies in the dimension except 1,2 and 3</li>
  * </ul>
@@ -53,6 +56,15 @@ import fr.cnrs.iees.OmugiException;
  *
  */
 public class IndexString {
+	
+	// separator char for dimensions (possible alt.: "][") - caution, regexp
+	private static String dimSep = "\\|";
+	// separator char for cells in one dimension (possible alt.: ";")
+	private static String cellSep = ",";
+	// sequence character (possible alt.: "..")
+	private static String seq = ":";
+	// negation character
+	private static String neg = "-";
 
 	// this to prevent instantiation - only use static methods
 	private IndexString() {	}
@@ -62,14 +74,37 @@ public class IndexString {
 //		int tableDimLength = table.getDimensioners()[dim].getLength();
 		int[] result = new int[tableDimLength];
 		// if a minus sign is found, means indices must be excluded
-		boolean exclude = indexString.contains("-");
+		boolean exclude = indexString.contains(neg);
 		// empty string, all indices are required
 		if (indexString.isBlank() | indexString.isEmpty())
 			for (int i=0; i<result.length; i++)
 				result[i] = i;
+		// a list of indices (exclude doesnt work here)
+		else if (indexString.contains(cellSep)) {
+			String[] s = indexString.split(cellSep);
+			SortedSet<Integer> li = new TreeSet<>();
+			for (int i=0; i<s.length; i++)
+				// between commas there may be :'s
+				if (s[i].contains(seq)) {
+					String[] ss = s[i].split(seq);
+					int min = Math.abs(Integer.valueOf(ss[0]));
+					int max = Math.abs(Integer.valueOf(ss[1]));
+					if ((min<0)|(max>tableDimLength-1))
+						throw new OmugiException("Table index out of range "+indexString);
+					for (int j=min; j<=max; j++)
+						li.add(j);
+				}
+				// just a single index
+				else
+					li.add(Integer.valueOf(s[i]));
+			result = new int[li.size()];
+			int i=0;
+			for (int n:li)
+				result[i++] = n;
+		}
 		// a range of indices
-		else if (indexString.contains(":")) {
-			String[] s = indexString.split(":");
+		else if (indexString.contains(seq)) {
+			String[] s = indexString.split(seq);
 			int min = Math.abs(Integer.valueOf(s[0]));
 			int max = Math.abs(Integer.valueOf(s[1]));
 			if ((min<0)|(max>tableDimLength-1))
@@ -150,7 +185,7 @@ public class IndexString {
 		else {
 			String s = indexString.strip();
 			s = s.substring(1,s.length()-1);
-			String[] ds = s.split(",",-1);
+			String[] ds = s.split(dimSep,-1);
 			if (ds.length != table.ndim())
 				throw new OmugiException("Index string " + indexString
 					+ " has "+ ds.length +" dimensions while table has "+table.ndim());
@@ -186,7 +221,7 @@ public class IndexString {
 		else
 			s = indexString.strip();
 		s = s.substring(1,s.length()-1);
-		String[] ds = s.split(",",-1);
+		String[] ds = s.split(dimSep,-1);
 		if (ds.length != dim.length)
 			throw new OmugiException("Index string " + indexString
 				+ " has "+ ds.length +" dimensions while table has "+dim.length);

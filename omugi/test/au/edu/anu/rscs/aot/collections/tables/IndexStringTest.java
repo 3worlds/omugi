@@ -64,66 +64,66 @@ class IndexStringTest {
 
 	@Test
 	final void testStringToIndex2() {
-		result = IndexString.stringToIndex("[,,]",table);
+		result = IndexString.stringToIndex("[||]",table);
 		assertEquals(result.length,60);
 		show("testStringToIndex2",result);
 	}
 
 	@Test
 	final void testStringToIndex3() {
-		result = IndexString.stringToIndex("[2,1,2]",table);
+		result = IndexString.stringToIndex("[2|1|2]",table);
 		assertEquals(result.length,1);
 		show("testStringToIndex3",result);
 	}
 
 	@Test
 	final void testStringToIndex4() {
-		assertThrows(OmugiException.class,()->IndexString.stringToIndex("[1:3,,2:3]",table));
+		assertThrows(OmugiException.class,()->IndexString.stringToIndex("[1:3||2:3]",table));
 	}
 
 	@Test
 	final void testStringToIndex5() {
-		result = IndexString.stringToIndex("[1:3,2:3,]",table);
+		result = IndexString.stringToIndex("[1:3|2:3|]",table);
 		assertEquals(result.length,18);
 		show("testStringToIndex5",result);
 	}
 
 	@Test
 	final void testStringToIndex6() {
-		result = IndexString.stringToIndex("[-2,-2:3,]",table);
+		result = IndexString.stringToIndex("[-2|-2:3|]",table);
 		assertEquals(result.length,27);
 		show("testStringToIndex6",result);
 	}
 
 	@Test
 	final void testStringToIndex7() {
-		result = IndexString.stringToIndex("[,,]",2,3,1);
+		result = IndexString.stringToIndex("[||]",2,3,1);
 		assertEquals(result.length,6);
 		show("testStringToIndex7",result);
 	}
 
 	@Test
 	final void testStringToIndex8() {
-		result = IndexString.stringToIndex("[2,1,2]",4,3,3);
+		result = IndexString.stringToIndex("[2|1|2]",4,3,3);
 		assertEquals(result.length,1);
 		show("testStringToIndex8",result);
 	}
 
 	@Test
 	final void testStringToIndex9() {
-		assertThrows(OmugiException.class,()->IndexString.stringToIndex("[1:3,,2:3]",4,3,3));
+		assertThrows(OmugiException.class,()->IndexString.stringToIndex("[1:3||2:3]",4,3,3));
 	}
 
 	@Test
 	final void testStringToIndex10() {
-		result = IndexString.stringToIndex("[1:3,2:3,]",4,4,2);
+		result = IndexString.stringToIndex("[1:3|2:3|]",4,4,2);
 		assertEquals(result.length,12);
 		show("testStringToIndex10",result);
 	}
 
 	@Test
 	final void testStringToIndex11() {
-		result = IndexString.stringToIndex("[-2,-2:3,]",4,4,4);
+		result = IndexString.stringToIndex("[-2|-2:3|]",4,4,4);
 		assertEquals(result.length,24);
 		show("testStringToIndex11",result);
 	}
@@ -157,6 +157,19 @@ class IndexStringTest {
 		show("testStringToIndex15",result);
 	}
 
+	@Test
+	final void testStringToIndex16() {
+		result = IndexString.stringToIndex("[1,3|0,2|]",4,4,2);
+		assertEquals(result.length,8);
+		show("testStringToIndex16",result);
+	}
+	
+	@Test
+	final void testStringToIndex17() {
+		result = IndexString.stringToIndex("[0,2:3|0,2|-1]",4,4,2);
+		assertEquals(result.length,6);
+		show("testStringToIndex17",result);
+	}
 	
 	@Test
 	final void testIndexToString() {
