@@ -163,14 +163,14 @@ class IndexStringTest {
 
 	@Test
 	final void testStringToIndex16() {
-		result = IndexString.stringToIndex("[1,3|0,2|]",4,4,2);
+		result = IndexString.stringToIndex("[1;3|0;2|]",4,4,2);
 		assertEquals(result.length,8);
 		show("testStringToIndex16",result);
 	}
 	
 	@Test
 	final void testStringToIndex17() {
-		result = IndexString.stringToIndex("[0,2:3|0,2|-1]",4,4,2);
+		result = IndexString.stringToIndex("[0;2:3|0;2|-1]",4,4,2);
 		assertEquals(result.length,6);
 		show("testStringToIndex17",result);
 	}
@@ -187,7 +187,7 @@ class IndexStringTest {
 	final void testIndexToString2() {
 		int[][] index = {{0,1,2,4}};
 		String result = IndexString.indexToString(index,5);
-		assertEquals(result,"[0:2,4]");
+		assertEquals(result,"[0:2;4]");
 		show("testIndexToString2",result);
 	}
 	
@@ -195,7 +195,7 @@ class IndexStringTest {
 	final void testIndexToString3() {
 		int[][] index = {{0,1,2,4},{2,4,5,6,8,9,11},null};
 		String result = IndexString.indexToString(index,5,12,8);
-		assertEquals(result,"[0:2,4|2,4:6,8:9,11|]");
+		assertEquals(result,"[0:2;4|2;4:6;8:9;11|]");
 		show("testIndexToString3",result);
 	}
 

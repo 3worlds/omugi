@@ -61,7 +61,7 @@ public class IndexString {
 	// separator char for dimensions (possible alt.: "][") - caution, regexp
 	private static String dimSep = "|";
 	// separator char for cells in one dimension (possible alt.: ";")
-	private static String cellSep = ",";
+	private static String cellSep = ";";
 	// sequence character (possible alt.: "..")
 	private static String seq = ":";
 	// negation character
