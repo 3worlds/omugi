@@ -63,11 +63,22 @@ public class TreeGraphTokenizer extends LineTokenizer {
 	}
 	
 	private void splitLines() {
+		int firstLink=0;
 		for (String s:lines)
 			if (s.trim().startsWith("["))
+				break;
+			else
+				firstLink++;
+		int i=0;
+		for (String s:lines) {
+			// this doesnt work if there are edge properties
+//			if (s.trim().startsWith("["))
+			if (i>=firstLink)
 				crossLinkLines.add(s);
 			else
 				treeLines.add(s);
+			i++;
+		}
 		String[] ss = new String[0];
 		ttk = new TreeTokenizer(treeLines.toArray(ss));
 		gtk = new GraphTokenizer(crossLinkLines.toArray(ss));

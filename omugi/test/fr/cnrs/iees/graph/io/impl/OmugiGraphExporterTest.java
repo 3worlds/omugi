@@ -309,6 +309,7 @@ DataTreeNodeImpl 436e852b
 			"[system:entity] belongsTo random name [category:animal]\n", 
 			"[process:growth] appliesTo  [category:animal]\n",
 			"[process:growth] appliesTo  [category:plant]\n", 
+			"	prop = Integer(4)\n",
 			"[process:growth] function  [function:some computation]\n"};
 
 	
