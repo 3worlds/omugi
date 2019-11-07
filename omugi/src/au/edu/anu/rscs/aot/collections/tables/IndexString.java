@@ -96,8 +96,12 @@ public class IndexString {
 						li.add(j);
 				}
 				// just a single index
-				else
-					li.add(Integer.valueOf(s[i]));
+				else {
+					int index = Integer.valueOf(s[i]);
+					if ((index<0)|(index>tableDimLength-1))
+						throw new OmugiException("Table index out of range "+indexString);
+					li.add(index);
+				}
 			result = new int[li.size()];
 			int i=0;
 			for (int n:li)
