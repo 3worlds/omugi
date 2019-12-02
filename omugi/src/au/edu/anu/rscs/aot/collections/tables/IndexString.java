@@ -130,7 +130,12 @@ public class IndexString {
 		}
 		// a single index
 		else {
-			int index = Math.abs(Integer.valueOf(indexString));
+			int index = -1;
+			try {
+			    index = Math.abs(Integer.valueOf(indexString));
+			} catch (NumberFormatException excpt) {
+				throw new OmugiException("'"+indexString + "' is not an integer.");
+			}
 			if ((index<0)|(index>tableDimLength-1))
 				throw new OmugiException("Table index out of range "+indexString);
 			if (exclude) {
