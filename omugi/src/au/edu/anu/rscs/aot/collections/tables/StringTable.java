@@ -30,10 +30,6 @@
  **************************************************************************/
 package au.edu.anu.rscs.aot.collections.tables;
 
-import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_BLOCK_DELIMITERS;
-import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_ITEM_SEPARATOR;
-import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_BLOCK_DELIMITERS;
-import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_ITEM_SEPARATOR;
 
 import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.DataContainer;
@@ -69,15 +65,15 @@ public class StringTable extends TableAdapter {
 		return result;
 	}
 
-	public static StringTable valueOf(String value) {
-		char[][] bdel = new char[2][2];
-		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
-		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
-		char[] isep = new char[2];
-		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
-		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
-		return valueOf(value, bdel, isep);
-	}
+//	public static StringTable valueOf(String value) {
+//		char[][] bdel = new char[2][2];
+//		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
+//		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
+//		char[] isep = new char[2];
+//		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
+//		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
+//		return valueOf(value, bdel, isep);
+//	}
 
 	public static StringTable valueOf(String value, char[][] bdel, char[] isep) {
 		if ((value == null) || value.isBlank() || value.isEmpty())
