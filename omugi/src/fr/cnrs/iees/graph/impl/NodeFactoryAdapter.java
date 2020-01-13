@@ -24,6 +24,15 @@ public abstract class NodeFactoryAdapter implements NodeFactory {
 	protected Map<String, Class<? extends Node>> nodeLabels = new HashMap<>();
 	protected Map<Class<? extends Node>, String> nodeClassNames = new HashMap<>();
 	protected IdentityScope scope;
+	
+	protected NodeFactoryAdapter(IdentityScope scope) {
+		super();
+		if (scope!=null)
+			this.scope = scope;
+		else
+			throw new OmugiException("A factory requires a valid scope");
+	}
+	
 
 	protected NodeFactoryAdapter(String scopeId) {
 		super();
@@ -34,8 +43,7 @@ public abstract class NodeFactoryAdapter implements NodeFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected NodeFactoryAdapter(String scopeId, Map<String, String> labels) {
-		this(scopeId);
+	private void setupLabels(Map<String, String> labels) {
 		ClassLoader classLoader = OmugiClassLoader.getAppClassLoader();
 		if (labels != null) {
 			for (String label : labels.keySet()) {
@@ -51,6 +59,17 @@ public abstract class NodeFactoryAdapter implements NodeFactory {
 			}
 		}
 	}
+	
+	protected NodeFactoryAdapter(String scopeId, Map<String, String> labels) {
+		this(scopeId);
+		setupLabels(labels);
+	}
+	
+	protected NodeFactoryAdapter(IdentityScope scope, Map<String, String> labels) {
+		this(scope);
+		setupLabels(labels);
+	}
+
 
 	@Override
 	public final String nodeClassName(Class<? extends Node> nodeClass) {

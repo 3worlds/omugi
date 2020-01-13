@@ -11,6 +11,7 @@ import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.utils.Logging;
@@ -30,6 +31,10 @@ public abstract class GraphFactoryAdapter
 	protected Map<String,Class<? extends Edge>> edgeLabels = new HashMap<>();
 	protected Map<Class<? extends Edge>,String> edgeClassNames = new HashMap<>();
 
+	protected GraphFactoryAdapter(IdentityScope scope) {
+		super(scope);
+	}
+
 	protected GraphFactoryAdapter(String scopeId) {
 		super(scopeId);
 	}
@@ -39,8 +44,7 @@ public abstract class GraphFactoryAdapter
 	}
 
 	@SuppressWarnings("unchecked")
-	protected GraphFactoryAdapter(String scopeId, Map<String,String> labels) {
-		super(scopeId);
+	private void setupLabels(Map<String,String> labels) {
 		if (labels!=null) {
 			ClassLoader classLoader = OmugiClassLoader.getAppClassLoader();
 			for (String label:labels.keySet()) {
@@ -57,8 +61,18 @@ public abstract class GraphFactoryAdapter
 				} catch (ClassNotFoundException e) {
 					log.severe(()->"Class \""+labels.get(label)+"\" for label \""+label+"\" not found");
 				}
+			}
 		}
 	}
+	
+	protected GraphFactoryAdapter(String scopeId, Map<String,String> labels) {
+		super(scopeId);
+		setupLabels(labels);
+	}
+
+	protected GraphFactoryAdapter(IdentityScope scope, Map<String,String> labels) {
+		super(scope);
+		setupLabels(labels);
 	}
 
 	// EdgeFactory

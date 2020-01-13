@@ -10,6 +10,7 @@ import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.identity.Identity;
+import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.utils.Logging;
@@ -37,6 +38,14 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 	public ALGraphFactory(String scopeName) {
 		super(scopeName);
 	}
+
+	/**
+	 * basic constructor, only requires a scope
+	 * @param scope the scope instance
+	 */
+	public ALGraphFactory(IdentityScope scope) {
+		super(scope);
+	}
 	
 	/**
 	 * basic constructor with default scope
@@ -52,6 +61,15 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 	 */
 	public ALGraphFactory(String scopeName,Map<String,String> labels) {
 		super(scopeName,labels);
+	}
+
+	/**
+	 * constructor with labels for sub-classes of Node and Edge
+	 * @param scope the scope instance
+	 * @param labels a Map of (labels,class names) associating a label to a java class name
+	 */
+	public ALGraphFactory(IdentityScope scope,Map<String,String> labels) {
+		super(scope,labels);
 	}
 
 	// NodeFactory
