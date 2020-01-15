@@ -8,12 +8,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import fr.cnrs.iees.graph.DataHolder;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.ElementAdapter;
 import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.graph.ReadOnlyDataHolder;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
@@ -100,10 +102,20 @@ public class ALNode extends ElementAdapter implements Node {
 	@Override
 	public void addConnectionsLike(Node node) {
 		for (Edge e:node.edges(Direction.IN)) {
-			factory.makeEdge(e.startNode(), this);			
+			if (e instanceof DataHolder)
+				factory.makeEdge(e.startNode(),this,((DataHolder)e).properties());
+			else if (e instanceof ReadOnlyDataHolder)
+				factory.makeEdge(e.startNode(),this,((ReadOnlyDataHolder)e).properties());
+			else
+				factory.makeEdge(e.startNode(), this);			
 		}
 		for (Edge e:node.edges(Direction.OUT)) {
-			factory.makeEdge(this, e.endNode());
+			if (e instanceof DataHolder)
+				factory.makeEdge(this,e.endNode(),((DataHolder)e).properties());
+			else if (e instanceof ReadOnlyDataHolder)
+				factory.makeEdge(this,e.endNode(),((ReadOnlyDataHolder)e).properties());
+			else
+				factory.makeEdge(this,e.endNode());			
 		}
 	}
 
