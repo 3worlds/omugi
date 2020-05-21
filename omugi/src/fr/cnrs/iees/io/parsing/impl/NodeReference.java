@@ -4,7 +4,7 @@ import fr.cnrs.iees.graph.TreeNode;
 
 /**
  * Static methods to match TreeNodes to references
- * 
+ *
  * @author Jacques Gignoux - 18 avr. 2019
  *
  */
