@@ -76,10 +76,12 @@ public class StringTable extends TableAdapter {
 //	}
 
 	public static StringTable valueOf(String value, char[][] bdel, char[] isep) {
+		value = value.trim();
 		if ((value == null) || value.isBlank() || value.isEmpty())
 			return null;
 		String ss = TableAdapter.getBlockContent(value, bdel[TABLEix]);
 		String d = ss.substring(0, ss.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
+		d = d.trim();
 		StringTable result = new StringTable(readDimensioners(d, bdel[DIMix], isep[DIMix]));
 		ss = ss.substring(ss.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
 		StringBuilder sb = new StringBuilder();
