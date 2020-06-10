@@ -49,8 +49,10 @@ public class KeyValue {
 	}
 	
 	// JG added - for better readability of Exceptions
+	// ID updated - for the same reason
 	public String toString() {
-		return("["+super.toString()+":"+key+"="+value+"]");
+//		return("["+super.toString()+":"+key+"="+value+"]");
+		return("["+getClass().getSimpleName()+":"+key+"="+value+"]");
 	}
 	
 }
