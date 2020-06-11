@@ -30,6 +30,10 @@
  **************************************************************************/
 package au.edu.anu.rscs.aot.collections.tables;
 
+import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_BLOCK_DELIMITERS;
+import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_ITEM_SEPARATOR;
+import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_BLOCK_DELIMITERS;
+import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_ITEM_SEPARATOR;
 
 import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.DataContainer;
@@ -62,56 +66,6 @@ public class StringTable extends TableAdapter {
 	public StringTable cloneStructure(String initialValue) {
 		StringTable result = cloneStructure();
 		result.fillWith(initialValue);
-		return result;
-	}
-
-//	public static StringTable valueOf(String value) {
-//		char[][] bdel = new char[2][2];
-//		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
-//		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
-//		char[] isep = new char[2];
-//		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
-//		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
-//		return valueOf(value, bdel, isep);
-//	}
-
-	public static StringTable valueOf(String value, char[][] bdel, char[] isep) {
-		value = value.trim();
-		if ((value == null) || value.isBlank() || value.isEmpty())
-			return null;
-		String ss = TableAdapter.getBlockContent(value, bdel[TABLEix]);
-		String d = ss.substring(0, ss.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
-		d = d.trim();
-		StringTable result = new StringTable(readDimensioners(d, bdel[DIMix], isep[DIMix]));
-		ss = ss.substring(ss.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
-		StringBuilder sb = new StringBuilder();
-		int n = 0;
-		boolean inquote = false;
-		for (int i = 0; i < ss.length(); i++) {
-			char c = ss.charAt(i);
-			if (c == QUOTE)
-				inquote = !inquote;
-			else if (inquote)
-				sb.append(c);
-			else if (!inquote) {
-				if (c == isep[TABLEix]) {
-					if (n == result.flatSize - 1)
-						throw new OmugiException("Too many values read: table size == " + result.flatSize);
-					result.data[n++] = sb.toString().trim();
-					sb = new StringBuilder();
-				} else
-					sb.append(c);
-			}
-		}
-		result.data[n++] = sb.toString().trim();
-//		int i = 0;
-//		while (ss.indexOf(isep[TABLEix]) > 0) {
-//			s = ss.substring(0, ss.indexOf(isep[TABLEix]));
-//			ss = ss.substring(ss.indexOf(isep[TABLEix]) + 1);
-//			result.data[i] = s;
-//			i++;
-//		}
-//		result.data[i] = ss.trim();
 		return result;
 	}
 
@@ -215,6 +169,38 @@ public class StringTable extends TableAdapter {
 		return sb.toString().replaceFirst(",", "");
 	}
 
+	public static StringTable valueOf(String value, char[][] bdel, char[] isep) {
+		value = value.trim();
+		if ((value == null) || value.isBlank() || value.isEmpty())
+			return null;
+		String ss = TableAdapter.getBlockContent(value, bdel[TABLEix]);
+		String d = ss.substring(0, ss.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
+		d = d.trim();
+		StringTable result = new StringTable(readDimensioners(d, bdel[DIMix], isep[DIMix]));
+		ss = ss.substring(ss.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
+		StringBuilder sb = new StringBuilder();
+		int n = 0;
+		boolean inquote = false;
+		for (int i = 0; i < ss.length(); i++) {
+			char c = ss.charAt(i);
+			if (c == QUOTE)
+				inquote = !inquote;
+			else if (inquote)
+				sb.append(c);
+			else if (!inquote) {
+				if (c == isep[TABLEix]) {
+					if (n == result.flatSize - 1)
+						throw new OmugiException("Too many values read: table size == " + result.flatSize);
+					result.data[n++] = sb.toString().trim();
+					sb = new StringBuilder();
+				} else
+					sb.append(c);
+			}
+		}
+		result.data[n++] = sb.toString().trim();
+		return result;
+	}
+
 	@Override
 	public String toSaveableString(char[][] bdel, char[] isep) {
 		StringBuilder sb = new StringBuilder(1024);
@@ -230,4 +216,20 @@ public class StringTable extends TableAdapter {
 		return sb.toString();
 	}
 
+	
+	public static void main(String[] args) {
+		String s = "([1]\"hel =) _()*^* lo\")";
+		char[][] bdel = new char[2][2];
+		char[] isep = new char[2];
+		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
+		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
+		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
+		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
+
+		StringTable t = StringTable.valueOf(s,bdel,isep);
+		
+		String ss = t.toSaveableString(bdel,isep);
+		
+		System.out.println(ss);
+	}
 }

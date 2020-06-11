@@ -248,7 +248,9 @@ public abstract class TableAdapter implements Table {
 			throw new OmugiException(sb.toString());
 		}
 		else
-			return value.substring(1, value.indexOf(bdel[BLOCK_CLOSE]));
+//			return value.substring(1, value.indexOf(bdel[BLOCK_CLOSE]));
+			// therefore the last char MUST be a BLOCK_CLOSE
+		return value.substring(1, value.length()-1);
 	}
 	
 	// utility for descendants, to read content from aString in valueOf()
