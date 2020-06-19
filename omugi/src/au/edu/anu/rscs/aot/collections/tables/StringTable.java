@@ -41,7 +41,7 @@ import fr.ens.biologie.generic.DataContainer;
 /** initial code by Shayne */
 public class StringTable extends TableAdapter {
 
-	private static char QUOTE = '"';
+	//private static char QUOTE = '"';
 
 	protected String[] data;
 
@@ -183,7 +183,7 @@ public class StringTable extends TableAdapter {
 		boolean inquote = false;
 		for (int i = 0; i < ss.length(); i++) {
 			char c = ss.charAt(i);
-			if (c == QUOTE)
+			if (c == DOUBLEQUOTE)
 				inquote = !inquote;
 			else if (inquote)
 				sb.append(c);

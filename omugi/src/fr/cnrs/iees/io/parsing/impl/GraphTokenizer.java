@@ -153,7 +153,7 @@ public class GraphTokenizer extends LineTokenizer {
 		String[] res = new String[result.size()];
 		return result.toArray(res);
 	}
-	
+	/**All calls to split(...) must NOT split within quote pairs ("")*/
 	private void processLine(String line) {
 		String[] words = line.trim().split(COMMENT.prefix());
 		if (words.length>1) { // a comment was found

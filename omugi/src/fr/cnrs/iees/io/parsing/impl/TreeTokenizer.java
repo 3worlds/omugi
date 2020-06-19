@@ -208,6 +208,7 @@ public class TreeTokenizer extends LineTokenizer {
 		return result;
 	}
 
+	/**All calls to split(...) must NOT split within quote pairs ("" or '')*/
 	private void processLine(String line,boolean resetIndent) {
 		String[] words = line.split(COMMENT.prefix()); // means '//'
 		if (words.length > 1) { 
