@@ -44,6 +44,8 @@ public enum TreeGraphTokens {
 	
 	// token type	prefix		content type	suffix
 	COMMENT			("//",		"String",		"eol"),
+	STRING			(String.valueOf(SaveableAsText.DOUBLE_QUOTES[SaveableAsText.STRING_OPEN]),
+								"String",		String.valueOf(SaveableAsText.DOUBLE_QUOTES[SaveableAsText.STRING_CLOSE])),
 	PROPERTY_NAME	("",		"String",		String.valueOf(SaveableAsText.EQUAL)),
 	PROPERTY_VALUE	(String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_OPEN]),
 								"any",			String.valueOf(SaveableAsText.BRACKETS[SaveableAsText.BLOCK_CLOSE])),
@@ -100,7 +102,7 @@ public enum TreeGraphTokens {
 	 * @return the list of valid tokens for trees
 	 */
 	public static EnumSet<TreeGraphTokens> treeTokens() {
-		return EnumSet.of(COMMENT,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_TYPE,LABEL,NAME,LEVEL,IMPORT_RESOURCE,IMPORT_FILE);
+		return EnumSet.of(STRING,COMMENT,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_TYPE,LABEL,NAME,LEVEL,IMPORT_RESOURCE,IMPORT_FILE);
 	}
 	
 	/**
@@ -108,7 +110,7 @@ public enum TreeGraphTokens {
 	 * @return the list of valid tokens for graphs
 	 */
 	public static EnumSet<TreeGraphTokens> graphTokens() {
-		return EnumSet.of(COMMENT,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_TYPE,LABEL,NAME,NODE_REF,IMPORT_RESOURCE,IMPORT_FILE);
+		return EnumSet.of(STRING,COMMENT,PROPERTY_NAME,PROPERTY_VALUE,PROPERTY_TYPE,LABEL,NAME,NODE_REF,IMPORT_RESOURCE,IMPORT_FILE);
 	}
 
 }

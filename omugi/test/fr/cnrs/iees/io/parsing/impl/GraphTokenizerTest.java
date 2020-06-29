@@ -34,8 +34,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.io.parsing.impl.GraphTokenizer;
-
 class GraphTokenizerTest {
 
 	String[] test = {"graph // this is a comment\n",
@@ -113,7 +111,7 @@ class GraphTokenizerTest {
 			"Qui tonne et qui roule,\n" + 
 			"Et tantôt s'écroule,\n" + 
 			"Et tantôt grandit,"};
-
+	
 	@Test
 	void testTokenize() {
 		GraphTokenizer tk = new GraphTokenizer(test);
@@ -268,6 +266,142 @@ class GraphTokenizerTest {
 				"LABEL:appliesTo\n" + 
 				"NAME:\n" + 
 				"NODE_REF:category:animal\n");
+	}
+
+	String[] test3 = {"hasNode timeLineSpec\n",
+			"	isOfClass = String(\"timeline\")\n", 
+			"	hasParent = StringTable(([1]\"dynamics:\"))\n", 
+			"	multiplicity = IntegerRange(\"1..1\")\n", 
+			"	hasProperty scalePropertySpec\n", 
+			"		hasName = String(\"scale\")\n",
+			"		type =  String(\"TimeScaleType\")\n",
+			"		multiplicity = IntegerRange(\"1..1\")\n",
+			"	hasProperty shortestTimeUnitPropertySpec\n", 
+			"		hasName = String(\"shortestTimeUnit\")\n",
+			"		type =  String(\"TimeUnits\")\n",
+			"		multiplicity = IntegerRange(\"1..1\")\n", 
+			"	hasProperty longestTimeUnitPropertySpec\n", 
+			"		hasName = String(\"longestTimeUnit\")\n" ,
+			"		type =  String(\"TimeUnits\")\n",
+			"		multiplicity = IntegerRange(\"1..1\")\n", 
+			"	hasProperty timeOriginPropertySpec\n", 
+			"		hasName = String(\"timeOrigin\")\n", 
+			"		type = String(\"DateTimeType\")\n", 
+			"		multiplicity = IntegerRange(\"1..1\")\n", 
+			"	mustSatisfyQuery shortestTimeUnitTimeUnitValidityQuery\n", 
+			"		className = String(\"au.edu.anu.twcore.archetype.tw.TimeUnitValidityQuery\")\n", 
+			"		values = StringTable(([2]\"shortestTimeUnit\",\"scale\"))\n",
+			"	mustSatisfyQuery longestTimeUnitTimeUnitValidityQuery\n" ,
+			"		className = String(\"au.edu.anu.twcore.archetype.tw.TimeUnitValidityQuery\")\n", 
+			"		values = StringTable(([2]\"longestTimeUnit\",\"scale\"))\n",
+			"	mustSatisfyQuery TimeIntervalValidityQuery\n",
+			"		className = String(\"au.edu.anu.twcore.archetype.tw.TimeIntervalValidityQuery\")\n", 
+			"		values = StringTable(([3]shortestTimeUnit,\"longestTimeUnit\",\"scale\"))\n",
+			""
+	};
+
+	@Test
+	void testTokenize3() {
+		GraphTokenizer tk = new GraphTokenizer(test3);
+		tk.tokenize();
+//		System.out.println(tk.toString());
+		assertEquals(tk.toString(),"LABEL:hasNode\n" + 
+				"NAME:timeLineSpec\n" + 
+				"PROPERTY_NAME:isOfClass\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:timeline\n" + 
+				"PROPERTY_NAME:hasParent\n" + 
+				"PROPERTY_TYPE:StringTable\n" + 
+				"PROPERTY_VALUE:([1]\"dynamics:\")\n" + 
+				"PROPERTY_NAME:multiplicity\n" + 
+				"PROPERTY_TYPE:IntegerRange\n" + 
+				"PROPERTY_VALUE:1..1\n" + 
+				"LABEL:hasProperty\n" + 
+				"NAME:scalePropertySpec\n" + 
+				"PROPERTY_NAME:hasName\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:scale\n" + 
+				"PROPERTY_NAME:type\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:TimeScaleType\n" + 
+				"PROPERTY_NAME:multiplicity\n" + 
+				"PROPERTY_TYPE:IntegerRange\n" + 
+				"PROPERTY_VALUE:1..1\n" + 
+				"LABEL:hasProperty\n" + 
+				"NAME:shortestTimeUnitPropertySpec\n" + 
+				"PROPERTY_NAME:hasName\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:shortestTimeUnit\n" + 
+				"PROPERTY_NAME:type\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:TimeUnits\n" + 
+				"PROPERTY_NAME:multiplicity\n" + 
+				"PROPERTY_TYPE:IntegerRange\n" + 
+				"PROPERTY_VALUE:1..1\n" + 
+				"LABEL:hasProperty\n" + 
+				"NAME:longestTimeUnitPropertySpec\n" + 
+				"PROPERTY_NAME:hasName\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:longestTimeUnit\n" + 
+				"PROPERTY_NAME:type\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:TimeUnits\n" + 
+				"PROPERTY_NAME:multiplicity\n" + 
+				"PROPERTY_TYPE:IntegerRange\n" + 
+				"PROPERTY_VALUE:1..1\n" + 
+				"LABEL:hasProperty\n" + 
+				"NAME:timeOriginPropertySpec\n" + 
+				"PROPERTY_NAME:hasName\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:timeOrigin\n" + 
+				"PROPERTY_NAME:type\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:DateTimeType\n" + 
+				"PROPERTY_NAME:multiplicity\n" + 
+				"PROPERTY_TYPE:IntegerRange\n" + 
+				"PROPERTY_VALUE:1..1\n" + 
+				"LABEL:mustSatisfyQuery\n" + 
+				"NAME:shortestTimeUnitTimeUnitValidityQuery\n" + 
+				"PROPERTY_NAME:className\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:au.edu.anu.twcore.archetype.tw.TimeUnitValidityQuery\n" + 
+				"PROPERTY_NAME:values\n" + 
+				"PROPERTY_TYPE:StringTable\n" + 
+				"PROPERTY_VALUE:([2]\"shortestTimeUnit\",\"scale\")\n" + 
+				"LABEL:mustSatisfyQuery\n" + 
+				"NAME:longestTimeUnitTimeUnitValidityQuery\n" + 
+				"PROPERTY_NAME:className\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:au.edu.anu.twcore.archetype.tw.TimeUnitValidityQuery\n" + 
+				"PROPERTY_NAME:values\n" + 
+				"PROPERTY_TYPE:StringTable\n" + 
+				"PROPERTY_VALUE:([2]\"longestTimeUnit\",\"scale\")\n" + 
+				"LABEL:mustSatisfyQuery\n" + 
+				"NAME:TimeIntervalValidityQuery\n" + 
+				"PROPERTY_NAME:className\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:au.edu.anu.twcore.archetype.tw.TimeIntervalValidityQuery\n" + 
+				"PROPERTY_NAME:values\n" + 
+				"PROPERTY_TYPE:StringTable\n" + 
+				"PROPERTY_VALUE:([3]shortestTimeUnit,\"longestTimeUnit\",\"scale\")\n" + 
+				"\n" + 
+				"");
+	}
+
+	
+	String[] test4 = {"node \"this is a stupid node\"  \n",
+			"	prop = String(\"He said: \"please stop saying that\". Well...\")",
+			"	[system:entity] belongsTo \"random name\" [category:animal]",
+			""
+	};
+
+
+	@Test
+	void testTokenize4() {
+		GraphTokenizer tk = new GraphTokenizer(test4);
+		tk.tokenize();
+		System.out.println(tk.toString());
+//		assertEquals(tk.toString(),"");
 	}
 	
 }

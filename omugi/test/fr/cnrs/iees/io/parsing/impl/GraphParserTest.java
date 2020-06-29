@@ -35,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.io.parsing.impl.GraphParser;
-import fr.cnrs.iees.io.parsing.impl.GraphTokenizer;
 
 class GraphParserTest {
 
@@ -53,7 +51,7 @@ class GraphParserTest {
 			"label2 name2\n" , 
 			"label1 name3\n" , 
 			"\n" ,
-			"[label1:name1] label4 name1 [label2:name2]\n" , 
+			"[label1:name1] label4 \"name1\" [label2:name2]\n" , 
 			"	[ label1:name1] label4 name2	 [label2:name2 ]\n" , 
 			"[ label2:name2 ] label4 name1   [label1:name3]\n" ,
 			"label2 name5\n" ,

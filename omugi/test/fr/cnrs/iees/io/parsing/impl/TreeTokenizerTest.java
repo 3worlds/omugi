@@ -113,4 +113,23 @@ class TreeTokenizerTest {
 				"4 PROPERTY_VALUE:12\n");
 	}
 
+	String[] test2 = {"	//------- specific to createOtherDecision\n", 
+			"	// do we want to keep a parent link between offspring and parent?\n", 
+			"	hasProperty relateToFunctionKeepLinkPropertySpec\n",
+			"		hasName = String(\"relateToProduct\")\n",
+			"		type = String(\"Boolean\")\n",
+			"		multiplicity = IntegerRange(\"0..1\")\n", 
+			"	mustSatisfyQuery FunctionTypePropertySpecQuery\n", 
+			"		className = String(\"au.edu.anu.twcore.archetype.tw.RequirePropertyQuery\")\n", 
+			"		conditions = StringTable(([3]\"relateToProduct\",\"type\",\"CreateOtherDecision\"))\n" 
+	};
+	
+	@Test
+	void testTokenize2() {
+		TreeTokenizer tk = new TreeTokenizer(test2);
+		tk.tokenize();
+		System.out.println(tk.toString());
+//		assertEquals(tk.toString(),"0 COMMENT: this is a STUPID comment\n" );
+	}
+	
 }

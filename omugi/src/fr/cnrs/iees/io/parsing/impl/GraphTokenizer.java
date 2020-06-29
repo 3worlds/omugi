@@ -180,12 +180,22 @@ public class GraphTokenizer extends LineTokenizer {
 		words = line.trim().split("\\(");
 		if (words.length>1)  { // a property type (and value) was found (but it may contain more '(')
 			if (line.trim().endsWith(PROPERTY_VALUE.suffix())) {
-				tokenlist.add(new graphToken(PROPERTY_TYPE,words[0].trim().replace("\"","")));
+				String t = words[0].trim().replace("\"","");
+				tokenlist.add(new graphToken(PROPERTY_TYPE,t));
+				// remove the brackets around the type (there may be more brackets inside)
 				String s = line.trim()
-					.substring(line.trim().indexOf('(')+1, line.trim().length()-1)
-					.replace("\"","");
-//				tokenlist.add(new token(PROPERTY_VALUE,words[1].substring(0,words[1].indexOf(PROPERTY_VALUE.suffix())).trim()));
-				tokenlist.add(new graphToken(PROPERTY_VALUE,s.replace("\"","")));
+					.substring(line.trim().indexOf('(')+1, line.trim().length()-1);
+				// special cases: unquoting for String, StringTable, etc. may be different
+				if (t.equals("String")) { // preserve inner quotes if any
+					if (s.trim().startsWith(STRING.prefix()) && (s.trim().endsWith(STRING.suffix())))
+						s =  s.trim().substring(1, s.trim().length()-1);
+				}
+				else if (t.equals("StringTable")) {  // keep all quotes to pass to valueOf()
+					// do nothing
+				}
+				else // remove all quotes 
+					s = s.replace("\"","");
+				tokenlist.add(new graphToken(PROPERTY_VALUE,s));
 				return;
 			}
 			else
@@ -240,7 +250,10 @@ public class GraphTokenizer extends LineTokenizer {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (graphToken t:tokenlist)
-			sb.append(t.toString()).append('\n');
+			if (t.type==STRING)
+				sb.append('[').append(t.toString()).append(']');
+			else
+				sb.append(t.toString()).append('\n');
 		return sb.toString();
 	}
 

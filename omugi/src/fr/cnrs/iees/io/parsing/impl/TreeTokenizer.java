@@ -251,12 +251,20 @@ public class TreeTokenizer extends LineTokenizer {
 		words = line.trim().split("\\(");
 		if (words.length > 1) { // a property type (and value) was found (but it may contain more '(')
 			if (line.trim().endsWith(PROPERTY_VALUE.suffix())) {
-				tokenlist.add(new treeToken(PROPERTY_TYPE, words[0].trim().replace("\"",""), ctDepth));
+				String t = words[0].trim().replace("\"","");
+				tokenlist.add(new treeToken(PROPERTY_TYPE, t, ctDepth));
 				String s = line.trim()
-					.substring(line.trim().indexOf('(') + 1, line.trim().length() - 1)
-					.replace("\"","");
-				// tokenlist.add(new
-				// token(PROPERTY_VALUE,words[1].substring(0,words[1].indexOf(PROPERTY_VALUE.suffix())).trim()));
+					.substring(line.trim().indexOf('(') + 1, line.trim().length() - 1);
+				// special cases: unquoting for String, StringTable, etc. may be different
+				if (t.equals("String")) { // preserve inner quotes if any
+					if (s.trim().startsWith(STRING.prefix()) && (s.trim().endsWith(STRING.suffix())))
+						s =  s.trim().substring(1, s.trim().length()-1);
+				}
+				else if (t.equals("StringTable")) {  // keep all quotes to pass to valueOf()
+					// do nothing
+				}
+				else // remove all quotes 
+					s = s.replace("\"","");
 				tokenlist.add(new treeToken(PROPERTY_VALUE, s, ctDepth));
 				return;
 			} else
