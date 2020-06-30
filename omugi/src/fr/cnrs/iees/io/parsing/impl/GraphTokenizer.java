@@ -38,6 +38,7 @@ import java.util.List;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
+import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 
 /**
  * <p>A crude tokenizer for graphs.</p>
@@ -53,7 +54,7 @@ import fr.cnrs.iees.io.parsing.LineTokenizer;
  * property = prop_name "=" prop_type "(" prop_value ")"
  * prop_name = TEXT 
  * prop_type = JAVACLASS
- * prop_type = LOADABLETEXT
+ * prop_value = LOADABLETEXT
  * edge = "[" node_id "]" edge_label edge_name "[" node_id "]" 
  * edge_label = WORD
  * edge_name = TEXT
@@ -186,11 +187,11 @@ public class GraphTokenizer extends LineTokenizer {
 				String s = line.trim()
 					.substring(line.trim().indexOf('(')+1, line.trim().length()-1);
 				// special cases: unquoting for String, StringTable, etc. may be different
-				if (t.equals("String")) { // preserve inner quotes if any
+				if (ValidPropertyTypes.getType(t).equals("String")) { // preserve inner quotes if any
 					if (s.trim().startsWith(STRING.prefix()) && (s.trim().endsWith(STRING.suffix())))
 						s =  s.trim().substring(1, s.trim().length()-1);
 				}
-				else if (t.equals("StringTable")) {  // keep all quotes to pass to valueOf()
+				else if (ValidPropertyTypes.getType(t).equals("StringTable")) {  // keep all quotes to pass to valueOf()
 					// do nothing
 				}
 				else // remove all quotes 
