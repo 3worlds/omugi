@@ -132,4 +132,15 @@ class TreeTokenizerTest {
 //		assertEquals(tk.toString(),"0 COMMENT: this is a STUPID comment\n" );
 	}
 	
+	
+	String[] test3 = {"conditions = StringTable(([2]\"r=3.7\",\"x[0] = 0.1\"))\n"};
+	
+	@Test
+	void testTokenize3() {
+		TreeTokenizer tk = new TreeTokenizer(test3);
+		tk.tokenize();
+		System.out.println(tk.toString());
+//		assertEquals(tk.toString(),"0 COMMENT: this is a STUPID comment\n" );
+	}
+	
 }

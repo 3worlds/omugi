@@ -40,10 +40,11 @@ import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
+import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
- * <p>
+ * <p>private
  * A crude tokenizer for trees.
  * </p>
  * <p>
@@ -61,7 +62,7 @@ node_name = TEXT
 property = prop_name "=" prop_type "(" prop_value ")"
 prop_name = TEXT 
 prop_type = JAVACLASS
-prop_type = LOADABLETEXT
+prop_value = LOADABLETEXT
  * </pre>
  * <p>
  * where:
@@ -75,7 +76,8 @@ prop_type = LOADABLETEXT
  * method</li>
  * <li>{@code LOADABLETEXT} = any text compatible with the matching valueOf(...)
  * method to instantiate the class</li>
- * </ul>
+ * </ul>			
+
  * <p>
  * Indentation gives the level of a node in the tree hierarchy: the root node
  * must have zero indentation; increase of indentation of one tab indicates the
@@ -105,7 +107,8 @@ node A
  * <p>
  * Little example of a valid tree text file:
  * </p>
- * 
+ * 			
+
  * <pre>
  * =====================
 tree // this is a STUPID comment 
@@ -129,7 +132,8 @@ label1 node1
 		label10 node10
 	// This is one more comment 
 		label11 node11
-			label12 node12 
+			label12 node12 			
+
 			truc=String("machin") 
 				plop = Integer(12)
  =====================
@@ -237,7 +241,13 @@ public class TreeTokenizer extends LineTokenizer {
 				maxDepth = Math.max(maxDepth, ctDepth);
 			}
 		// get other tokens - remember: no edges in this format
-		words = line.trim().split(PROPERTY_NAME.suffix()); // means '='
+		// FLAW HERE: only the first '=' must be considered - others may be in a string
+//		words = line.trim().split(PROPERTY_NAME.suffix()); // means '='
+		if (line.contains(PROPERTY_NAME.suffix())) {
+			words = new String[2];
+			words[0] = line.substring(0,line.indexOf(PROPERTY_NAME.suffix())).trim();
+			words[1] = line.substring(line.indexOf(PROPERTY_NAME.suffix())+1).trim();
+		}
 		if (words.length > 1) { // a property name was found
 			if (words.length == 2) {
 				tokenlist.add(new treeToken(PROPERTY_NAME, words[0].trim(), ctDepth));
@@ -256,11 +266,11 @@ public class TreeTokenizer extends LineTokenizer {
 				String s = line.trim()
 					.substring(line.trim().indexOf('(') + 1, line.trim().length() - 1);
 				// special cases: unquoting for String, StringTable, etc. may be different
-				if (t.equals("String")) { // preserve inner quotes if any
+				if (ValidPropertyTypes.getType(t).equals("String")) { // preserve inner quotes if any
 					if (s.trim().startsWith(STRING.prefix()) && (s.trim().endsWith(STRING.suffix())))
 						s =  s.trim().substring(1, s.trim().length()-1);
 				}
-				else if (t.equals("StringTable")) {  // keep all quotes to pass to valueOf()
+				else if (ValidPropertyTypes.getType(t).equals("StringTable")) {  // keep all quotes to pass to valueOf()
 					// do nothing
 				}
 				else // remove all quotes 
