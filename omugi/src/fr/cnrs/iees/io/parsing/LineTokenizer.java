@@ -141,6 +141,16 @@ public abstract class LineTokenizer implements Tokenizer {
 			}
 		return result;
 	}
+	
+	private String unquote(String s) {
+		String ss = s.trim();
+		int pref = STRING.prefix().length();
+		int suf = STRING.suffix().length();
+		if (ss.startsWith(STRING.prefix()) && ss.endsWith(STRING.suffix())) {
+			return ss.substring(pref,ss.length()-suf);
+		}
+		else return ss;
+	}
 
 //	// extract quoted strings as whole words
 //	private String[] getWord(String textLine) {
@@ -183,11 +193,11 @@ public abstract class LineTokenizer implements Tokenizer {
 			result = getToken(PROPERTY_TYPE.prefix(),PROPERTY_TYPE.suffix(),propertyLine);
 			tokenlist.add(makeToken(PROPERTY_TYPE,result[1].trim().replace("\"","")));
 			if (result[2].trim().endsWith(PROPERTY_VALUE.suffix()))
-				tokenlist.add(makeToken(PROPERTY_VALUE,result[2].substring(0,result[2].trim().length()-1)));
+				tokenlist.add(makeToken(PROPERTY_VALUE,unquote(result[2].substring(0,result[2].trim().length()-1))));
 			else { // there must be a comment after the last ')'
 				result = getToken(COMMENT.prefix(),result[2].trim());
 				if (result.length==3) {
-					tokenlist.add(makeToken(PROPERTY_VALUE,result[1].trim()));
+					tokenlist.add(makeToken(PROPERTY_VALUE,unquote(result[1].trim())));
 //					tokenlist.add(makeToken(COMMENT,result[2])); // actually we dont care about comments
 				}
 				else
@@ -221,9 +231,9 @@ public abstract class LineTokenizer implements Tokenizer {
 	protected boolean tokenizeEdge(String edgeLine) {
 		String[] result = getToken(NODE_REF.prefix(),NODE_REF.suffix(),edgeLine);
 		if (result.length==3) {
-			tokenlist.add(makeToken(NODE_REF,result[1].trim().replace("\"","")));
-			tokenizeNode(result[2]);
+			tokenlist.add(makeToken(NODE_REF,result[1].trim().replace("\"","")));			
 			String[] res = getToken(NODE_REF.prefix(),NODE_REF.suffix(),result[2]);
+			tokenizeNode(res[0]);
 			tokenlist.add(makeToken(NODE_REF,res[1].trim().replace("\"","")));
 			// anything else is comment: ignore it.
 			return true;

@@ -32,16 +32,11 @@ package fr.cnrs.iees.io.parsing.impl;
 
 import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.io.GraphImporter;
 import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
-import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
-import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * <p>private
@@ -152,9 +147,10 @@ label1 node1
  *
  */
 // Tested OK with version 0.0.4 on 20/12/2018
+// Tested OK with version 0.2.16 on 1/7/2020
 public class TreeTokenizer extends LineTokenizer {
 
-	private static Logger log = Logging.getLogger(TreeTokenizer.class);
+//	private static Logger log = Logging.getLogger(TreeTokenizer.class);
 
 	// ----------------------------------------------------
 	public class treeToken extends token {
@@ -175,8 +171,8 @@ public class TreeTokenizer extends LineTokenizer {
 	}
 	// ----------------------------------------------------
 
-	private List<treeToken> tokenlist = new ArrayList<>(1000);
-	private treeToken cttoken = null;
+//	private List<treeToken> tokenlist = new ArrayList<>(1000);
+//	private treeToken cttoken = null;
 	private int tokenIndex = -1;
 	private int ctDepth = 0;
 	private int maxDepth = 0;
@@ -192,6 +188,10 @@ public class TreeTokenizer extends LineTokenizer {
 	public TreeTokenizer(List<String> lines) {
 		super(GraphImporter.preprocess( lines));
 	}
+	
+	protected token makeToken(TreeGraphTokens type, String value) {
+		return new treeToken(type,value,ctDepth);
+	}
 
 	public boolean hasNext() {
 		if (tokenlist.size() > 0)
@@ -205,32 +205,113 @@ public class TreeTokenizer extends LineTokenizer {
 		if (tokenIndex < tokenlist.size()) {
 			if (tokenIndex == -1)
 				tokenIndex = 0;
-			result = tokenlist.get(tokenIndex);
+			result = (treeToken) tokenlist.get(tokenIndex);
 			tokenIndex++;
 		} else
 			result = null;
 		return result;
 	}
 
-	/**All calls to split(...) must NOT split within quote pairs ("" or '')*/
-	private void processLine(String line,boolean resetIndent) {
-		String[] words = line.split(COMMENT.prefix()); // means '//'
-		if (words.length > 1) { 
-			// COMMENT found
-			// process the beginning of the line
-			processLine(words[0],false);// recursive calls to parts of a line assumes depth will not be reset to zero
-			// end of the line is comment text that may include more '//'s
-			cttoken = new treeToken(COMMENT, "", 0);
-			for (int i = 1; i < words.length; i++)
-				cttoken.value += words[i];
-			tokenlist.add(cttoken);
-			cttoken = null;
-			return;
-		}
+//	/**All calls to split(...) must NOT split within quote pairs ("" or '')*/
+//	private void processLine(String line,boolean resetIndent) {
+//		String[] words = line.split(COMMENT.prefix()); // means '//'
+//		if (words.length > 1) { 
+//			// COMMENT found
+//			// process the beginning of the line
+//			processLine(words[0],false);// recursive calls to parts of a line assumes depth will not be reset to zero
+//			// end of the line is comment text that may include more '//'s
+//			cttoken = new treeToken(COMMENT, "", 0);
+//			for (int i = 1; i < words.length; i++)
+//				cttoken.value += words[i];
+//			tokenlist.add(cttoken);
+//			cttoken = null;
+//			return;
+//		}
+//		// analyse indentation
+//		int indentLevel = 0;
+//		if (line.trim().length() > 0)
+//			if (line.startsWith(LEVEL.prefix()) || resetIndent) {
+//				char indentChar = LEVEL.prefix().charAt(0); // means '\t'
+//				char c = line.charAt(0);
+//				while ((c == indentChar) & (indentLevel < line.length() - 1)) {
+//					indentLevel++;
+//					c = line.charAt(indentLevel);
+//				}
+//				ctDepth = indentLevel;
+//				maxDepth = Math.max(maxDepth, ctDepth);
+//			}
+//		// get other tokens - remember: no edges in this format
+//		// FLAW HERE: only the first '=' must be considered - others may be in a string
+////		words = line.trim().split(PROPERTY_NAME.suffix()); // means '='
+//		if (line.contains(PROPERTY_NAME.suffix())) {
+//			words = new String[2];
+//			words[0] = line.substring(0,line.indexOf(PROPERTY_NAME.suffix())).trim();
+//			words[1] = line.substring(line.indexOf(PROPERTY_NAME.suffix())+1).trim();
+//		}
+//		if (words.length > 1) { // a property name was found
+//			if (words.length == 2) {
+//				tokenlist.add(new treeToken(PROPERTY_NAME, words[0].trim(), ctDepth));
+//				processLine(words[1],false);// This is nasty: indent analysis must be ignored but if a node at the same
+//										// level???
+//				// It would be better to have a method to process property type and value specifically
+//				return;
+//			} else
+//				log.severe("malformed property format: " + String.join(",", words));
+//		}
+//		words = line.trim().split("\\(");
+//		if (words.length > 1) { // a property type (and value) was found (but it may contain more '(')
+//			if (line.trim().endsWith(PROPERTY_VALUE.suffix())) {
+//				String t = words[0].trim().replace("\"","");
+//				tokenlist.add(new treeToken(PROPERTY_TYPE, t, ctDepth));
+//				String s = line.trim()
+//					.substring(line.trim().indexOf('(') + 1, line.trim().length() - 1);
+//				// special cases: unquoting for String, StringTable, etc. may be different
+//				if (ValidPropertyTypes.getType(t).equals("String")) { // preserve inner quotes if any
+//					if (s.trim().startsWith(STRING.prefix()) && (s.trim().endsWith(STRING.suffix())))
+//						s =  s.trim().substring(1, s.trim().length()-1);
+//				}
+//				else if (ValidPropertyTypes.getType(t).equals("StringTable")) {  // keep all quotes to pass to valueOf()
+//					// do nothing
+//				}
+//				else // remove all quotes 
+//					s = s.replace("\"","");
+//				tokenlist.add(new treeToken(PROPERTY_VALUE, s, ctDepth));
+//				return;
+//			} else
+//				log.severe("malformed property format: " + String.join(",", words));
+//		}
+//		words = line.trim().split("\\s"); // matches any whitespace character
+//
+//		// now need to check for importing graphs from resource or file
+//		if (words.length > 1) {
+//			if (words[0].equals(IMPORT_RESOURCE.prefix()))
+//				tokenlist.add(new treeToken(IMPORT_RESOURCE, words[1].trim(), ctDepth));
+//			else if (words[0].equals(IMPORT_FILE.prefix()))
+//				tokenlist.add(new treeToken(IMPORT_FILE, words[1].trim(), ctDepth));
+//			else {
+//				tokenlist.add(new treeToken(LABEL, words[0].trim(), ctDepth)); // first word is label
+//				cttoken = new treeToken(NAME, "", ctDepth);
+//				for (int i = 1; i < words.length; i++) { // anything else is name
+//					cttoken.value += words[i].replace("\"","") + " ";
+//				}
+//				cttoken.value = cttoken.value.trim();
+//				tokenlist.add(cttoken);
+//			}
+//			return;
+//		} else if (words.length == 1) // there is only one label in this case
+//			if (!words[0].trim().isEmpty())
+//				if (!isFileHeader(words[0].trim())) { // remove file header from the possible labels
+//					tokenlist.add(new treeToken(LABEL, words[0].trim(), ctDepth));
+//					tokenlist.add(new treeToken(NAME, "", ctDepth));
+//					return;
+//				}
+//	}
+
+	private void processLine(String line) {
 		// analyse indentation
 		int indentLevel = 0;
 		if (line.trim().length() > 0)
-			if (line.startsWith(LEVEL.prefix()) || resetIndent) {
+			if (line.startsWith(LEVEL.prefix())) {
 				char indentChar = LEVEL.prefix().charAt(0); // means '\t'
 				char c = line.charAt(0);
 				while ((c == indentChar) & (indentLevel < line.length() - 1)) {
@@ -239,74 +320,17 @@ public class TreeTokenizer extends LineTokenizer {
 				}
 				ctDepth = indentLevel;
 				maxDepth = Math.max(maxDepth, ctDepth);
-			}
-		// get other tokens - remember: no edges in this format
-		// FLAW HERE: only the first '=' must be considered - others may be in a string
-//		words = line.trim().split(PROPERTY_NAME.suffix()); // means '='
-		if (line.contains(PROPERTY_NAME.suffix())) {
-			words = new String[2];
-			words[0] = line.substring(0,line.indexOf(PROPERTY_NAME.suffix())).trim();
-			words[1] = line.substring(line.indexOf(PROPERTY_NAME.suffix())+1).trim();
 		}
-		if (words.length > 1) { // a property name was found
-			if (words.length == 2) {
-				tokenlist.add(new treeToken(PROPERTY_NAME, words[0].trim(), ctDepth));
-				processLine(words[1],false);// This is nasty: indent analysis must be ignored but if a node at the same
-										// level???
-				// It would be better to have a method to process property type and value specifically
-				return;
-			} else
-				log.severe("malformed property format: " + String.join(",", words));
-		}
-		words = line.trim().split("\\(");
-		if (words.length > 1) { // a property type (and value) was found (but it may contain more '(')
-			if (line.trim().endsWith(PROPERTY_VALUE.suffix())) {
-				String t = words[0].trim().replace("\"","");
-				tokenlist.add(new treeToken(PROPERTY_TYPE, t, ctDepth));
-				String s = line.trim()
-					.substring(line.trim().indexOf('(') + 1, line.trim().length() - 1);
-				// special cases: unquoting for String, StringTable, etc. may be different
-				if (ValidPropertyTypes.getType(t).equals("String")) { // preserve inner quotes if any
-					if (s.trim().startsWith(STRING.prefix()) && (s.trim().endsWith(STRING.suffix())))
-						s =  s.trim().substring(1, s.trim().length()-1);
-				}
-				else if (ValidPropertyTypes.getType(t).equals("StringTable")) {  // keep all quotes to pass to valueOf()
-					// do nothing
-				}
-				else // remove all quotes 
-					s = s.replace("\"","");
-				tokenlist.add(new treeToken(PROPERTY_VALUE, s, ctDepth));
-				return;
-			} else
-				log.severe("malformed property format: " + String.join(",", words));
-		}
-		words = line.trim().split("\\s"); // matches any whitespace character
-
-		// now need to check for importing graphs from resource or file
-		if (words.length > 1) {
-			if (words[0].equals(IMPORT_RESOURCE.prefix()))
-				tokenlist.add(new treeToken(IMPORT_RESOURCE, words[1].trim(), ctDepth));
-			else if (words[0].equals(IMPORT_FILE.prefix()))
-				tokenlist.add(new treeToken(IMPORT_FILE, words[1].trim(), ctDepth));
-			else {
-				tokenlist.add(new treeToken(LABEL, words[0].trim(), ctDepth)); // first word is label
-				cttoken = new treeToken(NAME, "", ctDepth);
-				for (int i = 1; i < words.length; i++) { // anything else is name
-					cttoken.value += words[i].replace("\"","") + " ";
-				}
-				cttoken.value = cttoken.value.trim();
-				tokenlist.add(cttoken);
-			}
-			return;
-		} else if (words.length == 1) // there is only one label in this case
-			if (!words[0].trim().isEmpty())
-				if (!isFileHeader(words[0].trim())) { // remove file header from the possible labels
-					tokenlist.add(new treeToken(LABEL, words[0].trim(), ctDepth));
-					tokenlist.add(new treeToken(NAME, "", ctDepth));
-					return;
-				}
+		
+		if (isPropertyLine(line))
+			tokenizeProperty(line);
+		else if (isEdgeLine(line))
+			tokenizeEdge(line);
+		else
+			tokenizeNode(line);
 	}
 
+	
 	public int maxDepth() {
 		return maxDepth;
 	}
@@ -315,14 +339,14 @@ public class TreeTokenizer extends LineTokenizer {
 	public void tokenize() {
 		if (lines != null)
 			for (String line : lines) {
-				processLine(line,true);
+				processLine(line);
 			}
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (treeToken t : tokenlist)
+		for (token t : tokenlist)
 			sb.append(t.toString()).append('\n');
 		return sb.toString();
 	}

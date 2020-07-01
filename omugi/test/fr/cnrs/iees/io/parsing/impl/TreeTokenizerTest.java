@@ -65,11 +65,7 @@ class TreeTokenizerTest {
 		TreeTokenizer tk = new TreeTokenizer(test);
 		tk.tokenize();
 		System.out.println(tk.toString());
-		assertEquals(tk.toString(),"0 COMMENT: this is a STUPID comment\n" + 
-				"\n" + 
-				"0 COMMENT: This is a VERY STUPID comment\n" + 
-				"\n" + 
-				"0 LABEL:label1\n" + 
+		assertEquals(tk.toString(),"0 LABEL:label1\n" + 
 				"0 NAME:node1\n" + 
 				"1 PROPERTY_NAME:prop1\n" + 
 				"1 PROPERTY_TYPE:Integer\n" + 
@@ -98,9 +94,7 @@ class TreeTokenizerTest {
 				"4 LABEL:label9\n" + 
 				"4 NAME:node9\n" + 
 				"2 LABEL:label10\n" + 
-				"2 NAME:node10\n" + 
-				"0 COMMENT: This is one more comment\n" + 
-				"\n" + 
+				"2 NAME:node10\n" +
 				"2 LABEL:label11\n" + 
 				"2 NAME:node11\n" + 
 				"3 LABEL:label12\n" + 
@@ -129,7 +123,26 @@ class TreeTokenizerTest {
 		TreeTokenizer tk = new TreeTokenizer(test2);
 		tk.tokenize();
 		System.out.println(tk.toString());
-//		assertEquals(tk.toString(),"0 COMMENT: this is a STUPID comment\n" );
+		assertEquals(tk.toString(),"1 LABEL:hasProperty\n" + 
+				"1 NAME:relateToFunctionKeepLinkPropertySpec\n" + 
+				"2 PROPERTY_NAME:hasName\n" + 
+				"2 PROPERTY_TYPE:String\n" + 
+				"2 PROPERTY_VALUE:relateToProduct\n" + 
+				"2 PROPERTY_NAME:type\n" + 
+				"2 PROPERTY_TYPE:String\n" + 
+				"2 PROPERTY_VALUE:Boolean\n" + 
+				"2 PROPERTY_NAME:multiplicity\n" + 
+				"2 PROPERTY_TYPE:IntegerRange\n" + 
+				"2 PROPERTY_VALUE:0..1\n" + 
+				"1 LABEL:mustSatisfyQuery\n" + 
+				"1 NAME:FunctionTypePropertySpecQuery\n" + 
+				"2 PROPERTY_NAME:className\n" + 
+				"2 PROPERTY_TYPE:String\n" + 
+				"2 PROPERTY_VALUE:au.edu.anu.twcore.archetype.tw.RequirePropertyQuery\n" + 
+				"2 PROPERTY_NAME:conditions\n" + 
+				"2 PROPERTY_TYPE:StringTable\n" + 
+				"2 PROPERTY_VALUE:([3]\"relateToProduct\",\"type\",\"CreateOtherDecision\")\n" + 
+				"" );
 	}
 	
 	
@@ -140,7 +153,10 @@ class TreeTokenizerTest {
 		TreeTokenizer tk = new TreeTokenizer(test3);
 		tk.tokenize();
 		System.out.println(tk.toString());
-//		assertEquals(tk.toString(),"0 COMMENT: this is a STUPID comment\n" );
+		assertEquals(tk.toString(),"0 PROPERTY_NAME:conditions\n" + 
+				"0 PROPERTY_TYPE:StringTable\n" + 
+				"0 PROPERTY_VALUE:([2]\"r=3.7\",\"x[0] = 0.1\")\n" + 
+				"" );
 	}
 	
 }

@@ -80,11 +80,7 @@ class TreeGraphTokenizerTest {
 		TreeGraphTokenizer tk = new TreeGraphTokenizer(test);
 		tk.tokenize();
 		System.out.println(tk.toString());
-		assertEquals(tk.toString(),"0 COMMENT: saved by AotGraphExporter on Mon Jan 21 11:31:07 CET 2019\n" + 
-				"\n" + 
-				"0 COMMENT: TREE\n" + 
-				"\n" + 
-				"0 LABEL:3Worlds\n" + 
+		assertEquals(tk.toString(),"0 LABEL:3Worlds\n" + 
 				"0 NAME:\n" + 
 				"1 LABEL:ecology\n" + 
 				"1 NAME:my model\n" + 
@@ -147,9 +143,7 @@ class TreeGraphTokenizerTest {
 				"2 LABEL:AOTNode\n" + 
 				"2 NAME:D89EF3043496-000001686FF6BA12-0000\n" + 
 				"1 LABEL:experiment\n" + 
-				"1 NAME:my experiment\n" + 
-				"0 COMMENT: CROSS-LINKS\n" + 
-				"\n" + 
+				"1 NAME:my experiment\n" +
 				"NODE_REF:system:entity\n" + 
 				"LABEL:belongsTo\n" + 
 				"NAME:random name\n" + 

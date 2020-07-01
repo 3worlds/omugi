@@ -90,6 +90,7 @@ import fr.ens.biologie.generic.utils.Logging;
  *
  */
 //Tested OK with version 0.2.1 on 27/5/2019
+//Tested OK with version 0.2.16 on 1/7/2020
 public class TreeParser extends NodeSetParser {
 	
 	private static Logger log = Logging.getLogger(TreeParser.class);

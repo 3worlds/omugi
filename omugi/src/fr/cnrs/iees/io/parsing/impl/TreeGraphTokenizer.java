@@ -34,8 +34,6 @@ import java.util.List;
 
 import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
-import fr.cnrs.iees.io.parsing.impl.GraphTokenizer;
-import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
 
 /**
  * A tokenizer for mixed tree graphs - first uses a tree tokenizer, then a graph tokenizer,
@@ -45,6 +43,7 @@ import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
  *
  */
 //tested OK with version 0.0.5 on 23/1/2019
+//Tested OK with version 0.2.16 on 1/7/2020
 public class TreeGraphTokenizer extends LineTokenizer {
 
 	// the top of the file contains the tree structure

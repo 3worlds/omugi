@@ -78,6 +78,7 @@ import fr.ens.biologie.generic.utils.Logging;
 // Tested OK with version 0.0.10 on 31/1/2019
 // tested OK with version 0.2.0 on 20/5/2019
 // Tested OK with version 0.2.1 on 27/5/2019
+//Tested OK with version 0.2.16 on 1/7/2020
 public class GraphParser extends EdgeAndNodeSetParser {
 	
 	private static Logger log = Logging.getLogger(GraphParser.class);

@@ -117,9 +117,7 @@ class GraphTokenizerTest {
 		GraphTokenizer tk = new GraphTokenizer(test);
 		tk.tokenize();
 //		System.out.println(tk.toString());
-		assertEquals(tk.toString(),"COMMENT: this is a comment\n" + 
-				"COMMENT:this is another comment\n" + 
-				"LABEL:label1\n" + 
+		assertEquals(tk.toString(),"LABEL:label1\n" + 
 				"NAME:name1\n" + 
 				"PROPERTY_NAME:prop1\n" + 
 				"PROPERTY_TYPE:Integer\n" + 
@@ -157,9 +155,7 @@ class GraphTokenizerTest {
 		tk = new GraphTokenizer(testWithErrors);
 		tk.tokenize();
 //		System.out.println(tk.toString());
-		assertEquals(tk.toString(),"COMMENT: this is a comment\n" + 
-				"COMMENT:this is another comment\n" + 
-				"LABEL:label1\n" + 
+		assertEquals(tk.toString(),"LABEL:label1\n" + 
 				"NAME:name1\n" + 
 				"PROPERTY_NAME:prop1\n" + 
 				"PROPERTY_TYPE:Integer\n" + 
@@ -199,7 +195,41 @@ class GraphTokenizerTest {
 		tk.tokenize();
 //		System.out.println(tk.toString());
 		assertEquals(tk.toString(),"LABEL:Murs,\n" + 
-				"NAME:ville, Et port, Asile De mort, Mer grise Où brise La brise, Tout dort.  Dans la plaine Naît un bruit. C'est l'haleine De la nuit. Elle brame Comme une âme Qu'une flamme Toujours suit !  La voix plus haute Semble un grelot. D'un nain qui saute C'est le galop. Il fuit, s'élance, Puis en cadence Sur un pied danse Au bout d'un flot.  La rumeur approche. L'écho la redit. C'est comme la cloche D'un couvent maudit ; Comme un bruit de foule, Qui tonne et qui roule, Et tantôt s'écroule, Et tantôt grandit,\n"); 
+				"NAME:ville,\n" + 
+				"Et port,\n" + 
+				"Asile\n" + 
+				"De mort,\n" + 
+				"Mer grise\n" + 
+				"Où brise\n" + 
+				"La brise,\n" + 
+				"Tout dort.\n" + 
+				"\n" + 
+				"Dans la plaine\n" + 
+				"Naît un bruit.\n" + 
+				"C'est l'haleine\n" + 
+				"De la nuit.\n" + 
+				"Elle brame\n" + 
+				"Comme une âme\n" + 
+				"Qu'une flamme\n" + 
+				"Toujours suit !\n" + 
+				"\n" + 
+				"La voix plus haute\n" + 
+				"Semble un grelot.\n" + 
+				"D'un nain qui saute\n" + 
+				"C'est le galop.\n" + 
+				"Il fuit, s'élance,\n" + 
+				"Puis en cadence\n" + 
+				"Sur un pied danse\n" + 
+				"Au bout d'un flot.\n" + 
+				"\n" + 
+				"La rumeur approche.\n" + 
+				"L'écho la redit.\n" + 
+				"C'est comme la cloche\n" + 
+				"D'un couvent maudit ;\n" + 
+				"Comme un bruit de foule,\n" + 
+				"Qui tonne et qui roule,\n" + 
+				"Et tantôt s'écroule,\n" + 
+				"Et tantôt grandit,\n"); 
 	}
 
 	@Test
@@ -210,9 +240,7 @@ class GraphTokenizerTest {
 		while (tk.hasNext())
 			s = s+tk.getNextToken().toString()+"\n";
 //		System.out.println(s);
-		assertEquals(s,"COMMENT: this is a comment\n" + 
-				"COMMENT:this is another comment\n" + 
-				"LABEL:label1\n" + 
+		assertEquals(s,"LABEL:label1\n" + 
 				"NAME:name1\n" + 
 				"PROPERTY_NAME:prop1\n" + 
 				"PROPERTY_TYPE:Integer\n" + 
@@ -276,21 +304,6 @@ class GraphTokenizerTest {
 			"		hasName = String(\"scale\")\n",
 			"		type =  String(\"TimeScaleType\")\n",
 			"		multiplicity = IntegerRange(\"1..1\")\n",
-			"	hasProperty shortestTimeUnitPropertySpec\n", 
-			"		hasName = String(\"shortestTimeUnit\")\n",
-			"		type =  String(\"TimeUnits\")\n",
-			"		multiplicity = IntegerRange(\"1..1\")\n", 
-			"	hasProperty longestTimeUnitPropertySpec\n", 
-			"		hasName = String(\"longestTimeUnit\")\n" ,
-			"		type =  String(\"TimeUnits\")\n",
-			"		multiplicity = IntegerRange(\"1..1\")\n", 
-			"	hasProperty timeOriginPropertySpec\n", 
-			"		hasName = String(\"timeOrigin\")\n", 
-			"		type = String(\"DateTimeType\")\n", 
-			"		multiplicity = IntegerRange(\"1..1\")\n", 
-			"	mustSatisfyQuery shortestTimeUnitTimeUnitValidityQuery\n", 
-			"		className = String(\"au.edu.anu.twcore.archetype.tw.TimeUnitValidityQuery\")\n", 
-			"		values = StringTable(([2]\"shortestTimeUnit\",\"scale\"))\n",
 			"	mustSatisfyQuery longestTimeUnitTimeUnitValidityQuery\n" ,
 			"		className = String(\"au.edu.anu.twcore.archetype.tw.TimeUnitValidityQuery\")\n", 
 			"		values = StringTable(([2]\"longestTimeUnit\",\"scale\"))\n",
@@ -327,47 +340,6 @@ class GraphTokenizerTest {
 				"PROPERTY_NAME:multiplicity\n" + 
 				"PROPERTY_TYPE:IntegerRange\n" + 
 				"PROPERTY_VALUE:1..1\n" + 
-				"LABEL:hasProperty\n" + 
-				"NAME:shortestTimeUnitPropertySpec\n" + 
-				"PROPERTY_NAME:hasName\n" + 
-				"PROPERTY_TYPE:String\n" + 
-				"PROPERTY_VALUE:shortestTimeUnit\n" + 
-				"PROPERTY_NAME:type\n" + 
-				"PROPERTY_TYPE:String\n" + 
-				"PROPERTY_VALUE:TimeUnits\n" + 
-				"PROPERTY_NAME:multiplicity\n" + 
-				"PROPERTY_TYPE:IntegerRange\n" + 
-				"PROPERTY_VALUE:1..1\n" + 
-				"LABEL:hasProperty\n" + 
-				"NAME:longestTimeUnitPropertySpec\n" + 
-				"PROPERTY_NAME:hasName\n" + 
-				"PROPERTY_TYPE:String\n" + 
-				"PROPERTY_VALUE:longestTimeUnit\n" + 
-				"PROPERTY_NAME:type\n" + 
-				"PROPERTY_TYPE:String\n" + 
-				"PROPERTY_VALUE:TimeUnits\n" + 
-				"PROPERTY_NAME:multiplicity\n" + 
-				"PROPERTY_TYPE:IntegerRange\n" + 
-				"PROPERTY_VALUE:1..1\n" + 
-				"LABEL:hasProperty\n" + 
-				"NAME:timeOriginPropertySpec\n" + 
-				"PROPERTY_NAME:hasName\n" + 
-				"PROPERTY_TYPE:String\n" + 
-				"PROPERTY_VALUE:timeOrigin\n" + 
-				"PROPERTY_NAME:type\n" + 
-				"PROPERTY_TYPE:String\n" + 
-				"PROPERTY_VALUE:DateTimeType\n" + 
-				"PROPERTY_NAME:multiplicity\n" + 
-				"PROPERTY_TYPE:IntegerRange\n" + 
-				"PROPERTY_VALUE:1..1\n" + 
-				"LABEL:mustSatisfyQuery\n" + 
-				"NAME:shortestTimeUnitTimeUnitValidityQuery\n" + 
-				"PROPERTY_NAME:className\n" + 
-				"PROPERTY_TYPE:String\n" + 
-				"PROPERTY_VALUE:au.edu.anu.twcore.archetype.tw.TimeUnitValidityQuery\n" + 
-				"PROPERTY_NAME:values\n" + 
-				"PROPERTY_TYPE:StringTable\n" + 
-				"PROPERTY_VALUE:([2]\"shortestTimeUnit\",\"scale\")\n" + 
 				"LABEL:mustSatisfyQuery\n" + 
 				"NAME:longestTimeUnitTimeUnitValidityQuery\n" + 
 				"PROPERTY_NAME:className\n" + 
@@ -384,7 +356,6 @@ class GraphTokenizerTest {
 				"PROPERTY_NAME:values\n" + 
 				"PROPERTY_TYPE:StringTable\n" + 
 				"PROPERTY_VALUE:([3]shortestTimeUnit,\"longestTimeUnit\",\"scale\")\n" + 
-				"\n" + 
 				"");
 	}
 
@@ -392,6 +363,7 @@ class GraphTokenizerTest {
 	String[] test4 = {"node \"this is a stupid node\"  \n",
 			"	prop = String(\"He said: \"please stop saying that\". Well...\")",
 			"	[system:entity] belongsTo \"random name\" [category:animal]",
+			"	prop2 = StringTable(([2]\"r = 3.7\",\"x[0] = 0.1\"))",
 			""
 	};
 
@@ -400,8 +372,19 @@ class GraphTokenizerTest {
 	void testTokenize4() {
 		GraphTokenizer tk = new GraphTokenizer(test4);
 		tk.tokenize();
-		System.out.println(tk.toString());
-//		assertEquals(tk.toString(),"");
+//		System.out.println(tk.toString());
+		assertEquals(tk.toString(),"LABEL:node\n" + 
+				"NAME:this is a stupid node\n" + 
+				"PROPERTY_NAME:prop\n" + 
+				"PROPERTY_TYPE:String\n" + 
+				"PROPERTY_VALUE:He said: \"please stop saying that\". Well...\n" + 
+				"NODE_REF:system:entity\n" + 
+				"LABEL:belongsTo\n" + 
+				"NAME:random name\n" + 
+				"NODE_REF:category:animal\n" + 
+				"PROPERTY_NAME:prop2\n" + 
+				"PROPERTY_TYPE:StringTable\n" + 
+				"PROPERTY_VALUE:([2]\"r = 3.7\",\"x[0] = 0.1\")\n");
 	}
 	
 }
