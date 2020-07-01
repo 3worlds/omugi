@@ -44,9 +44,6 @@ import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.properties.ExtendablePropertyList;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.properties.impl.CompoundPropertyListImpl;
-import fr.cnrs.iees.properties.impl.ExtendablePropertyListImpl;
-import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 class CompoundPropertyListImplTest {
 	

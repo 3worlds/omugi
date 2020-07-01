@@ -42,7 +42,6 @@ import org.junit.jupiter.api.Test;
 
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 class SimplePropertyListImplTest {
 

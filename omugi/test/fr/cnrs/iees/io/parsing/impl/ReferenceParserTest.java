@@ -37,8 +37,6 @@ import org.junit.jupiter.api.Test;
 import au.edu.anu.rscs.aot.graph.property.Property;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.graph.impl.SimpleTreeFactory;
-import fr.cnrs.iees.io.parsing.impl.ReferenceParser;
-import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 

@@ -1,10 +1,10 @@
 <!--===================================================================================
- ant and ivy scripts for project <omugi> version 0.2.17 (Wed Jul 01 11:15:25 CEST 2020)
+ ant and ivy scripts for project <omugi> version 0.2.16 (Wed Jan 15 16:01:18 CET 2020)
  author: Jacques Gignoux <jacques.gignoux@upmc.fr>
 
  CAUTION: this file is generated - DO NOT EDIT!
  If you need to change this file, edit ../version/Setup.java appropriately and run it.
- This will re-generate this file and manage version numbers properly. 
+ This will re-generate this file and manage version numbers properly.
 ===================================================================================-->
 <ivy-module version="2.0"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -13,7 +13,7 @@
 
 	<info	organisation="au.edu.anu.rscs.aot"
 			module="omugi"
-			revision="0.2.17"
+			revision="0.2.16"
 			status="integration">
 		<license name="gpl3" url="https://www.gnu.org/licenses/gpl-3.0.txt"/>
 		<description>This module is 'one more ultimate graph implementation'. It implements various kinds of graph, from verylight weight to elaborate, dynamic, graphs that can be used for data management or simulation</description>
@@ -30,7 +30,7 @@
 	</publications>
 
 	<dependencies>
-		<dependency org="fr.ens.biologie" name="generics" rev="[0.1.17,)"/>
+		<dependency org="fr.ens.biologie" name="generics" rev="[0.1.16,)"/>
 	</dependencies>
 
 </ivy-module>

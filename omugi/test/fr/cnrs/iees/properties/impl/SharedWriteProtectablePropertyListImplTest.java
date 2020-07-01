@@ -37,7 +37,6 @@ import org.junit.jupiter.api.Test;
 
 import au.edu.anu.rscs.aot.graph.property.PropertyKeys;
 import fr.cnrs.iees.properties.SimpleWriteProtectablePropertyList;
-import fr.cnrs.iees.properties.impl.SharedWriteProtectablePropertyListImpl;
 
 class SharedWriteProtectablePropertyListImplTest {
 
