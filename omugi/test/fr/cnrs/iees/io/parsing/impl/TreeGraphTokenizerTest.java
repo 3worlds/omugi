@@ -42,6 +42,7 @@ class TreeGraphTokenizerTest {
 
 	String[] test = {"aot // saved by AotGraphExporter on Mon Jan 21 11:31:07 CET 2019\n", 
 			"\n",
+			"	prop = String(\"dsjfbsk\")",
 			"// TREE\n", 
 			"3Worlds \n", 
 			"	ecology my model\n", 

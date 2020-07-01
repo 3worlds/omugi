@@ -146,40 +146,11 @@ public abstract class LineTokenizer implements Tokenizer {
 		String ss = s.trim();
 		int pref = STRING.prefix().length();
 		int suf = STRING.suffix().length();
-		if (ss.startsWith(STRING.prefix()) && ss.endsWith(STRING.suffix())) {
-			return ss.substring(pref,ss.length()-suf);
+		while (ss.startsWith(STRING.prefix()) && ss.endsWith(STRING.suffix())) {
+			ss = ss.substring(pref,ss.length()-suf);
 		}
-		else return ss;
+		return ss;
 	}
-
-//	// extract quoted strings as whole words
-//	private String[] getWord(String textLine) {
-//		List<String> result = new ArrayList<>();
-//		if (textLine.indexOf(STRING.prefix())<0)
-//			result.add(textLine);
-//		else {
-//			String endString = textLine;
-//			String s = "";
-//			while (endString.indexOf(STRING.prefix())>=0) {
-//				// get opening quote
-//				int cutoff = endString.indexOf(STRING.prefix());
-//				s = endString.substring(0,cutoff);
-//				// this is the string before the opening quote
-//				result.add(s);
-//				endString = endString.substring(cutoff+1);
-//				// get closing quote
-//				cutoff = endString.indexOf(STRING.suffix());
-//				if (cutoff>-1) { // in case closing quote is missing
-//					s = endString.substring(0,cutoff);
-//					result.add(s);
-//					endString = endString.substring(cutoff+1);
-//				}
-//			}
-//			result.add(endString);
-//		}
-//		String[] a = new String[result.size()];
-//		return result.toArray(a);
-//	}
 
 	/**
 	 * extracts from a line a property name, type, and value, and create the corresponding tokens
@@ -196,10 +167,8 @@ public abstract class LineTokenizer implements Tokenizer {
 				tokenlist.add(makeToken(PROPERTY_VALUE,unquote(result[2].substring(0,result[2].trim().length()-1))));
 			else { // there must be a comment after the last ')'
 				result = getToken(COMMENT.prefix(),result[2].trim());
-				if (result.length==3) {
-					tokenlist.add(makeToken(PROPERTY_VALUE,unquote(result[1].trim())));
-//					tokenlist.add(makeToken(COMMENT,result[2])); // actually we dont care about comments
-				}
+				if (result.length==3)
+					tokenlist.add(makeToken(PROPERTY_VALUE,unquote(result[1].substring(0,result[1].trim().length()-1))));
 				else
 					log.severe("Error processing line \""+propertyLine+"\"");
 			}
@@ -250,10 +219,10 @@ public abstract class LineTokenizer implements Tokenizer {
 		// label must not be quoted
 		result = getToken(LABEL.suffix(),nodeLine.trim());
 		if (result.length==3) {
-			if (result[0].equals(IMPORT_RESOURCE.prefix()))
-				tokenlist.add(makeToken(IMPORT_RESOURCE, result[1].trim().replace("\"","")));
-			else if (result[0].equals(IMPORT_FILE.prefix()))
-				tokenlist.add(makeToken(IMPORT_FILE, result[1].trim().replace("\"","")));
+			if (result[1].equals(IMPORT_RESOURCE.prefix()))
+				tokenlist.add(makeToken(IMPORT_RESOURCE, result[2].trim().replace("\"","")));
+			else if (result[1].equals(IMPORT_FILE.prefix()))
+				tokenlist.add(makeToken(IMPORT_FILE, result[2].trim().replace("\"","")));
 			else {
 				tokenlist.add(makeToken(LABEL,result[1].trim().replace("\"","")));
 				tokenlist.add(makeToken(NAME,result[2].trim().replace("\"","")));

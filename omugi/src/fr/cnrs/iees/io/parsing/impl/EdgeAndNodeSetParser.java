@@ -111,6 +111,8 @@ public abstract class EdgeAndNodeSetParser extends NodeSetParser {
 			case EDGE_FACTORY:
 				eFactoryClass = (Class<? extends EdgeFactory>) 
 					getClass(EDGE_FACTORY,p.value,log);
+				if (labels.containsKey(EDGE_FACTORY))
+					labels.remove(EDGE_FACTORY);
 				break;
 			default: 
 				break;

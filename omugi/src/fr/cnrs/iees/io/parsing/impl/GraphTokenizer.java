@@ -110,8 +110,6 @@ public class GraphTokenizer extends LineTokenizer {
 	}
 	//----------------------------------------------------
 	
-//	private List<graphToken> tokenlist = new ArrayList<>(1000);
-//	private graphToken cttoken = null;
 	private int tokenIndex = -1;
 	
 	public GraphTokenizer(FileTokenizer parent) {
@@ -150,94 +148,6 @@ public class GraphTokenizer extends LineTokenizer {
 		return result;
 	}
 	
-//	private String[] trimEmptyWords(String[] list) {
-//		ArrayList<String> result = new ArrayList<>();
-//		for (int i=0; i<list.length; i++)
-//			if (list[i].length()>0)
-//				result.add(list[i]);
-//		String[] res = new String[result.size()];
-//		return result.toArray(res);
-//	}
-//	/**All calls to split(...) must NOT split within quote pairs ("")*/
-//	private void processLine(String line) {
-//		String[] words = line.trim().split(COMMENT.prefix());
-//		if (words.length>1) { // a comment was found
-//			// process the beginning of the line
-//			processLine(words[0].trim());
-//			// end of the line is comment text that may include more '//'s
-//			cttoken = new graphToken(COMMENT,"");
-//			for (int i=1; i<words.length; i++)
-//				cttoken.value += words[i];
-//			tokenlist.add(cttoken);
-//			cttoken = null;
-//			return;
-//		}
-//		words = line.trim().split(PROPERTY_NAME.suffix());
-//		if (words.length>1)  { // a property name was found
-//			if (words.length==2) {
-//				tokenlist.add(new graphToken(PROPERTY_NAME,words[0].trim().replace("\"","")));
-//				processLine(words[1]);
-//				return;
-//			}
-//			else
-//				throw new OmugiException("GraphTokenizer: malformed property format: "+String.join(",", words));
-//		}
-//		words = line.trim().split("\\(");
-//		if (words.length>1)  { // a property type (and value) was found (but it may contain more '(')
-//			if (line.trim().endsWith(PROPERTY_VALUE.suffix())) {
-//				String t = words[0].trim().replace("\"","");
-//				tokenlist.add(new graphToken(PROPERTY_TYPE,t));
-//				// remove the brackets around the type (there may be more brackets inside)
-//				String s = line.trim()
-//					.substring(line.trim().indexOf('(')+1, line.trim().length()-1);
-//				// special cases: unquoting for String, StringTable, etc. may be different
-//				if (ValidPropertyTypes.getType(t).equals("String")) { // preserve inner quotes if any
-//					if (s.trim().startsWith(STRING.prefix()) && (s.trim().endsWith(STRING.suffix())))
-//						s =  s.trim().substring(1, s.trim().length()-1);
-//				}
-//				else if (ValidPropertyTypes.getType(t).equals("StringTable")) {  // keep all quotes to pass to valueOf()
-//					// do nothing
-//				}
-//				else // remove all quotes 
-//					s = s.replace("\"","");
-//				tokenlist.add(new graphToken(PROPERTY_VALUE,s));
-//				return;
-//			}
-//			else
-//				throw new OmugiException("GraphTokenizer: malformed property format");
-//		}
-//		words = line.trim().split("[\\[\\]]"); // TODO: generate regular expression from GraphTokens.
-//		if (words.length>1) { // an edge definition was found
-//			words = trimEmptyWords(words);
-//			if (words.length==3) {
-//				tokenlist.add(new graphToken(NODE_REF,words[0].trim().replace("\"","")));
-//				processLine(words[1]);
-//				tokenlist.add(new graphToken(NODE_REF,words[2].trim().replace("\"","")));
-//				return;
-//			}
-//			else
-//				throw new OmugiException("GraphTokenizer: malformed edge format");
-//		}
-//		words = line.trim().split("\\s"); // matches any whitespace character
-//		if (words.length>1) { 
-//			tokenlist.add(new graphToken(LABEL,words[0].trim().replace("\"",""))); // first word is label
-//			cttoken = new graphToken(NAME,"");
-//			for (int i=1; i<words.length; i++) { // anything else is name
-//				cttoken.value += words[i].replace("\"","")+" ";
-//			}
-//			cttoken.value = cttoken.value.trim();
-//			tokenlist.add(cttoken);
-//			return;
-//		}	
-//		else if (words.length==1) // there is only one label in this case
-//			if (!words[0].trim().isEmpty()) 
-//				if (!isFileHeader(words[0].trim())) { // remove file header from the possible labels
-//					tokenlist.add(new graphToken(LABEL,words[0].trim().replace("\"",""))); 
-//					tokenlist.add(new graphToken(NAME,""));
-//					return;
-//		}
-//	}
-
 	private void processLine(String line) {
 		if (isPropertyLine(line))
 			tokenizeProperty(line);
