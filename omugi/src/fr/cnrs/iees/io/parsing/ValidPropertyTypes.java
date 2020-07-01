@@ -266,7 +266,10 @@ public class ValidPropertyTypes {
 		// Boolean: a logical value {true, false}
 		Boolean("java.lang.Boolean", java.lang.Boolean.valueOf("false")),
 		// String: a text string
-		String("java.lang.String", new String(""));
+		String("java.lang.String", new String("")),
+		// Object: Default null 
+		Object("java.lang.Object",new Object()),
+		;
 
 		private final String className;
 		private final Object defaultValue;
