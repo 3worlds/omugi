@@ -2,16 +2,16 @@
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
  *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
- *       shayne.flint@anu.edu.au                                          * 
+ *       shayne.flint@anu.edu.au                                          *
  *       jacques.gignoux@upmc.fr                                          *
- *       ian.davies@anu.edu.au                                            * 
+ *       ian.davies@anu.edu.au                                            *
  *                                                                        *
  *  OMUGI is an API to implement graphs, as described by graph theory,    *
  *  but also as more commonly used in computing - e.g. dynamic graphs.    *
  *  It interfaces with JGraphT, an API for mathematical graphs, and       *
  *  GraphStream, an API for visual graphs.                                *
  *                                                                        *
- **************************************************************************                                       
+ **************************************************************************
  *  This file is part of OMUGI (One More Ultimate Graph Implementation).  *
  *                                                                        *
  *  OMUGI is free software: you can redistribute it and/or modify         *
@@ -22,7 +22,7 @@
  *  OMUGI is distributed in the hope that it will be useful,              *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *  GNU General Public License for more details.                          *                         
+ *  GNU General Public License for more details.                          *
  *                                                                        *
  *  You should have received a copy of the GNU General Public License     *
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
@@ -36,51 +36,55 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import au.edu.anu.rscs.aot.util.Resources;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.graph.Tree;
+import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
+import fr.cnrs.iees.io.parsing.impl.NodeSetParser.importGraph;
 import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
- * <p>A replacement parser for Shayne's 'UniversalParser'. Simpler. Maybe Faster. 
+ * <p>A replacement parser for Shayne's 'UniversalParser'. Simpler. Maybe Faster.
  * Who am I to pretend it's better.</p>
- * 
+ *
  * <p>This parser is initialised with a {@link GraphTokenizer}, i.e. it gobbles a list of
  * tokens and spits out a {@link Graph} when asked for it. It is lazy, i.e. it will not do anything until
  * asked for a graph, i.e. invoking the {@code GraphParser.graph()} method, and it will parse only once after
  * initialisation. Further calls to {@code .graph()} return the already parsed graph.</p>
- * 
+ *
  * <p>Parsing is done in a single pass on the token list.</p>
- * 
- * <p>Options to setup the graph may be passed through graph-level properties in the file. These 
+ *
+ * <p>Options to setup the graph may be passed through graph-level properties in the file. These
  * are found in {@link GraphProperties}. The best way to go is to implement specific {@link NodeFactory},
  * {@link EdgeFactory} and {@link PropertyListFactory}
  * which will implement which flavour of {@link Node}, {@link Edge} and property list
  * (cf. {@link PropertyListGetters} descendants) should be used to construct
- * the graph.</p> 
- * 
+ * the graph.</p>
+ *
  * <p>Allowed property types are those listed in {@link ValidPropertyTypes}. They can be
  * specified as fully qualified java class names, or as simple strings as found in {@code ValidPropertyTypes}.</p>
- * 
+ *
  *  <p>Note that the best use of this class is to hide it inside a {@link GraphImporter}.</p>
- * 
+ *
  * @author Jacques Gignoux - 12 déc. 2018
  *
  */
-//todo: import	
+//todo: import
 // Tested OK with version 0.0.1 on 17/12/2018
 // Tested OK with version 0.0.10 on 31/1/2019
 // tested OK with version 0.2.0 on 20/5/2019
 // Tested OK with version 0.2.1 on 27/5/2019
 //Tested OK with version 0.2.16 on 1/7/2020
 public class GraphParser extends EdgeAndNodeSetParser {
-	
+
 	private static Logger log = Logging.getLogger(GraphParser.class);
 
 	//----------------------------------------------------
@@ -91,24 +95,24 @@ public class GraphParser extends EdgeAndNodeSetParser {
 		EDGE
 	}
 	//----------------------------------------------------
-	
+
 	// the tokenizer used to read the file
 	private GraphTokenizer tokenizer = null;
-	
+
 	// the list of specifications built from the token list
 	private List<propSpec> graphProps = new LinkedList<propSpec>();
 	private List<nodeSpec> nodeSpecs =  new LinkedList<nodeSpec>();
 	private List<edgeSpec> edgeSpecs =  new LinkedList<edgeSpec>();
-	
+
 	// the last processed item
 	private itemType lastItem = null;
 	private propSpec lastProp = null;
 	private nodeSpec lastNode = null;
 	private edgeSpec lastEdge = null;
-	
+
 	// the result of this parsing
 	private Graph<? extends Node,? extends Edge> graph = null;
-	
+
 	// lazy init: nothing is done before it's needed
 	public GraphParser(GraphTokenizer tokenizer) {
 		super();
@@ -125,7 +129,7 @@ public class GraphParser extends EdgeAndNodeSetParser {
 //		graphPropertyTypes.put(PROP_FACTORY, 	PropertyListFactory.class);
 		graphPropertyTypes.put(SCOPE, 			String.class);
 	}
-	
+
 	/**
 	 * <p>Construct the list of specifications for node and edge to build from the token list.</p>
 	 * <p>Rules:</p>
@@ -167,10 +171,10 @@ public class GraphParser extends EdgeAndNodeSetParser {
 							break;
 					}
 					break;
-				case PROPERTY_TYPE:	
+				case PROPERTY_TYPE:
 					lastProp.type = tk.value;
 					break;
-				case LABEL:		
+				case LABEL:
 					switch (lastItem) {
 						case GRAPH:
 						case NODE:
@@ -189,7 +193,7 @@ public class GraphParser extends EdgeAndNodeSetParser {
 							break;
 					}
 					break;
-				case NAME:			
+				case NAME:
 					switch (lastItem) {
 						case GRAPH:
 							log.severe("missing node label declaration");
@@ -222,12 +226,19 @@ public class GraphParser extends EdgeAndNodeSetParser {
 							break;
 					}
 					break;
+				case IMPORT_RESOURCE:
+					lastNode.imports.add(
+						new importGraph(
+								new GraphParser(
+									new GraphTokenizer(Resources.getTextResource(
+										Resources.getPackagedFileName(tk.value))))));
+					break;
 			case LEVEL:
 				throw new OmugiException("Invalid token type for a graph");
 			default:
 				break;
 			}
-		}		
+		}
 	}
 
 	// builds the graph from the parsed data
@@ -262,6 +273,19 @@ public class GraphParser extends EdgeAndNodeSetParser {
 				log.severe(()->"duplicate node found ("+") - ignoring the second one");
 			else
 				nodes.put(nodeId,n);
+			/*-
+			 * Add in any imported graphs.
+			 * The imported graph must use the node's factory instance
+			 */
+			for (importGraph ig : ns.imports) {
+				Node parent = n;
+				Graph<? extends Node,? extends Edge> importGraph =
+					(Graph<? extends Node, ? extends Edge>) ig.getGraph(parent.factory());
+				for (Node importNode : importGraph.nodes()) {
+					// TODO: finish this!
+				}
+			}
+
 		}
 		// make edges
 		for (edgeSpec es:edgeSpecs) {
@@ -280,7 +304,7 @@ public class GraphParser extends EdgeAndNodeSetParser {
 						edgeFactory.makeEdge(start,end,es.name);
 					else
 						edgeFactory.makeEdge(ec,start,end,es.name);
-				else 
+				else
 					if (ec==null)
 						edgeFactory.makeEdge(start,end,es.name,
 							makePropertyList(edgeFactory.edgePropertyFactory(),es.props,log));
@@ -289,8 +313,9 @@ public class GraphParser extends EdgeAndNodeSetParser {
 							makePropertyList(edgeFactory.edgePropertyFactory(),es.props,log));
 			}
 		}
+
 	}
-	
+
 	/**
 	 * @return the graph build from this parser
 	 */
@@ -299,7 +324,7 @@ public class GraphParser extends EdgeAndNodeSetParser {
 			buildGraph();
 		return graph;
 	}
-	
+
 	// for debugging only
 	@Override
 	public String toString() {
@@ -329,7 +354,7 @@ public class GraphParser extends EdgeAndNodeSetParser {
 	@Override
 	public void setFactory(Object factory) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
