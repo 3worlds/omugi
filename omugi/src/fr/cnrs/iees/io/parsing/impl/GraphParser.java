@@ -43,11 +43,8 @@ import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
-import fr.cnrs.iees.graph.Tree;
-import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
-import fr.cnrs.iees.io.parsing.impl.NodeSetParser.importGraph;
 import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.ens.biologie.generic.utils.Logging;
 
