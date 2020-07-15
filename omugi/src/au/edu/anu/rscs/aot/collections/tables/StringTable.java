@@ -191,13 +191,13 @@ public class StringTable extends TableAdapter {
 				if (c == isep[TABLEix]) {
 					if (n == result.flatSize - 1)
 						throw new OmugiException("Too many values read: table size == " + result.flatSize);
-					result.data[n++] = sb.toString().trim();
+					result.data[n++] = sb.toString();//.trim();
 					sb = new StringBuilder();
 				} else
 					sb.append(c);
 			}
 		}
-		result.data[n++] = sb.toString().trim();
+		result.data[n++] = sb.toString();//.trim();
 		return result;
 	}
 
