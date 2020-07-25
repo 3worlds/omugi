@@ -53,7 +53,7 @@ import fr.ens.biologie.generic.utils.Logging;
 public class SimpleTreeFactory 
 		extends NodeFactoryAdapter {
 
-	private static Logger log = Logging.getLogger(ALGraphFactory.class);
+	private static Logger log = Logging.getLogger(SimpleTreeFactory.class);
 	private Set<Tree<SimpleTreeNode>> trees = new HashSet<>();
 
 	/**
