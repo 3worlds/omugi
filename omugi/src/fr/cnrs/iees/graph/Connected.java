@@ -58,6 +58,14 @@ public interface Connected<T extends Connected<?>> {
 	public void disconnectFrom(Node node);
 	
 	/**
+	 * Disconnects this element from the node passed as argument.
+	 * 
+	 * @param direction the direction in which to disconnect (if IN, node is the start node)
+	 * @param node the node to disconnect from
+	 */
+	public void disconnectFrom(Direction direction, Node node);
+	
+	/**
 	 * Connects this Element <em>exactly</em> like the argument, i.e by losing its former connections.
 	 * (= a call to disconnect() followed by addConnectionsLike(element)) 
 	 * @param element the element to copy connections from

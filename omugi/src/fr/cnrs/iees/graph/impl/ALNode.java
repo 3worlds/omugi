@@ -128,6 +128,29 @@ public class ALNode extends ElementAdapter implements Node {
 			}
 		}
 	}
+	
+	@Override
+	public void disconnectFrom(Direction direction, Node node) {
+		if (direction.equals(Direction.IN)) {
+			for (Iterator<ALEdge> it = edges.get(Direction.IN).iterator(); it.hasNext();) {
+				ALEdge e = it.next();
+				if (e.startNode().equals(node)) {
+					e.startNode().removeEdge(e, Direction.OUT);
+					it.remove(); // only safe way to remove while looping on the list
+				}
+			}
+		}
+		else {
+			for (Iterator<ALEdge> it = edges.get(Direction.OUT).iterator(); it.hasNext();) {
+				ALEdge e = it.next();
+				if (e.endNode().equals(node)) {
+					e.endNode().removeEdge(e, Direction.IN);
+					it.remove();
+				}
+			}
+		}
+	}
+
 
 	@Override
 	public void addConnectionsLike(Node node) {

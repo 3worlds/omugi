@@ -213,6 +213,14 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 		super.disconnectFrom(node);
 	}
 	
+	
+	// CAUTION: this method CANNOT disconnect parent or children !!! only edge-related nodes
+//	@Override
+//	public void disconnectFrom(Direction direction, Node node) {
+//		// disconnect from cross-links
+//		super.disconnectFrom(direction,node);
+//	}
+	
 	@Override
 	public final void disconnect() {
 		// disconnect from tree

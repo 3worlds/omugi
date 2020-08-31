@@ -86,6 +86,15 @@ public class ALEdge extends ElementAdapter implements Edge {
 		start.removeEdge(this, Direction.OUT);
 		end.removeEdge(this, Direction.IN);
 	}
+	
+	@Override
+	public final void disconnectFrom(Direction direction, Node node) {
+		if (direction.equals(Direction.IN))
+			start.removeEdge(this, Direction.OUT);
+		else
+			end.removeEdge(this, Direction.IN);
+	}
+
 
 	// caution: after a call to this method, the Edge is invalid, i.e. with a free-floating end
 	@Override
@@ -187,7 +196,5 @@ public class ALEdge extends ElementAdapter implements Edge {
 	@Override
 	public void rename(String oldId, String newId) {
 		id.rename(oldId, newId);
-	}
-
-	
+	}	
 }

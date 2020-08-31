@@ -191,6 +191,25 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 			}
 		}
 	}
+	
+	@Override
+	public void disconnectFrom(Direction direction, Node node) {
+		if (node instanceof TreeNode) {
+			TreeNode tn = (TreeNode) node;
+			// convention: parent relations are from parent to child
+			// hence parent = start node
+			if ((direction.equals(Direction.IN))&&(tn == parent)) {
+				parent = null;
+				tn.disconnectFrom(this);
+			}
+			// and child = end node
+			if ((direction.equals(Direction.OUT))&&(children.contains(tn))) {
+				children.remove(tn);
+				tn.disconnectFrom(this);
+			}
+		}
+	}
+
 
 	private Collection<TreeNode> traversal(Collection<TreeNode> list, TreeNode node, int distance) {
 		list.add(node);
