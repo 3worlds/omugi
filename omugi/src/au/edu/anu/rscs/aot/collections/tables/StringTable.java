@@ -41,8 +41,6 @@ import fr.ens.biologie.generic.DataContainer;
 /** initial code by Shayne */
 public class StringTable extends TableAdapter {
 
-	//private static char QUOTE = '"';
-
 	protected String[] data;
 
 	public StringTable(Dimensioner... dimensions) {
@@ -169,6 +167,9 @@ public class StringTable extends TableAdapter {
 		return sb.toString().replaceFirst(",", "");
 	}
 
+	public static StringTable valueOf(String value) {
+		return StringTable.valueOf(value, getStandardDelimiters(), getStandardSeparators());
+	}
 	public static StringTable valueOf(String value, char[][] bdel, char[] isep) {
 		value = value.trim();
 		if ((value == null) || value.isBlank() || value.isEmpty())
@@ -191,13 +192,13 @@ public class StringTable extends TableAdapter {
 				if (c == isep[TABLEix]) {
 					if (n == result.flatSize - 1)
 						throw new OmugiException("Too many values read: table size == " + result.flatSize);
-					result.data[n++] = sb.toString();//.trim();
+					result.data[n++] = sb.toString();// .trim();
 					sb = new StringBuilder();
 				} else
 					sb.append(c);
 			}
 		}
-		result.data[n++] = sb.toString();//.trim();
+		result.data[n++] = sb.toString();// .trim();
 		return result;
 	}
 
@@ -216,20 +217,33 @@ public class StringTable extends TableAdapter {
 		return sb.toString();
 	}
 
-	
-	public static void main(String[] args) {
-		String s = "([1]\"hel =) _()*^* lo\")";
-		char[][] bdel = new char[2][2];
+	public static char[] getStandardSeparators() {
 		char[] isep = new char[2];
-		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
-		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
 		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
 		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
+		return isep;
+	}
 
-		StringTable t = StringTable.valueOf(s,bdel,isep);
-		
-		String ss = t.toSaveableString(bdel,isep);
-		
+	public static char[][] getStandardDelimiters() {
+		char[][] bdel = new char[2][2];
+		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
+		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
+		return bdel;
+	}
+
+	public static void main(String[] args) {
+		String s = "([1]\"hel =) _()*^* lo\")";
+//		char[][] bdel = new char[2][2];
+//		char[] isep = new char[2];
+//		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
+//		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
+//		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
+//		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
+
+		StringTable t = StringTable.valueOf(s, getStandardDelimiters(), getStandardSeparators());
+
+		String ss = t.toSaveableString( getStandardDelimiters(),  getStandardSeparators());
+
 		System.out.println(ss);
 	}
 }
