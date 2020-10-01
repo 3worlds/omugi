@@ -49,21 +49,6 @@ class StringTableTest {
 	@Test
 	final void testValueOf() {
 		String value = "([4]\"a\", \"table[0,2:3][][0,2][-1]\", \"zer\" , \"12\")";
-//		StreamTokenizer st = new StreamTokenizer(new StringReader(value));
-//		st.wordChars(32,126);
-//		st.quoteChar('"');
-//		st.ordinaryChar('(');
-//		st.ordinaryChar(')');
-//		while (st.ttype!=StreamTokenizer.TT_EOF) {
-//			try {
-//				st.nextToken();
-//				if (st.sval!=null)
-//					System.out.println(st.sval);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
 		char[][] bdel = new char[2][2];
 		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
 		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
@@ -71,23 +56,34 @@ class StringTableTest {
 		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
 		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
 		StringTable st = StringTable.valueOf(value,bdel,isep);
-		System.out.println(st);
+		System.out.println("example 1 : value \'"+value+"\' read as \'"+st+"\'");
 		assertNotNull(st);
+		
 		value = "";
 		st = StringTable.valueOf(value, bdel, isep);
-		System.out.println(st);
+		System.out.println("example 2 : value \'"+value+"\' read as \'"+st+"\'");
 		assertNull(st);
+
+		// This throws an exception because the dimension is wrong
 		assertThrows(OmugiException.class,()->StringTable.valueOf("([2]a,b,c,d)", bdel, isep));
+		
 		value="([3]a,\"b,c\",d)";
 		st = StringTable.valueOf(value, bdel, isep);
-		System.out.println(st);
+		System.out.println("example 3 : value \'"+value+"\' read as \'"+st+"\'");
 		assertNotNull(st);
+		
 		value = st.toSaveableString(bdel,isep);
-		System.out.println(value);
 		st = StringTable.valueOf(value, bdel, isep);
-		System.out.println(st);
+		System.out.println("example 4 : value \'"+value+"\' read as \'"+st+"\'");
 		assertNotNull(st);
+		
+		// This throws an exception because the table separators in the second element are not quoted
 		assertThrows(OmugiException.class,()->StringTable.valueOf("([4]\"a\", table[0,2:3][][0,2][-1], \"zer\" , \"12\")", bdel, isep));
+		
+		value = "([4]a,b, \"c\" , \"d\")";
+		st = StringTable.valueOf(value);
+		System.out.println("example 5 : value \'"+value+"\' read as \'"+st+"\'");
+		assertNotNull(st);
 	}
 
 }
