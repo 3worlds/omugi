@@ -130,7 +130,6 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	 * returns all nodes linked to this node, including parent, children, in- and out-edge 
 	 * linked nodes
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<? extends Node> nodes() {
 		Set<Node> list = new HashSet<>();
