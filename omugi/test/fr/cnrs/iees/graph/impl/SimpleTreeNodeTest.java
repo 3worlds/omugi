@@ -274,7 +274,7 @@ class SimpleTreeNodeTest {
 		TreeNode tn6 = f.makeNode("tn1");
 		List<TreeNode> l =new ArrayList<>(2);
 		l.add(tn6); l.add(tn5);
-		tn1.connectChildren((Iterable<TreeNode>)l);
+		tn1.connectChildren((Collection<TreeNode>)l);
 		assertEquals(tn5.getParent(),tn1);
 		assertEquals(tn6.getParent(),tn1);
 		assertEquals(tn1.nChildren(),4);

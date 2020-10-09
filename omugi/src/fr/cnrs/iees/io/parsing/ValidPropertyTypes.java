@@ -187,7 +187,10 @@ public class ValidPropertyTypes {
 		for (String name : typeIndex.keySet()) {
 			System.out.print(name + " / ");
 			System.out.print(getJavaClassName(name) + " / ");
-			System.out.println(getDefaultValue(name).toString());
+			if (getDefaultValue(name)==null)
+				System.out.println("null");
+			else
+				System.out.println(getDefaultValue(name).toString());
 		}
 	}
 
@@ -268,7 +271,7 @@ public class ValidPropertyTypes {
 		// String: a text string
 		String("java.lang.String", new String("")),
 		// Object: Default null 
-		Object("java.lang.Object",new Object()),
+		Object("java.lang.Object",null),
 		;
 
 		private final String className;

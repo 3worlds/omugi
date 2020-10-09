@@ -31,6 +31,8 @@
 package fr.cnrs.iees.graph;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import fr.ens.biologie.generic.Textable;
@@ -49,34 +51,34 @@ public interface NodeSet<N extends Node>  extends Textable {
 	
 	/**
 	 * Read-only accessor to all Nodes
-	 * @return an Iterable of all Nodes
+	 * @return an unmodifiable collection of all Nodes
 	 */
-	public Iterable<N> nodes();
+	public Collection<N> nodes();
 	
 	/**
 	 * Read-only accessor to all leaf Nodes (if any). Note: a leaf node is a node without
 	 * OUT edges.
-	 * @return an Iterable on all leaf Nodes
+	 * @return an unmodifiable collection of all leaf Nodes
 	 */
-	public default Iterable<N> leaves() {
+	public default Collection<N> leaves() {
 		List<N> result = new ArrayList<>(nNodes());
 		for (N n : nodes())
 			if (n.isLeaf())
 				result.add(n);
-		return result;
+		return Collections.unmodifiableCollection(result);
 	}
 
 	/**
 	 * Read-only accessor to all root Nodes (if any). Note: a root node is a node without
 	 * IN edges.
-	 * @return an Iterable on all root Nodes
+	 * @return an unmodifiable collection of all root Nodes
 	 */
-	public default Iterable<N> roots() {
+	public default Collection<N> roots() {
 		List<N> result = new ArrayList<>(nNodes());
 		for (N n:nodes())
 			if (n.isRoot())
 				result.add(n);
-		return result;
+		return Collections.unmodifiableCollection(result);
 	}
 	
 	/**

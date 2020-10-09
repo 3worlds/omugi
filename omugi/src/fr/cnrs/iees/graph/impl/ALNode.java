@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -188,34 +189,34 @@ public class ALNode extends ElementAdapter implements Node {
 	}
 
 	@Override
-	public Iterable<? extends ALEdge> edges(Direction direction) {
-		return edges.get(direction);
+	public Collection<? extends ALEdge> edges(Direction direction) {
+		return Collections.unmodifiableCollection(edges.get(direction));
 	}
 
 	@Override
-	public Iterable<? extends Edge> edges() {
+	public Collection<? extends Edge> edges() {
 		Set<Edge> result = new HashSet<>();
 		result.addAll(edges.get(Direction.IN));
 		result.addAll(edges.get(Direction.OUT));
-		return result;
+		return Collections.unmodifiableCollection(result);
 	}
 
 	@Override
-	public Iterable<? extends Node> nodes(Direction direction) {
+	public Collection<? extends Node> nodes(Direction direction) {
 		List<Node> list = new LinkedList<>();
 		for (ALEdge e:edges.get(direction)) 
 			list.add(e.otherNode(this));
-		return list;
+		return Collections.unmodifiableCollection(list);
 	}
 
 	@Override
-	public Iterable<? extends Node> nodes() {
+	public Collection<? extends Node> nodes() {
 		Set<Node> list = new HashSet<>();
 		for (ALEdge e:edges.get(Direction.IN))
 			list.add(e.startNode());
 		for (ALEdge e:edges.get(Direction.OUT))
 			list.add(e.endNode());
-		return list;
+		return Collections.unmodifiableCollection(list);
 	}
 
 	@Override
@@ -241,7 +242,7 @@ public class ALNode extends ElementAdapter implements Node {
 
 	
 	@Override
-	public void connectTo(Direction direction, Iterable<? extends Node> nodes) {
+	public void connectTo(Direction direction, Collection<? extends Node> nodes) {
 		for (Node n:nodes)
 			connectTo(direction,n);
 	}

@@ -236,15 +236,15 @@ class ALNodeTest {
 	@Test
 	void testToString() {
 		show("testToString",n4.toString());
-		assertTrue(n4.toString().contains(e5.id().toString()));
+		assertTrue(n4.toString().contains(n3.id().toString()));
 	}
 
 	@Test
 	void testToDetailedString() {
 		show("testToDetailedString",n2.toDetailedString());
 		assertTrue(n2.toDetailedString().contains(e4.startNode().id().toString()));
-		assertTrue(n2.toDetailedString().contains(e3.id().toString()));
-		assertFalse(n2.toDetailedString().contains(e5.id().toString()));
+		assertTrue(n2.toDetailedString().contains(n1.id().toString()));
+		assertFalse(n2.toDetailedString().contains(n4.id().toString()));
 	}
 
 	@Test

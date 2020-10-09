@@ -58,7 +58,7 @@ class ValidPropertyTypesTest {
 	@Test
 	void testIsValid() {
 		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertFalse(ValidPropertyTypes.isValid("double"));
+		assertTrue(ValidPropertyTypes.isValid("double"));
 	}
 
 	@Test

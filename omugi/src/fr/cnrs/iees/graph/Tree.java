@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
+import java.util.Collection;
+
 import fr.ens.biologie.generic.Textable;
 
 /**
@@ -49,8 +51,8 @@ public interface Tree<N extends TreeNode> extends NodeSet<N>, Textable {
 	public N root();
 	
 	@SuppressWarnings("unchecked")
-	public default Iterable<N> subTree(N node) {
-		return (Iterable<N>) node.subTree();
+	public default Collection<N> subTree(N node) {
+		return (Collection<N>) node.subTree();
 	}
 
 	public void onParentChanged();

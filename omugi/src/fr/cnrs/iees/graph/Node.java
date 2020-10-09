@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -83,26 +84,26 @@ public interface Node extends Element, Connected<Node> {
 	 * @param direction the direction (IN or OUT)
 	 * @return an immutable list of edges matching the direction
 	 */
-	public Iterable<? extends Edge> edges(Direction direction);
+	public Collection<? extends Edge> edges(Direction direction);
 	
 	/**
 	 * Read-only accessor to all edges.
 	 * @return an immutable list of edges 
 	 */
-	public Iterable<? extends Edge> edges(); 
+	public Collection<? extends Edge> edges(); 
 	
 	/**
 	 * Read-only accessor to the nodes connected to this node, following direction.
 	 * @param direction the direction (IN or OUT)
 	 * @return an immutable list of nodes matching the direction
 	 */
-	public Iterable<? extends Node> nodes(Direction direction);
+	public Collection<? extends Node> nodes(Direction direction);
 	
 	/**
 	 * Read-only accessor to all nodes connected to this node.
 	 * @return an immutable list of nodes
 	 */
-	public Iterable<? extends Node> nodes();
+	public Collection<? extends Node> nodes();
 
 	/**
 	 * connects this node to end and return the resulting edge (will create an edge).
@@ -143,7 +144,7 @@ public interface Node extends Element, Connected<Node> {
 	 * connects this node to a list of other nodes, with this node = start of the resulting edges.
 	 * @param nodes the list of nodes to connect to.
 	 */
-	public default void connectTo(Iterable<? extends Node> nodes) {
+	public default void connectTo(Collection<? extends Node> nodes) {
 		connectTo(Direction.OUT,nodes);
 	}
 	
@@ -152,7 +153,7 @@ public interface Node extends Element, Connected<Node> {
 	 * @param direction the direction in which to connect to the nodes
 	 * @param nodes the list of nodes to connect to.
 	 */
-	public void connectTo(Direction direction, Iterable<? extends Node> nodes);
+	public void connectTo(Direction direction, Collection<? extends Node> nodes);
 	
 	/**
 	 * accessor to the graph which instantiated this node
@@ -224,14 +225,14 @@ public interface Node extends Element, Connected<Node> {
 	public default Collection<? extends Node> traversal(int distance) {
 		List<Node> result = new LinkedList<Node>(); 
 		traversal(result,this,distance);
-		return result;
+		return Collections.unmodifiableCollection(result);
 	}
 
 	@Override
 	public default Collection<? extends Node> traversal(int distance, Direction direction) {
 		List<Node> result = new LinkedList<Node>(); 
 		traversal(result,this,distance,direction);
-		return result;
+		return Collections.unmodifiableCollection(result);
 	}
 	
 	@Override

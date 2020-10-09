@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
+import java.util.Collection;
+
 import fr.ens.biologie.generic.Textable;
 
 /**
@@ -50,7 +52,7 @@ public interface EdgeSet<E extends Edge>  extends Textable {
 	 * Read-only accessor to all Edges
 	 * @return an Iterable of all Edges
 	 */
-	public Iterable<E> edges();
+	public Collection<E> edges();
 
 	/**
 	 * The edge factory used to instantiate edges for this graph.

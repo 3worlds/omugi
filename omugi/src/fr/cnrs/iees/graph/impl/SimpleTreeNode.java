@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -109,38 +110,38 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	}
 
 	@Override
-	public Iterable<? extends Edge> edges(Direction direction) {
+	public Collection<? extends Edge> edges(Direction direction) {
 		throw new OmugiException("A TreeNode has no edge");
 	}
 
 	@Override
-	public Iterable<? extends Edge> edges() {
+	public Collection<? extends Edge> edges() {
 		throw new OmugiException("A TreeNode has no edge");
 	}
 
 	@Override
-	public Iterable<? extends Node> nodes(Direction direction) {
+	public Collection<? extends Node> nodes(Direction direction) {
 		switch (direction) {
 		case IN:
 			List<TreeNode> l = new LinkedList<>();
 			if (parent != null)
 				l.add(parent);
-			return l;
+			return Collections.unmodifiableCollection(l);
 		case OUT:
-			return children;
+			return Collections.unmodifiableCollection(children);
 		}
 		return null;
 	}
 
 	@Override
-	public Iterable<? extends Node> nodes() {
+	public Collection<? extends Node> nodes() {
 		if (parent == null)
-			return children;
+			return Collections.unmodifiableCollection(children);
 		else {
 			List<TreeNode> l = new LinkedList<>();
 			l.addAll(children);
 			l.add(parent);
-			return l;
+			return Collections.unmodifiableCollection(l);
 		}
 	}
 
@@ -159,7 +160,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	}
 
 	@Override
-	public void connectTo(Direction direction, Iterable<? extends Node> nodes) {
+	public void connectTo(Direction direction, Collection<? extends Node> nodes) {
 		throw new OmugiException("connectTo has no effect on TreeNodes - use connectParent or connectChildren instead");
 	}
 
@@ -248,14 +249,14 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	public Collection<? extends Node> traversal(int distance) {
 		Collection<TreeNode> list = new LinkedList<>();
 		list = traversal(list, this, distance);
-		return list;
+		return Collections.unmodifiableCollection(list);
 	}
 
 	@Override
 	public Collection<? extends Node> traversal(int distance, Direction direction) {
 		Collection<TreeNode> list = new LinkedList<>();
 		list = traversal(list, this, distance, direction);
-		return list;
+		return Collections.unmodifiableCollection(list);
 	}
 
 	// TreeNode
@@ -266,8 +267,8 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	}
 
 	@Override
-	public Iterable<? extends TreeNode> getChildren() {
-		return children;
+	public Collection<? extends TreeNode> getChildren() {
+		return Collections.unmodifiableCollection(children);
 	}
 
 	@Override

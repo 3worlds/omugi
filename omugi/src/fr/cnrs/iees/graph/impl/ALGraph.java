@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import au.edu.anu.rscs.aot.collections.QuickListOfLists;
@@ -65,16 +67,16 @@ public class ALGraph<N extends ALNode,E extends ALEdge> implements Graph<N,E> {
 	}
 
 	@Override
-	public Iterable<N> nodes() {
-		return nodes.values();
+	public Collection<N> nodes() {
+		return Collections.unmodifiableCollection(nodes.values());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<E> edges() {
+	public Collection<E> edges() {
 		QuickListOfLists<E> edges = new QuickListOfLists<>();
 		for (ALNode n:nodes.values())
-			edges.addList((Iterable<E>) n.edges(Direction.OUT));
+			edges.addList((Collection<E>)n.edges(Direction.OUT));
 		return edges;
 	}
 
@@ -113,7 +115,7 @@ public class ALGraph<N extends ALNode,E extends ALEdge> implements Graph<N,E> {
 		nodes.remove(node.id());		
 	}
 	
-	protected static int countEdges(Iterable<? extends ALNode> nodes) {
+	protected static int countEdges(Collection<? extends ALNode> nodes) {
 		int n=0;
 		for (ALNode node:nodes)
 			n += node.degree(Direction.OUT);

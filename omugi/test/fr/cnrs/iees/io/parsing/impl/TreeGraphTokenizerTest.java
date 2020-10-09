@@ -81,7 +81,10 @@ class TreeGraphTokenizerTest {
 		TreeGraphTokenizer tk = new TreeGraphTokenizer(test);
 		tk.tokenize();
 		System.out.println(tk.toString());
-		assertEquals(tk.toString(),"0 LABEL:3Worlds\n" + 
+		assertEquals(tk.toString(),"1 PROPERTY_NAME:prop\n" +
+				"1 PROPERTY_TYPE:String\n" +
+				"1 PROPERTY_VALUE:dsjfbsk\n" +
+				"0 LABEL:3Worlds\n" + 
 				"0 NAME:\n" + 
 				"1 LABEL:ecology\n" + 
 				"1 NAME:my model\n" + 

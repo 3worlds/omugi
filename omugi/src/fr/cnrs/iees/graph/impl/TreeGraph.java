@@ -31,6 +31,8 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,13 +77,13 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	}
 	
 	@Override
-	public Iterable<N> nodes() {
-		return nodes.values();
+	public Collection<N> nodes() {
+		return Collections.unmodifiableCollection(nodes.values());
 	}
 
 	@Override
-	public Iterable<N> roots() {
-		return roots;
+	public Collection<N> roots() {
+		return Collections.unmodifiableCollection(roots);
 	}
 
 	@Override
@@ -120,10 +122,10 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<E> edges() {
+	public Collection<E> edges() {
 		QuickListOfLists<E> edges = new QuickListOfLists<>();
 		for (N n:nodes.values())
-			edges.addList((Iterable<E>) n.edges(Direction.OUT));
+			edges.addList((Collection<E>) n.edges(Direction.OUT));
 		return edges;
 	}
 
@@ -153,10 +155,10 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	}
 	
 	@Override
-	public Iterable<N> subTree(N node) {
+	public Collection<N> subTree(N node) {
 		List<N> result = new LinkedList<>();
 		addToTree(result,node);
-		return result;
+		return Collections.unmodifiableCollection(result);
 	}
 
 	// Caution: different code from SimpleTree

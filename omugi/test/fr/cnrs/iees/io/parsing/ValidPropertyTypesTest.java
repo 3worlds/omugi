@@ -64,7 +64,7 @@ class ValidPropertyTypesTest {
 
 	@Test
 	final void testGetDefaultValue() {
-		assertEquals(getDefaultValue("StringTable").toString(),"{[1],}");
+		assertEquals(getDefaultValue("StringTable").toString(),"([1]\"\")");
 		assertEquals(getDefaultValue("Long"),0L);
 		assertEquals(getDefaultValue("double"),0.0);
 		assertEquals(getDefaultValue("IntegerRange").toString(),"MIN_INTEGER..*");

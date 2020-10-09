@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public interface TreeNode extends Node {
 	 * Gets the children nodes.
 	 * @return the list of children nodes.
 	 */
-	public Iterable<? extends TreeNode> getChildren();
+	public Collection<? extends TreeNode> getChildren();
 	
 	/**
 	 * Adds a node as a child. CAUTION: no consistency checks! this is the
@@ -73,11 +74,6 @@ public interface TreeNode extends Node {
 			connectChild(child);
 	}
 	
-	public default void connectChildren(Iterable<? extends TreeNode> children) {
-		for (TreeNode child:children)
-			connectChild(child);
-	}
-
 	public default void connectChildren(Collection<? extends TreeNode> children) {
 		for (TreeNode child:children)
 			connectChild(child);
@@ -103,10 +99,10 @@ public interface TreeNode extends Node {
 	 * 
 	 * @return the subtree starting at this node (=this node + all its children's children)
 	 */
-	public default Iterable<? extends TreeNode> subTree() {
+	public default Collection<? extends TreeNode> subTree() {
 		List<TreeNode> result = new LinkedList<TreeNode>();
 		subTree(result,this);
-		return result;
+		return Collections.unmodifiableCollection(result);
 	}
 	
 }

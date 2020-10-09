@@ -31,6 +31,8 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,13 +65,13 @@ public class SimpleTree<N extends TreeNode> implements Tree<N> {
 	}
 
 	@Override
-	public Iterable<N> nodes() {
-		return nodes.values();
+	public Collection<N> nodes() {
+		return Collections.unmodifiableCollection(nodes.values());
 	}
 
 	@Override
-	public Iterable<N> roots() {
-		return roots;
+	public Collection<N> roots() {
+		return Collections.unmodifiableCollection(roots);
 	}
 
 	@Override

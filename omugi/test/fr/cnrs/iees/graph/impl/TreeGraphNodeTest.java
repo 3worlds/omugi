@@ -32,6 +32,7 @@ package fr.cnrs.iees.graph.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -144,7 +145,7 @@ class TreeGraphNodeTest {
 		List<TreeNode> l = new LinkedList<>();
 		l.add(n5);
 		l.add(n6);
-		n1.connectChildren((Iterable<TreeNode>)l);
+		n1.connectChildren((Collection<TreeNode>)l);
 		assertEquals(n5.getParent(),n1);
 		assertEquals(n6.getParent(),n1);
 		assertEquals(n1.nChildren(),4);

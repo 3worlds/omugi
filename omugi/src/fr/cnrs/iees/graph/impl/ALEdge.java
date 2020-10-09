@@ -31,6 +31,7 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -113,7 +114,7 @@ public class ALEdge extends ElementAdapter implements Edge {
 		Set<Node> result = new HashSet<Node>();
 		result.addAll(result1);
 		result.addAll(result2);
-		return result;
+		return Collections.unmodifiableCollection(result);
 	}
 
 	@Override

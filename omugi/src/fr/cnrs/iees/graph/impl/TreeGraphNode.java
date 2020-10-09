@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -108,8 +110,8 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	}
 
 	@Override
-	public Iterable<? extends TreeNode> getChildren() {
-		return children;
+	public Collection<? extends TreeNode> getChildren() {
+		return Collections.unmodifiableCollection(children);
 	}
 
 	@Override
@@ -130,13 +132,14 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<? extends Node> nodes() {
-		Set<Node> list = (Set<Node>) super.nodes();
+	public Collection<? extends Node> nodes() {
+		Set<Node> list = new HashSet<>();
+		list.addAll(super.nodes());
 		if (!children.isEmpty())
-				list.addAll(children);
+			list.addAll(children);
 		if (parent!=null) 
 			list.add(parent);
-		return list;
+		return Collections.unmodifiableCollection(list);
 	}
 	
 	/**
@@ -145,7 +148,7 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	 * the more specific getParent() and getChildren() methods.
 	 */
 	@Override
-	public Iterable<? extends Node> nodes(Direction direction) {
+	public Collection<? extends Node> nodes(Direction direction) {
 		Set<Node> list = new HashSet<>();
 		for (ALEdge e:edges.get(direction)) 
 			list.add(e.otherNode(this));
@@ -158,7 +161,7 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 			list.addAll(children);
 			break;
 		}
-		return list;
+		return Collections.unmodifiableCollection(list);
 	}
 
 	/**
@@ -212,15 +215,7 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 		// disconnect from cross-links
 		super.disconnectFrom(node);
 	}
-	
-	
-	// CAUTION: this method CANNOT disconnect parent or children !!! only edge-related nodes
-//	@Override
-//	public void disconnectFrom(Direction direction, Node node) {
-//		// disconnect from cross-links
-//		super.disconnectFrom(direction,node);
-//	}
-	
+		
 	@Override
 	public final void disconnect() {
 		// disconnect from tree
