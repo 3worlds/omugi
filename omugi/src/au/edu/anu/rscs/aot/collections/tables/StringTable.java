@@ -2,16 +2,16 @@
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
  *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
- *       shayne.flint@anu.edu.au                                          * 
+ *       shayne.flint@anu.edu.au                                          *
  *       jacques.gignoux@upmc.fr                                          *
- *       ian.davies@anu.edu.au                                            * 
+ *       ian.davies@anu.edu.au                                            *
  *                                                                        *
  *  OMUGI is an API to implement graphs, as described by graph theory,    *
  *  but also as more commonly used in computing - e.g. dynamic graphs.    *
  *  It interfaces with JGraphT, an API for mathematical graphs, and       *
  *  GraphStream, an API for visual graphs.                                *
  *                                                                        *
- **************************************************************************                                       
+ **************************************************************************
  *  This file is part of OMUGI (One More Ultimate Graph Implementation).  *
  *                                                                        *
  *  OMUGI is free software: you can redistribute it and/or modify         *
@@ -22,7 +22,7 @@
  *  OMUGI is distributed in the hope that it will be useful,              *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *  GNU General Public License for more details.                          *                         
+ *  GNU General Public License for more details.                          *
  *                                                                        *
  *  You should have received a copy of the GNU General Public License     *
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
@@ -192,15 +192,13 @@ public class StringTable extends TableAdapter {
 				if (c == isep[TABLEix]) {
 					if (n == result.flatSize - 1)
 						throw new OmugiException("Too many values read: table size == " + result.flatSize);
-//					result.data[n++] = sb.toString().trim();
-					result.data[n++] = sb.toString();
+					result.data[n++] = sb.toString().trim();
 					sb = new StringBuilder();
 				} else
 					sb.append(c);
 			}
 		}
-//		result.data[n++] = sb.toString().trim();
-		result.data[n++] = sb.toString();
+		result.data[n++] = sb.toString().trim();
 		return result;
 	}
 
