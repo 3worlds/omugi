@@ -55,6 +55,7 @@ class StringTableTest {
 		char[] isep = new char[2];
 		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
 		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
+		
 		StringTable st = StringTable.valueOf(value,bdel,isep);
 		System.out.println("example 1 : value \'"+value+"\' read as \'"+st+"\'");
 		assertNotNull(st);
@@ -82,8 +83,14 @@ class StringTableTest {
 		
 		value = "([4]a,b, \"c\" , \"d\")";
 		st = StringTable.valueOf(value);
-		System.out.println("example 5 : value \'"+value+"\' read as \'"+st+"\'");
+		System.out.println("example 5 : value \'"+value+"\' saveable as \'"+st.toSaveableString(bdel,isep)+"\'");
 		assertNotNull(st);
+		
+		value = "([2]\"\ta\t\",\" b \")";
+		st = StringTable.valueOf(value);
+		System.out.println("example 6 : value \'"+value+"\' saveable as \'"+st.toSaveableString(bdel,isep)+"\'");
+		assertNotNull(st);
+	
 	}
 
 }

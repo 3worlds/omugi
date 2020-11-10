@@ -170,6 +170,7 @@ public class StringTable extends TableAdapter {
 	public static StringTable valueOf(String value) {
 		return StringTable.valueOf(value, getStandardDelimiters(), getStandardSeparators());
 	}
+
 	public static StringTable valueOf(String value, char[][] bdel, char[] isep) {
 		value = value.trim();
 		if ((value == null) || value.isBlank() || value.isEmpty())
@@ -189,16 +190,16 @@ public class StringTable extends TableAdapter {
 			else if (inquote)
 				sb.append(c);
 			else if (!inquote) {
-				if (c == isep[TABLEix]) {
+				if (c == isep[TABLEix]) { 
 					if (n == result.flatSize - 1)
 						throw new OmugiException("Too many values read: table size == " + result.flatSize);
-					result.data[n++] = sb.toString().trim();
+					result.data[n++] = sb.toString();
 					sb = new StringBuilder();
-				} else
+				} else if (!Character.isWhitespace(c))// ignore white space when outside quotes
 					sb.append(c);
 			}
 		}
-		result.data[n++] = sb.toString().trim();
+		result.data[n++] = sb.toString();
 		return result;
 	}
 
@@ -242,7 +243,7 @@ public class StringTable extends TableAdapter {
 
 		StringTable t = StringTable.valueOf(s, getStandardDelimiters(), getStandardSeparators());
 
-		String ss = t.toSaveableString( getStandardDelimiters(),  getStandardSeparators());
+		String ss = t.toSaveableString(getStandardDelimiters(), getStandardSeparators());
 
 		System.out.println(ss);
 	}
