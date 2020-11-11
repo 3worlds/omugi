@@ -35,6 +35,9 @@ import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_ITEM_SEPARATOR;
 import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_BLOCK_DELIMITERS;
 import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_ITEM_SEPARATOR;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.DataContainer;
 
@@ -190,7 +193,7 @@ public class StringTable extends TableAdapter {
 			else if (inquote)
 				sb.append(c);
 			else if (!inquote) {
-				if (c == isep[TABLEix]) { 
+				if (c == isep[TABLEix]) {
 					if (n == result.flatSize - 1)
 						throw new OmugiException("Too many values read: table size == " + result.flatSize);
 					result.data[n++] = sb.toString();
@@ -202,6 +205,7 @@ public class StringTable extends TableAdapter {
 		result.data[n++] = sb.toString();
 		return result;
 	}
+
 
 	@Override
 	public String toSaveableString(char[][] bdel, char[] isep) {

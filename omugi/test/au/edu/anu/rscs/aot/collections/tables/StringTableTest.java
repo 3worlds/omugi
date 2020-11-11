@@ -88,7 +88,7 @@ class StringTableTest {
 		
 		value = "([2]\"\ta\t\",\" b \")";
 		st = StringTable.valueOf(value);
-		System.out.println("example 6 : value \'"+value+"\' saveable as \'"+st.toSaveableString(bdel,isep)+"\'");
+		System.out.println("6. test white space:\tvalue \'"+value+"\' saveable as \'"+st.toSaveableString(bdel,isep)+"\'");
 		assertNotNull(st);
 	
 	}
