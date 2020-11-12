@@ -30,6 +30,7 @@
  **************************************************************************/
 package au.edu.anu.rscs.aot.collections.tables;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -49,48 +50,54 @@ class StringTableTest {
 	@Test
 	final void testValueOf() {
 		String value = "([4]\"a\", \"table[0,2:3][][0,2][-1]\", \"zer\" , \"12\")";
-		char[][] bdel = new char[2][2];
-		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
-		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
-		char[] isep = new char[2];
-		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
-		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
-		
-		StringTable st = StringTable.valueOf(value,bdel,isep);
-		System.out.println("example 1 : value \'"+value+"\' read as \'"+st+"\'");
+		StringTable st = StringTable.valueOf(value);
 		assertNotNull(st);
+		assertEquals("([4]\"a\",\"table[0,2:3][][0,2][-1]\",\"zer\",\"12\")",st.toSaveableString());
+		System.out.println("example 1:\t\'"+value+"\' read as \'"+st.toSaveableString()+"\'");
+		// round trip test
+		value = st.toSaveableString();
+		st = StringTable.valueOf(value);
+		assertNotNull(st);
+		System.out.println("example 1a:\t\'"+value+"\' read as \'"+st.toSaveableString()+"\'");
+		
 		
 		value = "";
-		st = StringTable.valueOf(value, bdel, isep);
+		st = StringTable.valueOf(value);
 		System.out.println("example 2 : value \'"+value+"\' read as \'"+st+"\'");
 		assertNull(st);
 
 		// This throws an exception because the dimension is wrong
-		assertThrows(OmugiException.class,()->StringTable.valueOf("([2]a,b,c,d)", bdel, isep));
+		assertThrows(OmugiException.class,()->StringTable.valueOf("([2]a,b,c,d)"));
 		
 		value="([3]a,\"b,c\",d)";
-		st = StringTable.valueOf(value, bdel, isep);
-		System.out.println("example 3 : value \'"+value+"\' read as \'"+st+"\'");
+		st = StringTable.valueOf(value);
+		System.out.println("example 3 : value \'"+value+"\' read as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
 		
-		value = st.toSaveableString(bdel,isep);
-		st = StringTable.valueOf(value, bdel, isep);
-		System.out.println("example 4 : value \'"+value+"\' read as \'"+st+"\'");
+		value = st.toSaveableString();
+		st = StringTable.valueOf(value);
+		System.out.println("example 4 : value \'"+value+"\' read as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
 		
 		// This throws an exception because the table separators in the second element are not quoted
-		assertThrows(OmugiException.class,()->StringTable.valueOf("([4]\"a\", table[0,2:3][][0,2][-1], \"zer\" , \"12\")", bdel, isep));
+		assertThrows(OmugiException.class,()->StringTable.valueOf("([4]\"a\", table[0,2:3][][0,2][-1], \"zer\" , \"12\")"));
 		
 		value = "([4]a,b, \"c\" , \"d\")";
 		st = StringTable.valueOf(value);
-		System.out.println("example 5 : value \'"+value+"\' saveable as \'"+st.toSaveableString(bdel,isep)+"\'");
+		System.out.println("example 5 : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
 		
 		value = "([2]\"\ta\t\",\" b \")";
 		st = StringTable.valueOf(value);
-		System.out.println("6. test white space:\tvalue \'"+value+"\' saveable as \'"+st.toSaveableString(bdel,isep)+"\'");
+		System.out.println("example 6 : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
-	
+		
+		// Try this one day:
+		value = "([1]\"System.out.println(\",\");\")";
+		System.out.println("TODO:\t" +value);
+		final String v = value;
+		assertThrows(OmugiException.class,()->StringTable.valueOf(v));
+		
 	}
 
 }

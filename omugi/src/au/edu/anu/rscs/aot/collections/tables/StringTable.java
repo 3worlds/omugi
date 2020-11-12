@@ -206,6 +206,10 @@ public class StringTable extends TableAdapter {
 		return result;
 	}
 
+	@Override
+	public String toSaveableString() {
+		return toSaveableString(getStandardDelimiters(), getStandardSeparators());
+	}
 
 	@Override
 	public String toSaveableString(char[][] bdel, char[] isep) {
