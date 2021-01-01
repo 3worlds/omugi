@@ -171,7 +171,7 @@ public class StringTable extends TableAdapter {
 	}
 
 	public static StringTable valueOf(String value) {
-		return StringTable.valueOf(value, getStandardDelimiters(), getStandardSeparators());
+		return StringTable.valueOf(value, Table.getDefaultDelimiters(), Table.getDefaultSeparators());
 	}
 
 	public static StringTable valueOf(String value, char[][] bdel, char[] isep) {
@@ -208,7 +208,7 @@ public class StringTable extends TableAdapter {
 
 	@Override
 	public String toSaveableString() {
-		return toSaveableString(getStandardDelimiters(), getStandardSeparators());
+		return toSaveableString(Table.getDefaultDelimiters(), Table.getDefaultSeparators());
 	}
 
 	@Override
@@ -226,32 +226,13 @@ public class StringTable extends TableAdapter {
 		return sb.toString();
 	}
 
-	public static char[] getStandardSeparators() {
-		char[] isep = new char[2];
-		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
-		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
-		return isep;
-	}
-
-	public static char[][] getStandardDelimiters() {
-		char[][] bdel = new char[2][2];
-		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
-		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
-		return bdel;
-	}
 
 	public static void main(String[] args) {
 		String s = "([1]\"hel =) _()*^* lo\")";
-//		char[][] bdel = new char[2][2];
-//		char[] isep = new char[2];
-//		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
-//		bdel[Table.TABLEix] = TABLE_BLOCK_DELIMITERS;
-//		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
-//		isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
 
-		StringTable t = StringTable.valueOf(s, getStandardDelimiters(), getStandardSeparators());
+		StringTable t = StringTable.valueOf(s, Table.getDefaultDelimiters(), Table.getDefaultSeparators());
 
-		String ss = t.toSaveableString(getStandardDelimiters(), getStandardSeparators());
+		String ss = t.toSaveableString(Table.getDefaultDelimiters(), Table.getDefaultSeparators());
 
 		System.out.println(ss);
 	}

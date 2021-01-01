@@ -37,6 +37,7 @@ import java.util.Arrays;
 /** modified by JG 1/10/2018 to account for Textable interface */
 
 // notice that by construct T cannot be primitive
+@Deprecated // unfinished/flawed
 public class ObjectTable<T> extends TableAdapter {
 
 	protected Object[] data;
