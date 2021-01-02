@@ -212,7 +212,10 @@ public abstract class TableAdapter implements Table {
 		sb.append(bdel[TABLEix][BLOCK_CLOSE]);
 		return sb.toString();
 	}
-				
+	@Override
+	public String toSaveableString() {
+		return toSaveableString(Table.getDefaultDelimiters(),Table.getDefaultSeparators());
+	}
 //	public String toString(int[] indexes) {
 //		StringBuilder sb = new StringBuilder(1024);
 ////		String result = "[" + indexes[0];

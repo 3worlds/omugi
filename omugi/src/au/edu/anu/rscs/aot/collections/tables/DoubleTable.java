@@ -137,6 +137,11 @@ public class DoubleTable extends TableAdapter {
 		return Double.class;
 	}
 
+//	@Override
+//	public String toSaveableString() {
+//		return toSaveableString(Table.getDefaultDelimiters(), Table.getDefaultSeparators());
+//	}
+
 	public static DoubleTable valueOf(String value) {
 		return DoubleTable.valueOf(value, Table.getDefaultDelimiters(), Table.getDefaultSeparators());
 	}
