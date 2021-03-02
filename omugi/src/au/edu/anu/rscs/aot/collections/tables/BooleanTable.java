@@ -154,5 +154,8 @@ public class BooleanTable extends TableAdapter {
 		return result;
 	}
 
+	public static BooleanTable valueOf(String value) {
+		return valueOf(value,Table.getDefaultDelimiters(),Table.getDefaultSeparators());
+	}
 	
 }

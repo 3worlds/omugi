@@ -30,44 +30,52 @@
  **************************************************************************/
 package au.edu.anu.rscs.aot.collections.tables;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+
+import fr.cnrs.iees.OmugiException;
 
 /** intial code from Shayne */
 /** modified by JG 15/2/2017 to account for Table and DataContainer interfaces */
 /** modified by JG 1/10/2018 to account for Textable interface */
 
 // notice that by construct T cannot be primitive
-@Deprecated // unfinished/flawed
 public class ObjectTable<T> extends TableAdapter {
 
-	protected Object[] data;
-
-	public ObjectTable(Dimensioner... dimensions) {
-		super(dimensions);
-		data = new Object[size()];
-	}
+	protected T[] data;
+	private Class<T> template;
 
 	@SuppressWarnings("unchecked")
+	public ObjectTable(Class<T> contentModel,Dimensioner... dimensions) {
+		super(dimensions);
+		ArrayList<T> d = new ArrayList<>(size());
+		for (int i=0; i<size(); i++)
+			d.add(null);
+		data = (T[]) d.toArray();
+		template = contentModel;
+	}
+
 	public T getByInt(int... indexes) {
-		return (T) data[getFlatIndexByInt(indexes)];
+		return data[getFlatIndexByInt(indexes)];
 	}
 
 	public void setByInt(T value, int... indexes) {
 		data[getFlatIndexByInt(indexes)] = value;
 	}
 
-	@SuppressWarnings("unchecked")
-	public T get(Object... names) {
-		return (T) data[getFlatIndex(names)];
+	public T get(Object... indexes) {
+		return data[getFlatIndex(indexes)];
 	}
 
 	public void set(T value, Object... indexes) {
 		data[getFlatIndex(indexes)] = value;
 	}
 
-	@SuppressWarnings("unchecked")
 	public T getWithFlatIndex(int index) {
-		return (T)data[index];
+		return data[index];
 	}
 
 	public void setWithFlatIndex(T value, int index) {
@@ -83,21 +91,20 @@ public class ObjectTable<T> extends TableAdapter {
 
 	@Override
 	public ObjectTable<T> cloneStructure() {
-		ObjectTable<T> result = new ObjectTable<T>(getDimensioners());
+		ObjectTable<T> result = new ObjectTable<T>(template,getDimensioners());
 		return result;
 	}
 
 	public ObjectTable<T> cloneStructure(T initialValue) {
 		ObjectTable<T> result = cloneStructure();
-//		result.fillWith(initialValue.clone());
-		// CAUTION: THIS IS NOT GOING TO WORK !
 		result.fillWith(initialValue);
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ObjectTable<T> fillWith(Object value) {
-		Arrays.fill(data, value);
+		Arrays.fill(data, (T)value);
 		return this;
 	}
 
@@ -122,60 +129,172 @@ public class ObjectTable<T> extends TableAdapter {
 			for (int i=0; i<data.length; i++)
 				data[i] = ot.data[i];
 		}
-		return null;
+		return this;
 	}
 
-
-	// These will all crash because they maybe null
-	@SuppressWarnings("unchecked")
 	@Override
 	public String elementClassName() {
-		T o = (T) data[0];		
-		return  o.getClass().getName();
+		return data.getClass().getComponentType().getName();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public String elementSimpleClassName() {
-		T o = (T) data[0];		
-		return o.getClass().getSimpleName();
+		return data.getClass().getComponentType().getSimpleName();
 	}
 		
+	// CAUTION: this doesnt work for complex types, ie Duple<Integer,Double> but is ok for simple types
+	// eg Interval. For complex types write a descendant of this class
 	@Override
 	public Class<?> contentType() {
-		for (int i = 0;i<data.length;i++) {
-			if (data[i]!=null)
-				return data[i].getClass();
-		}
-		return null;
+		return template;
 	}
 	
-	// CAUTION! Possible FLAW here!
-//	@Override
-//	public String elementToToken(int flatIndex) {
-//		return data[flatIndex].toString();
-//	}
+	/**
+	 * A valueOf(...) method where data type, value and separators are specified. Maximal protection
+	 * against wrong data types.
+	 * 
+	 * @param contentType
+	 * @param value
+	 * @param bdel
+	 * @param isep
+	 * @return
+	 */
+	public static ObjectTable<?> valueOf(Class<?> contentType, String value, char[][] bdel, char[] isep) {
+		// get data string
+		String ss = TableAdapter.getBlockContent(value,bdel[TABLEix]);
+		// get dimension string
+		String d = ss.substring(0,ss.indexOf(bdel[DIMix][BLOCK_CLOSE])+1);
+		Constructor<?> cons;
+		try {
+			cons = ObjectTable.class.getDeclaredConstructor(Dimensioner[].class);
+			ObjectTable<?> result;
+			try {
+				// instantiate ObjectTable for the return value
+				result = (ObjectTable<?>) cons.newInstance((Object[])readDimensioners(d,bdel[DIMix],isep[DIMix]));
+				// check the result content type is the same as the argument 
+				if (result.contentType().equals(contentType)) {
+					Method vlof;
+					try {
+						// check the content type has a valueOf method
+						vlof = result.contentType().getMethod("valueOf",String.class);
+						ss = ss.substring(ss.indexOf(bdel[DIMix][BLOCK_CLOSE])+1); 
+						String s = null;
+						int i=0;
+						try {
+							// use content type valueOf to read data
+							while (ss.indexOf(isep[TABLEix])>0) {
+								s = ss.substring(0,ss.indexOf(isep[TABLEix]));
+								ss = ss.substring(ss.indexOf(isep[TABLEix])+1);
+									vlof.invoke(result.data[i],s);
+								i++;
+							}
+							vlof.invoke(result.data[i],ss);
+						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+							throw new OmugiException("Wrong data format for valueOf(String) method in class '"
+								+contentType.getSimpleName()+"'",e);
+						}
+					} catch (NoSuchMethodException | SecurityException e1) {
+						throw new OmugiException("'"+result.contentType().getSimpleName()
+							+"' lacks a proper valueOf(String) method",e1);				
+					}
+					return result;
+				}
+				else
+					throw new OmugiException("'"+value+"' cannot be read in an ObjectTable<"
+						+contentType.getSimpleName()+">: '"
+						+result.contentType().getSimpleName()
+						+"' content type found");
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e2) {
+				// I don't see how we could get here - wrong constructor in a descendant class, maybe?
+				e2.printStackTrace();
+			}
+		} catch (NoSuchMethodException | SecurityException e2) {
+			// NB: we should never reach here if ObjectTable constructor is valid
+			e2.printStackTrace();
+		}
+		return null; // just in case
+	}
+	
+	/**
+	 * A valueOf(...) method where data value and separators are specified. Data type is assumed
+	 * to match that of the table.
+	 * 
+	 * @param value
+	 * @param bdel
+	 * @param isep
+	 * @return
+	 */
+	public static ObjectTable<?> valueOf(String value, char[][] bdel, char[] isep) {
+		// get data string
+		String ss = TableAdapter.getBlockContent(value,bdel[TABLEix]);
+		// get dimension string
+		String d = ss.substring(0,ss.indexOf(bdel[DIMix][BLOCK_CLOSE])+1);
+		Constructor<?> cons;
+		try {
+			cons = ObjectTable.class.getDeclaredConstructor(Dimensioner[].class);
+			ObjectTable<?> result;
+			try {
+				// instantiate ObjectTable for the return value
+				result = (ObjectTable<?>) cons.newInstance((Object[])readDimensioners(d,bdel[DIMix],isep[DIMix]));
+				Method vlof;
+				try {
+					// check the content type has a valueOf method
+					vlof = result.contentType().getMethod("valueOf",String.class);
+					ss = ss.substring(ss.indexOf(bdel[DIMix][BLOCK_CLOSE])+1); 
+					String s = null;
+					int i=0;
+					try {
+						// use content type valueOf to read data
+						while (ss.indexOf(isep[TABLEix])>0) {
+							s = ss.substring(0,ss.indexOf(isep[TABLEix]));
+							ss = ss.substring(ss.indexOf(isep[TABLEix])+1);
+								vlof.invoke(result.data[i],s);
+							i++;
+						}
+						vlof.invoke(result.data[i],ss);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						throw new OmugiException("Wrong data format for valueOf(String) method in class '"
+							+result.contentType().getSimpleName()+"'",e);
+					}
+				} catch (NoSuchMethodException | SecurityException e1) {
+					throw new OmugiException("'"+result.contentType().getSimpleName()
+						+"' lacks a proper valueOf(String) method",e1);				
+				}
+				return result;
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e2) {
+				// I don't see how we could get here - wrong constructor in a descendant class, maybe?
+				e2.printStackTrace();
+			}
+		} catch (NoSuchMethodException | SecurityException e2) {
+			// NB: we should never reach here if ObjectTable constructor is valid
+			e2.printStackTrace();
+		}
+		return null; // just in case
+	}
 
-	
-//	// FLAW: this is wrong. s should be converted to ? (using valueOf ?) before being set
-//	// So this means T must be of a class that implements valueOf.
-//	// forget this for the moment, it's probably never going to be used anyway.
-//	public static ObjectTable<?> valueOf(String value) {
-//		String ss = value.substring(1);
-//		String s = null;
-//		String d = ss.substring(1,ss.indexOf("]"));
-//		ObjectTable result = new ObjectTable(readDimensioners(d));
-//		ss = ss.substring(ss.indexOf("]")+2,ss.indexOf("}")); // ] + ,
-//		int i=0;
-//		while (ss.indexOf(",")>0) {
-//			s = ss.substring(0,ss.indexOf(","));
-//			ss = ss.substring(ss.indexOf(",")+1);
-//			result.data[i] = s;
-//			i++;
-//		}
-//		result.data[i] = ss;
-//		return result;
-//	}
-	
+
+	/**
+	 * A valueOf(...) method where data type and value are specified
+	 * 
+	 * @param contentType
+	 * @param value
+	 * @return
+	 */
+	public static ObjectTable<?> valueOf(Class<?> contentType, String value) {
+		return valueOf(contentType,value,Table.getDefaultDelimiters(),Table.getDefaultSeparators());
+	}
+
+	/**
+	 * A valueOf(...) method where only data value is specified
+	 * 
+	 * @param contentType
+	 * @param value
+	 * @return
+	 */
+	public static ObjectTable<?> valueOf(String value) {
+		return valueOf(value,Table.getDefaultDelimiters(),Table.getDefaultSeparators());
+	}
 
 }

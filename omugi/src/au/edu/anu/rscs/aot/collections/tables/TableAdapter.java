@@ -74,34 +74,6 @@ public abstract class TableAdapter implements Table {
 			flatSize = flatSize * dimensioners[i].getLength();
 	}
 
-	// static utilities (for reading from dsl file - used in tokenizer > token.asTable() )
-	//
-	
-//	public static TableAdapter makeTable(NodeList nodeList, String value) {
-//		AotList<Object> elements = new AotList<Object>();
-//		
-//		Tokenizer tokenizer = new Tokenizer(value, Tokenizer.DEFAULT_SYMBOLS + ",");
-//		while (tokenizer.hasNext()) {
-////			elements.add(tokenizer.getTypedValue(nodeList));
-//			elements.add(tokenizer.getTypedValue());
-//			if (tokenizer.isEndOfLine(+1))
-//				return table(elements);;
-//			if (tokenizer.hasNext())
-//				tokenizer.getSymbol(",");
-//		}
-//		return table(elements);
-//	}
-	
-//	// this is flawed ! may cause problems
-//	private static TableAdapter table(AotList<Object> elements) {
-////		JG - temporary fix - 1/10/2018
-//		ObjectTable<Object> result = new ObjectTable<Object>(new Dimensioner(elements.size()));
-////		StringTable result = new StringTable(new Dimensioner(elements.size()));
-//		for (int i=0; i<elements.size(); i++)
-//			result.set(elements.get(i), i);
-//		return result;
-//	}
-
 	// Table methods
 	//
 	
@@ -212,6 +184,7 @@ public abstract class TableAdapter implements Table {
 		sb.append(bdel[TABLEix][BLOCK_CLOSE]);
 		return sb.toString();
 	}
+	
 	@Override
 	public String toSaveableString() {
 		return toSaveableString(Table.getDefaultDelimiters(),Table.getDefaultSeparators());

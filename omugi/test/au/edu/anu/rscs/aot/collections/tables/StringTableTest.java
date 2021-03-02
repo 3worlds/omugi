@@ -37,8 +37,6 @@ import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.OmugiException;
 
-import static fr.cnrs.iees.io.parsing.TextGrammar.*;
-
 /**
  * Example of what could be done to parse StringTables using quotes
  * 
