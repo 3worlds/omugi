@@ -32,11 +32,10 @@ package au.edu.anu.rscs.aot.collections.tables;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.utils.Duple;
 import fr.ens.biologie.generic.utils.Interval;
 
@@ -47,34 +46,34 @@ class ObjectTableTest {
 	private ObjectTable<Interval> intert = null;
 	private ObjectTable<Duple<String,Integer>> dupt = null;
 	
-	private void show(String method, String s) {
-		System.out.println(method+": \""+s+"\"");
-	}
+//	private void show(String method, String s) {
+//		System.out.println(method+": \""+s+"\"");
+//	}
 	
 	@BeforeEach
 	private void init() {
-		intert = new ObjectTable<Interval>(Interval.class,new Dimensioner(4),new Dimensioner(2));
 		inter = Interval.open(1.2,3.5);
 		inter1 = Interval.openToPosInf(0.2);
 		inter2 = Interval.halfOpenSup(12.8, 25.4);
 		inter3 = Interval.toNegInf(0.0);
+		intert = new ObjectTable<Interval>(new Dimensioner(4),new Dimensioner(2));
 		intert.setByInt(inter,0,0);
 		intert.setByInt(inter1,1,0);
 		intert.setByInt(inter2,2,0);
 		intert.setByInt(inter3,3,1);
-//		dupt = new ObjectTable<Duple<String,Integer>>(Duple.class,new Dimensioner(2),new Dimensioner(3));
-//		dup1 = new Duple<>("un",3);
-//		dup2 = new Duple<>("deux",2);
-//		dup3 = new Duple<>("trois",1);
-//		dupt.setByInt(dup1,1,0);
-//		dupt.setByInt(dup2,0,2);
-//		dupt.setByInt(dup3,0,1);
+		dup1 = new Duple<>("un",3);
+		dup2 = new Duple<>("deux",2);
+		dup3 = new Duple<>("trois",1);
+		dupt = new ObjectTable<Duple<String,Integer>>(new Dimensioner(2),new Dimensioner(3));
+		dupt.setByInt(dup1,1,0);
+		dupt.setByInt(dup2,0,2);
+		dupt.setByInt(dup3,0,1);
 	}
 	
 	
 	@Test
 	void testObjectTable() {
-		intert = new ObjectTable<Interval>(Interval.class,new Dimensioner(2),new Dimensioner(3));
+		intert = new ObjectTable<Interval>(new Dimensioner(2),new Dimensioner(3));
 //		show("testObjectTable",intert.toString());
 		assertNotNull(intert);
 		assertEquals(intert.flatSize,6);
@@ -126,7 +125,8 @@ class ObjectTableTest {
 
 	@Test
 	void testElementToString() {
-		fail("Not yet implemented");
+//		show("testElementToString",intert.elementToString(0));
+		assertEquals(intert.elementToString(0),"]1.2,3.5[");
 	}
 
 	@Test
@@ -156,30 +156,15 @@ class ObjectTableTest {
 
 	@Test
 	void testContentType() {
-		intert.clear();
-		// works for non parameterized types
-		show("testContentType",intert.contentType().toString());
-		// doesnt work: always returns 'Object' as a class... instead of 'Duple' or 'Interval'
-	}
-
-	@Test
-	void testValueOfClassOfQStringCharArrayArrayCharArray() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testValueOfStringCharArrayArrayCharArray() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testValueOfClassOfQString() {
-		fail("Not yet implemented");
+		dupt.clear();
+//		show("testContentType",intert.contentType().toString());
+		assertEquals(dupt.contentType().toString(),"class java.lang.Object");
 	}
 
 	@Test
 	void testValueOfString() {
-		fail("Not yet implemented");
+		String s = "([4,2]]1.2,3.5[,null,]0.2,+∞[,null,[12.8,25.4[,null,null,]-∞,0.0])";
+		assertThrows(OmugiException.class,()->ObjectTable.valueOf(s));
 	}
 
 }
