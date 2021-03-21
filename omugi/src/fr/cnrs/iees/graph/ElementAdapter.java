@@ -90,8 +90,11 @@ public abstract class ElementAdapter implements Element {
 	
 	@Override
 	public final String toString() {
-		return "["+toDetailedString()+"]";
+		return "["+toShortString()+"]";
 	}
+//	public final String toString() {
+//		return "["+toDetailedString()+"]";
+//	}
 
 	// Two elements are equal if they have the same id within their scope
 	@Override
