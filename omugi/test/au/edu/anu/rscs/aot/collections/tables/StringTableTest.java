@@ -89,7 +89,43 @@ class StringTableTest {
 		st = StringTable.valueOf(value);
 		System.out.println("example 6 : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
+
+		// tests with null content
+		value = "([1]null)";
+		st = StringTable.valueOf(value);
+		System.out.println("example 7 : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
+		assertNotNull(st);
+		String s = st.getWithFlatIndex(0);
+		assertNull(s);
+		value = "([1]\"\")";
+		st = StringTable.valueOf(value);
+		System.out.println("example 7b : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
+		assertNotNull(st);
+		s = st.getWithFlatIndex(0);
+		assertNull(s);
+		value = "([1])";
+		st = StringTable.valueOf(value);
+		System.out.println("example 7c : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
+		assertNotNull(st);
+		s = st.getWithFlatIndex(0);
+		assertNull(s);
+		value = "([1]\"null\")";
+		st = StringTable.valueOf(value);
+		System.out.println("example 7d : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
+		assertNotNull(st);
+		s = st.getWithFlatIndex(0);
+		assertNull(s);
 		
+		value = "([3]null,douze,)";
+		st = StringTable.valueOf(value);
+		System.out.println("example 8 : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
+		assertNotNull(st);
+		s = st.getWithFlatIndex(0);
+		assertNull(s);
+		s = st.getWithFlatIndex(1);
+		assertNotNull(s);
+
+
 		// Try this one day:
 		value = "([1]\"System.out.println(\",\");\")";
 		System.out.println("TODO:\t" +value);

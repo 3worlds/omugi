@@ -92,8 +92,6 @@ public class IntTable extends TableAdapter {
 	
 	public IntTable fillWith(int value) {
 		Arrays.fill(data, value);
-//		for (int i=0; i<data.length; i++)
-//			data[i] = value;
 		return this;
 	}
 	

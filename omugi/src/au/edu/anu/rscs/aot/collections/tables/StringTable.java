@@ -188,20 +188,25 @@ public class StringTable extends TableAdapter {
 				if (c == isep[TABLEix]) {
 					if (n == result.flatSize - 1)
 						throw new OmugiException("Too many values read: table size == " + result.flatSize);
-					result.data[n++] = sb.toString();
+					// check for null strings
+					String res = sb.toString();
+					if (res.isBlank() | res.isEmpty() | res.equals("null"))
+						result.data[n++] = null;
+					else
+						result.data[n++] = res;
 					sb = new StringBuilder();
 				} else if (!Character.isWhitespace(c))// ignore white space when outside quotes
 					sb.append(c);
 			}
 		}
-		result.data[n++] = sb.toString();
+		// check for null strings
+		String res = sb.toString();
+		if (res.isBlank() | res.isEmpty() | res.equals("null"))
+			result.data[n++] = null;
+		else
+			result.data[n++] = res;
 		return result;
 	}
-
-//	@Override
-//	public String toSaveableString() {
-//		return toSaveableString(Table.getDefaultDelimiters(), Table.getDefaultSeparators());
-//	}
 
 	@Override
 	public String toSaveableString(char[][] bdel, char[] isep) {
@@ -218,14 +223,4 @@ public class StringTable extends TableAdapter {
 		return sb.toString();
 	}
 
-
-	public static void main(String[] args) {
-		String s = "([1]\"hel =) _()*^* lo\")";
-
-		StringTable t = StringTable.valueOf(s, Table.getDefaultDelimiters(), Table.getDefaultSeparators());
-
-		String ss = t.toSaveableString(Table.getDefaultDelimiters(), Table.getDefaultSeparators());
-
-		System.out.println(ss);
-	}
 }
