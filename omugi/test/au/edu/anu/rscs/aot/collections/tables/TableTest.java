@@ -142,4 +142,23 @@ class TableTest {
 			+ "false false false false false false false false false false false false)");
 	}
 	
+	@Test
+	void testEquals() {
+		tb.fillWith(true);
+		BooleanTable tb2 = new BooleanTable(tb.getDimensioners());
+		tb2.fillWith(true);
+		assertTrue(tb.equals(tb2));		
+		tb.setWithFlatIndex(false,5);
+		assertFalse(tb.equals(tb2));
+		StringTable tb3 = new StringTable(tb.getDimensioners());
+		tb3.fillWith("true");
+		assertFalse(tb.equals(tb3));
+		StringTable tb4 = new StringTable(tb.getDimensioners());
+		tb4.fillWith("true");
+		assertTrue(tb4.equals(tb3));
+		tb4.setWithFlatIndex(null, 4);
+		assertFalse(tb4.equals(tb3));
+		assertFalse(tb3.equals(tb4));
+	}
+	
 }

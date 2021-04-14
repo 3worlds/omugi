@@ -255,4 +255,135 @@ public abstract class TableAdapter implements Table {
 		System.out.println(header + " " + toString());
 	}
 	
+	// Object.equals(...) method (and helpers
+	
+	private boolean equalValues(BooleanTable focal, BooleanTable other) {
+		for (int i=0; i<size(); i++)
+			if (focal.getWithFlatIndex(i)!=other.getWithFlatIndex(i))
+				return false;
+		return true;
+	}
+	
+	private boolean equalValues(ByteTable focal, ByteTable other) {
+		for (int i=0; i<size(); i++)
+			if (focal.getWithFlatIndex(i)!=other.getWithFlatIndex(i))
+				return false;
+		return true;
+	}
+
+	private boolean equalValues(CharTable focal, CharTable other) {
+		for (int i=0; i<size(); i++)
+			if (focal.getWithFlatIndex(i)!=other.getWithFlatIndex(i))
+				return false;
+		return true;
+	}
+
+	private boolean equalValues(DoubleTable focal, DoubleTable other) {
+		for (int i=0; i<size(); i++)
+			if (focal.getWithFlatIndex(i)!=other.getWithFlatIndex(i))
+				return false;
+		return true;
+	}
+
+	private boolean equalValues(FloatTable focal, FloatTable other) {
+		for (int i=0; i<size(); i++)
+			if (focal.getWithFlatIndex(i)!=other.getWithFlatIndex(i))
+				return false;
+		return true;
+	}
+
+	private boolean equalValues(IntTable focal, IntTable other) {
+		for (int i=0; i<size(); i++)
+			if (focal.getWithFlatIndex(i)!=other.getWithFlatIndex(i))
+				return false;
+		return true;
+	}
+
+	private boolean equalValues(LongTable focal, LongTable other) {
+		for (int i=0; i<size(); i++)
+			if (focal.getWithFlatIndex(i)!=other.getWithFlatIndex(i))
+				return false;
+		return true;
+	}
+
+	private boolean equalValues(ObjectTable<?> focal, ObjectTable<?> other) {
+		for (int i=0; i<size(); i++) {
+			Object focalValue = focal.getWithFlatIndex(i);
+			Object otherValue = other.getWithFlatIndex(i);
+			if (focalValue==null) {
+				if (otherValue!=null)
+					return false;
+			}
+			else if (!focalValue.equals(otherValue))
+				return false;
+		}
+		return true;
+	}
+
+	private boolean equalValues(ShortTable focal, ShortTable other) {
+		for (int i=0; i<size(); i++)
+			if (focal.getWithFlatIndex(i)!=other.getWithFlatIndex(i))
+				return false;
+		return true;
+	}
+
+	private boolean equalValues(StringTable focal, StringTable other) {
+		for (int i=0; i<size(); i++) {
+			String focalValue = focal.getWithFlatIndex(i);
+			String otherValue = other.getWithFlatIndex(i);
+			if (focalValue==null) {
+				if (otherValue!=null)
+					return false;
+			}
+			else if (!focalValue.equals(otherValue))
+				return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Two tables are equal if they share the same dimensioners (same objects, not only content) and
+	 * all their elements are equal (including possibly null values for StringTables and ObjectTables)
+	 */
+	@Override
+	public final boolean equals(Object obj) {
+		if (obj!=null)
+			if (obj instanceof Table) 
+				// two tables are equal if they are of the same type
+				if (getClass().equals(obj.getClass())){
+			Table table = (Table) obj;
+			if (ndim()==table.ndim()) {
+				boolean sameDims = true;
+				for (int i=0; i<ndim(); i++)
+					// two tables are equal if their dimensioners are equal (ie SAME OBJECTS)
+					sameDims &= (getDimensioners()[i]==table.getDimensioners()[i]);
+				// two tables are equal if they have the same element values
+				if (sameDims) {
+					if (this instanceof DoubleTable)
+						return equalValues((DoubleTable)this,(DoubleTable)table);
+					else if (this instanceof IntTable)
+						return equalValues((IntTable)this,(IntTable)table);
+					else if (this instanceof StringTable)
+						return equalValues((StringTable)this,(StringTable)table);
+					else if (this instanceof BooleanTable)
+						return equalValues((BooleanTable)this,(BooleanTable)table);
+					else if (this instanceof LongTable)
+						return equalValues((LongTable)this,(LongTable)table);
+					else if (this instanceof ShortTable)
+						return equalValues((ShortTable)this,(ShortTable)table);
+					else if (this instanceof ByteTable)
+						return equalValues((ByteTable)this,(ByteTable)table);
+					else if (this instanceof CharTable)
+						return equalValues((CharTable)this,(CharTable)table);
+					else if (this instanceof FloatTable)
+						return equalValues((FloatTable)this,(FloatTable)table);
+					else if (this instanceof ObjectTable<?>)
+						return equalValues((ObjectTable<?>)this,(ObjectTable<?>)table);
+				}
+			}
+		}
+		return false;
+	}
+
+	
 }
