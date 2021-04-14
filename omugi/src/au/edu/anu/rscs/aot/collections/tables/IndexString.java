@@ -187,7 +187,7 @@ public class IndexString {
 	public static int[][] stringToIndex(String indexString, Table table) {
 		int[][] result = null; 
 		// blank or null string = all indices 
-		if ((indexString==null)|(indexString.isEmpty())|(indexString.isBlank())) {
+		if ((indexString==null)||(indexString.isEmpty())||(indexString.isBlank())) {
 			result = new int[table.size()][table.ndim()];
 			for (int i=0; i<table.size(); i++)
 				result[i] = table.getIndexes(i);
@@ -222,7 +222,7 @@ public class IndexString {
 		int[][] result = null; 
 		String s = null;
 		// blank or null string = all indices 
-		if ((indexString==null)|(indexString.isEmpty())|(indexString.isBlank())) {
+		if ((indexString==null)||(indexString.isEmpty())||(indexString.isBlank())) {
 			s = "[";
 			for (int i=0; i<dim.length-1;i++)
 				s +=",";
