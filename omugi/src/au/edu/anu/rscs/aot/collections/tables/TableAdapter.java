@@ -355,8 +355,8 @@ public abstract class TableAdapter implements Table {
 			if (ndim()==table.ndim()) {
 				boolean sameDims = true;
 				for (int i=0; i<ndim(); i++)
-					// two tables are equal if their dimensioners are equal (ie SAME OBJECTS)
-					sameDims &= (getDimensioners()[i]==table.getDimensioners()[i]);
+					// two tables are equal if their dimensioners are equal
+					sameDims &= (getDimensioners()[i].equals(table.getDimensioners()[i]));
 				// two tables are equal if they have the same element values
 				if (sameDims) {
 					if (this instanceof DoubleTable)
