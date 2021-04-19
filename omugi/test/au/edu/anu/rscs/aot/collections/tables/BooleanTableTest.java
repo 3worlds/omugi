@@ -40,7 +40,7 @@ import fr.ens.biologie.generic.SaveableAsText;
 // TODO: Since the code for tables is generated, the tests should also be generated.
 // meanwhile, tests not written for other table types 
 class BooleanTableTest {
-
+	
 	private BooleanTable tb;
 	
 	@BeforeEach

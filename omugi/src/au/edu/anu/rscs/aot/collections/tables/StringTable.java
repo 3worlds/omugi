@@ -30,6 +30,8 @@
  **************************************************************************/
 package au.edu.anu.rscs.aot.collections.tables;
 
+import com.google.common.base.Strings;
+
 import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.DataContainer;
 
@@ -216,9 +218,11 @@ public class StringTable extends TableAdapter {
 			sb.append(isep[DIMix]).append(dimensioners[i].getLength());
 		sb.append(bdel[DIMix][BLOCK_CLOSE]);
 		if (flatSize > 0)
-			sb.append('"').append(elementToString(0)).append('"');
+			sb.append('"').append(Strings.nullToEmpty(elementToString(0))).append('"');
 		for (int i = 1; i < flatSize; i++)
-			sb.append(isep[TABLEix]).append('"').append(elementToString(i)).append('"');
+			sb.append(isep[TABLEix]).append('"')
+				.append(Strings.nullToEmpty(elementToString(i)))
+				.append('"');
 		sb.append(bdel[TABLEix][BLOCK_CLOSE]);
 		return sb.toString();
 	}
