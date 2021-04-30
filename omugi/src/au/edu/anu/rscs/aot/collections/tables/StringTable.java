@@ -176,6 +176,7 @@ public class StringTable extends TableAdapter {
 		String d = ss.substring(0, ss.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
 		d = d.trim();
 		StringTable result = new StringTable(readDimensioners(d, bdel[DIMix], isep[DIMix]));
+		result.clear();
 		ss = ss.substring(ss.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
 		StringBuilder sb = new StringBuilder();
 		int n = 0;
@@ -193,7 +194,7 @@ public class StringTable extends TableAdapter {
 					// check for null strings
 					String res = sb.toString();
 					if (res.isBlank() | res.isEmpty() | res.equals("null"))
-						result.data[n++] = null;
+						result.data[n++] = "";
 					else
 						result.data[n++] = res;
 					sb = new StringBuilder();
@@ -204,7 +205,7 @@ public class StringTable extends TableAdapter {
 		// check for null strings
 		String res = sb.toString();
 		if (res.isBlank() | res.isEmpty() | res.equals("null"))
-			result.data[n++] = null;
+			result.data[n++] = "";
 		else
 			result.data[n++] = res;
 		return result;
