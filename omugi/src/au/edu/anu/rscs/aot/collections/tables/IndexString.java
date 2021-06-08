@@ -230,7 +230,8 @@ public class IndexString {
 		}
 		else
 			s = indexString.strip();
-		s = s.substring(1,s.length()-1);
+		if (s.length() > 1)//IDD
+			s = s.substring(1, s.length() - 1);
 		String[] ds = s.split(Pattern.quote(dimSep),-1);
 		if (ds.length != dim.length)
 			throw new OmugiException("Index string " + indexString
