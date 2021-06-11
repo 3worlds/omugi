@@ -37,6 +37,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
+import au.edu.anu.rscs.aot.util.IntegerRange;
 import fr.cnrs.iees.OmugiException;
 
 /**
@@ -171,6 +172,34 @@ public class IndexString {
 		List<int[]> lr = new ArrayList<>(size);
 		allIndices(res,0,dimIndices,lr);
 		return lr;
+	}
+	
+	/**
+	 * Given a string index, returns the range of indices in each dimension
+	 * 	
+	 * @param indexString a String describing an index
+	 * @param dim the dimensions of the table this string applies to 
+	 * @return the min and max index values in every dimension
+	 */
+	public static IntegerRange[] stringIndexRanges(String indexString, int...dim) {
+		IntegerRange[] result = new IntegerRange[dim.length];
+		if ((indexString==null)||(indexString.isEmpty())||(indexString.isBlank())) {
+			for (int i=0; i<dim.length; i++)
+				result[i] = new IntegerRange(0,dim[i]-1);
+		}
+		else {
+			String s = indexString.strip();
+			s = s.substring(1,s.length()-1);
+			String[] ds = s.split(Pattern.quote(dimSep),-1);
+			if (ds.length != dim.length)
+				throw new OmugiException("Index string " + indexString
+					+ " has "+ ds.length +" dimensions but was expecting "+dim.length);
+			for (int i=0; i<ds.length; i++) {
+				int[] ixs = extractDimIndices(i,ds[i],dim[i]);
+				result[i] = new IntegerRange(ixs[0],ixs[ixs.length-1]);
+			}
+		}
+		return result;
 	}
 	
 	/**

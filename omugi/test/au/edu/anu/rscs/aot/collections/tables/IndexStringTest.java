@@ -36,6 +36,7 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
+import au.edu.anu.rscs.aot.util.IntegerRange;
 import fr.cnrs.iees.OmugiException;
 
 /**
@@ -54,6 +55,14 @@ class IndexStringTest {
 			System.out.print(Arrays.toString(tab[i])+" ");
 		System.out.println("]");
 	}
+	
+	private void show(String method,IntegerRange[] tab) {
+		System.out.print(method+": [ ");
+		for (int i=0; i<tab.length; i++)
+			System.out.print(tab[i].toString()+" ");
+		System.out.println("]");
+	}
+
 	
 	private void show(String method, String s) {
 		System.out.println(method+": \""+s+"\"");
@@ -205,6 +214,22 @@ class IndexStringTest {
 		String result = IndexString.indexToString(index,126);
 		assertEquals(result,"[124]");
 		show("testIndexToString4",result);
+	}
+	
+	@Test
+	final void stringIndexRanges() {
+		String index = "";
+		show("stringIndexRanges",IndexString.stringIndexRanges(index,2,4,7));
+		index = "[1|1|2]";
+		show("stringIndexRanges",IndexString.stringIndexRanges(index,2,4,7));
+		index = "[0;2:3|0;2|-1]";
+		show("stringIndexRanges",IndexString.stringIndexRanges(index,4,4,2));
+		index = "[0:3|0:2|]";
+		show("stringIndexRanges",IndexString.stringIndexRanges(index,4,4,2));
+		index = "[||]";
+		show("stringIndexRanges",IndexString.stringIndexRanges(index,4,4,200));
+		index = null;
+		show("stringIndexRanges",IndexString.stringIndexRanges(index,4,4,200));
 	}
 
 }
