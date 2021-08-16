@@ -34,6 +34,9 @@ package fr.cnrs.iees;
 import fr.ens.biologie.generic.Textable;
 
 /**
+ * An {@code Exception} for errors occurring in this library.
+ * 
+ * 
  * @author shayne.flint@anu.edu.au
  *
  * 

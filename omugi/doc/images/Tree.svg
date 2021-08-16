@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="35cm" height="13cm" viewBox="170 -204 692 250" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Arrière-plan">
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="507.9" y="-202.7" width="156.7" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="586.25" y="-183.7">ElementAdapter</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="507.9" y="-174.7" width="156.7" height="8"/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="392.9" y="-202.7" width="95.45" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="440.625" y="-183.7">TreeNode</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="392.9" y="-174.7" width="95.45" height="8"/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="686.9" y="-202.7" width="88.95" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="731.375" y="-183.7">Tree&lt;N&gt;</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="686.9" y="-174.7" width="88.95" height="8"/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="175.9" y="-202.7" width="199.05" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="275.425" y="-183.7">ReadOnlyDataHolder</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="175.9" y="-174.7" width="199.05" height="8"/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="671.9" y="-101.2" width="110.2" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="727" y="-82.2">SimpleTree</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="671.9" y="-73.2" width="110.2" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="727.819" y1="-102.194" x2="729.771" y2="-147.487"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="737.764,-147.142 730.46,-163.472 721.778,-147.831 "/>
+    </g>
+    <text font-size="12.7998" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="729.188" y="-133.95">
+      <tspan xml:space="preserve" x="729.188" y="-133.95"> N extends TreeNode</tspan>
+    </text>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="443.9" y="-101.2" width="156.9" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="522.35" y="-82.2">SimpleTreeNode</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="443.9" y="-73.2" width="156.9" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x1="534.308" y1="-102.194" x2="564.577" y2="-150.273"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="571.347,-146.011 573.101,-163.814 557.806,-154.536 "/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="507.056" y1="-102.194" x2="467.355" y2="-151.502"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="473.586,-156.519 457.321,-163.964 461.124,-146.485 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="236.9" y="8.8" width="285.8" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="379.8" y="27.8">SimpleReadOnlyDataTreeNode</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="236.9" y="36.8" width="285.8" height="8"/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="550.9" y="8.8" width="199.45" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="650.625" y="27.8">SimpleDataTreeNode</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="550.9" y="36.8" width="199.45" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x1="404.37" y1="7.84004" x2="483.342" y2="-53.0993"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="488.23,-46.7657 496.009,-62.874 478.455,-59.4329 "/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x1="628.515" y1="7.84004" x2="558.303" y2="-52.3691"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="563.511,-58.4419 546.157,-62.7844 553.095,-46.2962 "/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="370.626" y1="8.21113" x2="292.669" y2="-149.758"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="299.843,-153.298 285.588,-164.106 285.495,-146.218 "/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="577.892" y1="7.84004" x2="304.053" y2="-63.5441"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="306.071,-71.2854 288.57,-67.5801 302.035,-55.8028 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="171.9" y="-101.2" width="113.5" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="228.65" y="-82.2">DataHolder</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="171.9" y="-73.2" width="113.5" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x1="237.403" y1="-102.194" x2="259.039" y2="-149.144"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="266.305,-145.796 265.736,-163.675 251.774,-152.492 "/>
+    </g>
+  </g>
+</svg>

@@ -37,15 +37,19 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 /**
- * Author Ian Davies
+ * <p>A class to return the appropriate class loader when classes (e.g. implementation of
+ * omugi interfaces unknown in omugi) can come from a jar 
+ * or from an IDE (e.g. eclipse).</p>
  * 
- * NOTE: it is important that when calling
+ * <p>NOTE: it is important that when calling
  * class.forName(name,initialize,loader), the 'initialize' argument is set to
  * true (it means the class will be initialized if not yet done). Otherwise, no
  * matter if the classLoader knows about the class, it will not find it and
- * return an error.
+ * return an error.</p>
+ * 
+ * <p>The need for this class originated from <a href="https://community.oracle.com/tech/developers/discussion/4011800/base-classloader-no-longer-from-urlclassloader">here</a>.</p>
  *
- * Date 16 Feb. 2019
+ * @author Ian Davies - 16 Feb. 2019
  */
 //import java.net.URL;
 //import java.net.URLClassLoader;
@@ -53,21 +57,20 @@ import java.net.URLClassLoader;
 //private static ClassLoader urlcl;// = new URLClassLoader(urlarrayofextrajarsordirs));
 public class OmugiClassLoader {
 
-	private OmugiClassLoader() {
-	};
+	// this to prevent instantiation
+	private OmugiClassLoader() {}
 
 	private static ClassLoader installedClassLoader;
 
-// to avoid problems, I replaced this method by the next - JG	
-//	public static void setClassLoader(ClassLoader classLoader) {
-//		installedClassLoader = classLoader;
-//	}
-	
-	// This will enable to access classes defined in jars 
-	// NOTE: When running from Jar, calling this will add duplicate classes.
-	// Therefore, setJarClassLoader should not be called in this case.
-	// Therefore, this should not be done here.
-	// If running from jar, installedClassLoader should return getAppClassLoader
+	/**
+	 * <p>Records classes coming from jars in a classLoader for later use by this class.</p>
+	 * <p>NOTE: When running from Jar, calling this will add duplicate classes.
+	 * Therefore, setJarClassLoader should not be called in this case.
+	 * Therefore, this should not be done here.
+	 * If running from jar, installedClassLoader should return getAppClassLoader</p>
+	 * 
+	 * @param jarFiles jar files to record as sources for classes in the current application setup
+	 */
 	public static void setJarClassLoader(File...jarFiles) {
 		try {
 			URL[] paths = new URL[jarFiles.length];
@@ -80,15 +83,24 @@ public class OmugiClassLoader {
 		}
 	}
 
-	// This will return the application classLoader
+	/** 
+	 * This will return the application classLoader, with no jar content added.
+	 * 
+	 * @return the current application classLoader
+	 */
 	public static ClassLoader getAppClassLoader() {
 		return Thread.currentThread().getContextClassLoader();
 	}
 
-	// This will return the classLoader for the jars previously passed
+	/**
+	 * This will return a classLoader containing all the application classes, plus 
+	 * those found in jars previously recorded with 
+	 * {@link OmugiClassLoader#setJarClassLoader(File...) setJarClassLoader(...)}.
+	 * 
+	 * @return the current application + jars classLoader
+	 */
 	public static ClassLoader getJarClassLoader() {
 		if (installedClassLoader == null)
-			//throw new OmugiException("JAR classLoader not installed");
 			return getAppClassLoader();
 		return installedClassLoader;
 

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="41cm" height="17cm" viewBox="170 135 809 331" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Arrière-plan">
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="504" y="229.4" width="79.3" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="543.65" y="248.4">ALNode</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="504" y="257.4" width="79.3" height="8"/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="688.9" y="229.4" width="77.3" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="727.55" y="248.4">ALEdge</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="688.9" y="257.4" width="77.3" height="8"/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="812.8" y="289.2" width="87.3" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="856.45" y="308.2">ALGraph</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="812.8" y="317.2" width="87.3" height="8"/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="545.9" y="136.8" width="156.7" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="624.25" y="155.8">ElementAdapter</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="545.9" y="164.8" width="156.7" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x1="560.189" y1="228.398" x2="595.738" y2="187.557"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="601.772,192.809 606.243,175.488 589.704,182.304 "/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x1="706.353" y1="228.398" x2="659.026" y2="185.974"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="664.366,180.017 647.112,175.294 653.686,191.931 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="722.9" y="136.8" width="54.7" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="750.25" y="155.8">Edge</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="722.9" y="164.8" width="54.7" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="732.208" y1="228.398" x2="741.25" y2="191.513"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="749.02,193.418 745.06,175.973 733.48,189.608 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="470.9" y="136.8" width="56.7" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="499.25" y="155.8">Node</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="470.9" y="164.8" width="56.7" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="534.539" y1="228.398" x2="516.245" y2="190.245"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="523.459,186.786 509.328,175.818 509.032,193.704 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="795.9" y="136.8" width="121.95" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="856.875" y="155.8">Graph&lt;N,E&gt;</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="795.9" y="164.8" width="121.95" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="856.503" y1="288.206" x2="856.771" y2="192.03"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="864.771,192.052 856.816,176.03 848.771,192.008 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="487.9" y="332.8" width="206.2" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="591" y="351.8">ALReadOnlyDataEdge</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="487.9" y="360.8" width="206.2" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x1="616.086" y1="331.804" x2="687.925" y2="277.405"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="692.755,283.783 700.681,267.746 683.096,271.027 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="250.9" y="136.8" width="199.05" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="350.425" y="155.8">ReadOnlyDataHolder</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="250.9" y="164.8" width="199.05" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="567.675" y1="331.797" x2="387.888" y2="185.321"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="392.941,179.119 375.483,175.215 382.835,191.524 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="268.9" y="289.2" width="208.2" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="373" y="308.2">ALReadOnlyDataNode</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="268.9" y="317.2" width="208.2" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x1="427.203" y1="288.206" x2="486.111" y2="267.563"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="488.756,275.113 501.21,262.272 483.465,260.013 "/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="370.186" y1="288.206" x2="355.911" y2="191.833"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="363.824,190.661 353.566,176.006 347.997,193.006 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="341.9" y="429.3" width="121.85" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="402.825" y="448.3">ALDataNode</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="341.9" y="457.3" width="121.85" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x1="416.208" y1="428.303" x2="519.765" y2="281.305"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="526.305,285.912 528.979,268.225 513.225,276.698 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="171.9" y="332.8" width="113.5" height="28"/>
+      <text font-size="16" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:italic;font-weight:700" x="228.65" y="351.8">DataHolder</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x="171.9" y="360.8" width="113.5" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" x1="240.457" y1="331.797" x2="328.995" y2="189.293"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="335.79,193.515 337.438,175.702 322.199,185.071 "/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="368.53" y1="428.299" x2="278.896" y2="378.639"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="282.773,371.641 264.901,370.884 275.019,385.636 "/>
+    </g>
+    <g>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="667.9" y="429.3" width="119.85" height="28"/>
+      <text font-size="16" style="fill: #000000; fill-opacity: 1; stroke: none;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="727.825" y="448.3">ALDataEdge</text>
+      <rect style="fill: #ffffff; fill-opacity: 1; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x="667.9" y="457.3" width="119.85" height="8"/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" x1="727.799" y1="428.303" x2="727.601" y2="284.633"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #000000" points="735.601,284.622 727.579,268.633 719.601,284.644 "/>
+    </g>
+    <g>
+      <line style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke-dasharray: 10; stroke: #bfbfbf" x1="667.134" y1="435.567" x2="304.199" y2="365.405"/>
+      <polygon style="fill: none; stroke-opacity: 1; stroke-width: 2; stroke: #bfbfbf" points="305.717,357.55 288.489,362.368 302.68,373.26 "/>
+    </g>
+    <text font-size="12.7998" style="fill: #bfbfbf; fill-opacity: 1; stroke: none;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="856.662" y="231">
+      <tspan xml:space="preserve" x="856.662" y="231"> N extends ALNode</tspan>
+      <tspan xml:space="preserve" x="856.662" y="247"> E extends ALEdge</tspan>
+    </text>
+  </g>
+</svg>
