@@ -46,7 +46,8 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
- * The factory for simple trees - caution: this is NOT an Edge factory
+ * <p>The factory for {@link SimpleTree}s (node factory only).</p>
+ * 
  * @author Jacques Gignoux - 13 mai 2019
  *
  */
@@ -57,24 +58,26 @@ public class SimpleTreeFactory
 	private Set<Tree<SimpleTreeNode>> trees = new HashSet<>();
 
 	/**
-	 * constructor with labels for sub-classes of (Tree)Node 
+	 * Constructor with labels for sub-classes of {@link SimpleTreeNode} 
+	 * 
 	 * @param scopeName the scope identifier, e.g. "GraphFactory"
-	 * @param labels a Map of (labels,class names) associating a label to a java class name
-	 */
+	 * @param labels a map of (labels,class names) associating a label to the valid java class name of a 
+	 * descendant of {@code SimpleTreeNode} */
 	public SimpleTreeFactory(String scopeName,Map<String,String> labels) {
 		super(scopeName,labels);
 	}
 
 	/**
-	 * basic constructor with scope only 
-	 * @param scopeName the scope identifier, e.g. "GraphFactory"
+	 * Basic constructor with scope only
+	 *  
+	 * @param scopeName the scope identifier, e.g. "MyTreeFactory"
 	 */
 	public SimpleTreeFactory(String scopeName) {
 		super(scopeName);
 	}
 	
 	/**
-	 * basic constructor, only requires a scope
+	 * Basic constructor with default scope "DTF" (for "default tree factory").
 	 */
 	public SimpleTreeFactory() {
 		super("DTF"); // stands for "default tree factory"

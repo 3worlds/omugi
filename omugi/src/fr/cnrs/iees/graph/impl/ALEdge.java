@@ -44,6 +44,15 @@ import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.identity.Identity;
 
 /**
+ * <p>The {@link Edge} implementation to use with {@link ALGraph}.
+ * AL stands for "Adjacency List". This class of edge records the Nodes at its two tips as 
+ * {@link ALEdge#startNode() startNode()} and {@link ALEdge#endNode() endNode()}, so it is 
+ * directed by default.</p>
+ * 
+ * <p>The constructor is hidden (protected): only {@link ALGraphFactory} can instantiate 
+ * {@code ALEdge}s. {@link ALNode} also provides methods to instantiate {@link ALEdge}s as 
+ * a by-product of connecting to another node (internally calling {@code ALGraphFactory}, of 
+ * course).</p>
  * 
  * @author Jacques Gignoux - 10 mai 2019
  *
@@ -57,9 +66,12 @@ public class ALEdge extends ElementAdapter implements Edge {
 	private ALNode end = null;
 
 	/**
-	 * The only valid constructor for an Edge: an Edge cannot exist without a start and end node
+	 * This constructor must only be invoked through an {@link EdgeFactory}.
+	 * 
+	 * @param id a valid unique id
 	 * @param start the start Node
 	 * @param end the end Node
+	 * @param graph the {@code EdgeFactory} used to construct this instance
 	 */
 	protected ALEdge(Identity id, Node start, Node end, 
 			EdgeFactory graph) {

@@ -35,7 +35,10 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
 /**
- * A base implementation of Element with the methods that should be universal in all descendants
+ * A base implementation of {@link Element} with the methods that should be universal 
+ * in all descendants. Provides default methods for all te abstract methods of {@code Element}.
+ * 
+ * 
  * @author gignoux - 16 août 2017
  *
  */
@@ -51,7 +54,11 @@ public abstract class ElementAdapter implements Element {
 		throw new OmugiException("A Graph Element must be created with a valid id");
 	}
 	
-	// this is the only constructor to use
+	/**
+	 * An {@code Element} always requires a valid identifier for instantiation.
+	 * 
+	 * @param id a valid (= unique within its {@linkplain IdentityScope scope}) identifier
+	 */
 	protected ElementAdapter(Identity id) {
 		super();
 		this.id = id;
@@ -92,11 +99,10 @@ public abstract class ElementAdapter implements Element {
 	public final String toString() {
 		return "["+toShortString()+"]";
 	}
-//	public final String toString() {
-//		return "["+toDetailedString()+"]";
-//	}
 
-	// Two elements are equal if they have the same id within their scope
+	/**
+	 * Two elements are equal if they have the same id within the same scope
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj==null)

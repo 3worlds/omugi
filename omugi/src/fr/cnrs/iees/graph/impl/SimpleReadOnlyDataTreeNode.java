@@ -36,6 +36,7 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
+ * A {@link SimpleTreeNode} sub-class with read-only (immutable) data.
  * 
  * @author Jacques Gignoux - 13 mai 2019
  *
@@ -44,6 +45,13 @@ public class SimpleReadOnlyDataTreeNode extends SimpleTreeNode implements ReadOn
 
 	private ReadOnlyPropertyList properties;
 
+	/**
+	 * This constructor must only be invoked through a {@link NodeFactory}.
+	 * 
+	 * @param id
+	 * @param props
+	 * @param factory
+	 */
 	public SimpleReadOnlyDataTreeNode(Identity id, 
 			ReadOnlyPropertyList props, NodeFactory factory) {
 		super(id, factory);

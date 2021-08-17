@@ -35,56 +35,35 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
- * <p>
- * An interface to give a Graph the ability to create Nodes in an appropriate
- * way.
+ * <p>A factory to create {@link Node}s in an appropriate way. cf.
+ * {@link GraphFactory} for the rationale behind factories.
  * </p>
  * 
  * <p>
- * Although nodes and edges could in theory exist without the context of a
- * graph, as soon as one starts to instantiate them a graph starts to exist. If
- * we want to put some constraints on this graph (e.g. directed/undirected
- * graph, acyclic graph, tree, multigraph, etc.) then we must be able to
- * constrain node and edge creation, and a generic public constructor for edges
- * and nodes does not allow this. Even worse, it could break the graph rules
- * unintentionnally. To secure this, nodes and edges must exist only within the
- * context of a graph.
- * </p>
+ * A factory manages a list of graphs, i.e. every time a new node is created, it is added
+ * to all its associated graphs. Removal of nodes is managed at the graph level.
+ * To build different graphs, you must use a different factory for each of them <em>or</em> carefully
+ * manage insertion of nodes and edges into the graphs using the 
+ * {@link fr.cnrs.iees.graph.NodeFactory#manageGraph(NodeSet) manageGraph(...)} and
+ * {@link fr.cnrs.iees.graph.NodeFactory#unmanageGraph(NodeSet) unmanageGraph(...)} methods.</p>
  * 
- * <p>
- * But sometimes it makes sense that a node belongs to more than one graph. In
- * order to allow for this possibility, we separate the node creation ability
- * from the node addition into the graph. This way, a node made by one graph
- * could be added to another. Each Node or Edge will record which factory
- * created it, but not which graphs it belongs to. This way, other instances of
- * the same type can be made by calling the initial factory.
- * </p>
- * 
- * <p>
- * All graph elements (nodes and edges) are uniquely identified by a class ID /
- * instance ID pair. This pair is used for deciding if nodes / edges are equal
- * (Object.equals(...) method).
- * </p>
- * 
- * <p>
- * Typically, a NodeFactory should have a constructor taking a {@link Graph} as
- * a parameter so that Node creation is consistent with the current graph
- * context.
- * </p>
+ * <p>Implementing classes must have a constructor taking a {@link fr.cnrs.iees.identity.IdentityScope IdentityScope} as a parameter, or
+ * internally building a {@code Scope}, to guarantee unicity of node IDs.</p> 
  * 
  * @author Jacques Gignoux 7-11-2018
  *
  */
 public interface NodeFactory {
 
+	/** A default node identifier (e.g. to start a {@link fr.cnrs.iees.identity.impl.LocalScope LocalScope})*/
 	public static String defaultNodeId = "node0";
 
 	/**
-	 * Create a Node with no properties. The class ID is set to the default (= the
-	 * implementing class name). The instance ID is automatically generated and is
-	 * unique.
+	 * Create a node with no properties. The class ID is set to the default (= the implementing
+	 * class name). The instance ID is automatically generated and is unique within the scope of
+	 * this factory.
 	 * 
-	 * @return
+	 * @return the new {@code Node} instance
 	 */
 	public default Node makeNode() {
 		return makeNode(defaultNodeId);
@@ -92,52 +71,58 @@ public interface NodeFactory {
 
 	/**
 	 * Create a node with properties. The class ID is set to the default (= the
-	 * implementing class name). The instance ID is automatically generated and is
-	 * unique.
+	 * implementing class name). The instance ID is automatically generated and is unique 
+	 * within the scope of this factory.
 	 * 
 	 * @param props properties
-	 * @return
+	 * @return the new {@code Node} instance
 	 */
 	public default Node makeNode(ReadOnlyPropertyList props) {
 		return makeNode(defaultNodeId, props);
 	}
 
 	/**
-	 * Create a node with no properties and a particular class ID. The instance ID
-	 * is automatically generated and is unique.
+	 * Create a node with no properties and a proposed ID. The class ID is set to the default (= the implementing
+	 * class name). The proposed ID is checked for unicity within the scope of this factory, and
+	 * if not, is modified appropriately to be unique. Therefore, the returned instance may have a unique
+	 * ID different from the one proposed as an argument.
 	 * 
-	 * @param classId the class identifier
-	 * @return
+	 * @param proposedId the instance identifier
+	 * @return the new {@code Node} instance
 	 */
 	public Node makeNode(String proposedId);
 
 	/**
-	 * Create a node with a particular class ID and properties. The instance ID is
-	 * automatically generated and is unique.
+	 * Create a node with properties and a proposed ID. The class ID is set to the default (= the implementing
+	 * class name). The proposed ID is checked for unicity within the scope of this factory, and
+	 * if not, is modified appropriately to be unique. Therefore, the returned instance may have a unique
+	 * ID different from the one proposed as an argument.
 	 * 
-	 * @param classId the class identifier
+	 * @param proposedId the instance identifier
 	 * @param props   properties
-	 * @return
+	 * @return the new {@code Node} instance
 	 */
 	public Node makeNode(String proposedId, ReadOnlyPropertyList props);
 
 	/**
-	 * returns the "label" of a node class as known by this factory. For use in
-	 * descendants which use labels to identify node class types.
+	 * Factories may use <em>labels</em> (= just {@code String}s), as aliases for {@code Node} descendant
+	 * class names. This method returns the label of a node class as known by this factory. 
 	 * 
-	 * @param nodeClass
-	 * @return
+	 * @param nodeClass the node class
+	 * @return the node class label recorded in this factory. Defaults to {@link Class#getSimpleName()}.
 	 */
 	public default String nodeClassName(Class<? extends Node> nodeClass) {
 		return nodeClass.getSimpleName();
 	}
 
 	/**
-	 * returns the class type matching a node "label". Default behaviour is to
-	 * pretend label is a class name in the package fr.cnrs.iees.graph.impl
+	 * Factories may use <em>labels</em> (= just {@code String}s), as aliases for {@code Node} descendant
+	 * class names. This method returns the class type matching a node label. 
+	 * Default behaviour is to pretend that
+	 * <em>label</em> is a class name in the package {@code fr.cnrs.iees.graph.impl}.
 	 * 
-	 * @param label
-	 * @return
+	 * @param label the label to get the class associated to it
+	 * @return the class name matching the label argument
 	 */
 	@SuppressWarnings("unchecked")
 	public default Class<? extends Node> nodeClass(String label) {
@@ -150,32 +135,81 @@ public interface NodeFactory {
 	}
 
 	/**
-	 * Create a node of a particular node sub-class passed as the first argument
+	 * Create a node of a particular sub-class with properties  and a proposed ID.  
+	 * The class ID is set 
+	 * to the implementing class name or, if recorded in this factory, to its label. 
+	 * The proposed ID is checked for unicity within the scope of this factory, and
+	 * if not, is modified appropriately to be unique. Therefore, the returned instance may have a unique
+	 * ID different from the one proposed as an argument.
 	 * 
-	 * @param nodeClass  the Node subclass to instantiate
-	 * @param proposedId the proposed unique id
-	 * @param props      property list
-	 * @return a new instance, or null if fails
+	 * @param nodeClass the {@code Node} implementation to use to create this instance
+	 * @param proposedId the instance identifier
+	 * @param props   properties
+	 * @return the new {@code Node} instance, {@code null} if construction failed
 	 */
 	public Node makeNode(Class<? extends Node> nodeClass, String proposedId, ReadOnlyPropertyList props);
 
+	/**
+	 * Create a node of a particular sub-class with no properties and a proposed ID.  
+	 * The class ID is set 
+	 * to the implementing class name or, if recorded in this factory, to its label. 
+	 * The proposed ID is checked for unicity within the scope of this factory, and
+	 * if not, is modified appropriately to be unique. Therefore, the returned instance may have a unique
+	 * ID different from the one proposed as an argument.
+	 * 
+	 * @param nodeClass the {@code Node} implementation to use to create this instance
+	 * @param proposedId the instance identifier
+	 * @return the new {@code Node} instance, {@code null} if construction failed
+	 */
 	public Node makeNode(Class<? extends Node> nodeClass, String proposedId);
 
+	/**
+	 * Create a node of a particular sub-class with properties.  The class ID is set 
+	 * to the implementing class name or, if recorded in this factory, to its label. 
+	 * The instance ID is automatically generated and is unique within the scope of
+	 * this factory.
+	 * 
+	 * @param nodeClass the {@code Node} implementation to use to create this instance
+	 * @param props   properties
+	 * @return the new {@code Node} instance, {@code null} if construction failed
+	 */
 	public default Node makeNode(Class<? extends Node> nodeClass, ReadOnlyPropertyList props) {
 		return makeNode(nodeClass, defaultNodeId, props);
 	}
 
+	/**
+	 * Create a node of a particular sub-class with no properties.  The class ID is set 
+	 * to the implementing class name or, if recorded in this factory, to its label. 
+	 * The instance ID is automatically generated and is unique within the scope of
+	 * this factory.
+	 * 
+	 * @param nodeClass the {@code Node} implementation to use to create this instance
+	 * @return the new {@code Node} instance, {@code null} if construction failed
+	 */
 	public default Node makeNode(Class<? extends Node> nodeClass) {
 		return makeNode(nodeClass, defaultNodeId);
 	}
 
+	/**
+	 * Associate a graph instance to this factory. Further instances created by 
+	 * calls to one of the {@code makeNode(...)} methods will be added into this graph. 
+	 * 
+	 * @param graph the {@link Graph} or {@link Tree} instance to manage
+	 */
 	public void manageGraph(NodeSet<? extends Node> graph);
 
+	/**
+	 * Dissociate a graph instance from this factory. Further instances created by 
+	 * calls to one of the {@code makeNode(...)} methods will no more be added into this graph. 
+	 * 
+	 * @param graph the {@link Graph} or {@link Tree} instance to manage
+	 */
 	public void unmanageGraph(NodeSet<? extends Node> graph);
 
 	/**
+	 * Accessor to the {@link PropertyListFactory} associated to this factory.
 	 * 
-	 * @return the propertyListfactory used with this NodeFactory
+	 * @return the propertyListfactory used with this {@code NodeFactory}
 	 */
 	public default PropertyListFactory nodePropertyFactory() {
 		return new PropertyListFactory() {

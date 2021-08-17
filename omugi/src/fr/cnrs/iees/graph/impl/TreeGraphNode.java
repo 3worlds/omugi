@@ -41,16 +41,24 @@ import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.Node;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.identity.Identity;
 
 /**
- * <p>A class for a tree node which can have edges, ie "cross-links" within an otherwise
+ * <p>The {@link Node} implementation to use with {@link TreeGraph}. A {@code TreeGraphNode}
+ * inherits both from {@link TreeNode} and from {@link ALNode}: it is 
+ * a tree node which can have edges, ie "cross-links" within an otherwise
  * hierarchical tree. The hierarchical relation (the tree) is kept separate from the other
- * relations using Edges. The former is accessed using the {@link TreeNode} methods while
+ * relations using {@link Edge}s. The former is accessed using the {@link TreeNode} methods while
  * the latter is accessed using the {@link Node} methods.</p>
+ * 
  * <p>By convention for node accessor methods and degrees, parent node is counted in 
- * the 'IN' direction while child nodes are counted in the 'OUT' direction</p>
+ * the 'IN' direction while child nodes are counted in the 'OUT' direction.</p>
+ * 
+ * <p><strong>CAUTION</strong>: {@code traversal(...)} methods have not (yet) been overriden for this
+ * class. They are inherited from {@code ALNode}, which means they will ignore the tree
+ * structure and only return nodes accessible through cross-links.</p>
  * 
  * @author Jacques Gignoux - 14 mai 2019
  *
@@ -63,6 +71,12 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	private TreeNode parent = null;
 	private Set<TreeNode> children = new HashSet<>();
 
+	/**
+	 * This constructor must only be invoked through a {@link NodeFactory}.
+	 * 
+	 * @param id the identifier for this node
+	 * @param gfactory the factory which constructs this node
+	 */
 	public TreeGraphNode(Identity id, 
 			GraphFactory gfactory) {
 		super(id, gfactory);
@@ -127,8 +141,8 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	// Node
 	
 	/**
-	 * returns all nodes linked to this node, including parent, children, in- and out-edge 
-	 * linked nodes
+	 * Returns <em>all</em> nodes linked to this node, including parent, children, in- and out-edge 
+	 * linked nodes.
 	 */
 	@Override
 	public Collection<? extends Node> nodes() {
@@ -142,7 +156,7 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	}
 	
 	/**
-	 * returns all nodes linked in a given direction, parent being counted with the IN nodes
+	 * Returns all nodes linked in a given direction, parent being counted with the IN nodes
 	 * and children with the OUT nodes. To only get the parent or the children nodes, use
 	 * the more specific getParent() and getChildren() methods.
 	 */
@@ -164,7 +178,7 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	}
 
 	/**
-	 * takes into account the tree links in the computation of the degree, the parent link being
+	 * Takes into account the tree links in the computation of the degree, the parent link being
 	 * counted with direction=IN and the child links being counted with direction=OUT
 	 */
 	@Override
@@ -182,7 +196,7 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	}
 
 	/**
-	 * returns <strong>true</strong> if there are no OUT edges <em>and</em> no children.
+	 * Returns {@code true} if this instance has no OUT edges <em>and</em> no children.
 	 */
 	@Override
 	public boolean isLeaf() {
@@ -190,7 +204,7 @@ public class TreeGraphNode extends ALNode implements TreeNode {
 	}
 
 	/**
-	 * returns <strong>true</strong> if there are no IN edges <em>and</em> no parent.
+	 * Returns {@code true} if this instance has no IN edges <em>and</em> no parent.
 	 */
 	@Override
 	public boolean isRoot() {

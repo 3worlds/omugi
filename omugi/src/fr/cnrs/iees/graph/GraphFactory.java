@@ -31,11 +31,38 @@
 package fr.cnrs.iees.graph;
 
 /**
+ * <p>A factory to create {@link Edge}s and {@link Node}s in an appropriate way to 
+ * populate a {@link Graph}.</p>
  * 
+ * <p>
+ * Although nodes and edges could in theory exist without the context of a
+ * graph, as soon as one starts to instantiate them a graph starts to exist. If
+ * we want to put some constraints on this graph (e.g. directed/undirected
+ * graph, acyclic graph, tree, multigraph, etc.) then we must be able to
+ * constrain node and edge creation, and a generic public constructor for edges
+ * and nodes does not allow this. Even worse, it could break the graph rules
+ * unintentionnally. To secure this, nodes and edges must exist only within the
+ * context of a graph.
+ * </p>
+ * 
+ * <p>
+ * But sometimes it makes sense that a node belongs to more than one graph. In
+ * order to allow for this possibility, we separate the node creation ability
+ * from the node addition into the graph. This way, a node made by one graph
+ * could be added to another. Each Node or Edge will record which factory
+ * created it, but not which graphs it belongs to. This way, other instances of
+ * the same type can be made by calling the initial factory.
+ * </p>
+ *
+ * <p>All graph elements (nodes and edges) are uniquely identified by a class ID / instance ID
+ * pair (cf. {@link fr.cnrs.iees.identity.Identity Identity}). This pair is used for deciding if nodes / edges are 
+ * equal (Object.equals(...) method). The unicity is guaranteed within a context, called 
+ * a <em>scope</em>, that can be universal (=unicity within the universe) or local.
+ * A {@code GraphFactory} implementation constructor requires a local scope to guarantee the unicity of all the
+ * node / edge instances it constructs.</p>
+ *  
  * @author Jacques Gignoux - 15 mai 2019
  *
- * @param <N>
- * @param <E>
  */
 public interface GraphFactory extends NodeFactory, EdgeFactory {
 

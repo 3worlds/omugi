@@ -34,6 +34,16 @@ import fr.cnrs.iees.identity.Identity;
 import fr.ens.biologie.generic.Textable;
 
 /**
+ * <p>A basic interface for graph elements. Graph elements are connected (cf. the {@link Connected}
+ * interface), but they also have other features captured in this interface:</p>
+ * 
+ * <ul>
+ * <li>They must have a unique identifier for internal graph management ({@link Identity} interface)</li>
+ * <li>They should display information about their state in a human-readable way
+ * ({@link Textable} interface)</li>
+ * <li>They may belong to groups of elements with a similar behaviour, indicated by a label or
+ * <em>classId</em> ({@link Specialized} interface)</li>
+ * </ul>
  * 
  * @author Jacques Gignoux - 9 mai 2019
  *

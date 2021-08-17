@@ -31,11 +31,13 @@
 package fr.cnrs.iees.graph.impl;
 
 import fr.cnrs.iees.graph.GraphFactory;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.ReadOnlyDataHolder;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
+ * A {@link TreeGraphNode} sub-class with read-only (immutable) data.
  * 
  * @author Jacques Gignoux - 15 mai 2019
  *
@@ -44,6 +46,13 @@ public class TreeGraphReadOnlyDataNode extends TreeGraphNode implements ReadOnly
 
 	private ReadOnlyPropertyList properties;
 	
+	/**
+	 * This constructor must only be invoked through a {@link NodeFactory}.
+	 * 
+	 * @param id
+	 * @param props
+	 * @param gfactory
+	 */
 	public TreeGraphReadOnlyDataNode(Identity id,
 			ReadOnlyPropertyList props, 
 			GraphFactory gfactory) {

@@ -43,10 +43,11 @@ import fr.cnrs.iees.identity.impl.LocalScope;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
+ * A default abstract implementation of {@link NodeFactory}. Use it for further specialisation,
+ * for example for {@link fr.cnrs.iees.graph.Tree Tree} factories.
  * 
  * @author Jacques Gignoux - 16 mai 2019
  *
- * @param <N>
  */
 public abstract class NodeFactoryAdapter implements NodeFactory {
 
@@ -62,7 +63,6 @@ public abstract class NodeFactoryAdapter implements NodeFactory {
 		else
 			throw new OmugiException("A factory requires a valid scope");
 	}
-	
 
 	protected NodeFactoryAdapter(String scopeId) {
 		super();
@@ -106,6 +106,7 @@ public abstract class NodeFactoryAdapter implements NodeFactory {
 		return nodeClassNames.get(nodeClass);
 	}
 
+	@Override
 	public final Class<? extends Node> nodeClass(String label) {
 		return nodeLabels.get(label);
 	}

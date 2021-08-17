@@ -34,7 +34,8 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
- * For all graph or tree elements that have read-write properties
+ * For all {@link Graph} or {@link Tree} connected elements that have read-write properties.
+ * 
  * @author Jacques Gignoux - 15 avr. 2019
  *
  */
@@ -44,8 +45,10 @@ public interface DataHolder extends ReadOnlyDataHolder {
 	public SimplePropertyList properties();
 	
 	/**
-	 * returns its property list as read-only, for data protection
-	 * @return
+	 * Accessor to the list of attributes of this instance, as a immutable (read-only)
+	 * property list. Use when you want to make sure that properties cannot be edited.
+	 * 
+	 * @return this instance read-only property list 
 	 */
 	public default ReadOnlyPropertyList readOnlyProperties() {
 		return properties();

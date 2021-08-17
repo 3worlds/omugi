@@ -31,8 +31,9 @@
 package fr.cnrs.iees.graph;
 
 /**
- * An interface for specialisations of Node, TreeNode and Edge that may have a named subclass
- * This method returns the subclass name.
+ * An interface for specialisations of {@link Node}, {@link TreeNode} and {@link Edge}
+ * that may have a named sub-class (called <em>label</em>). This method returns the subclass name.
+ * 
  * @author Jacques Gignoux - 15 avr. 2019
  *
  */

@@ -36,7 +36,8 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
- * 
+ * A {@link SimpleTreeNode} sub-class with read-write data.
+ *  
  * @author Jacques Gignoux - 13 mai 2019
  *
  */
@@ -44,6 +45,13 @@ public class SimpleDataTreeNode extends SimpleTreeNode implements DataHolder {
 
 	private SimplePropertyList properties;
 
+	/**
+	 * This constructor must only be invoked through a {@link NodeFactory}.
+	 * 
+	 * @param id
+	 * @param props
+	 * @param factory
+	 */
 	public SimpleDataTreeNode(Identity id, SimplePropertyList props, 
 			NodeFactory factory) {
 		super(id, factory);

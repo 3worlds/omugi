@@ -42,8 +42,17 @@ import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.NodeFactory;
 
 /**
- * A graph implemented as an adjacency list ("AL")
+ * <p>A graph implemented as an adjacency list (hence the "AL" prefix). An adjacency list stores the list of edges
+ * of every node in the graph. In this implementation, each graph node stores a list of {@code IN}
+ * or {@code OUT} edges (cf. the {@link Direction} enum), i.e. it is a directed graph by default.</p>
+ * 
+ * <p>This implementation requires that nodes and edges are {@link ALNode}s and {@link ALEdge}s
+ * or any descendant class.</p>
+ * 
  * @author Jacques Gignoux - 10 mai 2019
+ * 
+ * @param <N> The implementation of {@link fr.cnrs.iees.graph.Node Node} used in this graph ({@code ALNode} or a sub-class) 
+ * @param <E> The implementation of {@link fr.cnrs.iees.graph.Edge Edge} used in this graph ({@code ALEdge} or a sub-class)
  *
  */
 // tested OK with version 0.2.0 on 17/5/2019
@@ -54,7 +63,11 @@ public class ALGraph<N extends ALNode,E extends ALEdge> implements Graph<N,E> {
 	
 	private GraphFactory factory = null;
 	
-	// constructors
+	/**
+	 * Instantiate a graph with a {@code GraphFactory}.
+	 * 
+	 * @param nfactory the factory to use to populate this graph with nodes and edges
+	 */
 	public ALGraph(GraphFactory nfactory) {
 		super();
 		factory = nfactory;

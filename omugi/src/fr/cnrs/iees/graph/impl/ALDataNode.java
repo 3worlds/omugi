@@ -32,10 +32,12 @@ package fr.cnrs.iees.graph.impl;
 
 import fr.cnrs.iees.graph.DataHolder;
 import fr.cnrs.iees.graph.GraphFactory;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
+ * An {@link ALNode} sub-class with read-write data.
  * 
  * @author Jacques Gignoux - 10 mai 2019
  *
@@ -44,6 +46,13 @@ public class ALDataNode extends ALNode implements DataHolder {
 
 	private SimplePropertyList properties;
 	
+	/**
+	 * This constructor must only be invoked through a {@link NodeFactory}.
+	 * 
+	 * @param id
+	 * @param props
+	 * @param factory
+	 */
 	public ALDataNode(Identity id, 
 			SimplePropertyList props, 
 			GraphFactory factory) {

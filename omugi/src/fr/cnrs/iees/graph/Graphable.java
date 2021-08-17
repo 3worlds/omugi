@@ -31,13 +31,18 @@
 package fr.cnrs.iees.graph;
 
 /**
- * An interface for objects that can be transformed into a graph
+ * An interface for objects that can be transformed into a graph.
  * 
  * @author Jacques Gignoux - 13 janv. 2021
  *
  */
 public interface Graphable<N extends Node, E extends Edge> {
 	
+	/**
+	 * Constructs a graph analog of this instance
+	 * 
+	 * @return a new {@code Graph} constructed from this instance
+	 */
 	public Graph<N,E> asGraph();
 
 }

@@ -41,9 +41,13 @@ import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.Tree;
 
 /**
- * NB this is actually a forest, ie it may have more than one root
+ * <p>A simple implementation of {@link Tree}.
+ * It is actually a <a href="https://en.wikipedia.org/wiki/Tree_(graph_theory)#Forest">forest</a>, 
+ * i.e. it may have more than one root.</p>
+ * 
  * @author Jacques Gignoux - 13 mai 2019
  *
+ * @param <N> the implementation of {@link TreeNode} used in this tree
  */
 // tested OK with version 0.2.0
 public class SimpleTree<N extends TreeNode> implements Tree<N> {
@@ -58,6 +62,11 @@ public class SimpleTree<N extends TreeNode> implements Tree<N> {
 	/** the list of nodes */
 	private Map<String,N> nodes = new HashMap<String,N>();
 	
+	/**
+	 * Instantiate a tree with a {@code NodeFactory}.
+	 * 
+	 * @param factory the factory to use to populate this graph with treenodes
+	 */
 	public SimpleTree(NodeFactory factory) {
 		super();
 		this.factory = factory;

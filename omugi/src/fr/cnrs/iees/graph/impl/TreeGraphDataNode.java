@@ -32,10 +32,12 @@ package fr.cnrs.iees.graph.impl;
 
 import fr.cnrs.iees.graph.DataHolder;
 import fr.cnrs.iees.graph.GraphFactory;
+import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
+ * A {@link TreeGraphNode} sub-class with read-write data.
  * 
  * @author Jacques Gignoux - 15 mai 2019
  *
@@ -45,6 +47,13 @@ public class TreeGraphDataNode extends TreeGraphNode implements DataHolder {
 
 	private SimplePropertyList properties;
 	
+	/**
+	 * This constructor must only be invoked through a {@link NodeFactory}.
+	 * 
+	 * @param id
+	 * @param props
+	 * @param gfactory
+	 */
 	public TreeGraphDataNode(Identity id, SimplePropertyList props, GraphFactory gfactory) {
 		super(id, gfactory);
 		properties = props;

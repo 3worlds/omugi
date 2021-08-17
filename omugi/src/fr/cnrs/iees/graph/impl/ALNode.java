@@ -51,9 +51,15 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
- * <p>AL stands for "Adjacency List". This class of Node records its links to its neighbouring nodes
- * as a list of Edges. It can only work with ALEdges, ie edges recording their start and end nodes 
- * By default, the edges are directed</p>
+ * <p>The {@link Node} implementation to use with {@link ALGraph}.
+ * AL stands for "Adjacency List". This class of node records its links to its neighbouring nodes
+ * as a list of {@link ALEdge}s. By default, the edges are directed.</p>
+ * 
+ * <p>Internally, edges are stored in two {@link Set}s, so that duplicate edges are not permitted.
+ * The test for equality between edges is based on their unique identifier {@link Edge#id()}.
+ * The constructor is hidden (protected): only {@link ALGraphFactory} can instantiate 
+ * {@code ALNode}s.</p>
+ * 
  * @author Jacques Gignoux - 10 mai 2019
  *
  */
@@ -67,9 +73,10 @@ public class ALNode extends ElementAdapter implements Node {
 	protected EnumMap<Direction,Collection<ALEdge>> edges = null;
 	
 	/**
-	 * Standard constructor
+	 * This constructor must only be invoked through a {@link NodeFactory}.
+	 * 
 	 * @param id the identifier for this node
-	 * @param factory the graph which constructs this node
+	 * @param factory the factory which constructs this node
 	 */
 	protected ALNode(Identity id, GraphFactory factory) {
 		super(id);
@@ -238,8 +245,6 @@ public class ALNode extends ElementAdapter implements Node {
 			result = factory.makeEdge(this,node,edgeProperties);
 		return result;
 	}
-
-
 	
 	@Override
 	public void connectTo(Direction direction, Collection<? extends Node> nodes) {

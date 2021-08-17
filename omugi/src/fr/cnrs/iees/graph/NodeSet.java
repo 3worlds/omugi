@@ -38,10 +38,11 @@ import java.util.List;
 import fr.ens.biologie.generic.Textable;
 
 /**
- * <p>A Graph is defined as a G=(N,E,f) where N is a set of nodes, E a set of edges connecting the 
- * nodes, and f the incidence function mapping every edge to a pair of nodes.</p>
- * <p>This interface is used to represent N, the set of nodes of a graph.</p>
+ * <p>The set of nodes of a graph. Graph G is defined as G=(N,E,f) where N is a set of nodes, 
+ * E a set of edges connecting the nodes, and f the incidence function mapping every edge to a 
+ * pair of nodes.</p>
  * 
+ * <p>A {@code NodeSet} must be associated with an {@link NodeFactory}.</p>
  * 
  * @author Jacques Gignoux - 14 mai 2019
  * 
@@ -50,15 +51,17 @@ import fr.ens.biologie.generic.Textable;
 public interface NodeSet<N extends Node>  extends Textable {
 	
 	/**
-	 * Read-only accessor to all Nodes
+	 * Read-only accessor to all Nodes.
+	 * 
 	 * @return an unmodifiable collection of all Nodes
 	 */
 	public Collection<N> nodes();
 	
 	/**
-	 * Read-only accessor to all leaf Nodes (if any). Note: a leaf node is a node without
-	 * OUT edges.
-	 * @return an unmodifiable collection of all leaf Nodes
+	 * Read-only accessor to all <em>leaf</em> nodes (if any). A leaf node is a node without
+	 * {@code OUT} edges.
+	 * 
+	 * @return an unmodifiable collection of all leaf nodes
 	 */
 	public default Collection<N> leaves() {
 		List<N> result = new ArrayList<>(nNodes());
@@ -69,9 +72,10 @@ public interface NodeSet<N extends Node>  extends Textable {
 	}
 
 	/**
-	 * Read-only accessor to all root Nodes (if any). Note: a root node is a node without
-	 * IN edges.
-	 * @return an unmodifiable collection of all root Nodes
+	 * Read-only accessor to all <em>root</em> nodes (if any). A root node is a node without
+	 * {@code IN} edges.
+	 * 
+	 * @return an unmodifiable collection of all root nodes
 	 */
 	public default Collection<N> roots() {
 		List<N> result = new ArrayList<>(nNodes());
@@ -82,33 +86,41 @@ public interface NodeSet<N extends Node>  extends Textable {
 	}
 	
 	/**
-	 * Checks if this graph contains a particular Node
-	 * @param node the Node to search for
-	 * @return true if node was found in the graph
+	 * Checks if this graph contains a particular node
+	 * 
+	 * @param node the node to search for
+	 * @return {@code true} if node was found in the graph
 	 */
 	public boolean contains(N node);
 	
 	/**
-	 * The node factory used to instantiate nodes for this graph.
+	 * The node factory used to instantiate nodes for this node set / graph.
+	 * 
 	 * @return the node factory
 	 */
 	public NodeFactory nodeFactory();
 	
 	/**
-	 * Use this method to add nodes into a graph. This method is usually invoked by
-	 * {@link NodeFactory}{@code .makeNode(...)} at node instantiation time, so that there
-	 * is no need to call it explicitly.
+	 * Use this method to add nodes into a graph. This method is invoked by
+	 * {@link NodeFactory}{@code .makeNode(...)} methods at node instantiation time, so that there
+	 * is usually no need to call it explicitly.
 	 * 
 	 * @param node the node to add to the graph
 	 */
 	public void addNode(N node);
 	
 	/**
-	 * Use this method to remove a node from a graph.
+	 * Use this method to remove a node from a node set.
+	 * 
 	 * @param node the node to remove from the graph
 	 */
 	public void removeNode(N node);
 
+	/**
+	 * The size of this node set.
+	 * 
+	 * @return the number of nodes in this set
+	 */
 	public int nNodes();
 	
 	@Override
@@ -130,9 +142,10 @@ public interface NodeSet<N extends Node>  extends Textable {
 	}
 	
 	/**
-	 * finds in the list the node with the specified id, null if not found
-	 * @param id the id to look for
-	 * @return the node
+	 * Finds an {@code Node} based on its unique ID.
+	 * 
+	 * @param id the unique ID of the node to search for
+	 * @return the matching node instance, {@code null} if not found
 	 */
 	public N findNode(String id);
 

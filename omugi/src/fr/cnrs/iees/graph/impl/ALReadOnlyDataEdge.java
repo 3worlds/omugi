@@ -37,6 +37,7 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
+ * An {@link ALEdge} sub-class with read-only (immutable) data.
  * 
  * @author Jacques Gignoux - 10 mai 2019
  *
@@ -46,6 +47,16 @@ public class ALReadOnlyDataEdge extends ALEdge implements ReadOnlyDataHolder {
 
 	private ReadOnlyPropertyList properties;
 	
+	/**
+	 * This constructor must only be invoked through an {@link EdgeFactory}. It has been set
+	 * public for internal consistency but should be treated as protected.
+	 * 
+	 * @param id
+	 * @param start
+	 * @param end
+	 * @param props
+	 * @param graph
+	 */
 	public ALReadOnlyDataEdge(Identity id, Node start, Node end, 
 			ReadOnlyPropertyList props, EdgeFactory graph) {
 		super(id, start, end, graph);

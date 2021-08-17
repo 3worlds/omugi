@@ -35,11 +35,14 @@ import java.util.Collection;
 import fr.ens.biologie.generic.Textable;
 
 /**
- * The root interface for trees.
+ * <p>The root interface for trees.</p>
+ * <p>A tree is a special case of a graph where nodes are connected only through <em>parent-child</em>
+ * relations. A node can only have 0..1 parent and 0..* children. This particular behaviour is
+ * implemented by using specific methods and not relying on explicit edges.</p>
  *  
  * @author Jacques Gignoux - 9 mai 2019
  *
- * @param <N> The {@link Node} subclass used to construct the tree
+ * @param <N> The {@link TreeNode} subclass used to construct the tree
  */
 public interface Tree<N extends TreeNode> extends NodeSet<N>, Textable {
 	
@@ -55,6 +58,10 @@ public interface Tree<N extends TreeNode> extends NodeSet<N>, Textable {
 		return (Collection<N>) node.subTree();
 	}
 
+	/**
+	 * Actions taken when a parent node is changed.
+	 */
+	// NOTE: ugly code - to fix one day.
 	public void onParentChanged();
 	
 	@Override
@@ -82,7 +89,7 @@ public interface Tree<N extends TreeNode> extends NodeSet<N>, Textable {
 	}
 
 	/**
-	 * Prints a nice hierarchical view of a tree (multi-line)
+	 * Prints a nice hierarchical view of a tree (multi-line).
 	 * 
 	 * @param parent the node where to start the print
 	 * @param indent the String used to indent nodes according to hierarchy

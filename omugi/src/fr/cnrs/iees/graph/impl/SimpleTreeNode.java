@@ -46,9 +46,9 @@ import fr.cnrs.iees.graph.TreeNode;
 import fr.cnrs.iees.identity.Identity;
 
 /**
- * basic TreeNode implementation. By convention Direction.IN = up the tree (to
- * parent) and Direction.OUT = down the tree (to children) NB All constructors
- * must be protected.
+ * <p>The {@link TreeNode} implementation to use with {@link SimpleTree}.</p> 
+ * <p>By convention, {@code Direction.IN} = up the tree (to
+ * parent) and {@code Direction.OUT} = down the tree (to children).</p>
  * 
  * @author Jacques Gignoux - 10 mai 2019
  *
@@ -211,7 +211,6 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 		}
 	}
 
-
 	private Collection<TreeNode> traversal(Collection<TreeNode> list, TreeNode node, int distance) {
 		list.add(node);
 		if (distance > 0) {
@@ -323,7 +322,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	// Textable
 
 	/**
-	 * Displays a TreeNode as follows (on a single line):
+	 * Displays a {@link TreeNode} as follows (on a single line):
 	 * 
 	 * <pre>
 	 * node_label:node_name=[
@@ -332,7 +331,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 	 * ]
 	 * </pre>
 	 * <p>
-	 * e.g.: {@code Node:0=[↑Node:1 ↓Node:2 ↓Node:3]}
+	 * e.g.: {@code MyNode:0=[↑MyNode:1 ↓MyNode:2 ↓MyNode:3]}
 	 * </p>
 	 */
 	@Override

@@ -44,6 +44,12 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.utils.Logging;
 
+/**
+ * <p>The factory for {@link TreeGraph}s (node and edge factory).</p>
+ * 
+ * @author Jacques Gignoux - 17 août 2021
+ *
+ */
 public class TreeGraphFactory extends GraphFactoryAdapter {
 
 	private static Logger log = Logging.getLogger(TreeGraphFactory.class);
@@ -51,29 +57,27 @@ public class TreeGraphFactory extends GraphFactoryAdapter {
 	protected Set<TreeGraph<TreeGraphNode, ALEdge>> graphs = new HashSet<>();
 
 	/**
-	 * basic constructor, only requires a scope
+	 * Basic constructor, only requires a scope
 	 * 
-	 * @param scopeName the scope identifier, e.g. "GraphFactory"
+	 * @param scopeName the scope identifier, e.g. "MyTreeGraphFactory"
 	 */
 	public TreeGraphFactory(String scopeName) {
 		super(scopeName);
 	}
 
 	/**
-	 * basic constructor, only requires a scope
-	 * 
-	 * @param scopeName the scope identifier, e.g. "GraphFactory"
+	 * Basic constructor with default scope "TGF" (for "tree graph factory").
 	 */
 	public TreeGraphFactory() {
 		super("TGF");
 	}
 
 	/**
-	 * constructor with labels for sub-classes of Node and Edge
+	 * Constructor with labels for sub-classes of {@link TreeGraphNode} and {@link ALEdge}
 	 * 
-	 * @param scopeName the scope identifier, e.g. "GraphFactory"
-	 * @param labels    a Map of (labels,class names) associating a label to a java
-	 *                  class name
+	 * @param scopeName the scope identifier, e.g. "MyTreeGraphFactory"
+	 * @param labels    a map of (labels,class names) associating a label to the valid java class name of a 
+	 * descendant of {@code TreeGraphNode} or {@code ALEdge}
 	 */
 	public TreeGraphFactory(String scopeName, Map<String, String> labels) {
 		super(scopeName, labels);

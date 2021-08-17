@@ -38,8 +38,9 @@ import java.util.List;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
- * Ancestor to all Node classes. NB: Nodes are meant to work with a particular type of {@linkplain Edge}, 
- * hence the type parameter.
+ * <p>Ancestor to all node classes.</p> 
+ * 
+ * <p>Nodes do not need edges to exist: a graph may contain unconnected nodes.</p>
  * 
  * @author Jacques Gignoux - 10 mai 2019
  *
@@ -48,32 +49,38 @@ public interface Node extends Element, Connected<Node> {
 
 	/**
 	 * Add to this node the connections found in the argument node. 
+	 * 
 	 * @param node the node to copy connections from.
 	 */
 	public void addConnectionsLike(Node node);
 
 	/**
 	 * Tests if this Node is a leaf (=has no OUT edges)
-	 * @return
+	 * 
+	 * @return {@code true} if this instance is a leaf node
 	 */
 	public boolean isLeaf();
 	
 	/**
 	 * Tests if this Node is a root (=has no IN edges)
-	 * @return
+	 * 
+	 * @return {@code true} if this instance is a root node
 	 */
 	public boolean isRoot();
 
 	/**
+	 * The number of edges connected to this node (= <a href="https://en.wikipedia.org/wiki/Degree_(graph_theory)">degree</a>) 
+	 * in the IN or OUT direction.
 	 * 
 	 * @param direction the direction (IN or OUT)
-	 * @return the degree of this node (=the number of edges) in requested direction
+	 * @return the degree in the requested direction
 	 */
 	public int degree(Direction direction);
 
 	/**
+	 * The number of edges connected to this node (= <a href="https://en.wikipedia.org/wiki/Degree_(graph_theory)">degree</a>).
 	 * 
-	 * @return the degree of this node (=the number of edges)
+	 * @return the degree
 	 */
 	public default int degree() {
 		return degree(Direction.IN)+degree(Direction.OUT);
@@ -81,6 +88,7 @@ public interface Node extends Element, Connected<Node> {
 
 	/**
 	 * Read-only accessor to edges according to direction.
+	 * 
 	 * @param direction the direction (IN or OUT)
 	 * @return an immutable list of edges matching the direction
 	 */
@@ -88,12 +96,14 @@ public interface Node extends Element, Connected<Node> {
 	
 	/**
 	 * Read-only accessor to all edges.
+	 * 
 	 * @return an immutable list of edges 
 	 */
 	public Collection<? extends Edge> edges(); 
 	
 	/**
 	 * Read-only accessor to the nodes connected to this node, following direction.
+	 * 
 	 * @param direction the direction (IN or OUT)
 	 * @return an immutable list of nodes matching the direction
 	 */
@@ -101,22 +111,26 @@ public interface Node extends Element, Connected<Node> {
 	
 	/**
 	 * Read-only accessor to all nodes connected to this node.
+	 * 
 	 * @return an immutable list of nodes
 	 */
 	public Collection<? extends Node> nodes();
 
 	/**
-	 * connects this node to end and return the resulting edge (will create an edge).
+	 * Connects this node to the argument and return the resulting edge (will instantiate an edge).
+	 * 
 	 * @param end the node to connect to
-	 * @return the edge with startNode=this and endNode=end
+	 * @return the edge with startNode={@code this} and endNode=end
 	 */
 	public default Edge connectTo(Node end) {
 		return connectTo(Direction.OUT,end);
 	}
 	
 	/**
-	 * connects this node to node and return the resulting edge (will create an edge),
+	 * Connects this node to the node argument and return the resulting edge 
+	 * (will instantiate an edge),
 	 * according to specified direction.
+	 * 
 	 * @param direction the direction in which to connect
 	 * @param node the node to connect to
 	 * @return the edge 
@@ -124,11 +138,10 @@ public interface Node extends Element, Connected<Node> {
 	public Edge connectTo(Direction direction, Node node);
 	
 	/**
-	 * connects this node to node and return the resulting edge (will create an edge),
-	 * according to specified direction, adding the property list to the Edge if the
-	 * EdgeFactory supports it.
-	 * By default, this method ignores the edgeProperty argument
-	 * 
+	 * Connects this node to the node argument and return the resulting edge (will instantiate an edge),
+	 * according to specified direction, adding the property list to the edge (if compatible
+	 * with the {@link EdgeFactory} used to instantiate the edge).
+	 * The default implementation of this method ignores the {@code edgeProperty} argument.
 	 * 
 	 * @param direction the direction in which to connect
 	 * @param node the node to connect to
@@ -149,15 +162,17 @@ public interface Node extends Element, Connected<Node> {
 	}
 	
 	/**
-	 * connects this node to a list of other nodes.
+	 * Connects this node to a list of other nodes.
+	 * 
 	 * @param direction the direction in which to connect to the nodes
 	 * @param nodes the list of nodes to connect to.
 	 */
 	public void connectTo(Direction direction, Collection<? extends Node> nodes);
 	
 	/**
-	 * accessor to the graph which instantiated this node
-	 * @return
+	 * Accessor to the factory which instantiated this node
+	 * 
+	 * @return the factory
 	 */
 	public NodeFactory factory();
 

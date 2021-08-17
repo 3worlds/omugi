@@ -33,15 +33,17 @@ package fr.cnrs.iees.graph;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 /**
- * For all graph or tree elements that have read-only properties
+ * For all {@link Graph} or {@link Tree} connected elements  that have read-only properties.
+ * 
  * @author Jacques Gignoux - 15 avr. 2019
  *
  */
 public interface ReadOnlyDataHolder {
 	
 	/**
-	 * returns its property list
-	 * @return
+	 * Accessor to the list of attributes of this instance.
+	 * 
+	 * @return this instance property list. 
 	 */
 	public ReadOnlyPropertyList properties();
 	

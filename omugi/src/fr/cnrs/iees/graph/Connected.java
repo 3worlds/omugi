@@ -34,84 +34,93 @@ import java.util.Collection;
 
 /**
  * Interface for connected elements that are used to construct a graph, i.e. ancestor to the
- * {@linkplain Node} and {@linkplain Edge} interfaces.
+ * {@link Node} and {@link Edge} interfaces.
  * 
  * @author Jacques Gignoux - 9 mai 2019
  *
- * @param <T>
+ * @param <T> this class subclass, i.e. {@code Edge} is declared as {@code Connected<Edge>} and 
+ * {@code Node} as {@code Connected<Node>}
  */
 public interface Connected<T extends Connected<?>> {
 	
 	/**
-	 * Safely disconnects this Element from the Graph (by taking care of references to it by
-	 * neighbouring Graph Elements)
-	 * 
-	 * @return this element
+	 * Safely disconnects this connected element (node or edge) from the graph (by taking care 
+	 * of references to it by neighbouring connected elements)
 	 */
 	public void disconnect();
 	
 	/**
-	 * Disconnects this element from the node passed as argument.
+	 * Disconnects this connected element (node or edge) from the node passed as argument.
 	 * 
 	 * @param node the node to disconnect from
 	 */
 	public void disconnectFrom(Node node);
 	
 	/**
-	 * Disconnects this element from the node passed as argument.
+	 * Disconnects this connected element (node or edge) from the node passed as argument.
 	 * 
-	 * @param direction the direction in which to disconnect (if IN, node is the start node)
+	 * @param direction the direction in which to disconnect (if {@code IN}, node is the start node)
 	 * @param node the node to disconnect from
 	 */
 	public void disconnectFrom(Direction direction, Node node);
 	
 	/**
-	 * Connects this Element <em>exactly</em> like the argument, i.e by losing its former connections.
-	 * (= a call to disconnect() followed by addConnectionsLike(element)) 
-	 * @param element the element to copy connections from
+	 * Connects this connected element (node or edge) <em>exactly</em> like the argument, 
+	 * i.e by losing its former connections before copying those of the argument.
+	 * 
+	 * @param element the connected element (node or edge) to copy connections from
 	 */
 	public void connectLike(T element);
 	
 	/**
-	 * Replaces another Element <em>element</em> of the same type (Node or Edge) by this instance
-	 * by a successive call to addConnectionsLike(<em>element</em>) and <em>element</em>.disconnect().
-	 * This instance keeps its former connections.
-	 * @param element the Element to replace
+	 * Replaces another connected element of the same type (node or edge) by this instance.
+	 * This instance adds the argument connections to its former connections, and the argument 
+	 * is disconnected from the graph.
+	 * @param element the connected element (node or edge) to replace
 	 */
 	public void replace(T element);
 
 	/**
-	 * As traversal(), but stopping after <em>distance</em> recursion steps. For example,
-	 * node.traversal(1) will return only node, while 
-	 * node.traversal(2) will return all the Nodes connected with only 1 edge to this one.
+	 * As {@link Connected#traversal() traversal()}, but stopping after <em>distance</em> recursion steps. For example,
+	 * {@code node.traversal(1)} will return only {@code node}, while 
+	 * {@code node.traversal(2)} will return all the nodes connected with only 1 edge to this one.
+	 * 
 	 * @param distance the number of recursion steps to search
-	 * @return the connected Graph containing this instance
+	 * @return the connected component (=sub-graph) containing this instance
 	 */
 	public Collection<? extends Node> traversal(int distance);
 
 	/**
-	 * As traversal(), but following only one direction from the starting Element and
+	 * As {@link Connected#traversal() traversal()}, but following only one direction 
+	 * from the starting connected element (node or edge) and
 	 * stopping after <em>distance</em> recursion steps.
+	 * 
 	 * @param distance the number of recursion steps to search
 	 * @param direction the direction in which to search 
-	 * @return the connected Graph containing this instance
+	 * @return the connected component (=sub-graph) containing this instance
 	 */
 	public Collection<? extends Node> traversal(int distance, Direction direction);	
 
-	/**    public static final String LABEL_NAME_SEPARATOR     = ":";
-
-	 * Fetches all the Elements connected to this one and returns the result as a Graph. Use
-	 * with caution in unconnected Graphs (will not find subgraphs unconnected to this element).
-	 * @return the connected Graph containing this instance
+	/**  
+	 * <p>Fetches all the connected elements (nodes or edges) connected to this instance,
+	 * and returns the result as a {@code Graph}. For <a href = "https://en.wikipedia.org/wiki/Component_(graph_theory)">connected components</a>,
+	 * this will return the whole connected component. For graphs with unconnected parts,
+	 * this will not return the whole graph, but the connected component to which this
+	 * instance belongs.</p>
+	 * <p>NOTE: depending on the graph size, this may be slow.</p>
+	 * 
+	 * @return the connected component (=sub-graph) containing this instance
 	 */
 	public default Collection<? extends Node> traversal() {
 		return traversal(Integer.MAX_VALUE);
 	}
 
 	/**
-	 * As (traversal(), but following only one direction from the starting Element.
+	 * As {@link Connected#traversal() traversal()}, but following only one direction 
+	 * from the starting connected element (edge or node).
+	 * 
 	 * @param direction the direction in which to search 
-	 * @return the connected Graph containing this instance
+	 * @return the connected component (=sub-graph) containing this instance
 	 */
 	public default Collection<? extends Node> traversal(Direction direction) {
 		return traversal(Integer.MAX_VALUE,direction);

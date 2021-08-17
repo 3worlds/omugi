@@ -37,6 +37,7 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
+ * An {@link ALEdge} sub-class with read-write data.
  * 
  * @author Jacques Gignoux - 10 mai 2019
  *
@@ -45,6 +46,16 @@ public class ALDataEdge extends ALEdge implements DataHolder {
 
 	private SimplePropertyList properties;
 	
+	/**
+	 * This constructor must only be invoked through an {@link EdgeFactory}. It has been set
+	 * public for internal consistency but should be treated as protected.
+	 * 
+	 * @param id
+	 * @param start
+	 * @param end
+	 * @param props
+	 * @param graph
+	 */
 	public ALDataEdge(Identity id, Node start, Node end, 
 			SimplePropertyList props, EdgeFactory graph) {
 		super(id, start, end, graph);

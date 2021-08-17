@@ -31,41 +31,54 @@
 package fr.cnrs.iees.graph;
 
 /**
- * Ancestor to all Edge classes. NB: Edges are meant to work with a particular type of {@linkplain Node}, 
- * hence the type parameter.
+ * <p>Ancestor to all edge classes.</p>
+ * 
+ * <p>In all graph definitions, an edge is a connection between two nodes, that cannot exist
+ * in the absence of nodes. In other words, edges are subordinate to nodes: a set containing only
+ * one node or only unconnected nodes is a valid graph, but a set containing only one edge
+ * without its two end nodes is not a graph. A free-floating edge is nonsense.</p> 
+ * 
+ * <p>For this reason, in all the {@code Edge} implementing classes here, all edge constructors and methods 
+ * instantiating an edge require two pre-existing nodes.</p>
+ * 
  * @author Jacques Gignoux - 10 mai 2019
  */
 public interface Edge extends Element, Connected<Edge> {
 
 	/**
-	 * Getter for
-	 * @return the start Node of this edge
+	 * Accessor to the start node of this instance.
+	 * 
+	 * @return the start Node
 	 */
 	public Node startNode();
 	
 	/**
-	 * Getter for
+	 * Accessor to the end node of this instance.
+	 * 
 	 * @return the end Node of this edge
 	 */
 	public Node endNode();
 
 	/**
-	 * Getter for 
+	 * Accessor to the node at the opposite end of this instance.  
+	 * 
 	 * @param other a node at one of the two ends of this edge
-	 * @return the opposite end of this edge - null if the argument is not found in this edge
+	 * @return the opposite end of this edge - {@code null} if the argument is not found in this edge
 	 */
 	public Node otherNode(Node other);
 
 	/**
 	 * Setter for both start and end Nodes
+	 * 
 	 * @param start the new start node
 	 * @param end the new end node
 	 */
 	public void connect(Node start, Node end);
 
 	/**
-	 * accessor to the graph which instantiated this edge
-	 * @return
+	 * Accessor to the factory which instantiated this edge
+	 * 
+	 * @return the factory
 	 */
 	public EdgeFactory factory();
 

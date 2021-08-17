@@ -48,11 +48,13 @@ import fr.cnrs.iees.graph.TreeNode;
 import fr.ens.biologie.generic.Textable;
 
 /**
+ * <p>Implementation of a "treegraph", i.e. a graph with an internal tree structure or
+ * a tree with cross-links between its nodes.</p>
  * 
  * @author Jacques Gignoux - 15 mai 2019
  *
- * @param <N>
- * @param <E>
+ * @param <N> The implementation of {@link fr.cnrs.iees.graph.Node Node} used in this graph ({@link TreeGraphNode} or a sub-class)
+ * @param <E> The implementation of {@link fr.cnrs.iees.graph.Edge Edge} used in this graph ({@link ALEdge} or a sub-class)
  */
 // tested OK with version 0.2.0 on 20/5/2019
 public class TreeGraph<N extends TreeGraphNode,E extends ALEdge> 
@@ -63,6 +65,11 @@ public class TreeGraph<N extends TreeGraphNode,E extends ALEdge>
 	private List<N> roots = new ArrayList<N>(10);
 	private GraphFactory factory;
 	
+	/**
+	 * Instantiate a {@code TreeGraph} with a {@code GraphFactory}.
+	 * 
+	 * @param factory the factory to use to populate this graph with nodes and edges
+	 */
 	public TreeGraph(GraphFactory factory) {
 		super();
 		this.factory = factory;

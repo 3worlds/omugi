@@ -33,17 +33,18 @@ package fr.cnrs.iees.graph;
 import fr.ens.biologie.generic.Textable;
 
 /**
- * <p>The root interface for graphs.</p>
- * <p>A Graph depends on a {@link NodeFactory} and an {@link EdgeFactory} to instantiate its
- * components ({@link Node}s and {@link Edge}s). Therefore, constructors of implementing classes
- * must always provide such factories as parameters.</p>
- * <p>Node and Edge factories can manage more than one graph: when a Node or Edge is instantiated
- * by a factory, it is added to all its dependendt graphs.</p>
+ * <p>The root interface for graphs. Just as in the mathematical definition of a Graph G as
+ * G=(N,E,f) where N is a set of nodes and E a set of edges connecting the nodes, this
+ * interface extends the {@link NodeSet} and the {@link EdgeSet} interfaces.</p>
+ * 
+ * <p>A Graph depends on a {@link GraphFactory} to instantiate its
+ * components (implementations of {@link Node}s and {@link Edge}s). Therefore, constructors 
+ * of implementing classes must always provide a factory as parameters.</p>
  * 
  * @author Jacques Gignoux - 14 mai 2019
  *
- * @param <N>
- * @param <E>
+ * @param <N> The {@link Node} subclass used to construct the graph
+ * @param <E> The {@link Edge} subclass used to construct the graph
  */
 public interface Graph<N extends Node, E extends Edge> 
 		extends NodeSet<N>, EdgeSet<E>, Textable {

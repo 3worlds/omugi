@@ -46,10 +46,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
- * The factory for ALGraphs (node and edge factory).
- * A factory manages a list of graphs, i.e. every time a new node/edge is created, it is added
- * to all graphs in the list. Removal of nodes is treated at the graph level.
- * To have different graphs, you must have a different factory (is this a flaw?)
+ * <p>The factory for {@link ALGraph}s (node and edge factory).</p>
  * 
  * @author Jacques Gignoux - 13 mai 2019
  *
@@ -62,15 +59,17 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 	protected Set<ALGraph<ALNode,ALEdge>> graphs = new HashSet<>();
 
 	/**
-	 * basic constructor, only requires a scope
-	 * @param scopeName the scope identifier, e.g. "GraphFactory"
+	 * Basic constructor, only requires a scope
+	 * 
+	 * @param scopeName the scope identifier, e.g. "MyGraphFactory"
 	 */
 	public ALGraphFactory(String scopeName) {
 		super(scopeName);
 	}
 
 	/**
-	 * basic constructor, only requires a scope
+	 * Basic constructor, only requires a scope
+	 * 
 	 * @param scope the scope instance
 	 */
 	public ALGraphFactory(IdentityScope scope) {
@@ -78,25 +77,29 @@ public class ALGraphFactory extends GraphFactoryAdapter {
 	}
 	
 	/**
-	 * basic constructor with default scope
+	 * Basic constructor with default scope "DGF" (for "default graph factory").
 	 */
 	public ALGraphFactory() {
 		super();
 	}
 
 	/**
-	 * constructor with labels for sub-classes of Node and Edge
-	 * @param scopeName the scope identifier, e.g. "GraphFactory"
-	 * @param labels a Map of (labels,class names) associating a label to a java class name
+	 * Constructor with labels for sub-classes of {@link ALNode} and {@link ALEdge}
+	 * 
+	 * @param scopeName the scope identifier, e.g. "MyGraphFactory"
+	 * @param labels a map of (labels,class names) associating a label to the valid java class name of a 
+	 * descendant of {@code ALNode} or {@code ALEdge}
 	 */
 	public ALGraphFactory(String scopeName,Map<String,String> labels) {
 		super(scopeName,labels);
 	}
 
 	/**
-	 * constructor with labels for sub-classes of Node and Edge
+	 * Constructor with labels for sub-classes of {@link ALNode} and {@link ALEdge}
+	 * 
 	 * @param scope the scope instance
-	 * @param labels a Map of (labels,class names) associating a label to a java class name
+	 * @param labels a map of (labels,class names) associating a label to the valid java class name of a 
+	 * descendant of {@code ALNode} or {@code ALEdge}
 	 */
 	public ALGraphFactory(IdentityScope scope,Map<String,String> labels) {
 		super(scope,labels);

@@ -47,11 +47,10 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
+ * A default abstract implementation of {@link GraphFactory}. Use it for further specialisation.
  * 
  * @author Jacques Gignoux - 16 mai 2019
  *
- * @param <N>
- * @param <E>
  */
 public abstract class GraphFactoryAdapter 
 		extends NodeFactoryAdapter 
@@ -162,10 +161,12 @@ public abstract class GraphFactoryAdapter
 		return null;
 	}
 	
+	@Override
 	public final String edgeClassName(Class<? extends Edge> edgeClass) {
 		return edgeClassNames.get(edgeClass);
 	}
 
+	@Override
 	public final Class<? extends Edge> edgeClass(String label) {
 		return edgeLabels.get(label);
 	}

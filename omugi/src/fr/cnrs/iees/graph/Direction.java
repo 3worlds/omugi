@@ -31,13 +31,17 @@
 package fr.cnrs.iees.graph;
 
 /**
- * Directions of edges for directed graphs. Caution: used to index edge lists in Nodes
+ * Directions of edges for directed graphs.
+ * 
  * @author gignoux - 17 août 2017
  *
  */
 public enum Direction {
-	
+
+	/** incoming edges: "node←" */
 	IN,
+	
+	/** outgoing edges: "node→" */
 	OUT
 
 }
