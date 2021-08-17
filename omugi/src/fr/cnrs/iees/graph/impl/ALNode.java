@@ -259,6 +259,17 @@ public class ALNode extends ElementAdapter implements Node {
 	
 	// Textable 
 	
+	/**
+	 * Displays an ALNode as follows (on a single line):
+	 * 
+	 * <pre>
+	 * node_label:node_name=[
+	 *    →out_node_label:out_node_name  // end node of outgoing edge, repeated as needed
+	 *    ←in_node_label:in_node_name    // start node of incoming edge, repeated as needed
+	 * ] 
+	 * </pre>
+	 * <p>e.g.: {@code Node:0=[←Node:1 ←Node:2 →Node:3 →Node:4]}</p>
+	 */
 	@Override
 	public String toDetailedString() {
 		StringBuilder sb = new StringBuilder(toShortString());

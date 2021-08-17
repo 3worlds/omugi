@@ -126,7 +126,7 @@ public abstract class TableAdapter implements Table {
 	}
 	
 	@Override
-	public int size(int index) {
+	public final int size(int index) {
 		return dimensioners[index].getLength();
 	}
 
