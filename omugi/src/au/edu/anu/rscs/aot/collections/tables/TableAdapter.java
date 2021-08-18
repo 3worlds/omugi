@@ -36,9 +36,10 @@ import java.util.List;
 import fr.cnrs.iees.OmugiException;
 
 /**
+ * Abstract implementation of {@link Table}.
  * 
- * @author Shayne Flint - Loooong ago.
- * refactored by J. Gignoux Oct. 2018
+ * @author Shayne Flint - Loooong ago.<br>
+ * 	refactored by J. Gignoux Oct. 2018
  *
  */
 // Tested OK with version 0.0.1 on 6-11-2018
@@ -55,6 +56,11 @@ public abstract class TableAdapter implements Table {
 	// Constructors
 	//
 
+	/**
+	 * Constructor with dimensioners
+	 * 
+	 * @param dimensioners
+	 */
 	public TableAdapter(Dimensioner... dimensioners) {
 		dimensions = dimensioners.length;
 		if (dimensions == 0)
@@ -189,18 +195,6 @@ public abstract class TableAdapter implements Table {
 	public String toSaveableString() {
 		return toSaveableString(Table.getDefaultDelimiters(),Table.getDefaultSeparators());
 	}
-//	public String toString(int[] indexes) {
-//		StringBuilder sb = new StringBuilder(1024);
-////		String result = "[" + indexes[0];
-//		sb.append("[").append(indexes[0]);
-//		for (int i=1; i<indexes.length; i++)
-//			sb.append(", ").append(indexes[i]);
-////			result = result + ", " + indexes[i];
-//		
-////		return result + "]";
-//		sb.append("]");
-//		return sb.toString();
-//	}
 
 	// COMPONENTS OF valueOf() methods for descendants
 	
@@ -249,7 +243,10 @@ public abstract class TableAdapter implements Table {
 
 	// Showable methods
 	
-	// dummy - not tested
+	/**
+	 * This is only a temporary implementation. Please contact us if you really really need this
+	 * method to work as promised.
+	 */
 	@Override
 	public void show(String header) {
 		System.out.println(header + " " + toString());
@@ -342,8 +339,9 @@ public abstract class TableAdapter implements Table {
 	}
 
 	/**
-	 * Two tables are equal if they share the same dimensioners (same objects, not only content) and
-	 * all their elements are equal (including possibly null values for StringTables and ObjectTables)
+	 * Two tables are equal if they share the same {@link Dimensioner}s (same objects, not only content) and
+	 * all their elements are equal (including possibly {@code null} values for {@link StringTable}s 
+	 * and {@link ObjectTable}s)
 	 */
 	@Override
 	public final boolean equals(Object obj) {

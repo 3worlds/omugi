@@ -42,11 +42,16 @@ import fr.ens.biologie.generic.Sizeable;
 import fr.ens.biologie.generic.Textable;
 
 /**
- * An interface for multidimensional access to data. Basically there are three
- * ways to access the data 1 by multidimensional integer indexes (eg (i1,i2,i3)
- * 2 by flat index, i.e. a single index i = f(i1,i2,i3,n1,n2,n3) where nis are
- * the sizes of each dimension 3 by multidimensional non-integer indexes (this
- * is optional and decided at construction time)
+ * <p>An interface for multidimensional access to data. Basically there are three
+ * ways to access the data</p> 
+ * <ol>
+ * <li>by multidimensional integer indexes (eg (i<sub>1</sub>,i<sub>2</sub>,i<sub>3</sub>);</li>
+ * <li>by <em>flat</em> index, i.e. a single index k computed as k = f(i<sub>1</sub>,i<sub>2</sub>,i<sub>3</sub>
+ * ,n<sub>1</sub>,n<sub>2</sub>,n<sub>3</sub>) where n<sub>i</sub>'s are
+ * the sizes of each dimension and f is a clever function doing the computation for you;</li>
+ * <li>by multidimensional non-integer indexes (this
+ * is optional and decided at construction time).</li>
+ * </ol>
  * 
  * @author J. Gignoux - 15 févr. 2017
  *
@@ -58,6 +63,12 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	public static int TABLEix = 0;
 	public static int DIMix = 1;
 
+	/**
+	 * The default separators between values used to convert tables to/from text. 
+	 * cf {@link fr.cnrs.iees.io.parsing.TextGrammar TextGrammar}.
+	 * 
+	 * @return the separator for dimensions and for data in a 2-cell array of char
+	 */
 	public static char[] getDefaultSeparators() {
 		char[] isep = new char[2];
 		isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
@@ -65,6 +76,12 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 		return isep;
 	}
 
+	/**
+	 * The default block delimiters between values used to convert tables to/from text.
+	 * cf {@link fr.cnrs.iees.io.parsing.TextGrammar TextGrammar}.
+	 * 
+	 * @return the block delimiter pairs for dimension and data blocks as a 2-pair array of char
+	 */
 	public static char[][] getDefaultDelimiters() {
 		char[][] bdel = new char[2][2];
 		bdel[Table.DIMix] = DIM_BLOCK_DELIMITERS;
@@ -73,139 +90,161 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	}
 
 	/**
-	 * returns the number of dimensions (=number of Dimensioners) of this storage
+	 * returns the number of dimensions (=number of Dimensioners) of this table
+	 * 
+	 * @return the number of dimensions
 	 */
 	public int ndim();
 
-	/** returns the size of dimension i */
+	/** 
+	 * returns the size of dimension passed as argument (no overflow check) 
+	 * 
+	 * @param index the dimension index
+	 * @return the size of the index<sup>th</sup> dimension
+	 */
 	public int size(int index);
 
-	/** returns the Dimensioners of this storage */
+	/** 
+	 * returns the dimensioners of this table 
+	 * 
+	 * @return an array of {@code Dimensioner}s
+	 */
 	public Dimensioner[] getDimensioners();
 
-	/** returns the flat index matching a ndim-tuple of indexes */
+	/** 
+	 * returns the flat index matching a ndim-tuple of indexes (no overflow check) 
+	 * 
+	 * @param indexes a ndim-tuple of indexes specifying one cell of the table
+	 * @return a single index specifying the same cell as the argument
+	 */
 	public int getFlatIndexByInt(int... indexes);
 
 	/**
 	 * returns the flat index matching a ndim-tuple of non integer indexes (if any)
+	 * 
+	 * @param indexes a ndim-tuple of indexes specifying one cell of the table
+	 * @return a single index specifying the same cell as the argument
 	 */
 	public int getFlatIndex(Object... indexes);
 
-	/** returns a ndim-tuple of indices matching a flat index */
+	/** 
+	 * returns a ndim-tuple of integer indices matching a flat index (no overflow check)  
+	 * 
+	 * @param flatIndex a single index specifying one cell of the table
+	 * @return a ndim-tuple of indexes specifying the same cell as the argument
+	 */
 	public int[] getIndexes(int flatIndex);
 
 	/**
 	 * returns a String description of an element of this storage, accessed by flat
 	 * index
+	 * 
+	 * @param flatIndex a single index specifying one cell of the table
+	 * @return this cell content description as a String
 	 */
 	public String elementToString(int flatIndex);
 
-	/** returns the type of the table elements */
+	/** 
+	 * returns the type of the table elements
+	 *  
+	 * @return the fully qualified class name of the table elements
+	 */
 	public String elementClassName();
 
+	/**
+	 * returns the type of the table elements
+	 * 
+	 * @return the simple class name of the table elements
+	 */
 	public String elementSimpleClassName();
 
-//	/** returns the full content of this element as a String for saving into text files*/
-//	public String elementToToken(int flatIndex);
-
+	/**
+	 * Copy all values of the argument into this instance. Both tables must have exactly the same
+	 * dimensioners in the same order. CAUTION: no dimension check is performed.
+	 * 
+	 * @param from the table to copy
+	 * @return this instance for agile programming
+	 */
 	public abstract Table copy(Table from);
 
+	/**
+	 * returns the type of the table elements
+	 * 
+	 * @return the table element class object
+	 */
 	public abstract Class<?> contentType();
 
 	// Default setters for descendants - all do nothing by default
 	// short
-	public default void setByInt(short value, int... indexes) {
-	}
-
-	public default void set(short value, Object... indexes) {
-	}
-
-	public default void setWithFlatIndex(short value, int index) {
-	}
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void setByInt(short value, int... indexes) {	}
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void set(short value, Object... indexes) { }
+	/** set <em>value</em> at cell specified by flat <em>index</em> */
+	public default void setWithFlatIndex(short value, int index) { }
 
 	// int
-	public default void setByInt(int value, int... indexes) {
-	}
-
-	public default void set(int value, Object... indexes) {
-	}
-
-	public default void setWithFlatIndex(int value, int index) {
-	}
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void setByInt(int value, int... indexes) { }
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void set(int value, Object... indexes) { }
+	/** set <em>value</em> at cell specified by flat <em>index</em> */
+	public default void setWithFlatIndex(int value, int index) { }
 
 	// long
-	public default void setByInt(long value, int... indexes) {
-	}
-
-	public default void set(long value, Object... indexes) {
-	}
-
-	public default void setWithFlatIndex(long value, int index) {
-	}
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void setByInt(long value, int... indexes) { }
+ 	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void set(long value, Object... indexes) { }
+ 	/** set <em>value</em> at cell specified by flat <em>index</em> */
+	public default void setWithFlatIndex(long value, int index) { }
 
 	// byte
-	public default void setByInt(byte value, int... indexes) {
-	}
-
-	public default void set(byte value, Object... indexes) {
-	}
-
-	public default void setWithFlatIndex(byte value, int index) {
-	}
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void setByInt(byte value, int... indexes) { }
+ 	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void set(byte value, Object... indexes) { }
+ 	/** set <em>value</em> at cell specified by flat <em>index</em> */
+	public default void setWithFlatIndex(byte value, int index) { }
 
 	// boolean
-	public default void setByInt(boolean value, int... indexes) {
-	}
-
-	public default void set(boolean value, Object... indexes) {
-	}
-
-	public default void setWithFlatIndex(boolean value, int index) {
-	}
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void setByInt(boolean value, int... indexes) { }
+ 	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void set(boolean value, Object... indexes) { }
+ 	/** set <em>value</em> at cell specified by flat <em>index</em> */
+	public default void setWithFlatIndex(boolean value, int index) { }
 
 	// double
-	public default void setByInt(double value, int... indexes) {
-	}
-
-	public default void set(double value, Object... indexes) {
-	}
-
-	public default void setWithFlatIndex(double value, int index) {
-	}
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void setByInt(double value, int... indexes) { }
+ 	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void set(double value, Object... indexes) { }
+ 	/** set <em>value</em> at cell specified by flat <em>index</em> */
+	public default void setWithFlatIndex(double value, int index) { }
 
 	// float
-	public default void setByInt(float value, int... indexes) {
-	}
-
-	public default void set(float value, Object... indexes) {
-	}
-
-	public default void setWithFlatIndex(float value, int index) {
-	}
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void setByInt(float value, int... indexes) { }
+ 	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void set(float value, Object... indexes) { }
+ 	/** set <em>value</em> at cell specified by flat <em>index</em> */
+	public default void setWithFlatIndex(float value, int index) { }
 
 	// char
-	public default void setByInt(char value, int... indexes) {
-	}
-
-	public default void set(char value, Object... indexes) {
-	}
-
-	public default void setWithFlatIndex(char value, int index) {
-	}
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void setByInt(char value, int... indexes) { }
+ 	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void set(char value, Object... indexes) { }
+ 	/** set <em>value</em> at cell specified by flat <em>index</em> */
+	public default void setWithFlatIndex(char value, int index) { }
 
 	// String
-	public default void setByInt(String value, int... indexes) {
-	}
-
-	public default void set(String value, Object... indexes) {
-	}
-
-	public default void setWithFlatIndex(String value, int index) {
-	}
-
-	// SIZEABLE
-
-	/** returns the total size of this storage (in number of items) */
-//	public int getFlatSize();
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void setByInt(String value, int... indexes) { }
+ 	/** set <em>value</em> at cell specified by <em>indexes</em> */
+	public default void set(String value, Object... indexes) { }
+ 	/** set <em>value</em> at cell specified by flat <em>index</em> */
+	public default void setWithFlatIndex(String value, int index) { }
 
 }
