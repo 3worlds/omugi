@@ -35,6 +35,8 @@ import fr.cnrs.iees.properties.impl.ReadOnlyPropertyListImpl;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 /**
+ * A factory for property lists. Used in {@link fr.cnrs.iees.graph.GraphFactory GraphFactory}
+ * and in  {@link fr.cnrs.iees.graph.TreeFactory TreeFactory}. 
  * 
  * @author Jacques Gignoux - 20 déc. 2018
  *
@@ -43,6 +45,7 @@ public interface PropertyListFactory {
 
 	/**
 	 * Create a read-only property list with property names and values 
+	 * 
 	 * @param properties
 	 * @return
 	 */
@@ -52,6 +55,7 @@ public interface PropertyListFactory {
 	
 	/**
 	 * Create a read-write property list with property names and values 
+	 * 
 	 * @param properties
 	 * @return
 	 */
@@ -61,6 +65,7 @@ public interface PropertyListFactory {
 	
 	/**
 	 * Create a read-write property list with property names, but no values
+	 * 
 	 * @param propertyKeys
 	 * @return
 	 */
