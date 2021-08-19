@@ -35,11 +35,23 @@ import com.google.common.base.Strings;
 import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.DataContainer;
 
-/** initial code by Shayne */
+/** 
+ * A multidimensional table of {@code String}s. 
+ * 
+ * @author Shayne Flint - looong ago<br/>
+ * modified by JG 15/2/2017 to account for {@link Table} and 
+ * {@link fr.ens.biologie.generic.DataContainer DataContainer} interfaces * 
+ *
+ */
 public class StringTable extends TableAdapter {
 
 	protected String[] data;
 
+	/**
+	 * Constructor with dimensioners
+	 * 
+	 * @param dimensions dimensioners
+	 */
 	public StringTable(Dimensioner... dimensions) {
 		super(dimensions);
 		data = new String[size()];
@@ -58,6 +70,12 @@ public class StringTable extends TableAdapter {
 		return result;
 	}
 
+	/**
+	 * Clone this table and fills it with its argument
+	 * 
+	 * @param initialValue the value to fill the table with
+	 * @return the new table
+	 */
 	public StringTable cloneStructure(String initialValue) {
 		StringTable result = cloneStructure();
 		result.fillWith(initialValue);
@@ -85,6 +103,7 @@ public class StringTable extends TableAdapter {
 		return this;
 	}
 
+	/** fills this container with a single {@code String} value */
 	public StringTable fillWith(String value) {
 		for (int i = 0; i < data.length; i++)
 			data[i] = value;
@@ -111,30 +130,42 @@ public class StringTable extends TableAdapter {
 		return String.class;
 	}
 
+	/** get the value stored at <em>indexes</em>*/
 	public String getByInt(int... indexes) {
 		return data[getFlatIndexByInt(indexes)];
 	}
 
+	@Override
 	public void setByInt(String value, int... indexes) {
 		data[getFlatIndexByInt(indexes)] = value;
 	}
 
+	/** get the value stored at flat <em>index</em>*/
 	public String getWithFlatIndex(int index) {
 		return data[index];
 	}
 
+	@Override
 	public void setWithFlatIndex(String value, int index) {
 		data[index] = value;
 	}
 
+	/** get the value stored at <em>indexes</em>*/
 	public String get(Object... indexes) {
 		return data[getFlatIndex(indexes)];
 	}
 
+	@Override
 	public void set(String value, Object... indexes) {
 		data[getFlatIndex(indexes)] = value;
 	}
 
+	/**
+	 * Checks if this instance contains the value passed as argument
+	 * 
+	 * @param str the value to check
+	 * @return {@code true} if value is found in the table, {@code false} otherwise
+	 */
 	// maybe this could be generalized but for many tables it is not very useful
 	public boolean contains(String str) {
 		for (int i = 0; i < flatSize; i++) {
@@ -164,10 +195,28 @@ public class StringTable extends TableAdapter {
 		return sb.toString().replaceFirst(",", "");
 	}
 
+	/**
+	 * Construct an instance from a {@code String} previously produced with 
+	 * {@link TableAdapter#toSaveableString() toSaveableString()}. Uses the default block delimiters
+	 * and item separators defined in {@link Table#getDefaultDelimiters()} 
+	 * and {@link Table#getDefaultSeparators()}.
+	 * 
+	 * @param value the {@code String} to read data from
+	 * @return the new instance
+	 */
 	public static StringTable valueOf(String value) {
 		return StringTable.valueOf(value, Table.getDefaultDelimiters(), Table.getDefaultSeparators());
 	}
 
+	/**
+	 * Construct an instance from a {@code String} previously produced with 
+	 * {@link TableAdapter#toSaveableString toSaveableString(...)}.
+	 * 
+	 * @param value the {@code String} to read data from
+	 * @param bdel block delimiters to use
+	 * @param isep item separators to use
+	 * @return the new instance
+	 */
 	public static StringTable valueOf(String value, char[][] bdel, char[] isep) {
 		value = value.trim();
 		if ((value == null) || value.isBlank() || value.isEmpty())

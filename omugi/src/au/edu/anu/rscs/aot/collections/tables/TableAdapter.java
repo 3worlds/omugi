@@ -59,7 +59,7 @@ public abstract class TableAdapter implements Table {
 	/**
 	 * Constructor with dimensioners
 	 * 
-	 * @param dimensioners
+	 * @param dimensioners dimensioners
 	 */
 	public TableAdapter(Dimensioner... dimensioners) {
 		dimensions = dimensioners.length;
@@ -142,6 +142,12 @@ public abstract class TableAdapter implements Table {
 	@Override
 	public abstract TableAdapter clone();
 	
+	/**
+	 * Creates a new table of the same dimensions as this instance, but doesnt copy
+	 * the cell values
+	 * 
+	 * @return the new table instance
+	 */
 	protected abstract TableAdapter cloneStructure();
 	
 	// Sizeable methods

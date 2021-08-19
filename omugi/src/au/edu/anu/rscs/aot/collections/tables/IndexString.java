@@ -41,17 +41,19 @@ import au.edu.anu.rscs.aot.util.IntegerRange;
 import fr.cnrs.iees.OmugiException;
 
 /**
- * <p>A Class to specify a set of multidimensional indexes using a string with a R-like syntax, i.e.:</p>
- * <p>example for a 3D table "TABLE" of dimensions 3,5,2:</p>
+ * <p>Static methods to describe multidimensional indexes using a string with a 
+ * <a href="https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Indexing">R</a>
+ * -like syntax.</p>
+ * <p>For example, for a 3D table "TABLE" of dimensions 3,5,2:</p>
  * <ul>
- * <li>TABLE[||] or TABLE = the whole table (all indices)</li>
- * <li>TABLE[2|4|1] = cell (2,4,1) of the table</li>
- * <li>TABLE[|4|1] = cells (0,4,1) (1,4,1) and (2,4,1), ie all items in dimension 1</li>
- * <li>TABLE[3||] = all items in dimensions 2 and 3, cell 3 only in dimension 1</li>
- * <li>1:3 = specifies a range of indices in one dimension, in this case indices 1, 2 and 3</li>
- * <li>1,3,7 = specifies the three indexes in one dimension, in this case indices 1, 3 and 7</li>
- * <li>-2 = all indices in the dimension except index 2</li>
- * <li>-1:3 = all indicies in the dimension except 1,2 and 3</li>
+ * <li>{@code TABLE[||]} or {@code TABLE} = the whole table (all indices)</li>
+ * <li>{@code TABLE[2|4|1]} = cell (2,4,1) of the table</li>
+ * <li>{@code TABLE[|4|1]} = cells (0,4,1) (1,4,1) and (2,4,1), ie all items in dimension 1</li>
+ * <li>{@code TABLE[3||]} = all items in dimensions 2 and 3, cell 3 only in dimension 1</li>
+ * <li>{@code 1:3} = specifies a range of indices in one dimension, in this case indices 1, 2 and 3</li>
+ * <li>{@code 1,3,7} = specifies the three indexes in one dimension, in this case indices 1, 3 and 7</li>
+ * <li>{@code -2} = all indices in the dimension except index 2</li>
+ * <li>{@code -1:3} = all indicies in the dimension except 1,2 and 3</li>
  * </ul>
  * 
  * @author Jacques Gignoux - 23 oct. 2019
@@ -175,11 +177,11 @@ public class IndexString {
 	}
 	
 	/**
-	 * Given a string index, returns the range of indices in each dimension
-	 * 	
-	 * @param indexString a String describing an index
-	 * @param dim the dimensions of the table this string applies to 
-	 * @return the min and max index values in every dimension
+	 * Given a string index, returns the range of indices in each dimension.
+	 * 
+	 * @param indexString a String describing an index - e.g. {@code "[0;2:3|0;2|-1]"}
+	 * @param dim the dimensions of the table this string applies to  - e.g. {@code 4,4,2}
+	 * @return the min and max index values in every dimension - e.g. {@code [ 0..3 0..2 0..0 ]}
 	 */
 	public static IntegerRange[] stringIndexRanges(String indexString, int...dim) {
 		IntegerRange[] result = new IntegerRange[dim.length];
@@ -206,12 +208,13 @@ public class IndexString {
 	 * This method converts a string describing an index range to a list of indices
 	 * usable by the {@linkplain Table} class and its descendants.
 	 * 
-	 * @param indexString the String containing the index description - e.g. [1:3,2:3,]
-	 * @param table the {@code Table} this string applies to - e.g. {@code new BooleanTable(new Dimensioner(4), 
-	 * new Dimensioner(5), new Dimensioner(3))}
+	 * @param indexString the String containing the index description - e.g. {@code "[1:3,2:3,]"}
+	 * @param table the {@code Table} this string applies to - e.g. 
+	 * {@code myTable = new BooleanTable(new Dimensioner(4),new Dimensioner(5),new Dimensioner(3))}
 	 * @return an array of array of indices of the same dimension as the table - e.g.
-	 * [[1,2,0] [1,2,1] [1,2,2] [1,3,0] [1,3,1] [1,3,2] [2,2,0] [2,2,1] [2,2,2] [2,3,0] [2,3,1]
-	 *  [2,3,2] [3,2,0] [3,2,1] [3,2,2] [3,3,0] [3,3,1] [3,3,2]]
+	 * {@code [[1,2,0] [1,2,1] [1,2,2] [1,3,0] [1,3,1] [1,3,2] [2,2,0] [2,2,1] [2,2,2] [2,3,0] [2,3,1]
+	 *  [2,3,2] [3,2,0] [3,2,1] [3,2,2] [3,3,0] [3,3,1] [3,3,2]]}
+	 * 
 	 */
 	public static int[][] stringToIndex(String indexString, Table table) {
 		int[][] result = null; 
@@ -239,13 +242,13 @@ public class IndexString {
 
 	/**
 	 * This method converts a string describing an index range to a list of indices
-	 * usable by the {@linkplain Table} class and its descendants.
+	 * usable by the {@link Table} class and its descendants.
 	 * 
-	 * @param indexString the String containing the index description - e.g. [1:3,2:3,]
-	 * @param dim the dimensions of the table this string applies to - e.g. 4,5,3
+	 * @param indexString the String containing the index description - e.g. {@code "[1:3,2:3,]"}
+	 * @param dim the dimensions of the table this string applies to - e.g. {@code 4,5,3}
 	 * @return an array of arrays of indices of the same dimension as the table - e.g.
-	 * [[1,2,0] [1,2,1] [1,2,2] [1,3,0] [1,3,1] [1,3,2] [2,2,0] [2,2,1] [2,2,2] [2,3,0] [2,3,1]
-	 *  [2,3,2] [3,2,0] [3,2,1] [3,2,2] [3,3,0] [3,3,1] [3,3,2]]
+	 * {@code [[1,2,0] [1,2,1] [1,2,2] [1,3,0] [1,3,1] [1,3,2] [2,2,0] [2,2,1] [2,2,2] [2,3,0] [2,3,1]
+	 *  [2,3,2] [3,2,0] [3,2,1] [3,2,2] [3,3,0] [3,3,1] [3,3,2]]}
 	 */
 	public static int[][] stringToIndex(String indexString, int...dim) {
 		int[][] result = null; 
@@ -274,15 +277,18 @@ public class IndexString {
 	}
 
 	/**
-	 * CAUTION: this is NOT performing the reverse operation to stringToIndex(...) as the factoring out
+	 * <p>This method converts an array of indices into a String.</p>
+	 * 
+	 * <p>CAUTION: this is NOT performing the reverse operation to stringToIndex(...) as the factoring out
 	 * of a table of indices is not unique and tricky to work out. This uses a ndim arrays of indices
 	 * selected in each of the dimensions independently and works out the global String matching
-	 * these.
-	 * Assumes indices are provided in proper order.
+	 * these.</p>
 	 * 
-	 * @param index a ndim-list of indices to search for in every dimension
-	 * @param table ndim dimension sizes
-	 * @return the matching String
+	 * <p>Assumes indices are provided in proper order.</p>
+	 * 
+	 * @param index a ndim-list of indices to search for in every dimension - e.g. {@code {{0,1,2,4},{2,4,5,6,8,9,11},null}}
+	 * @param dim ndim dimension sizes - e.g. {@code 5,12,8}
+	 * @return the matching String - e.g. {@code "[0:2;4|2;4:6;8:9;11|]"}
 	 */
 	public static String indexToString(int[][] index, int...dim) {
 		if ((index==null)&(dim==null))
@@ -336,6 +342,21 @@ public class IndexString {
 		return sb.toString();
 	}
 
+	/**
+	 * <p>This method converts an array of indices into a String.</p>
+	 * 
+	 * <p>CAUTION: this is NOT performing the reverse operation to stringToIndex(...) as the factoring out
+	 * of a table of indices is not unique and tricky to work out. This uses a ndim arrays of indices
+	 * selected in each of the dimensions independently and works out the global String matching
+	 * these.</p>
+	 * 
+	 * <p>Assumes indices are provided in proper order.</p>
+	 * 
+	 * @param index a ndim-list of indices to search for in every dimension - e.g. {@code {{0,1,2,4},{2,4,5,6,8,9,11},null}}
+	 * @param table the {@code Table} this string applies to - e.g. 
+	 * {@code myTable = new ShortTable(new Dimensioner(5),new Dimensioner(12),new Dimensioner(8))}
+	 * @return the matching String - e.g. {@code "[0:2;4|2;4:6;8:9;11|]"}
+	 */
 	public static String indexToString(int[][] index, Table table) {
 		int[] dim = new int[table.ndim()];
 		for (int i=0; i<dim.length; i++)

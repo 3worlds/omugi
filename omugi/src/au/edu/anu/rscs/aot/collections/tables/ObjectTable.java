@@ -36,15 +36,16 @@ import java.util.Arrays;
 import fr.cnrs.iees.OmugiException;
 
 /**
- * <p>A generic {@linkplain Table} to contain any {@linkplain Object} descendant.</p>
+ * <p>A multidimensional generic {@link Table} to contain any {@link Object} descendant.</p>
  * <p>By construct, the implementation of {@code contentType()} at this level cannot return
- * better than the {@linkplain Object} class. To return the exact T class, a descendant of ObjectTable<T>
+ * better than the {@link Object} class. To return the exact T class, a descendant of ObjectTable<T>
  * where T is explicited must be written.</p>
  * <p>Similarly, the usual static {@code valueOf()} method cannot be implemented here, only in descendant classes.</p>
  *  
  * @author Shayne Flint - looong ago
- * <ul><li>modified by JG 15/2/2017 to account for {@linkplain Table} and {@linkplain DataContainer} interfaces</li>
- * <li>modified by JG 1/10/2018 to account for {@linkplain Textable} interface</li>
+ * <ul><li>modified by JG 15/2/2017 to account for {@link Table} and 
+ * {@link fr.ens.biologie.generic.DataContainer DataContainer} interfaces</li>
+ * <li>modified by JG 1/10/2018 to account for {@link fr.ens.biologie.generic.Textable Textable} interface</li>
  * <li>modified by JG 3/2/2021 to fix the {@code valueOf(...)} issues</li>
  * </ul>
  *
@@ -64,27 +65,32 @@ public class ObjectTable<T> extends TableAdapter {
 		data = (T[]) d.toArray();
 	}
 
-
+	/** get the value stored at <em>indexes</em>*/
 	public T getByInt(int... indexes) {
 		return data[getFlatIndexByInt(indexes)];
 	}
 
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public void setByInt(T value, int... indexes) {
 		data[getFlatIndexByInt(indexes)] = value;
 	}
 
+	/** get the value stored at <em>indexes</em>*/
 	public T get(Object... indexes) {
 		return data[getFlatIndex(indexes)];
 	}
 
+	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public void set(T value, Object... indexes) {
 		data[getFlatIndex(indexes)] = value;
 	}
 
+	/** get the value stored at flat <em>index</em>*/
 	public T getWithFlatIndex(int index) {
 		return data[index];
 	}
 
+	/** set <em>value</em> at cell specified by flat <em>index</em> */
 	public void setWithFlatIndex(T value, int index) {
 		data[index] = value;
 	}
@@ -102,6 +108,12 @@ public class ObjectTable<T> extends TableAdapter {
 		return result;
 	}
 
+	/**
+	 * Clone this table and fills it with its argument
+	 * 
+	 * @param initialValue the value to fill the table with
+	 * @return the new table
+	 */
 	public ObjectTable<T> cloneStructure(T initialValue) {
 		ObjectTable<T> result = cloneStructure();
 		result.fillWith(initialValue);
@@ -151,9 +163,7 @@ public class ObjectTable<T> extends TableAdapter {
 
 	/**
 	 * <p>This method <strong>must</strong> be overriden in descendants. Here it is impossible to know the class of T,
-	 * so {@linkplain Object} is returned.</p>	/**
-	 * <p>Only descendants of ObjectTable<T> can implement a valueOf(...) method as the generic
-	 * constructor cannot handle unknown object types.</p>
+	 * so {@link Object} is returned.</p>	
 	 */
 	@Override
 	public Class<?> contentType() {
@@ -161,13 +171,19 @@ public class ObjectTable<T> extends TableAdapter {
 	}
 	
 	/**
-	 * <p>Only descendants of ObjectTable<T> can implement a valueOf(...) method as the generic
-	 * constructor cannot handle unknown object types. This method throws an Exception.</p>
+	 * <p>A default implementation throwing an {@code Exception}.
+	 * Only descendants of {@code ObjectTable<T>} can implement a {@code valueOf(...)} method as the generic
+	 * constructor cannot handle unknown object types.</p>
 	 */
 	public static ObjectTable<?> valueOf(String value, char[][] bdel, char[] isep) {
 		throw new OmugiException("Only descendants of ObjectTable<T> can have a valueOf(...) method");
 	}
 
+	/**
+	 * <p>A default implementation throwing an {@code Exception}.
+	 * Only descendants of {@code ObjectTable<T>} can implement a {@code valueOf(...)} method as the generic
+	 * constructor cannot handle unknown object types.</p>
+	 */
 	public static ObjectTable<?> valueOf(String value) {
 		return valueOf(value,Table.getDefaultDelimiters(),Table.getDefaultSeparators());
 	}

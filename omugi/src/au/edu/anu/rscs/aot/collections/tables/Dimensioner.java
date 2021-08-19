@@ -33,6 +33,9 @@ package au.edu.anu.rscs.aot.collections.tables;
 import fr.cnrs.iees.OmugiException;
 
 /**
+ * <p>A class to set the dimensions of other objects (typically, multi-dimensional containers such
+ * as {@link Table}). It will store or generate the relevant indexes to access the object(s) it
+ * is associated with. It can use {@code int}egers or {@link String}s as indexes.</p>
  * 
  * @author Shayne Flint - long ago 
  *
@@ -42,24 +45,53 @@ public class Dimensioner {
 	private int last;
 	private String[] names;
 	
+	/**
+	 * Simple constructor just defining the length of the dimension. The indexes will 
+	 * consist in integers from 0 to length-1.
+	 * 
+	 * @param length the number of indexes to generate
+	 */
 	public Dimensioner(int length) {
 		this.last  = length - 1;
 		this.names = null;
 	}
 	
+	/**
+	 * Constructor using {@code String}s as indexes. The arguments will be the successive values of
+	 * the indexes, i;e. the order in the call to the constructor will define the order of index
+	 * values in this instance.
+	 * 
+	 * @param names the index values in indexing order
+	 */
 	public Dimensioner(String... names) {
 		this.last  = names.length - 1;
 		this.names = names;
 	}
 	
+	/**
+	 * 
+	 * @return the last index value
+	 */
 	public int getLast() {
 		return last;
 	}
 	
+	/**
+	 * Accessor to the length of this instance, also known as this <em>dimension size</em>.
+	 * 
+	 * @return the number of values in this dimensioner
+	 */
 	public int getLength() {
 		return last + 1;
 	}
 	
+	/**
+	 * Accessor to the name associated with an integer index. Throws an {@code Exception} if this
+	 * instance has no names.
+	 * 
+	 * @param index the int index
+	 * @return the matching name, if any.
+	 */
 	public String getName(int index) {
 		if ((names==null)||(names.length == 0))
 			throw new OmugiException("Dimensioner.getName: there are no names associated with " + toString());
@@ -67,6 +99,13 @@ public class Dimensioner {
 			return names[index];
 	}
 	
+	/**
+	 * Accessor to the integer value associated with a String index value.Throws an {@code Exception} if this
+	 * instance has no names.
+	 * 
+	 * @param name the name 
+	 * @return the matching integer index value
+	 */
 	public int getIndex(String name) {
 		if (names == null)
 			throw new OmugiException("Dimensioner.getIndex: " + toString() + " has no names.");		
