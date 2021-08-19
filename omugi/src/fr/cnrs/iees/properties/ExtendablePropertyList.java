@@ -34,17 +34,16 @@ import fr.ens.biologie.generic.Sealable;
 
 /**
  * <p>A mutable {@linkplain SimplePropertyList}, i.e. which can grow and shrink.</p> 
- * <ol>
- * <li>Mutable, i.e. the list of properties can grow and shrink.</li> 
- * <li>Default properties: none.</li>
- * </ol>
+ *
  * <p>The contract is as follows: {@code add...()} methods will add a new property to the list
  * while {@code set...()} methods will only set a value for an existing property. They should
  * return an error if the property does not exist.</p>
- * <p>Instances of this class are {@linkplain Sealable}, i.e. they can be made 
+ * 
+ * <p>Instances of this class are {@link fr.ens.biologie.generic.Sealable Sealable}, i.e. 
+ * they can be made 
  * immutable after some time by calling {@code seal()}. This enables, for example,
  * to read properties from a file without knowing how many are expected, and then
- * make the {@code PropertyList} immutable after the file has been closed.</p>
+ * make the property list immutable after the file has been closed.</p>
  * 
  * @author Jacques Gignoux - 29-8-2017
  *

@@ -33,11 +33,7 @@ package fr.cnrs.iees.properties;
 import fr.ens.biologie.generic.WriteProtectable;
 
 /**
- * <p>A property list for graph {@linkplain GraphElement}s that can be made read-only on demand.</p> 
- * <ol>
- * <li>Immutable, i.e. the list of properties does not change after construction.</li> 
- * <li>Default properties: none.</li>
- * </ol>
+ * <p>A {@link SimplePropertyList} list that can be made read-only on demand.</p> 
  * 
  * @author Jacques Gignoux - 29-8-2017
  *

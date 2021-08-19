@@ -39,12 +39,10 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.Textable;
 
 /**
- * <p>Implementation of {@linkplain SimplePropertyList}.</p>
- * <ol>
- * <li>Storage of properties: local</li>
- * <li>Optimisation: speed. No checks on dimensions, names or anything else.</li>
- * </ol>
- * <p>Container is a sorted map so that property keys always come in the same order.</p>
+ * Implementation of {@link SimplePropertyList}.
+ * Optimisation: speed. No checks on dimensions, names or anything else. 
+ * 
+ * Internally, the container is a sorted map so that property keys always come in the same order.
  * 
  * @author J. Gignoux - 13 févr. 2017
  *
@@ -58,25 +56,55 @@ public class SimplePropertyListImpl
 	// construction time,
 	// which means no properties can be added in the map after construction.
 
+	/**
+	 * Construct from another property list. All values are copied in this instance.
+	 * Remember that no more names can be added after construction.
+	 * 
+	 * @param propertyList the list of properties
+	 */
 	public SimplePropertyListImpl(SimplePropertyList propertyList) {
 		super(propertyList);
 	}
 
+	/**
+	 * Constructor from single properties.
+	 * Remember that no more names can be added after construction.
+	 *  
+	 * @param properties the properties copied into this instance
+	 */
 	public SimplePropertyListImpl(Property... properties) {
 		super(properties);
 	}
 
+	/**
+	 * Constructor from a list of property names and a list of matching values.
+	 * Remember that no more names can be added after construction.
+	 * 
+	 * @param keys the property names
+	 * @param values the values
+	 */
 	public SimplePropertyListImpl(List<String> keys, List<Object> values) {
 		super(keys,values);
 	}
 
-	// CAUTION: order of properties may be random
+	/**
+	 * Constructor from a list of property names.
+	 * Remember that no more names can be added after construction.
+	 * 
+	 * @param keys the property names
+	 */
 	public SimplePropertyListImpl(Collection<String> keys) {
 		super();
 		for (String key : keys)
 			propertyMap.put(key, null);
 	}
 
+	/**
+	 * Constructor from property names.
+	 * Remember that no more names can be added after construction.
+	 * 
+	 * @param keys the property names
+	 */
 	public SimplePropertyListImpl(String... keys) {
 		super();
 		for (String key : keys)

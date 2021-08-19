@@ -45,10 +45,12 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
- * <p>A PropertyList made by grouping property lists in a single wrapper.
+ * <p>A property list made by grouping property lists in a single wrapper.
  * Storage is made in the original property lists.</p>
+ * 
  * <p>Since property lists may have properties with the same names, the names must be
  * prefixed with a property list name when accessing the properties</p>
+ * 
  * @author gignoux - 15 juin 2017
  *
  */
@@ -62,6 +64,12 @@ public class CompoundPropertyListImpl implements SimplePropertyList {
 	private Map<String,ReadOnlyPropertyList> readOnlyProps = new HashMap<>();
 	private Map<String,SimplePropertyList> readWriteProps = new HashMap<>();
 	
+	/**
+	 * Constructor from a list of property lists
+	 * 
+	 * @param props the property lists to concatenate
+	 * @param names names of these lists to use as prefix for individual properties
+	 */
 	public CompoundPropertyListImpl(ReadOnlyPropertyList[] props, String[] names) {
 		super();
 		if (props.length!=names.length)
@@ -134,17 +142,6 @@ public class CompoundPropertyListImpl implements SimplePropertyList {
 		}
 		return false;
 	}
-
-//	@Override
-//	public boolean isPropertyType(String key, String className) {
-//		try {
-//			String fullClassName = ValidPropertyTypes.getJavaClassName(className);
-//			Object value = getPropertyValue(key);
-//			return fullClassName.equals(value.getClass().getName());
-//		} catch (Exception e) {
-//			return false;
-//		}
-//	}
 
 	@Override
 	public Set<String> getKeysAsSet() {

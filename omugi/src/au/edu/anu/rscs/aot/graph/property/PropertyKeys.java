@@ -34,8 +34,11 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import fr.ens.biologie.generic.Sizeable;
+
 /**
- * An ordered list of property names.
+ * An ordered list of property names. For use when a large set of graph elements have the same properties
+ * (cf. {@link fr.cnrs.iees.properties.impl.SharedPropertyListImpl}).
+ * 
  * @author Shayne Flint - looooong ago.
  *
  */
@@ -43,6 +46,10 @@ public class PropertyKeys implements Sizeable {
 
 	private String[] keySet;
 
+	/**
+	 * 
+	 * @param keys the names of the properties
+	 */
 	public PropertyKeys(String... keys) {
 		int len = keys.length;
 		keySet = new String[len];
@@ -50,6 +57,10 @@ public class PropertyKeys implements Sizeable {
 			keySet[i] = keys[i];
 	}
 
+	/**
+	 * 
+	 * @param keys the names of the properties
+	 */
 	public PropertyKeys(Set<String> keys) {
 		keySet = new String[keys.size()];
 		int i=0;
@@ -59,6 +70,10 @@ public class PropertyKeys implements Sizeable {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return a set of property names
+	 */
 	public Set<String> getKeysAsSet() {
 		Set<String> result = new TreeSet<String>();
 		for (String key : keySet)
@@ -66,15 +81,24 @@ public class PropertyKeys implements Sizeable {
 		return result;
 	}
 	
+	/**
+	 * 
+	 * @return an array of property names
+	 */
 	public String[] getKeysAsArray() {
 		return keySet;
 	}
 
-
+	@Override
 	public int size() {
 		return keySet.length;
 	}
 
+	/**
+	 * 
+	 * @param key the name of a property
+	 * @return the rank of this property in the list
+	 */
 	public int indexOf(String key) {
 		for (int i=0; i< keySet.length; i++) {
 			if (keySet[i].equals(key))

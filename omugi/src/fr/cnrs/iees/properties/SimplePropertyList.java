@@ -31,14 +31,7 @@
 package fr.cnrs.iees.properties;
 
 /**
- * <p>Simple, straightforward read-write property list for graph {@linkplain GraphElement}s.
- * A property list is just a list of (<em>name,value</em>) pairs, where <em>name</em> is a 
- * {@linkplain String} and <em>value</em> is any descendant of {@linkplain Object} 
- * (including primitive types).</p> 
- * <ol>
- * <li>Immutable.</li> 
- * <li>Default properties: none.</li>
- * </ol>
+ * Simple, straightforward read-write property list.
  * 
  * @author Jacques Gignoux - 23-10-2018
  *

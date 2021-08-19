@@ -42,7 +42,9 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.ens.biologie.generic.Textable;
 
 /**
- * A read-only property list - property values can only be set at construction time 
+ * A read-only property list - property values can only be set at construction time.
+ * Internally, the container is a sorted map so that property keys always come in the same order. 
+ * 
  * @author Jacques Gignoux - 29 janv. 2019
  *
  */
@@ -52,18 +54,37 @@ public class ReadOnlyPropertyListImpl implements ReadOnlyPropertyList, Textable 
 	
 	// Constructors
 	
+	/**
+	 * Construct from another property list. All values are copied in this instance.
+	 * Remember that values cannot be changed after construction.
+	 * 
+	 * @param propertyList the list of properties
+	 */
 	public ReadOnlyPropertyListImpl(ReadOnlyPropertyList propertyList) {
 		super();
 		for (String key : propertyList.getKeysAsSet())
 			propertyMap.put(key, propertyList.getPropertyValue(key));
 	}
 
+	/**
+	 * Constructor from single properties.
+	 * Remember that values cannot be changed after construction.
+	 *  
+	 * @param properties the properties copied into this instance
+	 */
 	public ReadOnlyPropertyListImpl(Property... properties) {
 		super();
 		for (Property p : properties)
 			propertyMap.put(p.getKey(), p.getValue());
 	}
 
+	/**
+	 * Constructor from a list of property names and a list of matching values.
+	 * Remember that values cannot be changed after construction.
+	 * 
+	 * @param keys the property names
+	 * @param values the values
+	 */
 	public ReadOnlyPropertyListImpl(List<String> keys, List<Object> values) {
 		super();
 		Iterator<Object> it = values.iterator();

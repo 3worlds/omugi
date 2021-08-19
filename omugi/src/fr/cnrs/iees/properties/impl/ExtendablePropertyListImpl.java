@@ -40,12 +40,13 @@ import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
 
 /**
- * <p>Implementation of {@linkplain ExtendablePropertyList}.</p>
+ * <p>Implementation of {@link ExtendablePropertyList}.</p>
  * <ol>
  * <li>Storage of properties: local</li>
  * <li>Optimisation: speed. No checks on dimensions, names or anything else.</li>
  * </ol>
- * <p>Container is a sorted map so that property keys always come in the same order.</p>
+ * <p>Container is a sorted map so that property keys always come in the same order. Property
+ * entries can be added / removed from the map after instantiation.</p>
  * 
  * @author J. Gignoux - 29 août 2017
  *
@@ -60,26 +61,55 @@ public class ExtendablePropertyListImpl
 	// Constructors
 	//
 
+	/**
+	 * Constructs an empty list.
+	 */
 	public ExtendablePropertyListImpl() {
 		super();
 	}
 	
+	/**
+	 * Constructor from property names.
+	 * 
+	 * @param keys the property names
+	 */
 	public ExtendablePropertyListImpl(String... keys) {
 		super(keys);
 	}
 
+	/**
+	 * Constructor from a list of property names and a list of matching values.
+	 * 
+	 * @param keys the property names
+	 * @param values the values
+	 */
 	public ExtendablePropertyListImpl(List<String> keys, List<Object> values) {
 		super(keys, values);
 	}
 
+	/**
+	 * Constructor from a list of property names.
+	 * 
+	 * @param keys the property names
+	 */
 	public ExtendablePropertyListImpl(Collection<String> keys) {
 		super(keys);
 	}
 
+	/**
+	 * Construct from properties. All values are copied in this instance.
+	 * 
+	 * @param properties the list of properties
+	 */
 	public ExtendablePropertyListImpl(Property... properties) {
 		super(properties);
 	}
 
+	/**
+	 * Construct from another property list. All values are copied in this instance.
+	 * 
+	 * @param propertyList the list of properties
+	 */
 	public ExtendablePropertyListImpl(SimplePropertyList propertyList) {
 		super(propertyList);
 	}

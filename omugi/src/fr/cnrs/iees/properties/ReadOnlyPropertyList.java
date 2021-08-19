@@ -34,13 +34,20 @@ import fr.ens.biologie.generic.DataContainer;
 import fr.ens.biologie.generic.Sizeable;
 
 /**
- * A read-only property list, ie with a size and getters but no setters.
+ * A read-only property list, ie with getters but no setters.
+ * 
  * @author gignoux - 15 juin 2017
  *
  */
 public interface ReadOnlyPropertyList 
 		extends PropertyListGetters, Sizeable, DataContainer {
 
+	/**
+	 * Compares the keys of two property lists
+	 * 
+	 * @param list another property list to cmopare to
+	 * @return {@code true} if both lists have the same property names
+	 */
 	public default boolean hasTheSamePropertiesAs(ReadOnlyPropertyList list) {
 		if (size()==list.size())
 			if (getKeysAsSet().equals(list.getKeysAsSet())) {

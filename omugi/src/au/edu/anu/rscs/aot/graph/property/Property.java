@@ -30,31 +30,53 @@
  **************************************************************************/
 package au.edu.anu.rscs.aot.graph.property;
 
-// is this class really needed ?
-public class Property extends KeyValue {
+/**
+ * A property that can be attached to a graph element (node or edge). It is just a (key,value) pair.
+ * 
+ * @author Shayne Flint - long ago (2012?)
+ *
+ */
+public class Property {
 
+	protected String key;
+	protected Object value;
+	
 	public Property(String key, Object value) {
-		super(key, value);
+		this.key = key;
+		this.value = value;
 	}
 	
 	// used a lot
+	/**
+	 * Get the class name from the value. As a consequence, this will fail if value = {@code null}.
+	 * 
+	 * @return the class name
+	 */
 	public String getClassName() {
 		return value.getClass().getName();
 	}
-
-//	// never used
-//	public String toSimpleClassName(String key) {
-//		return PropertyJavaTypes.toPropertyTypeName(getClassName());
-//	}
-
-//	@Deprecated // useless and dangerous
-//	public boolean isType(String key, String className) {
-//		try {
-//			String fullClassName = PropertyJavaTypes.toJavaClassName(className);
-//			return fullClassName.equals(value.getClass().getName());
-//		} catch (Exception e) {
-//			return false;
-//		}
-//	}
+	
+	/**
+	 * 
+	 * @return the key
+	 */
+	public String getKey() {
+		return key;
+	}
+	
+	/**
+	 * 
+	 * @return the value
+	 */
+	public Object getValue() {
+		return value;
+	}
+	
+	// JG added - for better readability of Exceptions
+	// ID updated - for the same reason
+	public String toString() {
+//		return("["+super.toString()+":"+key+"="+value+"]");
+		return("["+getClass().getSimpleName()+":"+key+"="+value+"]");
+	}
 
 }

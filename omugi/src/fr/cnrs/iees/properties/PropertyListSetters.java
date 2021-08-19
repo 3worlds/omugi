@@ -35,8 +35,8 @@ import java.util.List;
 import au.edu.anu.rscs.aot.graph.property.Property;
 
 /**
- * This interface isolates the generic setters for properties. Most descendants
- * will probably need to also implement {@linkplain PropertyListGetters}. 
+ * This interface isolates the generic setters for properties. Implementing classes
+ * will probably need to also implement {@link PropertyListGetters}. 
  * 
  * @author J. Gignoux - 13 févr. 2017
  *
@@ -45,8 +45,10 @@ import au.edu.anu.rscs.aot.graph.property.Property;
 public interface PropertyListSetters {
 
 	/**
+	 * Setter for property.
 	 * The contract of all property setters is: only set a value if the property exists in the
-	 * PropertyListGetters implementation - raise an exception if key not found
+	 * associate {@link PropertyListGetters} implementation - raise an exception if key not found
+	 * 
 	 * @param property the property (key, value pair) to set
 	 * @return this object for agile programming
 	 */
@@ -56,20 +58,17 @@ public interface PropertyListSetters {
 	}
 
 	/**
-	 * The contract of all property setters is: only set a value if the property exists in the
-	 * PropertyListGetters implementation - raise an exception if key not found
+	 * Setter for property key and value. The contract of all property setters is: only set a value if the property exists in the
+	 * associate {@link PropertyListGetters} implementation - raise an exception if key not found
 	 * @param key the property name to set
 	 * @param value the value to set
 	 * @return this object for agile programming
 	 */
 	public PropertyListSetters setProperty(String key, Object value);	
 	
-	/** probably deprecated ?? dont see the point of passing a NodeList*/
-//	public PropertyListSetters setProperty(String key, String value, String className, NodeList nodeList);
-	
 	/**
-	 * The contract of all property list setters is: only set a value if the property exists 
-	 * in the PropertyListGetters implementation
+	 * Setter for properties from another property list. The contract of all property list setters is: only set a value if the property exists 
+	 * in the associate {@link PropertyListGetters} implementation
 	 * - raise an exception if key not found
 	 * @param propertyList the PropertyListGetters to read values from
 	 * @return this object for agile programming
@@ -81,8 +80,9 @@ public interface PropertyListSetters {
 	}
 	
 	/**
+	 * Setter for properties from a list of keys and a list of matching values.
 	 * The contract of all property list setters is: only set a value if the property exists 
-	 * in the PropertyListGetters implementation
+	 * in the associate {@link PropertyListGetters} implementation
 	 * - raise an exception if key not found
 	 * @param keys the property names to set
 	 * @param values the values to set, in matching order
@@ -95,8 +95,9 @@ public interface PropertyListSetters {
 	}
 	
 	/**
+	 * Setter for properties from an array of keys and an array of matching values.
 	 * The contract of all property list setters is: only set a value if the property exists 
-	 * in the PropertyListGetters implementation
+	 * in the associate {@link PropertyListGetters} implementation
 	 * - raise an exception if key not found
 	 * @param keys the property names to set
 	 * @param values the values to set, in matching order

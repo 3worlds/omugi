@@ -36,7 +36,7 @@ import au.edu.anu.rscs.aot.graph.property.PropertyKeys;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.properties.SimplePropertyList;
 /**
- * <p>Implementation of {@linkplain SimplePropertyList}.</p>
+ * <p>Implementation of {@link SimplePropertyList}.</p>
  * <ol>
  * <li>Storage of properties: keys are shared (and stored outside this class), values
  * are stored locally.</li>
@@ -59,16 +59,31 @@ public class SharedPropertyListImpl
 	// Constructors
 	//
 
+	/**
+	 * Constructor from a list of property names.
+	 * 
+	 * @param keys the property names
+	 */
 	public SharedPropertyListImpl(PropertyKeys keys) {
 		super();
 		this.keys = keys;
 		values = new Object[this.keys.size()];
 	}
 
+	/**
+	 * Construct from another property list. All values are copied in this instance.
+	 * 
+	 * @param sharedProperties the list of properties
+	 */
 	public SharedPropertyListImpl(SimplePropertyList sharedProperties) {
 		this(new PropertyKeys(sharedProperties.getKeysAsArray()));
 	}
 
+	/**
+	 * Constructor from property names.
+	 * 
+	 * @param keys the property names
+	 */
 	public SharedPropertyListImpl(String... keys) {
 		this(new PropertyKeys(keys));
 	}

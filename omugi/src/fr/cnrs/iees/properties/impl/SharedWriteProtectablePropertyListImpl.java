@@ -35,7 +35,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.SimpleWriteProtectablePropertyList;
 
 /**
- * <p>Implementation of {@linkplain SimplePropertyList}.</p>
+ * <p>Implementation of {@link SimplePropertyList}.</p>
  * <ol>
  * <li>Storage of properties: keys are shared (and stored outside this class), values
  * are stored locally.</li>
@@ -61,14 +61,29 @@ public class SharedWriteProtectablePropertyListImpl extends SharedPropertyListIm
 	// Constructors
 	// 
 	
+	/**
+	 * Constructor from a list of property names.
+	 * 
+	 * @param keys the property names
+	 */
 	public SharedWriteProtectablePropertyListImpl(PropertyKeys keys) {
 		super(keys);
 	}
 	
+	/**
+	 * Construct from another property list. All values are copied in this instance.
+	 * 
+	 * @param sharedProperties the list of properties
+	 */
 	public SharedWriteProtectablePropertyListImpl(SimplePropertyList sharedProperties) {
 		super(sharedProperties);
 	}
 
+	/**
+	 * Constructor from property names.
+	 * 
+	 * @param keys the property names
+	 */
 	public SharedWriteProtectablePropertyListImpl(String... keys) {
 		super(keys);
 	}

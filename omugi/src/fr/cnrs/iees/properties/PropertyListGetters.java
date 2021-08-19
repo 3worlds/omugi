@@ -45,30 +45,39 @@ import au.edu.anu.rscs.aot.graph.property.Property;
 public interface PropertyListGetters {
 
 	/**
-	 * Contract: efficiency - do not raise an exception if key is not found
+	 * Getter for property. Contract: efficiency - do not raise an 
+	 * exception if <em>key</em> is not found
+	 * 
 	 * @param key the property name
-	 * @return the property as a (key, value) pair
+	 * @return the property as a (key,value) pair
 	 */
 	public default Property getProperty(String key) {
 		return new Property(key, getPropertyValue(key));
 	}
 
 	/**
-	 * Contract: efficiency - do not raise an exception if key is not found
+	 * Getter for property <em>value</em>. Contract: efficiency - do 
+	 * not raise an exception if  <em>key</em> is not found
+	 * 
 	 * @param key the property name
 	 * @return the property value
 	 */
 	public Object getPropertyValue(String key);
 	
 	/**
-	 * check if a property exists in this object
+	 * Check if a property exists in this object
+	 * 
 	 * @param key the property name to check
 	 * @return true if found
 	 */
 	public boolean hasProperty(String key);
 
-	// refactored 
-//	public String   getString(String key);
+	/**
+	 * Return a the String description of a property value (i.e. {@code value.toString()}).
+	 * 
+	 * @param key the property name
+	 * @return its value as a String, or {@code "null"} if property is unset
+	 */
 	public default String propertyToString(String key) {
 		Object value = getPropertyValue(key);
 		if (value != null)
@@ -77,27 +86,22 @@ public interface PropertyListGetters {
 			return "null";
 	}
 
-	// refactored
-//	public String getClassName(String key);
-	// TODO: change name to getPropertyJavaClassName() 
+	/**
+	 * Getter for property class name. Will fail if value is {@code null}.
+	 * 
+	 * @param key the property name
+	 * @return the property class name
+	 */
 	public default String getPropertyClassName(String key) {
 		return getPropertyClass(key).getName();
 	}
-	
-	// refactored
-//	public String toSimpleClassName(String key);
-	// TODO: remove. This isnt part of property types
-//	public default String getPropertySimpleClassName(String key) {
-////		return PropertyType.toPropertyType(getPropertyClassName(key));
-//		return ValidPropertyTypes.getType(key);
-//	}
-
-	// refactored
-//	public boolean isType(String key, String className);
-	// TODO: remove. This isnt part of property types
-//	public boolean isPropertyType(String key, String className);
-	
-	// safe - returns Object if value is null
+		
+	/**
+	 * Getter for property class. will not fail if value is {@code null}.
+	 * 
+	 * @param key the property name
+	 * @return the property class 
+	 */
 	public default Class<?> getPropertyClass(String key) {
 		Object o = getPropertyValue(key);
 		if (o!=null)
@@ -106,10 +110,18 @@ public interface PropertyListGetters {
 			return Object.class;
 	}
 
-	// refactored
-//	public Set<String> getKeys();
+	/**
+	 * Getter for property names.
+	 * 
+	 * @return all property names, as a set
+	 */
 	public Set<String> getKeysAsSet();
 	
+	/**
+	 * Getter for property names. Internally, calls {@code getKeysAsSet()}.
+	 * 
+	 * @return all property names, as an array
+	 */
 	public default String[] getKeysAsArray() {
 		Set<String> keySet = getKeysAsSet();
 		String[] keys = new String[keySet.size()];		
