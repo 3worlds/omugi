@@ -35,7 +35,8 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
 /**
- * A very crude but fast scope to create unique ids as incremental long numbers, starting at 1.
+ * <p>A very crude but very fast scope to create unique identifiers as incremental long numbers, 
+ * starting at 0. Works with {@link SimpleIdentity}.</p>
  * 
  * @author Jacques Gignoux - 13 janv. 2020
  *

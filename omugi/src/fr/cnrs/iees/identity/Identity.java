@@ -34,9 +34,15 @@ import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**
- * A unique identity within a given scope, attached to some item.
- * Classes implementing this interface must override the object equals() and hashCode() 
- * methods. [not sure - check this]
+ * <p>A unique identity within a given scope, to attach to some item that requires a unique 
+ * identifier - typically, a graph node or edge.</p>
+ * <p>Rules for implementing classes:</p>
+ * <ol>
+ * <li>The constructor must be protected so that it can only be called from an 
+ * {@link IdentityScope} instance.</li>
+ * <li>They must override the {@link Object#equals(Object)}
+ * and {@link Object#hashCode()} methods. [not sure - check this]</li>
+ * </ol>
  * 
  * @author Jacques Gignoux - 28 janv. 2019
  *
@@ -44,19 +50,26 @@ import fr.ens.biologie.generic.SaveableAsText;
 public interface Identity {
 	
 	/** 
-	 * returns
-	 * @return a unique identifier, valid over a particular scope
+	 * String version of this instance.
+	 *  
+	 * @return a unique identifier, valid over the scope it was instantiated with.
 	 */
 	public String id();
 	
 	/**
-	 * returns
-	 * @return the scope within which this Identity is guaranteed to be unique.
+	 * The scope that was used to instantiate this instance, within which it 
+	 * is guaranteed to be unique..
+	 * 
+	 * @return the scope 
 	 */
 	public IdentityScope scope();
 	
 	/**
-	 * returns
+	 * This identifier's unique identifier <em>within the application</em> it has been created. 
+	 * This method returns a concatenation
+	 * of the scope identifier (as returned by {@link IdentityScope#id()}) with this instance id. 
+	 * The scope instance identifier is unique within the application that runs it.
+	 * 
 	 * @return the universal id = scope id + item id
 	 */
 	public default String universalId() {
@@ -64,9 +77,16 @@ public interface Identity {
 	}
 	
 	/**
-	 * renames an id to another one - CAUTION: this is for very limited use cases and should be
+	 * <p>Renames an id to another one - CAUTION: this is for very limited use cases and should be
 	 * avoided as far as possible because it breaks the id immutability paradigm. The default
 	 * implementation throws an Exception.
+	 * </p>
+	 * <p><strong>WARNING</strong>: This is a typical example of a hack we would like to remove. 
+	 * Although there is no problem conceptually in having mutable identities, as long as their scope
+	 * guarantees their uniqueness it makes implementation very difficult. Uniqueness is much easier to
+	 * guarantee if identities are immutable. So don't rely on this method, don't use it, you have
+	 * never seen it, ignore it, forget it if you didn't ignore it in the first time. It will certainly be
+	 * removed one day.</p>
 	 * 
 	 * @param oldId
 	 * @param newId

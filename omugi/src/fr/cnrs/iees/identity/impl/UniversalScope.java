@@ -36,12 +36,12 @@ import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.utils.UniqueString;
 
 /**
- * A 'universal' scope for unique ids. The ids are constructed from (1) the computer mac Address
+ * <p>A 'universal' scope for unique ids. The ids are constructed from (1) the computer mac Address
  * (2) the time at instantiation in milliseconds (3) an integer rank for instances sharing
  * the same mac address and date. Resulting ids are unique over a network of computers within the
- * same running application.
+ * same running application.</p>
  * 
- * This uses Shayne's Uid class.
+ * <p>Works with {@link UidIdentity}.</p>
  * 
  * @author Jacques Gignoux - 28 janv. 2019
  *

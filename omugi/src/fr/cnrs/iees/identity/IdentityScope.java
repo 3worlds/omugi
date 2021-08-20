@@ -34,9 +34,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A scope over which Identities are guaranteed to be unique. Note: every scope
+ * <p>A scope over which {@link Identity} instances are guaranteed to be unique.</p> 
+ * 
+ * <p>Note: every scope
  * has a unique id over the application scope so that merging items from
- * different scopes is always possible
+ * different scopes is always possible using {@link Identity#universalId()}.</p>
  * 
  * @author Jacques Gignoux - 28 janv. 2019
  *
@@ -51,25 +53,29 @@ public interface IdentityScope {
 	static final Set<String> scopeIds = new HashSet<String>();
 
 	/**
-	 * returns
+	 * The scope identifier, unique within the application context. Uniqueness is guaranteed by
+	 * a static list recording the scope ids at scope instantiation.
 	 * 
-	 * @return the scope id within the application context
+	 * @return the scope id
 	 */
 	public String id();
 
 	/**
-	 * makes a new instance of an Identity, unique over this scope. NOTE:
-	 * implementations of this method should never return null
+	 * <p>Makes a new instance of an Identity, unique over this scope.</p> 
+	 * <p>NOTE: implementations of this method should never return {@code null}.</p>
 	 * 
 	 * @return a new Identity instance, unique over this scope
 	 */
 	public Identity newId();
 
 	/**
-	 * makes a new instance of an Identity, unique over this scope. The default
-	 * method ignores the argument. NOTE: implementations of this method should
-	 * never return null
+	 * <p>Makes a new instance of an Identity, unique over this scope.</p> 
+	 * <p>The default implementation ignores the argument. </p>
+	 * <p>NOTE: implementations of this method should never return {@code null}.</p>
+	 * <p><strong>WARNING</strong>: this method is conceptually flawed and should be refactored soon.</p>
 	 * 
+	 * @param addToScope argument only used in {@link fr.cnrs.iees.identity.impl.LocalScope LocalScope} (whether the id should be recorded
+	 * or just checked for uniqueness) [NOTE: one more flaw in the design!]
 	 * @param proposedId a base for the id to be computed
 	 * @return a new Identity instance, unique over this scope
 	 */
@@ -78,22 +84,40 @@ public interface IdentityScope {
 	}
 
 	/**
-	 * makes a new instance of an Identity, unique over this scope. The default
-	 * method ignores the arguments. NOTE: implementations of this method should
-	 * never return null
+	 * <p>Makes a new instance of an Identity, unique over this scope.</p> 
+	 * <p>The default implementation ignores the argument. </p>
+	 * <p>NOTE: implementations of this method should never return {@code null}.</p>
+	 * <p><strong>WARNING</strong>: this method is conceptually flawed and should be refactored soon.</p>
 	 * 
-	 * @param proposedIdComponents a base for the id to be computed
+	 * @param addToScope argument only used in {@link fr.cnrs.iees.identity.impl.LocalScope LocalScope} (whether the id should be recorded
+	 * or just checked for uniqueness) [NOTE: one more flaw in the design!]
+	 * @param proposedIdComponents a base for the id to be computed (argument only useful in
+	 * {@link fr.cnrs.iees.identity.impl.PairLocalScope PairLocalScope} [NOTE: one more flaw in the design!]
 	 * @return a new Identity instance, unique over this scope
 	 */
 	public default Identity newId(boolean addToScope, String... proposedIdComponents) {
 		return newId();
 	}
 
-	
+	/**
+	 * <p><strong>WARNING</strong>: this method is conceptually flawed and should be refactored soon.
+	 * NEVER use it!</p>
+	 * @param id
+	 */
 	public void removeId(String id);
 	
+	/**
+	 * <p><strong>WARNING</strong>: this method is conceptually flawed and should be refactored soon.
+	 * NEVER use it!</p>
+	 * @param id
+	 */
 	public boolean contains(String id);
 
+	/**
+	 * <p><strong>WARNING</strong>: this method is conceptually flawed and should be refactored soon.
+	 * NEVER use it!</p>
+	 * @param newId
+	 */
 	public void addId(String newId);
 
 	

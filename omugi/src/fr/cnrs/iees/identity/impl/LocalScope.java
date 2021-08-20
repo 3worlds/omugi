@@ -39,7 +39,17 @@ import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.utils.UniqueString;
 
 /**
- * A local scope, keeping track of all its ids.
+ * <p>A local scope, keeping track of all its ids. Works with {@link SimpleIdentity}.</p>
+ * <p>Every time a new {@code Identity} instance is created, its identifier is recorded in an
+ * internal list. All later instantiations check that the new identifier does not yet exist in
+ * this list and modify it (by adding an increasing number suffix) if it does before generating
+ * the new instance. As a result, this scope implementation becomes slow with increasing numbers
+ * of {@code Identity} instances and should only be used with small sets of identifiers.
+ * The method used to modify proposed identifiers is {@link fr.ens.biologie.generic.utils.UniqueString#makeString(String, Set)}.</p>
+ * 
+ * <p>Its advantage is that you can provide explicit identifiers through the 
+ * {@link LocalScope#newId(boolean, String) newId(proposedId)} method, thus creating more user-friendly
+ * identifier than other scope implementations.</p>
  *
  * @author Jacques Gignoux - 28 janv. 2019
  *

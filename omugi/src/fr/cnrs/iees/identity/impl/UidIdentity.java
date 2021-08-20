@@ -36,6 +36,22 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
 /**
+ * <p>Implementation of universally unique {@link Identity} based on {@link au.edu.anu.rscs.aot.util.Uid}.
+ * Works with {@link UniversalScope}.</p>
+ * 
+ * <p>The identifier is constructed from:</p>
+ * <ol>
+ * <li>the host computer mac address - these are worldwide unique;</li>
+ * <li>the current time in milliseconds (i.e. at the time of constructor call) - very likely
+ * to be different unless successive calls to the constructor are done during the same millisecond
+ * on the same computer;</li>
+ * <li>a count (as a {@code short} integer) in case constructor calls are done during the same millisecond.</li>
+ * </ol>
+ * <p>When exported as a String, a Uid instance looks like:<br/>
+ * D89EF3043496-00000167D04FC89F-0002<br/>
+ * where the first part represents the mac address, the second the time stamp, and the third the count.
+ * </p>
+ * <p>Not very user friendly, but guaranteed unique.</p>
  * 
  * @author Ian Davies - 28 jan. 2019
  *

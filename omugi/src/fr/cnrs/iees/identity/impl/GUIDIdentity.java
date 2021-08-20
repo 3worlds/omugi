@@ -37,6 +37,8 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
 /**
+ * <p>Implementation of universally unique {@link fr.cnrs.iees.identity.Identity Identity} based on {@link java.util.UUID}.
+ * Currently not associated to a {@link fr.cnrs.iees.identity.IdentityScope IdentityScope} implementation.</p>
  * 
  * @author Ian Davies - 28 jan. 2019
  *

@@ -39,7 +39,9 @@ import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.utils.UniqueString;
 
 /**
- * A scope for an identity based on a pair label+name.
+ * <p>A local scope for an identity based on a pair label+name. Works with {@link PairIdentity}.
+ * It works basically like {@link LocalScope}, except that it uses two Strings to construct its
+ * identifiers.</p>
  * 
  * @author Jacques Gignoux - 28 janv. 2019
  *

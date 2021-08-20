@@ -35,6 +35,8 @@ import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
 /**
+ * <p>Implementation of {@link Identity} based on a String. Works with
+ * {@link LocalScope}, {@link ResettableLocalScope} and {@link IntegerScope}.</p>
  * 
  * @author Ian Davies - 28 jan. 2019
  *
@@ -48,7 +50,7 @@ public final class SimpleIdentity implements Identity {
 	 * protected constructor, as all instantiations should be made through the
 	 * scope.
 	 * 
-	 * @param scope
+	 * @param scope the scope used to instantiate this class
 	 */
 	protected SimpleIdentity(String id, IdentityScope scope) {
 		super();

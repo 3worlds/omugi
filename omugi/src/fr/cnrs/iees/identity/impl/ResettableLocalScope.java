@@ -33,9 +33,9 @@ package fr.cnrs.iees.identity.impl;
 import fr.ens.biologie.generic.Resettable;
 
 /**
- * A localscope that can forget all its id on reset.
+ * A {@link LocalScope} that can forget all its id on reset.
  *
- * @author
+ * @author Jacques Gignoux ?
  *
  */
 public class ResettableLocalScope extends LocalScope implements Resettable {

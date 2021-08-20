@@ -36,7 +36,8 @@ import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**
- * An idendity based on label and name
+ * <p>Implementation of {@link Identity} based on a (label,name) String pair. Works with
+ * {@link PairLocalScope}.</p>
  * 
  * @author Jacques Gignoux - 28 janv. 2019
  *

@@ -23,6 +23,8 @@
  * {@link fr.cnrs.iees.graph} (hence the absence of graph visualisation tools here - there are so many
  * around).</p>
  * 
+ * <p><small><em><sub>illustrations: © Emile Gignoux</sub></em></small></p>
+ * 
  * @author Jacques Gignoux - 16 août 2021
  *
  */
