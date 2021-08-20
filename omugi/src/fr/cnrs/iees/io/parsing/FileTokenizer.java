@@ -50,6 +50,9 @@ import fr.ens.biologie.generic.utils.Logging;
 /**
  * A Tokenizer for text files in the omugi format.
  * 
+ * TODO: this class has a very, very bad name. It's NOT a tokenizer!
+ * it's a preprocessor removing meaningless text and merging lines ending with '+'.
+ * 
  * @author Jacques Gignoux - 7 déc. 2018
  *
  */

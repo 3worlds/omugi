@@ -43,8 +43,18 @@ import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
- * List of all supported graph file formats for import / export 
- * plus some helper static methods
+ * <p>List of all supported graph file formats for import / export,  
+ * plus some helper static methods.</p>
+ * 
+ * <p>We plan to support most 'standard' graph (e.g. 
+ * <a href="https://gephi.org/users/supported-graph-formats/gml-format/">GML</a>, 
+ * <a href="https://www.graphviz.org/documentation/">DOT</a>, 
+ * <a href="https://gephi.org/users/supported-graph-formats/csv-format/">CSV/GEPHI</a>,
+ * <a href ="https://users.cecs.anu.edu.au/~bdm/data/formats.txt">Graph6, Sparse6, Digraph6</a>, 
+ * <a href="http://www.dimacs.rutgers.edu/programs/challenge/">DIMACS 2 & 9</a>[but where exactly is this format defined?] formats in the future.</p>
+ * 
+ * <p>In the meanwhile, <a href="https://gephi.org/users/supported-graph-formats/">this page</a> provides a good analysis of the pros and cons of the major
+ * file formats for saving graphs.</p>
  * 
  * @author Jacques Gignoux - 24/11/2017
  *
@@ -54,15 +64,24 @@ public enum GraphFileFormats {
 //	AOT			(".dsl .aot",		"S. Flint's AOT DSL graph format with cross-references (formerly known as 'dsl')", ""),
 // Strictly speaking, this is no longer Shayne's format is it?? - add cf if you disagree
 	/*-	format      file extensions     format description				url*/
+	/** deprecated format */
 	XML			(".xml",/*             */"3Worlds graph (Tree with cross-references)", ""),
+	/** S. Flint's AOT DSL graph format with cross-references */
  	AOT			(".aot",/*             */"3Worlds graph (Tree with cross-references)", ""),
     // remove TWG before first release
+	/** deprecated format */
 	TWG			(".dsl .twg",/*        */"S. Flint's AOT DSL graph format with cross-references and 3Worlds compliance (formerly known as 'dsl')", ""),
+	/** deprecated format */
 	UML			(".xmi .uml",/*        */"UML graph format with cross-references", ""),
+	/** deprecated format */
 	TRE         (".tre", /*            */"3Worlds hierachical graph", ""),
+	/** omugi 'any graph' format */
 	GOMUGI      (".ugg", /*            */"omugi 'any graph' format", ""),
+	/** omugi tree format */
 	TOMUGI      (".ugt", /*            */"omugi tree format", ""),
-	TGOMUGI     (".utg", /*            */"omugi treegraph format tree with cross-links)", ""),
+	/** omugi treegraph format tree with cross-links */
+	TGOMUGI     (".utg", /*            */"omugi treegraph format tree with cross-links", ""),
+	/** <a href="http://graphml.graphdrawing.org/">GraphML</a> file format (export only) */
 	GRAPHML		(".graphml .xml",/*    */"GraphML file format", 	"http://graphml.graphdrawing.org/")
 // others to come:
 //		GML
@@ -84,22 +103,41 @@ public enum GraphFileFormats {
 		this.url = url;
 	}
 
+	@Override
 	public String toString() {
 		return description;
 	}
 
+	/**
+	 * 
+	 * @return the valid file extensions for this format
+	 */
 	public String extension() {
 		return extension;
 	}
 	
+	/**
+	 * 
+	 * @return the list of valid file extensions for this format
+	 */
 	public String[] extensions() {
 		return extension.split(" ");
 	}
 	
+	/**
+	 * 
+	 * @return the url where the format is defined
+	 */
 	public String url() {
 		return url;
 	}
 	
+	/**
+	 * Get the file format matching a file extension.
+	 * 
+	 * @param ext the file name extension (including the initial dot, e.g. ".xml")
+	 * @return the matching file format, {@code null} if no match is found
+	 */
 	public static GraphFileFormats format(String ext) {
 		for (GraphFileFormats f: GraphFileFormats.values()) {
 			if (f.extension.indexOf(ext)>=0)
@@ -109,7 +147,7 @@ public enum GraphFileFormats {
 	}
 	
 	/**
-	 * Utility returning the proper {@link GraphImporter} class instance for a given file format
+	 * Utility returning the proper {@link GraphImporter} implementation instance for a given file format
 	 * 
 	 * @param gf the file format
 	 * @param f the input file
@@ -147,7 +185,8 @@ public enum GraphFileFormats {
 
 	/**
 	 * Utility returning the file format matching a {@link GraphExporter} - use this to find the appropriate
-	 * file extension.
+	 * file extension to save a graph in a given format.
+	 * 
 	 * @param ge the GraphExporter
 	 * @return the file format
 	 */

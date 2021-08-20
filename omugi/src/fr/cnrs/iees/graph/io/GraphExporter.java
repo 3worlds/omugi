@@ -34,6 +34,7 @@ import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.io.parsing.TextGrammar;
 
 /**
+ * An interface to write a graph to a file, stream, String, etc.
  * 
  * @author Jacques Gignoux - 01-08-2018 
  *
@@ -41,6 +42,11 @@ import fr.cnrs.iees.io.parsing.TextGrammar;
 public interface GraphExporter
 	extends TextGrammar {
 	
+	/**
+	 * Exports the graph to the resource provided in constructor
+	 * 
+	 * @param graph the graph to export
+	 */
 	public void exportGraph(NodeSet<?> graph);
 
 }

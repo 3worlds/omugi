@@ -43,8 +43,14 @@ import fr.ens.biologie.generic.utils.Logging;
 import static fr.cnrs.iees.io.GraphFileFormats.*;
 
 /**
- * A class to read any text file containing graph or tree data. This should be the entry point to
- * any graph-related file reading.
+ * <p>A class to read any text file containing graph or tree data. This should be the entry point to
+ * any graph-related file reading.</p>
+ * <p>Supported file formats are stored in the {@link GraphFileFormat} enum.</p>
+ * <p>Typical use:</p>
+ * <pre> FileImporter fi = new FileImporter(new File("myTextFile.xml"));
+ * Graph<?,?> myGraph = fi.getGraph();</pre>
+ * <p>or, more directly:</p>
+ * <pre>Graph<?,?> myGraph = FileImporter.loadGraphFromFile(new File("myTextFile.xml"))</pre>
  * 
  * @author Jacques Gignoux - 21 déc. 2018
  *
@@ -56,6 +62,12 @@ public class FileImporter {
 	private GraphImporter importer = null;
 	private static Logger log = Logging.getLogger(FileImporter.class);
 	
+	/**
+	 * Constructor from a text file. Throws an {@code Exception} if the file format is not
+	 * recognized or if the file is not a text file.
+	 * 
+	 * @param infile the file to read
+	 */
 	public FileImporter(File infile) {
 		super();
 		if (infile.exists()) {
@@ -98,12 +110,22 @@ public class FileImporter {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @return the graph read from the file passed in the constructor
+	 */
 	public NodeSet<?> getGraph() {
 		if (importer!=null)
 			return importer.getGraph();
 		return null;
 	}
 	
+	/**
+	 * Static method to read a graph file without having to instantiate this class.
+	 * 
+	 * @param f a valid text file
+	 * @return the graph read from <strong>f</strong>
+	 */
 	public static NodeSet<?> loadGraphFromFile(File f){
 		return new FileImporter(f).getGraph();
 	}

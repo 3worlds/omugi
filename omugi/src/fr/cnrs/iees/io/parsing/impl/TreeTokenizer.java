@@ -39,7 +39,7 @@ import fr.cnrs.iees.io.parsing.FileTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
 
 /**
- * <p>private
+ * <p>
  * A crude tokenizer for trees.
  * </p>
  * <p>
@@ -105,7 +105,7 @@ node A
  * 			
 
  * <pre>
- * =====================
+=====================
 tree // this is a STUPID comment 
 
 // This is a VERY STUPID comment 
@@ -131,7 +131,7 @@ label1 node1
 
 			truc=String("machin") 
 				plop = Integer(12)
- =====================
+=====================
  * </pre>
  * <p>
  * Notice that, contrary to the format for graphs, leading tabs are used to

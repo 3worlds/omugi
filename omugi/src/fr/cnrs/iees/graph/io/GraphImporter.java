@@ -48,8 +48,14 @@ import fr.ens.biologie.generic.utils.Logging;
 import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.COMMENT;
 
 /**
+ * <p>Interface for graph importation from external sources. A {@code GraphImporter} 
+ * returns a Graph read from any kind of source (stream, file, String...). This interface also
+ * provides static utility methods for importing graphs.</p>
  * 
- * @author Shayne - long ago. 
+ * <p>Implementations of this class should use implementations of {@link Parser}
+ * and {@link Tokenizer} to process their input.</p>
+ * 
+ * @author Shayne - long ago. <br/>
  * Heavily refactored by J.Gignoux nov. 2017
  *
  */
@@ -57,8 +63,9 @@ import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.COMMENT;
 public interface GraphImporter {
 
 	/**
-	 * A GraphImporter returns a Graph read from any kind of source (stream, file, String...)
-	 * @return a Graph build from the previous list of Nodes
+	 * The graph imported by this instance.
+	 * 
+	 * @return a Graph build from the source
 	 */
     public NodeSet<?> getGraph();
     
@@ -66,6 +73,13 @@ public interface GraphImporter {
     
     public static Logger log = Logging.getLogger(GraphImporter.class);
     
+    /**
+     * Remove blank lines, comments, and concatenates lines ending with "+" before feeding
+     * text lines to tokenizers and parsers.
+     * 
+     * @param lines the lines read from the resource (file, stream, etc.)
+     * @return the lines ready for parsing
+     */
 	public static List<String> preprocess(List<String> lines) {
 		List<String> result = new ArrayList<>();
 		String concat = "";
@@ -119,7 +133,8 @@ public interface GraphImporter {
     }
     
     /**
-     * This should be the prefered way to load a graph from a file or jar
+     * This should be the preferred way to load a graph from a file or jar.
+     * 
      * @param resourceName the file name (absolute or relative to class path)
      * @return the graph
      */
@@ -128,10 +143,11 @@ public interface GraphImporter {
     }
 
     /**
-     * This should be the prefered way to load a graph from a file or jar
+     * This should be the preferred way to load a graph from a file or jar
+     * 
      * @param resourceName the file name 
      * @param associatedWithClass a class in which package the file is to be found
-     * @return
+     * @return the graph
      */
     public static NodeSet<?> importGraph(String resourceName, Class<?> associatedWithClass) {
     	return importGraph(Resources.getTextResource(resourceName,associatedWithClass));
