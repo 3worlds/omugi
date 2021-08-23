@@ -40,6 +40,13 @@ import fr.cnrs.iees.graph.TreeNode;
  */
 public class NodeReference {
 
+	/**
+	 * Checks if a TreeNode location in a tree matches the reference passed as argument.
+	 * 
+	 * @param anode the TreeNode to check
+	 * @param reference the location reference
+	 * @return true if both arguments match
+	 */
 	public static boolean matchesRef(TreeNode anode, String reference) {
 		if (reference == null)
 			return false;

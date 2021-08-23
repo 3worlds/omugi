@@ -42,14 +42,20 @@ import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeSet;
 
 /**
- * An ancestor for Graph and TreeGraph factories
+ * An ancestor for {@link fr.cnrs.iees.graph.Graph Graph} and {@link fr.cnrs.iees.graph.TreeGraph TreeGraph} parsers.
+ * 
  * @author Jacques Gignoux - 27 mai 2019
  *
  */
 public abstract class EdgeAndNodeSetParser extends NodeSetParser {
 
 	// ----------------------------------------------------
-	// specifications for an edge
+	/**
+	 * Specification of an edge
+	 * 
+	 * @author Jacques Gignoux - 27 mai 2019
+	 *
+	 */
 	public class edgeSpec {
 		public String label;
 		public String name;

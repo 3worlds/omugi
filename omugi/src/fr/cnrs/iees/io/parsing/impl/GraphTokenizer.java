@@ -35,12 +35,13 @@ import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.*;
 import java.util.List;
 
 import fr.cnrs.iees.OmugiException;
-import fr.cnrs.iees.io.parsing.FileTokenizer;
+import fr.cnrs.iees.io.parsing.PreTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
 
 /**
  * <p>A crude tokenizer for graphs.</p>
- * <p>It assumes the following text file syntax to describe graphs:</p>
+ * <p>It assumes the following text file syntax to describe graphs(<strong><em>GOMUGI</em></strong> 
+ * data format in {@link fr.cnrs.iees.io.GraphFileFormats GraphFileFormats}):</p>
  * <pre>
  * graph = headline {line}
  * headline = "graph" [comment] NEWLINE
@@ -112,14 +113,29 @@ public class GraphTokenizer extends LineTokenizer {
 	
 	private int tokenIndex = -1;
 	
-	public GraphTokenizer(FileTokenizer parent) {
+	/**
+	 * Constructor from a {@link PreTokenizer}
+	 * 
+	 * @param parent the pretokenizer
+	 */
+	public GraphTokenizer(PreTokenizer parent) {
 		super(parent);
 	}
 	
+	/**
+	 * Constructor from an array of text lines
+	 * 
+	 * @param lines the text lines to tokenize
+	 */
 	public GraphTokenizer(String[] lines) {
 		super(lines);
 	}
 	
+	/**
+	 * Constructor from a list of text lines
+	 * 
+	 * @param lines the text lines to tokenize
+	 */
 	public GraphTokenizer(List<String> lines) {
 		super(lines);
 	}
@@ -128,7 +144,11 @@ public class GraphTokenizer extends LineTokenizer {
 		return new graphToken(type,value);
 	}
 
-	
+	/**
+	 * Checks if the token list is empty.
+	 * 
+	 * @return true if the list still contains tokens
+	 */
 	public boolean hasNext() {
 		if (tokenlist.size()>0)
 			if (tokenIndex<tokenlist.size())
@@ -136,6 +156,11 @@ public class GraphTokenizer extends LineTokenizer {
 		return false;
 	}
 	
+	/**
+	 * Gets the tokens from the list
+	 * 
+	 * @return the next token
+	 */
 	public graphToken getNextToken() {
 		graphToken result = null;
 		if (tokenIndex<tokenlist.size()) {

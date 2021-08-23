@@ -84,11 +84,10 @@ public class TreeGraphParser extends EdgeAndNodeSetParser {
 	// remind that an TreeGraph is its own Node, Edge and TreeNode factory
 	private TreeGraph<TreeGraphNode,ALEdge> graph = null;
 
-	// lazy init: nothing is done before it's needed
 	/**
-	 * Default constructor.
+	 * Default constructor. Lazy init: nothing is done before it's needed (= calling {@code graph()}).
 	 * 
-	 * @param tokenizer
+	 * @param tokenizer the token list
 	 */
 	public TreeGraphParser(TreeGraphTokenizer tokenizer) {
 		super();

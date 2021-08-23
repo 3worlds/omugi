@@ -8,8 +8,19 @@
  * into an instance of a graph.</p> 
  * 
  * <p>The way these classes work, basically, is:</p>
+ * <p>For <strong>omugi</strong> text files, {@link PreTokenizer} checks the file for the type of 
+ * content (tree, graph or treegraph); it then pre-processes the file (removing comments etc.)
+ * and instantiates the matching tokenizer. {@link GraphTokenizer}, {@link TreeTokenizer}, and
+ * {@link TreeGraphTokenizer}, transform the text lines into an internal representation of
+ * graph/tree elements (<em>token</em>s). {@code PreTokenizer} also returns the matching parser.</p>
  * 
- * <img src="{@docRoot}/../doc/images/graph-tokenizers.svg" align="middle" width="600" alt="tokenizers"/>
+ * <p>The {@link ReferenceTokenizer} analyses Strings describing a location in a tree, using
+ * a hierarchical syntax.</p>
+ * 
+ * <img src="{@docRoot}/../doc/images/graph-tokenizers.svg" align="middle" width="500" alt="tokenizers"/>
+ * 
+ * <p>Parsers take a {@code Tokenizer} at construction and return the proper type of graph matching
+ * the list of tokens returned by the tokenizer.</p>
  * 
  * <img src="{@docRoot}/../doc/images/graph-parsers.svg" align="middle" width="600" alt="parsers"/>
  * 

@@ -116,6 +116,11 @@ public class TreeParser extends NodeSetParser {
 	private treeNodeSpec[] lastNodes = null;
 	private propSpec lastProp = null;
 
+	/**
+	 * Constructor from a TreeTokenizer. Lazy init: nothing is done before it's needed.
+	 * 
+	 * @param tokenizer
+	 */
 	public TreeParser(TreeTokenizer tokenizer) {
 		super();
 		this.tokenizer = tokenizer;
@@ -250,10 +255,8 @@ public class TreeParser extends NodeSetParser {
 		}
 	}
 
-	/**
-	 * 
-	 * @return the tree built from this parser
-	 */
+
+	@Override
 	public Tree<? extends TreeNode> graph() {
 		if (tree == null)
 			buildTree();

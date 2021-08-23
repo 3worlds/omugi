@@ -35,7 +35,7 @@ import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.*;
 import java.util.List;
 import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.io.GraphImporter;
-import fr.cnrs.iees.io.parsing.FileTokenizer;
+import fr.cnrs.iees.io.parsing.PreTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
 
 /**
@@ -43,7 +43,8 @@ import fr.cnrs.iees.io.parsing.LineTokenizer;
  * A crude tokenizer for trees.
  * </p>
  * <p>
- * It assumes the following text file syntax to describe trees:
+ * It assumes the following text file syntax to describe trees (<strong><em>TOMUGI</em></strong> 
+ * data format in {@link fr.cnrs.iees.io.GraphFileFormats GraphFileFormats}):
  * </p>
  * 
  * <pre>
@@ -173,14 +174,29 @@ public class TreeTokenizer extends LineTokenizer {
 	private int ctDepth = 0;
 	private int maxDepth = 0;
 
-	public TreeTokenizer(FileTokenizer parent) {
+	/**
+	 * Constructor from a {@link PreTokenizer}
+	 * 
+	 * @param parent the pretokenizer
+	 */
+	public TreeTokenizer(PreTokenizer parent) {
 		super(parent);
 	}
 
+	/**
+	 * Constructor from an array of text lines
+	 * 
+	 * @param lines the text lines to tokenize
+	 */
 	public TreeTokenizer(String[] lines) {
 		super(lines);
 	}
 
+	/**
+	 * Constructor from a list of text lines
+	 * 
+	 * @param lines the text lines to tokenize
+	 */
 	public TreeTokenizer(List<String> lines) {
 		super(GraphImporter.preprocess( lines));
 	}
@@ -189,6 +205,11 @@ public class TreeTokenizer extends LineTokenizer {
 		return new treeToken(type,value,ctDepth);
 	}
 
+	/**
+	 * Checks if the token list is empty.
+	 * 
+	 * @return true if the list still contains tokens
+	 */
 	public boolean hasNext() {
 		if (tokenlist.size() > 0)
 			if (tokenIndex < tokenlist.size())
@@ -196,6 +217,11 @@ public class TreeTokenizer extends LineTokenizer {
 		return false;
 	}
 
+	/**
+	 * Gets the tokens from the list
+	 * 
+	 * @return the next token
+	 */
 	public treeToken getNextToken() {
 		treeToken result = null;
 		if (tokenIndex < tokenlist.size()) {
@@ -234,6 +260,11 @@ public class TreeTokenizer extends LineTokenizer {
 			tokenizeNode(line);
 	}
 	
+	/**
+	 * Getter for tree depth (= max chain length from root node).
+	 * 
+	 * @return the max tree depth
+	 */
 	public int maxDepth() {
 		return maxDepth;
 	}

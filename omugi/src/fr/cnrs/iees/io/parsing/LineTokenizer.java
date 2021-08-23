@@ -79,7 +79,7 @@ public abstract class LineTokenizer implements Tokenizer {
 	// this for expanding this list in descendants
 	protected Set<String> fheaders = new HashSet<String>();
 		
-	public LineTokenizer(FileTokenizer parent) {
+	public LineTokenizer(PreTokenizer parent) {
 		super();
 		lines = parent.lines();
 		for (String s:fileHeaders)

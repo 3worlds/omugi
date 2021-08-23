@@ -77,7 +77,12 @@ public abstract class NodeSetParser extends Parser {
 	protected final Map<String,Class<?>> graphPropertyTypes = new HashMap<>();
 	
 	// ----------------------------------------------------
-	// specifications for a property
+	/**
+	 * Specification of a property
+	 * 
+	 * @author Jacques Gignoux - 21 janv. 2019
+	 *
+	 */
 	public class propSpec {
 		public String name;
 		public String type;
@@ -94,7 +99,12 @@ public abstract class NodeSetParser extends Parser {
 	}
 	
 	// ----------------------------------------------------
-	// specifications for an import
+	/**
+	 * Specification for an import (NB: implementation not finished)
+	 * 
+	 * @author Jacques Gignoux - 21 janv. 2019
+	 *
+	 */
 	public class importGraph {
 		// public MinimalGraph<?> graph;
 		private OmugiGraphImporter importer;
@@ -120,7 +130,12 @@ public abstract class NodeSetParser extends Parser {
 	}
 
 	// ----------------------------------------------------
-	// specifications for a node
+	/**
+	 * Specification of a node
+	 * 
+	 * @author Jacques Gignoux - 21 janv. 2019
+	 *
+	 */
 	public class nodeSpec {
 		public String label;
 		public String name;
@@ -138,7 +153,12 @@ public abstract class NodeSetParser extends Parser {
 	}
 
 	// ----------------------------------------------------
-	// specifications for a tree node
+	/**
+	 * Specification of a tree node
+	 * 
+	 * @author Jacques Gignoux - 21 janv. 2019
+	 *
+	 */
 	public class treeNodeSpec extends nodeSpec {
 		public treeNodeSpec parent = null;
 

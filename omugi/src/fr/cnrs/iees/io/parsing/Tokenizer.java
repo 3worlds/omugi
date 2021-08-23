@@ -31,12 +31,16 @@
 package fr.cnrs.iees.io.parsing;
 
 /**
+ * An interface for tokenizers of text files containing graph or tree data
  * 
  * @author Jacques Gignoux - 18 déc. 2018
  *
  */
 public interface Tokenizer {
 	
+	/**
+	 * Analyse text input and translate it into a set of tokens representing a graph structure.
+	 */
 	public void tokenize();
 
 	

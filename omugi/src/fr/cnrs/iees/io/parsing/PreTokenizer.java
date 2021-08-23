@@ -48,21 +48,35 @@ import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
- * A Tokenizer for text files in the omugi format.
+ * <p>This class is a utility which, given a file in the omugi format,</p>
+ * <ol>
+ * <li>opens the file to determine which type of data is stored (graph, tree, or treegraph);</li>
+ * <li>removes all blank lines and comments;</li>
+ * <li>concatenates lines ending with a '+' (= continued line);</li>
+ * <li>tokenizes the resulting lines by calling the proper tokenizer (graph, tree, treegraph);</li>
+ * <li>returns the proper parser type to analyse the result.</li>
+ * </ol>
  * 
- * TODO: this class has a very, very bad name. It's NOT a tokenizer!
- * it's a preprocessor removing meaningless text and merging lines ending with '+'.
+ * A pre-Tokenizer for text files in the omugi format: pre-processes the text by
+ * removing blank lines, comments, and concatenating lines ending with a '+'.
  * 
  * @author Jacques Gignoux - 7 déc. 2018
  *
  */
-public class FileTokenizer implements Tokenizer {
+// TODO: actually this class should be part of OmugiGraphImporter. It shouldnt be standalone.
+public class PreTokenizer  {
 
-	private static Logger log = Logging.getLogger(FileTokenizer.class);
+	private static Logger log = Logging.getLogger(PreTokenizer.class);
 	private List<String> lines = null;
 	private LineTokenizer tokenizer = null;
 
-	public FileTokenizer(File f) {
+	/**
+	 * Constructor from a file using one of the <strong>omugi</strong> data format (cf.
+	 * {@link fr.cnrs.iees.io.GraphFileFormats GraphFileFormats}).
+	 * 
+	 * @param f a text file in one of the omugi data formats
+	 */
+	public PreTokenizer(File f) {
 		super();
 		try {
 			lines = preprocess(Files.readAllLines(f.toPath()),log);
@@ -122,11 +136,11 @@ public class FileTokenizer implements Tokenizer {
 	protected List<String> lines() {
 		return lines;
 	}
-
-	public void tokenize() {
-		tokenizer.tokenize();
-	}
-
+//
+//	public void tokenize() {
+//		tokenizer.tokenize();
+//	}
+//
 	/**
 	 * Create an instance of {@link Parser} adapted for this tokenizer
 	 * 
@@ -142,20 +156,20 @@ public class FileTokenizer implements Tokenizer {
 		return null;
 	}
 	
-	public static void main (String[] args) {
-		List<String> lines = new ArrayList<>();
-		lines.add("\t\thasProperty widgetClass");
-		lines.add("\t\tmustSatisfyQuery widgetClassInValueSetQuery");
-		lines.add("\t\t\tisOfClass = String(\"mustSatisfyQuery\")");
-		lines.add("\t\t\tclassName = String(\"IsInValueSetQuery\")"); 
-		lines.add("\t\t\tvalues = StringTable(\"[0],SingleGridWidget,+   ");
-		lines.add("\t\t\tTimeDisplayWidgetfx,+");
-		lines.add("\t\t\tSimpleSimCtrlWidget,+");
-		lines.add("\t\t\tTimeSeriesPlotWidgetfx,+");
-		lines.add("\t\t\tLabelValuePair\")");    
-		lines = FileTokenizer.preprocess(lines,log);
-		for (String line: lines)
-			System.out.println(line);
-	}
+//	public static void main (String[] args) {
+//		List<String> lines = new ArrayList<>();
+//		lines.add("\t\thasProperty widgetClass");
+//		lines.add("\t\tmustSatisfyQuery widgetClassInValueSetQuery");
+//		lines.add("\t\t\tisOfClass = String(\"mustSatisfyQuery\")");
+//		lines.add("\t\t\tclassName = String(\"IsInValueSetQuery\")"); 
+//		lines.add("\t\t\tvalues = StringTable(\"[0],SingleGridWidget,+   ");
+//		lines.add("\t\t\tTimeDisplayWidgetfx,+");
+//		lines.add("\t\t\tSimpleSimCtrlWidget,+");
+//		lines.add("\t\t\tTimeSeriesPlotWidgetfx,+");
+//		lines.add("\t\t\tLabelValuePair\")");    
+//		lines = PreTokenizer.preprocess(lines,log);
+//		for (String line: lines)
+//			System.out.println(line);
+//	}
 
 }

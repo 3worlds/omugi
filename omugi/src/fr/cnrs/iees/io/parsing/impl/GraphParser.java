@@ -49,8 +49,7 @@ import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
- * <p>A replacement parser for Shayne's 'UniversalParser'. Simpler. Maybe Faster.
- * Who am I to pretend it's better.</p>
+ * <p>A parser for plain graphs. </p>
  *
  * <p>This parser is initialised with a {@link GraphTokenizer}, i.e. it gobbles a list of
  * tokens and spits out a {@link Graph} when asked for it. It is lazy, i.e. it will not do anything until
@@ -74,6 +73,8 @@ import fr.ens.biologie.generic.utils.Logging;
  * @author Jacques Gignoux - 12 déc. 2018
  *
  */
+// Replacement parser for Shayne's 'UniversalParser'. Simpler. Maybe Faster.
+// Who am I to pretend it's better.
 //todo: import
 // Tested OK with version 0.0.1 on 17/12/2018
 // Tested OK with version 0.0.10 on 31/1/2019
@@ -110,7 +111,11 @@ public class GraphParser extends EdgeAndNodeSetParser {
 	// the result of this parsing
 	private Graph<? extends Node,? extends Edge> graph = null;
 
-	// lazy init: nothing is done before it's needed
+	/**
+	 * Constructor from a GraphTokenizer. Lazy init: nothing is done before it's needed.
+	 * 
+	 * @param tokenizer
+	 */
 	public GraphParser(GraphTokenizer tokenizer) {
 		super();
 		this.tokenizer =tokenizer;
@@ -280,6 +285,8 @@ public class GraphParser extends EdgeAndNodeSetParser {
 					(Graph<? extends Node, ? extends Edge>) ig.getGraph(parent.factory());
 				for (Node importNode : importGraph.nodes()) {
 					// TODO: finish this!
+					throw new OmugiException("Import within a graph file not yet implemented: "+importNode.toDetailedString());
+					
 				}
 			}
 
@@ -313,9 +320,7 @@ public class GraphParser extends EdgeAndNodeSetParser {
 
 	}
 
-	/**
-	 * @return the graph build from this parser
-	 */
+	@Override
 	public Graph<? extends Node,? extends Edge> graph() {
 		if (graph==null)
 			buildGraph();

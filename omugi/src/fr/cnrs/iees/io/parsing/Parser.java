@@ -33,6 +33,8 @@ package fr.cnrs.iees.io.parsing;
 import fr.cnrs.iees.graph.NodeSet;
 
 /**
+ * An interface for parsers transforming a list of tokens built by a {@link Tokenizer} into
+ * a graph.
  * 
  * @author Jacques Gignoux - 14 déc. 2018
  *
@@ -41,8 +43,19 @@ public abstract class Parser {
 	
 	protected abstract void parse();
 	
+	/**
+	 * Processes the list of tokens and builds the graph. Lazy method, i.e. will do the parsing
+	 * the first time it is called, and then will always return the same graph.
+	 * 
+	 * @return the graph
+	 */
 	public abstract NodeSet<?> graph();
 
+	/**
+	 * A specific method for use with files referred to in 'import' statements of other files.
+	 * 
+	 * @param factory the factory of the outer graph
+	 */
 	public abstract void setFactory(Object factory);
 
 }

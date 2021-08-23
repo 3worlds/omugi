@@ -52,20 +52,21 @@ import au.edu.anu.rscs.aot.util.StringUtils;
 /**
  * <p>
  * This class records the property types which are compatible with a given
- * application using SimplePropertyList descendants By default it contains only
- * primitive and table types. It is meant to remain a singleton class (ie no
- * instances).
+ * application using {@link fr.cnrs.iees.properties.SimplePropertyList SimplePropertyList} 
+ * implementations. By default it contains only primitive and table types. 
+ * It is meant to remain a singleton class (ie no instances).
  * </p>
  * 
- * <p>
- * TODO: this class shouldnt mess up with the property type hierarchy, it's only
- * here for saving/loading property lists from text messages / files. It must be
- * kept independent
- * </p>
- * 
+ * <p>NOTE: to be valid as a property, a class must implement the
+ * {@link fr.ens.biologie.generic.SaveableAsText SaveableAsText} interface to save as text, 
+ * and a static {@code valueOf(String)} method performing
+ * the reverse operation (instantiating from text). As a consequence, all {@code enum}
+ * classes are eligible as valid property types since they all have a {@code  valueOf(...)} method matching
+ * their {@code toString()} method.</p>
+ *  
  * <p>
  * The test case {@link ValidPropertyTypesTest} shows all the major use case and
- * expected behaviour
+ * expected behaviours.
  * </p>
  * 
  * @author Jacques Gignoux - 25-10-2018
@@ -90,8 +91,8 @@ public class ValidPropertyTypes {
 	};
 
 	/**
-	 * records a property type as valid. "Valid" means suitable for later use in
-	 * PropertyList by the targeted application.
+	 * <p>Records a property type (class) as valid. "Valid" means suitable for later use in
+	 * a property list by the targeted application.</p>
 	 * 
 	 * @param name         the name by which this type will be known in the code
 	 *                     (including saved files)

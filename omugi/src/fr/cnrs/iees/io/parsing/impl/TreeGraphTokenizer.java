@@ -32,12 +32,13 @@ package fr.cnrs.iees.io.parsing.impl;
 import java.util.LinkedList;
 import java.util.List;
 
-import fr.cnrs.iees.io.parsing.FileTokenizer;
+import fr.cnrs.iees.io.parsing.PreTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
 
 /**
- * A tokenizer for mixed tree graphs - first uses a tree tokenizer, then a graph tokenizer,
- * assuming the file comes into two parts matching those.
+ * <p>A tokenizer for mixed tree graphs. It first uses a tree tokenizer, then a graph tokenizer,
+ * assuming the file comes into two parts matching those (<strong><em>TGOMUGI</em></strong> 
+ * data format in {@link fr.cnrs.iees.io.GraphFileFormats GraphFileFormats}).</p>
  * 
  * @author Jacques Gignoux - 22 janv. 2019
  *
@@ -83,16 +84,31 @@ public class TreeGraphTokenizer extends LineTokenizer {
 		gtk = new GraphTokenizer(crossLinkLines.toArray(ss));
 	}
 	
-	public TreeGraphTokenizer(FileTokenizer parent) {
+	/**
+	 * Constructor from a {@link PreTokenizer}
+	 * 
+	 * @param parent the pretokenizer
+	 */
+	public TreeGraphTokenizer(PreTokenizer parent) {
 		super(parent);
 		splitLines();
 	}
 	
+	/**
+	 * Constructor from an array of text lines
+	 * 
+	 * @param lines the text lines to tokenize
+	 */
 	public TreeGraphTokenizer(String[] lines) {
 		super(lines);
 		splitLines();
 	}
 	
+	/**
+	 * Constructor from a list of text lines
+	 * 
+	 * @param lines the text lines to tokenize
+	 */
 	public TreeGraphTokenizer(List<String> lines) {
 		super(lines);
 		splitLines();

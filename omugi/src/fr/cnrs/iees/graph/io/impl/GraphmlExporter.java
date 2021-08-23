@@ -53,8 +53,6 @@ import au.edu.anu.rscs.aot.collections.tables.Table;
  * cf. http://graphml.graphdrawing.org/</p>
  * @author gignoux
  *
- * @param <N> Node type
- * @param <E> Edge type
  */
 // tested with version 0.0.1 on a graph of SimpleNodes and Edges (ie no data) OK on 7/11/2018
 // tested with version 0.0.1 on a graph of DataNodes and DataEdges OK on 29/11/2018
