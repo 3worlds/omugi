@@ -1,0 +1,14 @@
+graph // saved by OmugiGraphExporter on Mon Aug 23 14:44:25 CEST 2021
+
+// 4 NODES
+ALNode n1
+ALNode n2
+ALNode n3
+ALNode n4
+
+// 5 EDGES
+[ALNode:n1] ALEdge e1 [ALNode:n2]
+[ALNode:n2] ALEdge e4 [ALNode:n3]
+[ALNode:n2] ALEdge e2 [ALNode:n1]
+[ALNode:n2] ALEdge e3 [ALNode:n2]
+[ALNode:n3] ALEdge e5 [ALNode:n4]
