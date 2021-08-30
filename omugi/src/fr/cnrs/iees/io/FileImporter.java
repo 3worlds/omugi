@@ -45,12 +45,12 @@ import static fr.cnrs.iees.io.GraphFileFormats.*;
 /**
  * <p>A class to read any text file containing graph or tree data. This should be the entry point to
  * any graph-related file reading.</p>
- * <p>Supported file formats are stored in the {@link GraphFileFormat} enum.</p>
+ * <p>Supported file formats are stored in the {@link GraphFileFormats} enum.</p>
  * <p>Typical use:</p>
  * <pre> FileImporter fi = new FileImporter(new File("myTextFile.xml"));
- * Graph<?,?> myGraph = fi.getGraph();</pre>
+ * Graph&lt;?,?&gt; myGraph = fi.getGraph();</pre>
  * <p>or, more directly:</p>
- * <pre>Graph<?,?> myGraph = FileImporter.loadGraphFromFile(new File("myTextFile.xml"))</pre>
+ * <pre>Graph&lt;?,?&gt; myGraph = FileImporter.loadGraphFromFile(new File("myTextFile.xml"))</pre>
  * 
  * @author Jacques Gignoux - 21 déc. 2018
  *

@@ -49,6 +49,8 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
+ * <p>A parser for {@link fr.cnrs.iees.graph.impl.TreeGraph TreeGraph}s. 
+ * This parser is initialised with a {@link TreeGraphTokenizer}.</p>
  * 
  * @author Jacques Gignoux - 22 janv. 2019
  *

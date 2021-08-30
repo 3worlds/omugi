@@ -57,9 +57,6 @@ import fr.ens.biologie.generic.utils.Logging;
  * <li>returns the proper parser type to analyse the result.</li>
  * </ol>
  * 
- * A pre-Tokenizer for text files in the omugi format: pre-processes the text by
- * removing blank lines, comments, and concatenating lines ending with a '+'.
- * 
  * @author Jacques Gignoux - 7 déc. 2018
  *
  */

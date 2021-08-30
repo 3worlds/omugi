@@ -51,7 +51,7 @@ import fr.ens.biologie.generic.utils.Logging;
  * <a href="https://www.graphviz.org/documentation/">DOT</a>, 
  * <a href="https://gephi.org/users/supported-graph-formats/csv-format/">CSV/GEPHI</a>,
  * <a href ="https://users.cecs.anu.edu.au/~bdm/data/formats.txt">Graph6, Sparse6, Digraph6</a>, 
- * <a href="http://www.dimacs.rutgers.edu/programs/challenge/">DIMACS 2 & 9</a>[but where exactly is this format defined?] formats in the future.</p>
+ * <a href="http://www.dimacs.rutgers.edu/programs/challenge/">DIMACS 2 &amp; 9</a>[but where exactly is this format defined?] formats in the future.</p>
  * 
  * <p>In the meanwhile, <a href="https://gephi.org/users/supported-graph-formats/">this page</a> provides a good analysis of the pros and cons of the major
  * file formats for saving graphs.</p>

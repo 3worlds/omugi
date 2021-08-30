@@ -59,7 +59,9 @@ import fr.ens.biologie.generic.SaveableAsText;
 import fr.ens.biologie.generic.utils.Logging;
 
 /**
- * An exporter into omugi text format for graphs and trees
+ * <p>An exporter into the omugi text format for graphs and trees. Produces a text file 
+ * following the syntax described in {@link fr.cnrs.iees.io.parsing.impl.GraphTokenizer GraphTokenizer} and
+ * {@link fr.cnrs.iees.io.parsing.impl.TreeTokenizer TreeTokenizer}</p>
  * 
  * @author Jacques Gignoux - 14 déc. 2018
  *
@@ -78,10 +80,18 @@ public class OmugiGraphExporter implements GraphExporter {
 
 	// Constructors
 
+	/**
+	 * 
+	 * @param file a text file to export a graph to
+	 */
 	public OmugiGraphExporter(File file) {
 		this.file = file;
 	}
 
+	/**
+	 * 
+	 * @param fileName the name of a text file to export a graph to
+	 */
 	public OmugiGraphExporter(String fileName) {
 		this.file = new File(fileName);
 	}

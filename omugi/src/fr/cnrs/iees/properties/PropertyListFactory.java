@@ -35,8 +35,7 @@ import fr.cnrs.iees.properties.impl.ReadOnlyPropertyListImpl;
 import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
 
 /**
- * A factory for property lists. Used in {@link fr.cnrs.iees.graph.GraphFactory GraphFactory}
- * and in  {@link fr.cnrs.iees.graph.TreeFactory TreeFactory}. 
+ * A factory for property lists. Used in {@link fr.cnrs.iees.graph.GraphFactory GraphFactory}. 
  * 
  * @author Jacques Gignoux - 20 déc. 2018
  *

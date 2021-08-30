@@ -42,7 +42,7 @@ import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeSet;
 
 /**
- * An ancestor for {@link fr.cnrs.iees.graph.Graph Graph} and {@link fr.cnrs.iees.graph.TreeGraph TreeGraph} parsers.
+ * An ancestor for {@link fr.cnrs.iees.graph.Graph Graph} and {@link fr.cnrs.iees.graph.impl.TreeGraph TreeGraph} parsers.
  * 
  * @author Jacques Gignoux - 27 mai 2019
  *

@@ -38,6 +38,7 @@ import fr.cnrs.iees.io.parsing.Parser;
 
 /**
  * Importer for graphs / trees in the omugi simple text format.
+ * 
  * @author Jacques Gignoux - 14 déc. 2018
  *
  */
@@ -48,12 +49,20 @@ public class OmugiGraphImporter implements GraphImporter {
 	private PreTokenizer tokenizer;
 	private Parser parser;
 	
+	/**
+	 * 
+	 * @param infile a text file to import as a graph
+	 */
 	public OmugiGraphImporter(File infile) {
 		super();
 		tokenizer = new PreTokenizer(infile);
 		parser = tokenizer.parser();
 	}
 	
+	/**
+	 * 
+	 * @param parser a Parser to immport a graph from
+	 */
 	public OmugiGraphImporter(Parser parser) {
 		super();
 		this.parser = parser;

@@ -52,8 +52,8 @@ import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.COMMENT;
  * returns a Graph read from any kind of source (stream, file, String...). This interface also
  * provides static utility methods for importing graphs.</p>
  * 
- * <p>Implementations of this class should use implementations of {@link Parser}
- * and {@link Tokenizer} to process their input.</p>
+ * <p>Implementations of this class should use implementations of {@link fr.cnrs.iees.io.parsing.Parser Parser}
+ * and {@link fr.cnrs.iees.io.parsing.Tokenizer Tokenizer} to process their input.</p>
  * 
  * @author Shayne - long ago. <br/>
  * Heavily refactored by J.Gignoux nov. 2017

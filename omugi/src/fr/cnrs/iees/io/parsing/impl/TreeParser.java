@@ -68,10 +68,10 @@ import fr.ens.biologie.generic.utils.Logging;
  * 
  * <p>
  * Options to setup the tree may be passed through tree-level properties in the
- * file. These are found in {@link TreeProperties}. The best way to go is to
- * implement specific {@link TreeNodeFactory} and {@link PropertyListFactory}
+ * file. These are found in {@link NodeSetParser}. The best way to go is to
+ * implement specific {@link NodeFactory} and {@link PropertyListFactory}
  * which will implement which flavour of {@link TreeNode} and property list (cf.
- * {@link PropertyListGetters} descendants) should be used to construct the
+ * {@link fr.cnrs.iees.properties.PropertyListGetters PropertyListGetters} descendants) should be used to construct the
  * tree.
  * </p>
  * 
@@ -83,7 +83,7 @@ import fr.ens.biologie.generic.utils.Logging;
  * 
  * <p>
  * Note that the best use of this class is to hide it inside a
- * {@link GraphImporter}.
+ * {@link fr.cnrs.iees.graph.io.GraphImporter GraphImporter}.
  * </p>
  * 
  * @author Jacques Gignoux - 20 déc. 2018

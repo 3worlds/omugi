@@ -59,16 +59,16 @@ import fr.ens.biologie.generic.utils.Logging;
  * <p>Parsing is done in a single pass on the token list.</p>
  *
  * <p>Options to setup the graph may be passed through graph-level properties in the file. These
- * are found in {@link GraphProperties}. The best way to go is to implement specific {@link NodeFactory},
+ * are found in {@link NodeSetParser} and {@link EdgeAndNodeSetParser}. The best way to go is to implement specific {@link NodeFactory},
  * {@link EdgeFactory} and {@link PropertyListFactory}
  * which will implement which flavour of {@link Node}, {@link Edge} and property list
- * (cf. {@link PropertyListGetters} descendants) should be used to construct
+ * (cf. {@link fr.cnrs.iees.properties.PropertyListGetters PropertyListGetters} descendants) should be used to construct
  * the graph.</p>
  *
  * <p>Allowed property types are those listed in {@link ValidPropertyTypes}. They can be
  * specified as fully qualified java class names, or as simple strings as found in {@code ValidPropertyTypes}.</p>
  *
- *  <p>Note that the best use of this class is to hide it inside a {@link GraphImporter}.</p>
+ *  <p>Note that the best use of this class is to hide it inside a {@link fr.cnrs.iees.graph.io.GraphImporter GraphImporter}.</p>
  *
  * @author Jacques Gignoux - 12 déc. 2018
  *

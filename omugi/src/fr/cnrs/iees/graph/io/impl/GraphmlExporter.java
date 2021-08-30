@@ -47,11 +47,10 @@ import java.util.Map;
 import au.edu.anu.rscs.aot.collections.tables.Table;
 
 /**
- * <p>This class implemented mainly as a workbench. To implement a GraphmlImporter, consider
- * using that of  <a href="https://jgrapht.org/">JGraphT</a></p>
- * <p>Old code refactored.
- * cf. http://graphml.graphdrawing.org/</p>
- * @author gignoux
+ * <p>A graph exporter for the <a href="http://graphml.graphdrawing.org/">GraphML</a> format. This class implemented mainly as a workbench. 
+ * To implement a matching {@code GraphmlImporter}, consider using that of <a href="https://jgrapht.org/">JGraphT</a>.</p>
+ * 
+ * @author J. Gignoux - looong ago
  *
  */
 // tested with version 0.0.1 on a graph of SimpleNodes and Edges (ie no data) OK on 7/11/2018
@@ -76,11 +75,19 @@ public class GraphmlExporter implements GraphExporter {
 	
 	// Constructors
 
+	/**
+	 * 
+	 * @param file a text file to export a graph to
+	 */
 	public GraphmlExporter(File file) {
 		this.file = file;
 		initTypes();
 	}
 
+	/**
+	 * 
+	 * @param fileName the name of a text file to export a graph to
+	 */
 	public GraphmlExporter(String fileName) {
 		this.file = new File(fileName);
 		initTypes();
