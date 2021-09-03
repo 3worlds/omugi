@@ -35,8 +35,6 @@ import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_ITEM_SEPARATOR;
 import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_BLOCK_DELIMITERS;
 import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_ITEM_SEPARATOR;
 
-import java.lang.reflect.Method;
-
 import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.DataContainer;
 import fr.ens.biologie.generic.SaveableAsText;
