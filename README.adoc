@@ -1,0 +1,22 @@
+= the OMUGI library
+
+**O**ne **M**ore **U**ltimate **G**raph **I**mplementation.
+There are many implementations of a graph as defined by https://en.wikipedia.org/wiki/Graph_theory[graph theory]. In search of one easy-to-use one, we reached the conclusion that (1) many libraries were more complex than what we were searching for and (2) a strict implementation of mathematical definitions was not enough, one also had to handle graphs being constructed / manipulated, i.e. objects that are not yet graphs but will be after some operations.
+
+Contains classes for:
+
+* 'universal' interfaces for graph objects: nodes, edges, graph, tree. If you find them not universal, please tell us and we will see what we can do
+* three implementations of the above based on:
+** https://en.wikipedia.org/wiki/Adjacency_list[adjacency lists];
+** https://en.wikipedia.org/wiki/Tree_(graph_theory)[trees];
+** what we called a 'treegraph', i.e. a tree with cross-links.
+* export/import of graphs in text files (includes parsers and tokenizers)
+* unique identifiers within a scope
+* node and edge attributes as _property lists_ with various behaviours (e.g. immutable/mutable, read-only, etc.)
+* multidimenstional tables of primitive types to use as attributes
+
+See the link:omugi/javadoc/index.html[javadoc]
+
+TODO: make the javadoc accessible in a more user-friendly way
+
+Depends on: https://gitlab.iscpif.fr/threeworlds/omhtk[omhtk]
