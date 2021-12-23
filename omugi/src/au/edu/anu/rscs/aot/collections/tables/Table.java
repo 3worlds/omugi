@@ -110,6 +110,22 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	 * @return the size of the index<sup>th</sup> dimension
 	 */
 	public int size(int index);
+	
+	/**
+	 * checks if the table passed as argument has the same dimensions as this instance
+	 * 
+	 * @param other the other table to check
+	 * @return true if ndim are equal and size(i) are equal for i=0 → ndim
+	 */
+	public default boolean sameDimensionsAs(Table other) {
+		if (ndim()==other.ndim()) {
+			for (int i=0; i<ndim(); i++)
+				if (size(i)!=other.size(i))
+					return false;
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * returns the dimensioners of this table
