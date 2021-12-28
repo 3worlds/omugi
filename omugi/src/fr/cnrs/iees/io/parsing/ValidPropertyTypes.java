@@ -135,8 +135,12 @@ public class ValidPropertyTypes {
 		if (type.contains("."))
 			type = classTypes.get(type);
 		Integer i = typeIndex.get(type);
-		if (i != null)
-			return defaults.get(i);
+		if (i != null) {
+			Object obj = defaults.get(i);
+			if (obj instanceof CloneableProperty)
+				obj = ((CloneableProperty)obj).clone();
+			return obj;
+		}
 		return null;
 	}
 
