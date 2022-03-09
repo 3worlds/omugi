@@ -1,4 +1,4 @@
-= the OMUGI library
+= The OMUGI library
 
 **O**ne **M**ore **U**ltimate **G**raph **I**mplementation.
 There are many implementations of a graph as defined by https://en.wikipedia.org/wiki/Graph_theory[graph theory]. In search of one easy-to-use one, we reached the conclusion that (1) many libraries were more complex than what we were searching for and (2) a strict implementation of mathematical definitions was not enough, one also had to handle graphs being constructed / manipulated, i.e. objects that are not yet graphs but will be after some operations.
@@ -15,6 +15,6 @@ Contains classes for:
 * node and edge attributes as _property lists_ with various behaviours (e.g. immutable/mutable, read-only, etc.)
 * multidimenstional tables of primitive types to use as attributes
 
-See the link:https://3worlds.github.io/omugi/index.html[javadoc]
+See the link:https://3worlds.github.io/omugi/omugi/javadoc/index.html[javadoc]
 
 Depends on: https://github.com/3worlds/omhtk[omhtk]
