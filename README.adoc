@@ -15,8 +15,6 @@ Contains classes for:
 * node and edge attributes as _property lists_ with various behaviours (e.g. immutable/mutable, read-only, etc.)
 * multidimenstional tables of primitive types to use as attributes
 
-See the link:omugi/javadoc/index.html[javadoc]
+See the link:https://3worlds.github.io/omugi/index.html[javadoc]
 
-TODO: make the javadoc accessible in a more user-friendly way
-
-Depends on: https://gitlab.iscpif.fr/threeworlds/omhtk[omhtk]
+Depends on: https://github.com/3worlds/omhtk[omhtk]
