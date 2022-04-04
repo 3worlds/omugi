@@ -48,7 +48,7 @@ import static fr.cnrs.iees.io.parsing.ValidPropertyTypes.*;
 class ValidPropertyTypesTest {
 
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 
 	@Test
@@ -107,7 +107,7 @@ class ValidPropertyTypesTest {
 
 	@Test
 	final void testListTypes() {
-		listTypes();
+//		listTypes();
 		// should display something like that (order may change):
 //
 //		Valid property types currently recorded:

@@ -53,7 +53,7 @@ class CompoundPropertyListImplTest {
 	private SimplePropertyList sp1=null, cp=null;
 	
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 	
 	@BeforeEach

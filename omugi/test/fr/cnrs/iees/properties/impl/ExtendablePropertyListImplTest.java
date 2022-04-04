@@ -49,7 +49,7 @@ class ExtendablePropertyListImplTest {
 	private ExtendablePropertyList ep1=null, ep2=null;
 	
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 	
 	@BeforeEach

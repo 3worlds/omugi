@@ -64,7 +64,7 @@ class TreeTokenizerTest {
 	void testTokenize() {
 		TreeTokenizer tk = new TreeTokenizer(test);
 		tk.tokenize();
-		System.out.println(tk.toString());
+//		System.out.println(tk.toString());
 		assertEquals(tk.toString(),"0 LABEL:label1\n" + 
 				"0 NAME:node1\n" + 
 				"1 PROPERTY_NAME:prop1\n" + 
@@ -122,7 +122,7 @@ class TreeTokenizerTest {
 	void testTokenize2() {
 		TreeTokenizer tk = new TreeTokenizer(test2);
 		tk.tokenize();
-		System.out.println(tk.toString());
+//		System.out.println(tk.toString());
 		assertEquals(tk.toString(),"1 LABEL:hasProperty\n" + 
 				"1 NAME:relateToFunctionKeepLinkPropertySpec\n" + 
 				"2 PROPERTY_NAME:hasName\n" + 
@@ -152,7 +152,7 @@ class TreeTokenizerTest {
 	void testTokenize3() {
 		TreeTokenizer tk = new TreeTokenizer(test3);
 		tk.tokenize();
-		System.out.println(tk.toString());
+//		System.out.println(tk.toString());
 		assertEquals(tk.toString(),"0 PROPERTY_NAME:conditions\n" + 
 				"0 PROPERTY_TYPE:StringTable\n" + 
 				"0 PROPERTY_VALUE:([2]\"r=3.7\",\"x[0] = 0.1\")\n" + 

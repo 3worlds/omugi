@@ -88,7 +88,7 @@ class TreeGraphParserTest {
 	void testParse() {
 		TreeGraphParser p = new TreeGraphParser(new TreeGraphTokenizer(test));
 		p.parse();
-		System.out.println(p.toString());
+//		System.out.println(p.toString());
 		assertEquals(p.toString(),"Aot graph specification\n" + 
 				"Nodes:\n" + 
 				"node:3Worlds\n" + 
@@ -149,7 +149,7 @@ class TreeGraphParserTest {
 	void testGraph() {
 		TreeGraphParser p = new TreeGraphParser(new TreeGraphTokenizer(test));
 		TreeGraph<?, ?> g = p.graph();
-		System.out.println(g.toDetailedString());
+//		System.out.println(g.toDetailedString());
 		assertTrue(g.toDetailedString().contains("(11 tree nodes / 4 cross-links)"));
 	}
 }

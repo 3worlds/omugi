@@ -46,7 +46,7 @@ import fr.cnrs.iees.properties.SimplePropertyList;
 class ALDataNodeTest {
 
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 
 	@Test

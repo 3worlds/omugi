@@ -195,7 +195,7 @@ class GraphParserTest {
 	void testGraph2() {
 		GraphParser gp = new GraphParser(new GraphTokenizer(otherTest));
 		Graph<?,?> g = gp.graph();
-		System.out.println(g.toString());
+//		System.out.println(g.toString());
 		assertEquals(g.nNodes(),4); // 4 nodes
 		assertEquals(g.getClass().getSimpleName(),"ALGraph");
 	}		
@@ -234,7 +234,7 @@ class GraphParserTest {
 	void testGraph3() {
 		GraphParser gp = new GraphParser(new GraphTokenizer(edgePropTest));
 		Graph<?,?> g = gp.graph();
-		System.out.println(g.toString());
+//		System.out.println(g.toString());
 		assertEquals(g.nNodes(),4); // 4 nodes
 		assertEquals(g.getClass().getSimpleName(),"ALGraph");
 	}		

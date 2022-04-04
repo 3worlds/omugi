@@ -51,7 +51,7 @@ class SimpleTreeNodeTest {
 	private SimpleTreeFactory f;
 	
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 	
 	// simple little tree:
@@ -313,7 +313,7 @@ class SimpleTreeNodeTest {
 	@Test
 	void testToString() {
 		show("testToString",tn2.toString());
-		assertEquals(tn2.toString(),"[SimpleTreeNode:tn2 ↑SimpleTreeNode:tn1 ↓SimpleTreeNode:tn4]");
+		assertEquals(tn2.toDetailedString(),"SimpleTreeNode:tn2 ↑SimpleTreeNode:tn1 ↓SimpleTreeNode:tn4");
 	}
 	
 	@SuppressWarnings("unlikely-arg-type")

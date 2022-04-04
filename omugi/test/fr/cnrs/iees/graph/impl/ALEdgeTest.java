@@ -69,7 +69,7 @@ class ALEdgeTest {
 	}
 	
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 
 	@Test
@@ -193,7 +193,7 @@ class ALEdgeTest {
 	@Test
 	void testToString() {
 		show("testToString",e2.toString());
-		assertTrue(e2.toString().contains(n2.id().toString()));
+		assertTrue(e2.toString().contains(e2.id().toString()));
 	}
 
 }

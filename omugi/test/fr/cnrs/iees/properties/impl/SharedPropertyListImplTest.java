@@ -43,7 +43,7 @@ class SharedPropertyListImplTest {
 	private SimplePropertyList sp1=null, sp2=null, sp3=null;
 	
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 	
 	@BeforeEach

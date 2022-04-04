@@ -143,7 +143,7 @@ class ReferenceTokenizerTest {
 				"NODE_NAME:\n" + 
 				"PROPERTY_NAME:prop8\n" + 
 				"PROPERTY_VALUE:false\n");
-		System.out.println(tk.toString());
+//		System.out.println(tk.toString());
 	}
 
 }

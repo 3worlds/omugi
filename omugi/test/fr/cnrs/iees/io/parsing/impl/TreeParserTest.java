@@ -70,7 +70,7 @@ class TreeParserTest {
 	void testParse() {
 		TreeParser tp = new TreeParser(new TreeTokenizer(test));
 		tp.parse();
-		System.out.println(tp.toString());
+//		System.out.println(tp.toString());
 		assertEquals(tp.toString(),"Tree specification\n" + 
 				"label1:node1\n" + 
 				"	prop1:Integer=3\n" + 
@@ -104,10 +104,10 @@ class TreeParserTest {
 				"	parent label11:node11\n");
 	}
 
-	@Test
-	void testTree() {
-		TreeParser tp = new TreeParser(new TreeTokenizer(test));
-		System.out.println(tp.graph().toString());
-	}
+//	@Test
+//	void testTree() {
+//		TreeParser tp = new TreeParser(new TreeTokenizer(test));
+//		System.out.println(tp.graph().toString());
+//	}
 
 }

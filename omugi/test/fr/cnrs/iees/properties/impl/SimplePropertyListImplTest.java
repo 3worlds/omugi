@@ -48,7 +48,7 @@ class SimplePropertyListImplTest {
 	private SimplePropertyList sp1 = null, sp2=null;
 
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 
 	@Test

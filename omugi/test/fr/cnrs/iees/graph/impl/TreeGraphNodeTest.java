@@ -77,7 +77,7 @@ class TreeGraphNodeTest {
 	}
 
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 	
 	@Test
@@ -344,7 +344,7 @@ class TreeGraphNodeTest {
 		show("testToString",n2.toString());
 		show("testToString",n3.toString());
 		show("testToString",n4.toString());
-		assertEquals(n4.toString(),"[TreeGraphNode:n4=[↑TreeGraphNode:n2 →TreeGraphNode:n1]]");
+		assertEquals(n4.toDetailedString(),"TreeGraphNode:n4=[↑TreeGraphNode:n2 →TreeGraphNode:n1]");
 	}
 
 }

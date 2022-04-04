@@ -317,7 +317,7 @@ DataTreeNodeImpl 436e852b
 	void testExportTreeGraph() {
 		TreeGraphParser p = new TreeGraphParser(new TreeGraphTokenizer(test));
 		TreeGraph<?, ?> g = p.graph();
-		System.out.println(g.toDetailedString());
+//		System.out.println(g.toDetailedString());
 		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
 				+ File.separator + "test" 
 				+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 

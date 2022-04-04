@@ -49,7 +49,7 @@ class SimpleTreeTest {
 	private SimpleTree<SimpleTreeNode> tree = null;
 	
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 	
 	// simple little tree:

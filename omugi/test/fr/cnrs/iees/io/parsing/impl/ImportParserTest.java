@@ -53,13 +53,13 @@ class ImportParserTest {
 		Tree<? extends TreeNode> specs = (Tree<? extends TreeNode>) importer.getGraph();
 		// NOTE: setParent does not add the children
 //		int count = 0;
-		for (TreeNode n : specs.nodes()) {
-			if (n.hasChildren()) {
-				System.out.println(n);
-				for (TreeNode c : n.getChildren())
-					System.out.println("\t" + c);
-			}
-		}
+//		for (TreeNode n : specs.nodes()) {
+//			if (n.hasChildren()) {
+//				System.out.println(n);
+//				for (TreeNode c : n.getChildren())
+//					System.out.println("\t" + c);
+//			}
+//		}
 
 	}
 

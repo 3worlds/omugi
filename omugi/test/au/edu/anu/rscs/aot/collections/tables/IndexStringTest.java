@@ -50,22 +50,22 @@ class IndexStringTest {
 	int[][] result = null;
 	
 	private void show(String method,int[][] tab) {
-		System.out.print(method+": [ ");
-		for (int i=0; i<tab.length; i++)
-			System.out.print(Arrays.toString(tab[i])+" ");
-		System.out.println("]");
+//		System.out.print(method+": [ ");
+//		for (int i=0; i<tab.length; i++)
+//			System.out.print(Arrays.toString(tab[i])+" ");
+//		System.out.println("]");
 	}
 	
 	private void show(String method,IntegerRange[] tab) {
-		System.out.print(method+": [ ");
-		for (int i=0; i<tab.length; i++)
-			System.out.print(tab[i].toString()+" ");
-		System.out.println("]");
+//		System.out.print(method+": [ ");
+//		for (int i=0; i<tab.length; i++)
+//			System.out.print(tab[i].toString()+" ");
+//		System.out.println("]");
 	}
 
 	
 	private void show(String method, String s) {
-		System.out.println(method+": \""+s+"\"");
+//		System.out.println(method+": \""+s+"\"");
 	}
 	
 	@Test

@@ -86,15 +86,12 @@ class OmugiGraphImporterTest {
 
 	
 	private void printTree(TreeNode parent,String indent) {
-		if (parent.getParent()!=null)
-			System.out.println(indent+parent.getParent().id()+"->"+parent.id());
-		else
-			System.out.println(indent+"null->"+parent.id());
-		for (TreeNode child:parent.getChildren())
-			printTree(child,indent+"  ");
-		
-
-		
+//		if (parent.getParent()!=null)
+//			System.out.println(indent+parent.getParent().id()+"->"+parent.id());
+//		else
+//			System.out.println(indent+"null->"+parent.id());
+//		for (TreeNode child:parent.getChildren())
+//			printTree(child,indent+"  ");
 	}
 
 }

@@ -77,7 +77,7 @@ class TreeGraphTest {
 	}
 
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 
 	@Test

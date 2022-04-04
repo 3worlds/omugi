@@ -78,7 +78,7 @@ class ALNodeTest {
 	}
 
 	private void show(String method,String text) {
-		System.out.println(method+": "+text);
+//		System.out.println(method+": "+text);
 	}
 	
 	@Test
@@ -236,7 +236,7 @@ class ALNodeTest {
 	@Test
 	void testToString() {
 		show("testToString",n4.toString());
-		assertTrue(n4.toString().contains(n3.id().toString()));
+		assertTrue(n4.toString().contains(n4.id().toString()));
 	}
 
 	@Test
