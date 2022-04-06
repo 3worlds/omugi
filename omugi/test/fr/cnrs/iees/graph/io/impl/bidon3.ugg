@@ -1,4 +1,4 @@
-graph // saved by OmugiGraphExporter on Mon Apr 04 11:03:57 AEST 2022
+graph // saved by OmugiGraphExporter on Thu Apr 07 06:53:10 AEST 2022
 
 // 4 NODES
 ALDataNode dn1
@@ -31,11 +31,11 @@ ALDataNode dn4
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[ALDataNode:dn2] ALDataEdge de2 [ALDataNode:dn1]
+[ALDataNode:dn2] ALDataEdge de3 [ALDataNode:dn2]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
-[ALDataNode:dn2] ALDataEdge de3 [ALDataNode:dn2]
+[ALDataNode:dn2] ALDataEdge de2 [ALDataNode:dn1]
 	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
