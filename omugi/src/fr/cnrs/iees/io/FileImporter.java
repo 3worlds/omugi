@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import fr.cnrs.iees.graph.NodeSet;
@@ -61,6 +62,9 @@ public class FileImporter {
 	
 	private GraphImporter importer = null;
 	private static Logger log = Logging.getLogger(FileImporter.class);
+	static {
+		log.setLevel(Level.OFF);
+	}
 	
 	/**
 	 * Constructor from a text file. Throws an {@code Exception} if the file format is not

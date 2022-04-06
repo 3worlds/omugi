@@ -32,9 +32,12 @@ package fr.cnrs.iees.io.parsing.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.logging.Level;
+
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.graph.Graph;
+import fr.ens.biologie.generic.utils.Logging;
 
 class GraphParserTest {
 

@@ -32,6 +32,7 @@ package fr.cnrs.iees.io;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import fr.cnrs.iees.OmugiClassLoader;
@@ -96,6 +97,9 @@ public enum GraphFileFormats {
 	private final String description;
 	private final String url;
 	private static Logger log = Logging.getLogger(GraphFileFormats.class);
+	static {
+		log.setLevel(Level.OFF);
+	}
 
 	private GraphFileFormats(String extension, String description, String url) {
 		this.extension = extension;

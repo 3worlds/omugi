@@ -32,9 +32,12 @@ package fr.cnrs.iees.io;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
+import java.util.logging.Level;
+
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.graph.NodeSet;
+import fr.ens.biologie.generic.utils.Logging;
 
 /**
  * 

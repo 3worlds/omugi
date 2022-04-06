@@ -47,14 +47,14 @@ class GraphImporterTest {
 	@Test
 	final void testImportGraphString() {
 		NodeSet<?> graph = GraphImporter.importGraph("fr/cnrs/iees/io/parsing/impl/importgraph.ugt");
-		System.out.println(graph.toDetailedString());
+//		System.out.println(graph.toDetailedString());
 		assertNotNull(graph);
 	}
 
 	@Test
 	final void testImportGraphStringClassOfQ() {
 		NodeSet<?> graph = GraphImporter.importGraph("importgraph.ugt",TreeParser.class);
-		System.out.println(graph.toDetailedString());
+//		System.out.println(graph.toDetailedString());
 		assertNotNull(graph);
 	}
 

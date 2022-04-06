@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.util.Resources;
@@ -84,6 +85,9 @@ import fr.ens.biologie.generic.utils.Logging;
 public class GraphParser extends EdgeAndNodeSetParser {
 
 	private static Logger log = Logging.getLogger(GraphParser.class);
+	static {
+		log.setLevel(Level.OFF);
+	}
 
 	//----------------------------------------------------
 	// which type of item is currently being constructed
