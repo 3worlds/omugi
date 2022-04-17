@@ -185,33 +185,33 @@ public abstract class NodeSetParser extends Parser {
 	protected SimplePropertyList makePropertyList(PropertyListFactory plf, List<propSpec> props, Logger log) {
 		List<Property> pl = new LinkedList<Property>();
 		for (propSpec p : props) {
-			boolean trace = false;
-			if (p.type.equals("fr.ens.biologie.generic.utils.Interval"))
-				trace = true;
+//			boolean trace = false;
+//			if (p.type.equals("fr.ens.biologie.generic.utils.Interval"))
+//				trace = true;
 			String className = ValidPropertyTypes.getJavaClassName(p.type);
-			if (trace) {
-				System.out.println("1. "+p);
-			}
+//			if (trace) {
+//				System.out.println("1. "+p);
+//			}
 			if (className == null)
 				log.severe("unknown property type (" + p.type + ")");
 			else {
 				Object o = null;
 				try {
 					Class<?> c = Class.forName(className, false, OmugiClassLoader.getAppClassLoader());
-					if (trace)
-						System.out.println("2. "+c);
+//					if (trace)
+//						System.out.println("2. "+c);
 					// if method present, instantiate object with valueOf()
 					for (Method m : c.getMethods())
 						if (m.getName().equals("valueOf")) {
 							Class<?>[] pt = m.getParameterTypes();
-							if (trace)
-								System.out.println("3. "+pt);
+//							if (trace)
+//								System.out.println("3. "+pt);
 							// first case, valueOf() only has a String argument --> primitive types
 							if (pt.length == 1) {
 								if (String.class.isAssignableFrom(pt[0])) {
 									o = m.invoke(null, p.value);
-									if (trace)
-										System.out.println("4. "+o);
+//									if (trace)
+//										System.out.println("4. "+o);
 									break;
 								}
 							}
@@ -226,8 +226,8 @@ public abstract class NodeSetParser extends Parser {
 									isep[Table.DIMix] = DIM_ITEM_SEPARATOR;
 									isep[Table.TABLEix] = TABLE_ITEM_SEPARATOR;
 									o = m.invoke(null, p.value, bdel, isep);
-									if (trace)
-										System.out.println("5. "+o);
+//									if (trace)
+//										System.out.println("5. "+o);
 								}
 							}
 						}
@@ -235,12 +235,12 @@ public abstract class NodeSetParser extends Parser {
 					if (o == null) {
 						if (p.value.equals("null")) {
 							o = null;
-							if (trace)
-								System.out.println("6. "+o);
+//							if (trace)
+//								System.out.println("6. "+o);
 						}else {
 							o = p.value;
-							if (trace) 
-								System.out.println("7. "+o);
+//							if (trace) 
+//								System.out.println("7. "+o);
 						}
 					}
 				} catch (ClassNotFoundException e) {
