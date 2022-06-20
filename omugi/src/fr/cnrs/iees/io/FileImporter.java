@@ -32,6 +32,7 @@ package fr.cnrs.iees.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.logging.Level;
@@ -96,7 +97,7 @@ public class FileImporter {
 	// utility to infer the file format by peeking into it
 	private GraphFileFormats guessFileFormat(File infile) {
 		try {
-			List<String> lines = Files.readAllLines(infile.toPath());
+			List<String> lines = Files.readAllLines(infile.toPath(),StandardCharsets.UTF_8);
 			String s = lines.get(0).trim();
 			if (s.startsWith("graph"))
 				return GOMUGI;

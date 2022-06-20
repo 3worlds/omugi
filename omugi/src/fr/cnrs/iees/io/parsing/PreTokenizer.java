@@ -34,6 +34,7 @@ import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.COMMENT;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,7 @@ public class PreTokenizer  {
 	public PreTokenizer(File f) {
 		super();
 		try {
-			lines = preprocess(Files.readAllLines(f.toPath()),log);
+			lines = preprocess(Files.readAllLines(f.toPath(),StandardCharsets.UTF_8),log);
 //			lines = Files.readAllLines(f.toPath());
 			String s = lines.get(0);
 
