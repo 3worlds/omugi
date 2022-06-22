@@ -34,7 +34,9 @@ import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -159,7 +161,7 @@ public class OmugiGraphExporter implements GraphExporter {
 
 	private void exportGraph(Graph<? extends Node, ? extends Edge> graph) {
 		try {
-			PrintWriter writer = new PrintWriter(file);
+			PrintWriter writer = new PrintWriter(file,StandardCharsets.UTF_8);
 			writeHeader(writer);
 			// export nodes
 			writer.print(COMMENT.prefix());
@@ -186,8 +188,9 @@ public class OmugiGraphExporter implements GraphExporter {
 			writer.println(" EDGES");
 			exportEdges(graph.edges(), writer);
 			writer.close();
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			log.severe(() -> "cannot save graph to file \"" + file.getPath() + "\" - file not found");
+			e.printStackTrace();
 		}
 	}
 
@@ -213,7 +216,7 @@ public class OmugiGraphExporter implements GraphExporter {
 
 	private void exportTree(Tree<? extends TreeNode> tree) {
 		try {
-			PrintWriter writer = new PrintWriter(file);
+			PrintWriter writer = new PrintWriter(file,StandardCharsets.UTF_8);
 			writeHeader(writer);
 			writer.print(COMMENT.prefix());
 			writer.print(' ');
@@ -222,8 +225,9 @@ public class OmugiGraphExporter implements GraphExporter {
 			for (TreeNode root : tree.roots())
 			  writeTree(root, writer, 0);
 			writer.close();
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			log.severe(() -> "cannot save graph to file \"" + file.getPath() + "\" - file not found");
+			e.printStackTrace();
 		}
 	}
 
@@ -235,7 +239,7 @@ public class OmugiGraphExporter implements GraphExporter {
 
 	protected void exportTreeGraph(TreeGraph<? extends TreeGraphNode, ? extends Edge> graph) {
 		try {
-			PrintWriter writer = new PrintWriter(file);
+			PrintWriter writer = new PrintWriter(file,StandardCharsets.UTF_8);
 			writeHeader(writer);
 			// Write factories
 			ExtendablePropertyList gp = new ExtendablePropertyListImpl();
@@ -259,8 +263,9 @@ public class OmugiGraphExporter implements GraphExporter {
 			writer.println("CROSS-LINKS");
 			exportEdges(graph.edges(), writer);
 			writer.close();
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			log.severe(() -> "cannot save treegraph to file \"" + file.getPath() + "\" - file not found");
+			e.printStackTrace();
 		}
 	}
 

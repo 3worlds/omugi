@@ -41,6 +41,7 @@ import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,8 +102,8 @@ public class GraphmlExporter implements GraphExporter {
 	public void exportGraph(NodeSet<?> graph) {
 		try {
 			if (Graph.class.isAssignableFrom(graph.getClass()))
-				exportGraph((Graph<? extends Node, ? extends Edge>) graph, new PrintWriter(file));
-		} catch (FileNotFoundException e) {
+				exportGraph((Graph<? extends Node, ? extends Edge>) graph, new PrintWriter(file,StandardCharsets.UTF_8));
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
