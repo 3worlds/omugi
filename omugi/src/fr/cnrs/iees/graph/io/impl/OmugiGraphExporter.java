@@ -33,7 +33,6 @@ package fr.cnrs.iees.graph.io.impl;
 import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
