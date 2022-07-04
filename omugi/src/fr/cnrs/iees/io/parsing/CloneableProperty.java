@@ -31,9 +31,7 @@
 package fr.cnrs.iees.io.parsing;
 
 /**
- * @author Ian Davies
- *
- * @date 28 Dec 2021
+ * @author Ian Davies - 28 Dec 2021
  */
 /** Interface of any property added to ValidPropertyTypes that has fields*/
 public interface CloneableProperty {
