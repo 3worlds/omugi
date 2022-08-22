@@ -49,9 +49,9 @@ public class ALDataNode extends ALNode implements DataHolder {
 	/**
 	 * This constructor must only be invoked through a {@link NodeFactory}.
 	 * 
-	 * @param id
-	 * @param props
-	 * @param factory
+	 * @param id The unique {@link Identity}.
+	 * @param props The edge property list.
+	 * @param factory The edge factory.
 	 */
 	public ALDataNode(Identity id, 
 			SimplePropertyList props, 

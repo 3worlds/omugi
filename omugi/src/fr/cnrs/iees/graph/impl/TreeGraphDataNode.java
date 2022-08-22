@@ -50,9 +50,9 @@ public class TreeGraphDataNode extends TreeGraphNode implements DataHolder {
 	/**
 	 * This constructor must only be invoked through a {@link NodeFactory}.
 	 * 
-	 * @param id
-	 * @param props
-	 * @param gfactory
+	 * @param id Unique {@link Identity}.
+	 * @param props The node's property list
+	 * @param gfactory The {@link NodeFactory} that makes this node class.
 	 */
 	public TreeGraphDataNode(Identity id, SimplePropertyList props, GraphFactory gfactory) {
 		super(id, gfactory);

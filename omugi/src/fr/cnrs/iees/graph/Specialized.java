@@ -41,7 +41,7 @@ public interface Specialized {
 
 	/**
 	 * Default is to return the java class name. Descendants should override this default
-	 * @return
+	 * @return The simple class name string.
 	 */
 	public default String classId() {
 		return this.getClass().getSimpleName();

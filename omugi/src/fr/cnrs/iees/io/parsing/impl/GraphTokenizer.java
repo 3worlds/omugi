@@ -101,8 +101,15 @@ prop1 = Integer(0)
 // tested OK with version 0.2.16 on 1/7/2020
 public class GraphTokenizer extends LineTokenizer {
 	//----------------------------------------------------
-	public class graphToken extends token {
+		/**
+		 * @author Jacques Gignoux - 7 déc. 2018
+		 */
+		public class graphToken extends token {
 		
+		/**
+		 * @param type The {@link TreeGraphTokens} type to add.
+		 * @param value The token value.
+		 */
 		public graphToken(TreeGraphTokens type, String value) {
 			super(type,value);
 			if (!TreeGraphTokens.graphTokens().contains(type))

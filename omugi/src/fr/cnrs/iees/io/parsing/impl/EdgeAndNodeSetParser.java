@@ -57,10 +57,25 @@ public abstract class EdgeAndNodeSetParser extends NodeSetParser {
 	 *
 	 */
 	public class edgeSpec {
+		/**
+		 * The edge's label
+		 */
 		public String label;
+		/**
+		 * The edge's name
+		 */
 		public String name;
+		/**
+		 * The edge's start node (a label:name pair).
+		 */
 		public String start;
+		/**
+		 * The edge's end node (a label:name pair).
+		 */
 		public String end;
+		/**
+		 * List of edge property specifications {@link propSpec}.
+		 */
 		public List<propSpec> props = new LinkedList<propSpec>();
 
 		@Override // for debugging only
@@ -68,6 +83,9 @@ public abstract class EdgeAndNodeSetParser extends NodeSetParser {
 			return label + ":" + name + " [" + start + "-->" + end + "]";
 		}
 
+		/**
+		 * Default constructor.
+		 */
 		public edgeSpec() {
 			super();
 		}

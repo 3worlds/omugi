@@ -102,21 +102,23 @@ public interface IdentityScope {
 	/**
 	 * <p><strong>WARNING</strong>: this method is conceptually flawed and should be refactored soon.
 	 * NEVER use it!</p>
-	 * @param id
+	 * @param id The id to expunge from the scope.
 	 */
 	public void removeId(String id);
 	
 	/**
 	 * <p><strong>WARNING</strong>: this method is conceptually flawed and should be refactored soon.
 	 * NEVER use it!</p>
-	 * @param id
+	 * @param id The id to search for.
+	 * 
+	 * @return True if the Id exists within the scope, false otherwise.
 	 */
 	public boolean contains(String id);
 
 	/**
 	 * <p><strong>WARNING</strong>: this method is conceptually flawed and should be refactored soon.
 	 * NEVER use it!</p>
-	 * @param newId
+	 * @param newId The id to add.
 	 */
 	public void addId(String newId);
 

@@ -69,6 +69,8 @@ public interface EdgeSet<E extends Edge>  extends Textable {
 	 * {@link EdgeFactory}{@code .makeEdge(...)} methods at edge instantiation time, so that there
 	 * is usually no need to call it explicitly.
 	 * 
+	 * @param start The start node of the edge.
+	 * @param end The end node of the edge.
 	 * @param edge the edge to add to the graph
 	 */
 	public default void addEdge(Node start, Node end, E edge) {
@@ -78,6 +80,8 @@ public interface EdgeSet<E extends Edge>  extends Textable {
 	/**
 	 * Use this method to remove an edge from an edge set.
 	 * 
+	 * @param start The start node of the edge.
+	 * @param end The end node of the edge.
 	 * @param edge the edge to remove from the graph
 	 */
 	public default void removeEdge(Node start, Node end, E edge) {

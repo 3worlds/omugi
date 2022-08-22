@@ -118,7 +118,7 @@ public class GraphParser extends EdgeAndNodeSetParser {
 	/**
 	 * Constructor from a GraphTokenizer. Lazy init: nothing is done before it's needed.
 	 * 
-	 * @param tokenizer
+	 * @param tokenizer The tokenizer {@link GraphTokenizer}
 	 */
 	public GraphParser(GraphTokenizer tokenizer) {
 		super();

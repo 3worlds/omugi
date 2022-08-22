@@ -51,11 +51,11 @@ public class ALReadOnlyDataEdge extends ALEdge implements ReadOnlyDataHolder {
 	 * This constructor must only be invoked through an {@link EdgeFactory}. It has been set
 	 * public for internal consistency but should be treated as protected.
 	 * 
-	 * @param id
-	 * @param start
-	 * @param end
-	 * @param props
-	 * @param graph
+	 * @param id Unique {@link Identity}.
+	 * @param start The start node.
+	 * @param end The end node.
+	 * @param props The edge's property list
+	 * @param graph The {@link EdgeFactory} that makes this edge class.
 	 */
 	public ALReadOnlyDataEdge(Identity id, Node start, Node end, 
 			ReadOnlyPropertyList props, EdgeFactory graph) {

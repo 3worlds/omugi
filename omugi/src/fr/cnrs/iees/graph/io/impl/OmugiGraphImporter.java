@@ -73,7 +73,9 @@ public class OmugiGraphImporter implements GraphImporter {
 		return parser.graph();
 	}
 
-	// User a parent graph's factory
+	/**
+	 * @param factory the parent's graph factory.
+	 */
 	public void setFactory(Object factory) {
 		parser.setFactory(factory);		
 	}

@@ -36,12 +36,17 @@ import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.utils.UniqueString;
 
 /**
- * <p>A 'universal' scope for unique ids. The ids are constructed from (1) the computer mac Address
- * (2) the time at instantiation in milliseconds (3) an integer rank for instances sharing
- * the same mac address and date. Resulting ids are unique over a network of computers within the
- * same running application.</p>
+ * <p>
+ * A 'universal' scope for unique ids. The ids are constructed from (1) the
+ * computer mac Address (2) the time at instantiation in milliseconds (3) an
+ * integer rank for instances sharing the same mac address and date. Resulting
+ * ids are unique over a network of computers within the same running
+ * application.
+ * </p>
  * 
- * <p>Works with {@link UidIdentity}.</p>
+ * <p>
+ * Works with {@link UidIdentity}.
+ * </p>
  * 
  * @author Jacques Gignoux - 28 janv. 2019
  *
@@ -49,22 +54,30 @@ import fr.ens.biologie.generic.utils.UniqueString;
 public class UniversalScope implements IdentityScope {
 
 	private String id;
-	
+
+	/**
+	 * Constructor using the UniversalScope simple class name as its Id.
+	 */
 	public UniversalScope() {
 		this(UniversalScope.class.getSimpleName());
 	}
 
+	/**
+	 * @param name proposed name of the scope. Its uniqueness will be enforced by
+	 *             incrementing an appended number.
+	 */
 	public UniversalScope(String name) {
 		super();
-		id = UniqueString.makeString(name,scopeIds);
+		id = UniqueString.makeString(name, scopeIds);
 		scopeIds.add(id);
 	}
+
 	@Override
 	public void removeId(String id) {
-		throw new OmugiException("removing an id from '"+this.getClass().getSimpleName()+"' is not implemented  ["+id+"]");		
+		throw new OmugiException(
+				"removing an id from '" + this.getClass().getSimpleName() + "' is not implemented  [" + id + "]");
 	}
 
-	
 	@Override
 	public Identity newId() {
 		return new UidIdentity(this);
@@ -77,13 +90,14 @@ public class UniversalScope implements IdentityScope {
 
 	@Override
 	public boolean contains(String id) {
-		throw new OmugiException("Querying ids in'"+this.getClass().getSimpleName()+"' is not implemented  ["+id+"]");		
+		throw new OmugiException(
+				"Querying ids in'" + this.getClass().getSimpleName() + "' is not implemented  [" + id + "]");
 	}
 
 	@Override
 	public void addId(String newId) {
-		throw new OmugiException("Adding an id to '"+this.getClass().getSimpleName()+"' is not implemented  ["+newId+"]");				
+		throw new OmugiException(
+				"Adding an id to '" + this.getClass().getSimpleName() + "' is not implemented  [" + newId + "]");
 	}
-
 
 }

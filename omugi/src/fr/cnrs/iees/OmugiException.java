@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees;
 
-
 import fr.ens.biologie.generic.Textable;
 
 /**
@@ -52,17 +51,40 @@ public class OmugiException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = 4121451020638650287L;
 
+	/**
+	 * Instantiate an exception with a {@link Textable} item and message
+	 * 
+	 * @param item    A {@link Textable} item.
+	 * @param message Message string.
+	 */
 	public OmugiException(Textable item, String message) {
 		super("[on " + item + "]\n[" + message + "]");
 	}
 
+	/**
+	 * Instantiate an exception with a message
+	 * 
+	 * @param message the error message
+	 */
 	public OmugiException(String message) {
 		super("[" + message + "]");
 	}
 
+	/**
+	 * Exception wrapper.
+	 * 
+	 * @param e the exception to wrap
+	 */
 	public OmugiException(Exception e) {
 		super(e);
 	}
+
+	/**
+	 * Exception wrapper with additional information
+	 * 
+	 * @param message the error message
+	 * @param e       the exception to wrap
+	 */
 
 	public OmugiException(String message, Exception e) {
 		super("[" + message + "]\n[original exception: " + e + "]");

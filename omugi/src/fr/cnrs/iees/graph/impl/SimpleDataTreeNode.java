@@ -48,9 +48,9 @@ public class SimpleDataTreeNode extends SimpleTreeNode implements DataHolder {
 	/**
 	 * This constructor must only be invoked through a {@link NodeFactory}.
 	 * 
-	 * @param id
-	 * @param props
-	 * @param factory
+	 * @param id Unique {@link Identity}.
+	 * @param props The node's property list
+	 * @param factory The {@link NodeFactory} that makes this node class.
 	 */
 	public SimpleDataTreeNode(Identity id, SimplePropertyList props, 
 			NodeFactory factory) {

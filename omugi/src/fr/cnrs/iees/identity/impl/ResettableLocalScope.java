@@ -40,6 +40,10 @@ import fr.ens.biologie.generic.Resettable;
  */
 public class ResettableLocalScope extends LocalScope implements Resettable {
 
+	/**
+	 * @param name proposed name of the scope. Its uniqueness will be enforced by
+	 *             incrementing an appended number.
+	 */
 	public ResettableLocalScope(String name) {
 		super(name);
 	}

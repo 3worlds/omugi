@@ -77,7 +77,7 @@ public interface Identity {
 	}
 	
 	/**
-	 * <p>Renames an id to another one - CAUTION: this is for very limited use cases and should be
+	 * <p>Renames an id to another one - CAUTION: this is for very limited use cases (i.e. when editing the graph) and should be
 	 * avoided as far as possible because it breaks the id immutability paradigm. The default
 	 * implementation throws an Exception.
 	 * </p>
@@ -88,8 +88,8 @@ public interface Identity {
 	 * never seen it, ignore it, forget it if you didn't ignore it in the first time. It will certainly be
 	 * removed one day.</p>
 	 * 
-	 * @param oldId
-	 * @param newId
+	 * @param oldId The old Id string
+	 * @param newId The new Id string
 	 */
 	public default void rename(String oldId, String newId) {
 		throw new OmugiException("Renaming should only be used in exceptional circumstances");

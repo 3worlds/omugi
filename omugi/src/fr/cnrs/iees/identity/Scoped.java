@@ -37,8 +37,13 @@ package fr.cnrs.iees.identity;
  * @author Jacques Gignoux - 4 avr. 2019
  *
  */
+
+
 public interface Scoped {
 	
+	/**
+	 * @return The {@link IdentityScope}.
+	 */
 	public IdentityScope scope();
 
 }

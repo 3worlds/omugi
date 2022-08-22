@@ -53,10 +53,17 @@ public class PairLocalScope implements IdentityScope {
 	private String id;
 	private Set<String> names = new HashSet<String>();
 
+	/**
+	 * Constructor using the PairLocalScope simple class name as its Id.
+	 */
 	public PairLocalScope() {
 		this(PairLocalScope.class.getSimpleName());
 	}
 
+	/**
+	 * @param name proposed name of the scope. Its uniqueness will be enforced by
+	 *             incrementing an appended number.
+	 */
 	public PairLocalScope(String name) {
 		super();
 		id = UniqueString.makeString(name,scopeIds);

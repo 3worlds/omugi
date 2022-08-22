@@ -30,6 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
+import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.ReadOnlyDataHolder;
@@ -48,10 +49,9 @@ public class ALReadOnlyDataNode extends ALNode implements ReadOnlyDataHolder {
 	
 	/**
 	 * This constructor must only be invoked through a {@link NodeFactory}.
-	 * 
-	 * @param id
-	 * @param props
-	 * @param factory
+	 * @param id Unique {@link Identity}.
+	 * @param props The node's property list
+	 * @param factory The {@link NodeFactory} that makes this node class.
 	 */
 	public ALReadOnlyDataNode(Identity id, 
 			ReadOnlyPropertyList props, 

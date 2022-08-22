@@ -46,6 +46,9 @@ public class IntegerScope implements IdentityScope {
 	private String id;
 	private long nextId = 0;
 
+	/**
+	 * @param name The name of the scope.
+	 */
 	public IntegerScope(String name) {
 		super();
 		id = name;

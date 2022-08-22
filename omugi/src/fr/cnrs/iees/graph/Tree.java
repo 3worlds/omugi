@@ -53,6 +53,10 @@ public interface Tree<N extends TreeNode> extends NodeSet<N>, Textable {
 	 */
 	public N root();
 	
+	/**
+	 * @param node The node that is the root of the required sub-tree
+	 * @return The sub-tree nodes with N as the root.
+	 */
 	@SuppressWarnings("unchecked")
 	public default Collection<N> subTree(N node) {
 		return (Collection<N>) node.subTree();
@@ -61,7 +65,7 @@ public interface Tree<N extends TreeNode> extends NodeSet<N>, Textable {
 	/**
 	 * Actions taken when a parent node is changed.
 	 */
-	// NOTE: ugly code - to fix one day.
+	// TODO: ugly code - to fix one day.
 	public void onParentChanged();
 	
 	@Override
