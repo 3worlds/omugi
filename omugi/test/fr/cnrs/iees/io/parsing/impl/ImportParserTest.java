@@ -41,7 +41,7 @@ import fr.cnrs.iees.io.FileImporter;
 
 class ImportParserTest {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	@Test
 	void test() {
 		String testfile = System.getProperty("user.dir") //

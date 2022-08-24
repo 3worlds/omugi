@@ -85,7 +85,7 @@ public class VersionSettings {
 	 *
 	 */
 	protected static String[][] DEPS = {
-		{"fr.ens.biologie", "generics", "[0.3.1,)", null},
+		{"fr.ens.biologie", "generics", "[0.4.0,)", null},
 	};
 
 	/** The name of the main class to put in the jar manifest, if any. This enables users to

@@ -32,8 +32,6 @@ package au.edu.anu.rscs.aot.collections.tables;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-
 import org.junit.jupiter.api.Test;
 
 import au.edu.anu.rscs.aot.util.IntegerRange;

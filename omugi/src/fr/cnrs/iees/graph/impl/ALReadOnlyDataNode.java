@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.GraphFactory;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.ReadOnlyDataHolder;
