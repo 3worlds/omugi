@@ -39,7 +39,6 @@ import au.edu.anu.rscs.aot.graph.property.Property;
 
 import java.util.Set;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.properties.PropertyListSetters;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
@@ -73,14 +72,14 @@ public class CompoundPropertyListImpl implements SimplePropertyList {
 	public CompoundPropertyListImpl(ReadOnlyPropertyList[] props, String[] names) {
 		super();
 		if (props.length!=names.length)
-			throw new OmugiException(getClass().getName()+": Number of property lists differs from number of property list names");
+			throw new IllegalArgumentException(getClass().getName()+": Number of property lists differs from number of property list names");
 		// check there are no duplicate property lists, ie pls with exactly 
 		// the same property names and types
 		for (int i=0; i<props.length; i++)
 			for (int j=0; j<props.length; j++)
 				if ((i!=j) & (props[i]!=null) & props[j]!=null)
 					if (props[i].hasTheSamePropertiesAs(props[j]))
-						throw new OmugiException(getClass().getName()+": Cannot handle identical property lists");
+						throw new IllegalArgumentException(getClass().getName()+": Cannot handle identical property lists");
 		for (int i=0; i<props.length; i++)
 			if (props[i]!=null)
 				if (SimplePropertyList.class.isAssignableFrom(props[i].getClass()))
@@ -95,7 +94,7 @@ public class CompoundPropertyListImpl implements SimplePropertyList {
 		if (readWriteProps.containsKey(s[0]))
 			readWriteProps.get(s[0]).setProperty(s[1], value);
 		else
-			throw new OmugiException("Key '" + key + "' not found in CompoundPropertyListImpl");
+			throw new IllegalArgumentException("Key '" + key + "' not found in CompoundPropertyListImpl");
 		return this;
 	}
 

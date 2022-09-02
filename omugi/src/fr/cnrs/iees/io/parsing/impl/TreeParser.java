@@ -38,7 +38,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.util.Resources;
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.graph.Tree;
@@ -194,7 +193,7 @@ public class TreeParser extends NodeSetParser {
 					lastNodes[tk.level - 1].props.add(lastProp);
 				break;
 			case NODE_REF:
-				throw new OmugiException("Invalid token type for a tree");
+				throw new IllegalArgumentException("Invalid token type for a tree");
 			default:
 				break;
 			}

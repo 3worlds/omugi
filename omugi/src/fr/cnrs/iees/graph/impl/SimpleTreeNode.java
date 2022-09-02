@@ -36,7 +36,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.ElementAdapter;
@@ -111,12 +110,12 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 
 	@Override
 	public Collection<? extends Edge> edges(Direction direction) {
-		throw new OmugiException("A TreeNode has no edge");
+		throw new UnsupportedOperationException("A TreeNode has no edge");
 	}
 
 	@Override
 	public Collection<? extends Edge> edges() {
-		throw new OmugiException("A TreeNode has no edge");
+		throw new UnsupportedOperationException("A TreeNode has no edge");
 	}
 
 	@Override
@@ -161,7 +160,7 @@ public class SimpleTreeNode extends ElementAdapter implements TreeNode {
 
 	@Override
 	public void connectTo(Direction direction, Collection<? extends Node> nodes) {
-		throw new OmugiException("connectTo has no effect on TreeNodes - use connectParent or connectChildren instead");
+		throw new UnsupportedOperationException("connectTo has no effect on TreeNodes - use connectParent or connectChildren instead");
 	}
 
 	@Override

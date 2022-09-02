@@ -33,7 +33,6 @@ package fr.cnrs.iees.properties.impl;
 import java.util.Set;
 
 import au.edu.anu.rscs.aot.graph.property.PropertyKeys;
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.properties.SimplePropertyList;
 /**
  * <p>Implementation of {@link SimplePropertyList}.</p>
@@ -97,7 +96,7 @@ public class SharedPropertyListImpl
 		if (i != -1)
 			values[i] = value;
 		else
-			throw new OmugiException("Key '" + key + "' not found in SharedPropertyListImpl");
+			throw new IllegalArgumentException("Key '" + key + "' not found in SharedPropertyListImpl");
 		return this;
 	}
 
@@ -110,7 +109,7 @@ public class SharedPropertyListImpl
 		if (i != -1)
 			return values[i];
 		else
-			throw new OmugiException("Key '" + key + "' not found in SharedGraphPropertyListImpl");
+			throw new IllegalArgumentException("Key '" + key + "' not found in SharedGraphPropertyListImpl");
 	}
 
 	@Override

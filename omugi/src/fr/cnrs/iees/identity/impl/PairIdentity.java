@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.identity.impl;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.SaveableAsText;
@@ -108,7 +107,7 @@ public class PairIdentity implements Identity {
 
 	@Override
 	public void rename(String oldId, String newId) {
-		throw new OmugiException("Renaming of '" + this.getClass().getSimpleName() + "' is not implemented.");
+		throw new UnsupportedOperationException("Renaming of '" + this.getClass().getSimpleName() + "' is not implemented.");
 	}
 
 }

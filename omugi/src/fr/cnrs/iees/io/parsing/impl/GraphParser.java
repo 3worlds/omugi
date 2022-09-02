@@ -38,7 +38,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.util.Resources;
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Graph;
@@ -240,7 +239,7 @@ public class GraphParser extends EdgeAndNodeSetParser {
 										Resources.getPackagedFileName(tk.value))))));
 					break;
 			case LEVEL:
-				throw new OmugiException("Invalid token type for a graph");
+				throw new IllegalArgumentException("Invalid token type for a graph");
 			default:
 				break;
 			}
@@ -289,7 +288,7 @@ public class GraphParser extends EdgeAndNodeSetParser {
 					(Graph<? extends Node, ? extends Edge>) ig.getGraph(parent.factory());
 				for (Node importNode : importGraph.nodes()) {
 					// TODO: finish this!
-					throw new OmugiException("Import within a graph file not yet implemented: "+importNode.toDetailedString());
+					throw new UnsupportedOperationException("Import within a graph file not yet implemented: "+importNode.toDetailedString());
 					
 				}
 			}

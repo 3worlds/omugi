@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.EdgeFactory;
 import fr.cnrs.iees.graph.Node;
@@ -229,7 +228,7 @@ public class TreeGraphParser extends EdgeAndNodeSetParser {
 					lastNodes[tk.level - 1].props.add(lastProp);
 				break;
 			case NODE_REF:
-				throw new OmugiException("Invalid token type for a tree");
+				throw new IllegalArgumentException("Invalid token type for a tree");
 			default:
 				break;
 			}
@@ -252,7 +251,7 @@ public class TreeGraphParser extends EdgeAndNodeSetParser {
 					break;
 				case NODE: // this is a node property
 					// this is an error - there shouldnt be any node properties left here
-					throw new OmugiException("There should not be any node property definition here.");
+					throw new IllegalStateException("There should not be any node property definition here.");
 				case EDGE: // this is an edge property
 					lastEdge.props.add(lastProp);
 					break;
@@ -265,12 +264,12 @@ public class TreeGraphParser extends EdgeAndNodeSetParser {
 				switch (lastItem) {
 				case GRAPH:
 				case NODE:
-					throw new OmugiException("There should not be any node definition here.");
+					throw new IllegalStateException("There should not be any node definition here.");
 				case EDGE:
 					if (lastEdge.label == null)
 						lastEdge.label = tk.value;
 					else // this is a node label
-						throw new OmugiException("There should not be any node definition here.");
+						throw new IllegalStateException("There should not be any node definition here.");
 					break;
 				}
 				break;
@@ -280,7 +279,7 @@ public class TreeGraphParser extends EdgeAndNodeSetParser {
 					log.severe("missing node label declaration");
 					break;
 				case NODE:
-					throw new OmugiException("There should not be any node definition here.");
+					throw new IllegalStateException("There should not be any node definition here.");
 				case EDGE:
 					lastEdge.name = tk.value;
 				}
@@ -308,7 +307,7 @@ public class TreeGraphParser extends EdgeAndNodeSetParser {
 				}
 				break;
 			case LEVEL:
-				throw new OmugiException("Invalid token type for a cross-link only graph");
+				throw new IllegalArgumentException("Invalid token type for a cross-link only graph");
 			default:
 				break;
 			}

@@ -35,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import au.edu.anu.rscs.aot.util.IntegerRange;
-import fr.cnrs.iees.OmugiException;
 
 /**
  * 
@@ -89,7 +88,7 @@ class IndexStringTest {
 
 	@Test
 	final void testStringToIndex4() {
-		assertThrows(OmugiException.class,()->IndexString.stringToIndex("[1:3||2:3]",table));
+		assertThrows(IllegalArgumentException.class,()->IndexString.stringToIndex("[1:3||2:3]",table));
 	}
 
 	@Test
@@ -122,7 +121,7 @@ class IndexStringTest {
 
 	@Test
 	final void testStringToIndex9() {
-		assertThrows(OmugiException.class,()->IndexString.stringToIndex("[1:3||2:3]",4,3,3));
+		assertThrows(IllegalArgumentException.class,()->IndexString.stringToIndex("[1:3||2:3]",4,3,3));
 	}
 
 	@Test

@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.List;
 
 import au.edu.anu.rscs.aot.graph.property.Property;
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.properties.ExtendablePropertyList;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;
@@ -120,7 +119,7 @@ public class ExtendablePropertyListImpl
 		if (hasProperty(key))
 			setNoCheckProperty(key, value);
 		else
-			throw new OmugiException("Key '" + key + "' not found in ExtendablePropertyListImpl");
+			throw new IllegalArgumentException("Key '" + key + "' not found in ExtendablePropertyListImpl");
 		return this;
 	}
 
@@ -136,7 +135,7 @@ public class ExtendablePropertyListImpl
 		if (!sealed)
 			setNoCheckProperty(key, value);
 		else
-			throw new OmugiException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
+			throw new IllegalStateException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
 		return this;
 	}
 
@@ -148,7 +147,7 @@ public class ExtendablePropertyListImpl
 				setNoCheckProperty(key, new Object());
 		}
 		else
-			throw new OmugiException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
+			throw new IllegalStateException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
 		return this;
 	}
 
@@ -161,7 +160,7 @@ public class ExtendablePropertyListImpl
 					setNoCheckProperty(key, new Object());
 		}
 		else
-			throw new OmugiException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
+			throw new IllegalStateException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
 		return this;
 	}
 
@@ -174,7 +173,7 @@ public class ExtendablePropertyListImpl
 					setNoCheckProperty(key, new Object());
 		}
 		else
-			throw new OmugiException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
+			throw new IllegalStateException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
 		return this;
 	}
 	
@@ -185,7 +184,7 @@ public class ExtendablePropertyListImpl
 			for (String key:plist.getKeysAsSet())
 				setNoCheckProperty(key, plist.getPropertyValue(key));
 		else
-			throw new OmugiException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
+			throw new IllegalStateException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
 		return this;
 	}
 
@@ -194,7 +193,7 @@ public class ExtendablePropertyListImpl
 	public Object getPropertyValue(String key, Object defaultValue) {
 		if (!hasProperty(key))
 			if (sealed)
-				throw new OmugiException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
+				throw new IllegalStateException(this.getClass().getSimpleName()+" sealed: addition of new property keys is impossible.");
 			else
 				setNoCheckProperty(key, defaultValue);
 		return getPropertyValue(key);
@@ -204,7 +203,7 @@ public class ExtendablePropertyListImpl
 	public ExtendablePropertyList removeProperty(String key) {
 		if (!sealed) deleteKey(key);
 		else
-			throw new OmugiException(this.getClass().getSimpleName()+" sealed: deletion of property keys is impossible.");
+			throw new IllegalStateException(this.getClass().getSimpleName()+" sealed: deletion of property keys is impossible.");
 		return this;
 	}
 
@@ -212,7 +211,7 @@ public class ExtendablePropertyListImpl
 	public ExtendablePropertyList removeAllProperties() {
 		if (!sealed) deleteKeys();
 		else
-			throw new OmugiException(this.getClass().getSimpleName()+" sealed: deletion of property keys is impossible.");
+			throw new IllegalStateException(this.getClass().getSimpleName()+" sealed: deletion of property keys is impossible.");
 		return this;
 	}
 

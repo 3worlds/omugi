@@ -32,7 +32,6 @@ package au.edu.anu.rscs.aot.collections.tables;
 
 import com.google.common.base.Strings;
 
-import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.DataContainer;
 
 /** 
@@ -239,7 +238,7 @@ public class StringTable extends TableAdapter {
 			else if (!inquote) {
 				if (c == isep[TABLEix]) {
 					if (n == result.flatSize - 1)
-						throw new OmugiException("Too many values read: table size == " + result.flatSize);
+						throw new IllegalArgumentException("Too many values read: table size == " + result.flatSize);
 					// check for null strings
 					String res = sb.toString();
 					if (res.isBlank() | res.isEmpty() | res.equals("null"))

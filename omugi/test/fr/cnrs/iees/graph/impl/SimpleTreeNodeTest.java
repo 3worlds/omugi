@@ -40,7 +40,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.TreeNode;
@@ -104,12 +103,12 @@ class SimpleTreeNodeTest {
 
 	@Test
 	void testEdgesDirection() {
-		assertThrows(OmugiException.class,()->tn2.edges(Direction.OUT));
+		assertThrows(UnsupportedOperationException.class,()->tn2.edges(Direction.OUT));
 	}
 
 	@Test
 	void testEdges() {
-		assertThrows(OmugiException.class,()->tn2.edges());
+		assertThrows(UnsupportedOperationException.class,()->tn2.edges());
 	}
 
 	@Test
@@ -147,7 +146,7 @@ class SimpleTreeNodeTest {
 
 	@Test
 	void testConnectToDirectionIterableOfQextendsNode() {
-		assertThrows(OmugiException.class,()->tn2.connectTo(tn2.nodes()));
+		assertThrows(UnsupportedOperationException.class,()->tn2.connectTo(tn2.nodes()));
 	}
 
 	@Test
@@ -295,7 +294,7 @@ class SimpleTreeNodeTest {
 	@Test
 	void testToUniqueString() {
 		show("testToUniqueString",tn1.toUniqueString());
-		assertEquals(tn1.toUniqueString(),"cuckoo:tn1");
+		assertEquals(tn1.toShortString(),"SimpleTreeNode:tn1");
 	}
 
 	@Test

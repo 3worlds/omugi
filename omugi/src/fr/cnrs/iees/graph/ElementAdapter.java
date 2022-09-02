@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
@@ -51,7 +50,7 @@ public abstract class ElementAdapter implements Element {
 
 	// this to prevent construction without an id
 	protected ElementAdapter() {
-		throw new OmugiException("A Graph Element must be created with a valid id");
+		throw new UnsupportedOperationException("A Graph Element must be created with a valid id");
 	}
 	
 	/**

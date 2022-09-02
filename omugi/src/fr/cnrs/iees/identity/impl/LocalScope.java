@@ -33,7 +33,6 @@ package fr.cnrs.iees.identity.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.utils.UniqueString;
@@ -88,7 +87,7 @@ public class LocalScope implements IdentityScope {
 	@Override
 	public void removeId(String id) {
 		if (!ids.remove(id))
-			throw new OmugiException("Attempt to remove an id which does not exist [" + id + "]");
+			throw new IllegalArgumentException("Attempt to remove an id which does not exist [" + id + "]");
 	}
 
 	@Override

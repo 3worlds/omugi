@@ -35,7 +35,6 @@ import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_ITEM_SEPARATOR;
 import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_BLOCK_DELIMITERS;
 import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_ITEM_SEPARATOR;
 
-import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.DataContainer;
 import fr.ens.biologie.generic.SaveableAsText;
 import fr.ens.biologie.generic.Showable;
@@ -200,24 +199,26 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	public abstract Class<?> contentType();
 
 	// Default setters for descendants - all do nothing by default
-	// short
+	// short. 
+	
+	// Is this a rotten design? How can we get rid of this?
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void setByInt(short value, int... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void set(short value, Object... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by flat <em>index</em> */
 	public default void setWithFlatIndex(short value, int index) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
@@ -225,21 +226,21 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	// int
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void setByInt(int value, int... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void set(int value, Object... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by flat <em>index</em> */
 	public default void setWithFlatIndex(int value, int index) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
@@ -247,21 +248,21 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	// long
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void setByInt(long value, int... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void set(long value, Object... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by flat <em>index</em> */
 	public default void setWithFlatIndex(long value, int index) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
@@ -269,21 +270,21 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	// byte
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void setByInt(byte value, int... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void set(byte value, Object... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by flat <em>index</em> */
 	public default void setWithFlatIndex(byte value, int index) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
@@ -291,21 +292,21 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	// boolean
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void setByInt(boolean value, int... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void set(boolean value, Object... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by flat <em>index</em> */
 	public default void setWithFlatIndex(boolean value, int index) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
@@ -313,21 +314,21 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	// double
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void setByInt(double value, int... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void set(double value, Object... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by flat <em>index</em> */
 	public default void setWithFlatIndex(double value, int index) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
@@ -335,21 +336,21 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	// float
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void setByInt(float value, int... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void set(float value, Object... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by flat <em>index</em> */
 	public default void setWithFlatIndex(float value, int index) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
@@ -357,21 +358,21 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	// char
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void setByInt(char value, int... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void set(char value, Object... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by flat <em>index</em> */
 	public default void setWithFlatIndex(char value, int index) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
@@ -379,21 +380,21 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 	// String
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void setByInt(String value, int... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by <em>indexes</em> */
 	public default void set(String value, Object... indexes) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}
 
 	/** set <em>value</em> at cell specified by flat <em>index</em> */
 	public default void setWithFlatIndex(String value, int index) {
-		throw new OmugiException(new Object() {
+		throw new UnsupportedOperationException(new Object() {
 		}.getClass().getEnclosingMethod().toGenericString() + " not implemented for Table of "
 				+ contentType().getSimpleName());
 	}

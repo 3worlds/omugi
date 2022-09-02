@@ -35,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.OmugiException;
-
 /**
  * Example of what could be done to parse StringTables using quotes
  * 
@@ -69,7 +67,7 @@ private void show (String eg,String value, String saveable) {
 		assertNull(st);
 
 		// This throws an exception because the dimension is wrong
-		assertThrows(OmugiException.class,()->StringTable.valueOf("([2]a,b,c,d)"));
+		assertThrows(IllegalArgumentException.class,()->StringTable.valueOf("([2]a,b,c,d)"));
 		
 		value="([3]a,\"b,c\",d)";
 		st = StringTable.valueOf(value);
@@ -84,7 +82,7 @@ private void show (String eg,String value, String saveable) {
 		assertNotNull(st);
 		
 		// This throws an exception because the table separators in the second element are not quoted
-		assertThrows(OmugiException.class,()->StringTable.valueOf("([4]\"a\", table[0,2:3][][0,2][-1], \"zer\" , \"12\")"));
+		assertThrows(IllegalArgumentException.class,()->StringTable.valueOf("([4]\"a\", table[0,2:3][][0,2][-1], \"zer\" , \"12\")"));
 		
 		value = "([4]a,b, \"c\" , \"d\")";
 		st = StringTable.valueOf(value);
@@ -145,7 +143,7 @@ private void show (String eg,String value, String saveable) {
 		// Try this one day:
 		value = "([1]\"System.out.println(\",\");\")";
 		final String v = value;
-		assertThrows(OmugiException.class,()->StringTable.valueOf(v));
+		assertThrows(IllegalArgumentException.class,()->StringTable.valueOf(v));
 		
 	}
 

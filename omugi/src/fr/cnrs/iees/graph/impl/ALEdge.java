@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Direction;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.EdgeFactory;
@@ -78,13 +77,12 @@ public class ALEdge extends ElementAdapter implements Edge {
 		super(id);
 		this.factory = graph;
 		if ((start instanceof ALNode) && (end instanceof ALNode)) {
-		this.start = (ALNode) start;
-		this.end = (ALNode) end;
-		this.start.addEdge(this, Direction.OUT);
-		this.end.addEdge(this, Direction.IN);
-		}
-		else
-			throw new OmugiException("ALEdge can only link ALNode descendants");
+			this.start = (ALNode) start;
+			this.end = (ALNode) end;
+			this.start.addEdge(this, Direction.OUT);
+			this.end.addEdge(this, Direction.IN);
+		} else
+			throw new IllegalArgumentException("ALEdge can only link ALNode descendants");
 	}
 	
 	/**
@@ -158,7 +156,7 @@ public class ALEdge extends ElementAdapter implements Edge {
 			end.addEdge(this, Direction.IN);
 		}
 		else
-			throw new OmugiException("ALEdge cannot connect non-ALNode nodes.");
+			throw new IllegalArgumentException("ALEdge cannot connect non-ALNode nodes.");
 	}
 
 	@Override
@@ -183,7 +181,6 @@ public class ALEdge extends ElementAdapter implements Edge {
 		if (other.equals(end)) return start;
 		else if (other.equals(start)) return end;
 		else return null;
-//		throw new OmugiException("Node " + other + " is not part of edge " + this);
 	}
 
 	// Textable

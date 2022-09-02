@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import au.edu.anu.rscs.aot.graph.property.Property;
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.Textable;
 
@@ -124,7 +123,7 @@ public class SimplePropertyListImpl
 		if (propertyMap.containsKey(key))
 			propertyMap.put(key, value);
 		else
-			throw new OmugiException("Key '" + key + "' not found in SimplePropertyListImpl");
+			throw new IllegalArgumentException("Key '" + key + "' not found in SimplePropertyListImpl");
 		return this;
 	}
 

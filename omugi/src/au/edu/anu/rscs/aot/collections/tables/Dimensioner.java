@@ -30,8 +30,6 @@
  **************************************************************************/
 package au.edu.anu.rscs.aot.collections.tables;
 
-import fr.cnrs.iees.OmugiException;
-
 /**
  * <p>A class to set the dimensions of other objects (typically, multi-dimensional containers such
  * as {@link Table}). It will store or generate the relevant indexes to access the object(s) it
@@ -94,7 +92,7 @@ public class Dimensioner {
 	 */
 	public String getName(int index) {
 		if ((names==null)||(names.length == 0))
-			throw new OmugiException("Dimensioner.getName: there are no names associated with " + toString());
+			throw new IllegalStateException("Dimensioner.getName: there are no names associated with " + toString());
 		else
 			return names[index];
 	}
@@ -108,11 +106,11 @@ public class Dimensioner {
 	 */
 	public int getIndex(String name) {
 		if (names == null)
-			throw new OmugiException("Dimensioner.getIndex: " + toString() + " has no names.");		
+			throw new IllegalStateException("Dimensioner.getIndex: " + toString() + " has no names.");		
 		for (int i=0; i< names.length; i++)
 			if (names[i].equals(name))
 				return i;
-		throw new OmugiException("Dimensioner.getIndex: '" + name + "' not found in " + toString());		
+		throw new IllegalStateException("Dimensioner.getIndex: '" + name + "' not found in " + toString());		
 	}
 	
 	@Override

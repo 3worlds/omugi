@@ -31,7 +31,6 @@
 package fr.cnrs.iees.identity.impl;
 
 import au.edu.anu.rscs.aot.util.Uid;
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
@@ -87,7 +86,7 @@ public final class UidIdentity implements Identity{
 
 	@Override
 	public void rename(String oldId, String newId) {
-		throw new OmugiException("Renaming of '"+this.getClass().getSimpleName()+"' is not implemented.");
+		throw new UnsupportedOperationException("Renaming of '"+this.getClass().getSimpleName()+"' is not implemented.");
 	}
 
 }

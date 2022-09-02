@@ -33,7 +33,6 @@ package fr.cnrs.iees.identity.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.utils.UniqueString;
@@ -95,7 +94,7 @@ public class PairLocalScope implements IdentityScope {
 	}
 	@Override
 	public void removeId(String id) {
-		throw new OmugiException("Removing an id from '"+this.getClass().getSimpleName()+"' is not implemented  ["+id+"]");		
+		throw new UnsupportedOperationException("Removing an id from '"+this.getClass().getSimpleName()+"' is not implemented  ["+id+"]");		
 	}
 
 	
@@ -125,12 +124,12 @@ public class PairLocalScope implements IdentityScope {
 
 	@Override
 	public boolean contains(String id) {
-		throw new OmugiException("Querying ids in'"+this.getClass().getSimpleName()+"' is not implemented  ["+id+"]");		
+		throw new UnsupportedOperationException("Querying ids in'"+this.getClass().getSimpleName()+"' is not implemented  ["+id+"]");		
 	}
 
 	@Override
 	public void addId(String newId) {
-		throw new OmugiException("Adding an id to '"+this.getClass().getSimpleName()+"' is not implemented  ["+newId+"]");		
+		throw new UnsupportedOperationException("Adding an id to '"+this.getClass().getSimpleName()+"' is not implemented  ["+newId+"]");		
 	}
 
 

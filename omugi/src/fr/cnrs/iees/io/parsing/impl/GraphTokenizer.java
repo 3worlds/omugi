@@ -34,7 +34,6 @@ import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.*;
 
 import java.util.List;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.io.parsing.PreTokenizer;
 import fr.cnrs.iees.io.parsing.LineTokenizer;
 
@@ -113,7 +112,7 @@ public class GraphTokenizer extends LineTokenizer {
 		public graphToken(TreeGraphTokens type, String value) {
 			super(type,value);
 			if (!TreeGraphTokens.graphTokens().contains(type))
-				throw new OmugiException("Error: "+type+" is not a valid graph token type");
+				throw new IllegalArgumentException("Error: "+type+" is not a valid graph token type");
 		}
 	}
 	//----------------------------------------------------

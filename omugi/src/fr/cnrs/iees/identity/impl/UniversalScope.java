@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.identity.impl;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.ens.biologie.generic.utils.UniqueString;
@@ -74,7 +73,7 @@ public class UniversalScope implements IdentityScope {
 
 	@Override
 	public void removeId(String id) {
-		throw new OmugiException(
+		throw new UnsupportedOperationException(
 				"removing an id from '" + this.getClass().getSimpleName() + "' is not implemented  [" + id + "]");
 	}
 
@@ -90,13 +89,13 @@ public class UniversalScope implements IdentityScope {
 
 	@Override
 	public boolean contains(String id) {
-		throw new OmugiException(
+		throw new UnsupportedOperationException(
 				"Querying ids in'" + this.getClass().getSimpleName() + "' is not implemented  [" + id + "]");
 	}
 
 	@Override
 	public void addId(String newId) {
-		throw new OmugiException(
+		throw new UnsupportedOperationException(
 				"Adding an id to '" + this.getClass().getSimpleName() + "' is not implemented  [" + newId + "]");
 	}
 

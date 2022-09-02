@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import fr.cnrs.iees.OmugiClassLoader;
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.graph.Node;
 import fr.cnrs.iees.graph.NodeFactory;
 import fr.cnrs.iees.identity.IdentityScope;
@@ -61,7 +60,7 @@ public abstract class NodeFactoryAdapter implements NodeFactory {
 		if (scope!=null)
 			this.scope = scope;
 		else
-			throw new OmugiException("A factory requires a valid scope");
+			throw new NullPointerException("A factory requires a valid scope");
 	}
 
 	protected NodeFactoryAdapter(String scopeId) {
@@ -69,7 +68,7 @@ public abstract class NodeFactoryAdapter implements NodeFactory {
 		if (scopeId != null)
 			scope = new LocalScope(scopeId);
 		else
-			throw new OmugiException("A factory requires a valid scope name");
+			throw new NullPointerException("A factory requires a valid scope name");
 	}
 
 	@SuppressWarnings("unchecked")

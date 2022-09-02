@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.identity;
 
-import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**
@@ -92,7 +91,7 @@ public interface Identity {
 	 * @param newId The new Id string
 	 */
 	public default void rename(String oldId, String newId) {
-		throw new OmugiException("Renaming should only be used in exceptional circumstances");
+		throw new UnsupportedOperationException("Renaming is not implemented by default.");
 	}
 
 }

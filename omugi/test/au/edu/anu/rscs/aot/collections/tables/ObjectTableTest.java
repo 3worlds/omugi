@@ -35,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.OmugiException;
 import fr.ens.biologie.generic.utils.Duple;
 import fr.ens.biologie.generic.utils.Interval;
 
@@ -164,7 +163,7 @@ class ObjectTableTest {
 	@Test
 	void testValueOfString() {
 		String s = "([4,2]]1.2,3.5[,null,]0.2,+∞[,null,[12.8,25.4[,null,null,]-∞,0.0])";
-		assertThrows(OmugiException.class,()->ObjectTable.valueOf(s));
+		assertThrows(UnsupportedOperationException.class,()->ObjectTable.valueOf(s));
 	}
 
 }

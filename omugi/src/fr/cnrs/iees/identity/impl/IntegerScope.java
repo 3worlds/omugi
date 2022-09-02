@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.identity.impl;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
@@ -66,7 +65,7 @@ public class IntegerScope implements IdentityScope {
 
 	@Override
 	public void removeId(String id) {
-		throw new OmugiException("IntegerScope cannot modify an id");
+		throw new UnsupportedOperationException("IntegerScope cannot modify an id");
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class IntegerScope implements IdentityScope {
 
 	@Override
 	public void addId(String newId) {
-		throw new OmugiException("IntegerScope does not store its ids");
+		throw new UnsupportedOperationException("IntegerScope does not store its ids");
 	}
 
 }

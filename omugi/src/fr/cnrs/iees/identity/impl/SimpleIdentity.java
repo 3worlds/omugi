@@ -30,7 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.identity.impl;
 
-import fr.cnrs.iees.OmugiException;
 import fr.cnrs.iees.identity.Identity;
 import fr.cnrs.iees.identity.IdentityScope;
 
@@ -90,9 +89,9 @@ public final class SimpleIdentity implements Identity {
 	@Override
 	public void rename(String oldId, String newId) {
 		if (!scope.contains(oldId))
-			throw new OmugiException("Attempt to rename a non-existent id from '" + oldId + "' to '" + newId + "'");
+			throw new IllegalArgumentException("Attempt to rename a non-existent id from '" + oldId + "' to '" + newId + "'");
 		if (scope.contains(newId))
-			throw new OmugiException(
+			throw new IllegalArgumentException(
 					"Attempt to rename an id to one that already exists from '" + oldId + "' to '" + newId + "'");
 		this.id = newId;
 		scope.removeId(oldId);

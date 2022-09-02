@@ -33,8 +33,6 @@ package au.edu.anu.rscs.aot.collections.tables;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import fr.cnrs.iees.OmugiException;
-
 /**
  * <p>A multidimensional generic {@link Table} to contain any {@link Object} descendant.</p>
  * <p>By construct, the implementation of {@code contentType()} at this level cannot return
@@ -174,9 +172,11 @@ public class ObjectTable<T> extends TableAdapter {
 	 * <p>A default implementation throwing an {@code Exception}.
 	 * Only descendants of {@code ObjectTable<T>} can implement a {@code valueOf(...)} method as the generic
 	 * constructor cannot handle unknown object types.</p>
+	 * 
+	 * @throws UnsupportedOperationException if called.
 	 */
 	public static ObjectTable<?> valueOf(String value, char[][] bdel, char[] isep) {
-		throw new OmugiException("Only descendants of ObjectTable<T> can have a valueOf(...) method");
+		throw new UnsupportedOperationException("Only descendants of ObjectTable<T> can have a valueOf(...) method");
 	}
 
 	/**

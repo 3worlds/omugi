@@ -33,8 +33,6 @@ package au.edu.anu.rscs.aot.collections.tables;
 import java.util.LinkedList;
 import java.util.List;
 
-import fr.cnrs.iees.OmugiException;
-
 /**
  * Abstract implementation of {@link Table}.
  * 
@@ -64,7 +62,7 @@ public abstract class TableAdapter implements Table {
 	public TableAdapter(Dimensioner... dimensioners) {
 		dimensions = dimensioners.length;
 		if (dimensions == 0)
-			throw new OmugiException("TableAdapter: at least one dimension needs to be passed to constructor");
+			throw new IllegalArgumentException("TableAdapter: at least one dimension needs to be passed to constructor");
 		this.dimensioners = dimensioners;
 
 		offsets = new int[dimensions];
@@ -91,7 +89,7 @@ public abstract class TableAdapter implements Table {
 	@Override
 	public final int getFlatIndexByInt(int... indexes) {
 		if (indexes.length != dimensioners.length)
-			throw new OmugiException("TableAdapter.getFlatIndex expected " + dimensioners.length + " indexes (got " + indexes.length + ")");
+			throw new IllegalArgumentException("TableAdapter.getFlatIndex expected " + dimensioners.length + " indexes (got " + indexes.length + ")");
 		int index = 0;
 		for (int dim=0; dim<dimensioners.length; dim++) {
 			index = index + indexes[dim] * offsets[dim];
@@ -103,7 +101,7 @@ public abstract class TableAdapter implements Table {
 	@Override
 	public final int getFlatIndex(Object... indexes) {
 		if (indexes.length != dimensioners.length)
-			throw new OmugiException("TableAdapter.getFlatIndex expected " + dimensioners.length + " indexes (got " + indexes.length + ")");
+			throw new IllegalArgumentException("TableAdapter.getFlatIndex expected " + dimensioners.length + " indexes (got " + indexes.length + ")");
 		int index = 0;
 		for (int dim=0; dim<dimensioners.length; dim++) {
 			if (indexes[dim] instanceof Integer)
@@ -221,7 +219,7 @@ public abstract class TableAdapter implements Table {
 				.append(bdel[BLOCK_OPEN])
 				.append("' and end with '")
 				.append(bdel[BLOCK_CLOSE]);
-			throw new OmugiException(sb.toString());
+			throw new IllegalArgumentException(sb.toString());
 		}
 		else
 //			return value.substring(1, value.indexOf(bdel[BLOCK_CLOSE]));

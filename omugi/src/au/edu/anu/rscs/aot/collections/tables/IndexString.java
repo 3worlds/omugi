@@ -38,7 +38,6 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import au.edu.anu.rscs.aot.util.IntegerRange;
-import fr.cnrs.iees.OmugiException;
 
 /**
  * <p>Static methods to describe multidimensional indexes using a string with a 
@@ -94,7 +93,7 @@ public class IndexString {
 					int min = Math.abs(Integer.valueOf(ss[0]));
 					int max = Math.abs(Integer.valueOf(ss[1]));
 					if ((min<0)|(max>tableDimLength-1))
-						throw new OmugiException("Table index out of range "+indexString);
+						throw new IndexOutOfBoundsException("Table index out of range "+indexString);
 					for (int j=min; j<=max; j++)
 						li.add(j);
 				}
@@ -102,7 +101,7 @@ public class IndexString {
 				else {
 					int index = Integer.valueOf(s[i]);
 					if ((index<0)|(index>tableDimLength-1))
-						throw new OmugiException("Table index out of range "+indexString);
+						throw new IndexOutOfBoundsException("Table index out of range "+indexString);
 					li.add(index);
 				}
 			result = new int[li.size()];
@@ -116,7 +115,7 @@ public class IndexString {
 			int min = Math.abs(Integer.valueOf(s[0]));
 			int max = Math.abs(Integer.valueOf(s[1]));
 			if ((min<0)|(max>tableDimLength-1))
-				throw new OmugiException("Table index out of range "+indexString);
+				throw new IndexOutOfBoundsException("Table index out of range "+indexString);
 			int range = max-min+1;
 			if (exclude) {
 				result = new int[tableDimLength-range];
@@ -136,11 +135,11 @@ public class IndexString {
 			int index = -1;
 			try {
 			    index = Math.abs(Integer.valueOf(indexString));
-			} catch (NumberFormatException excpt) {
-				throw new OmugiException("'"+indexString + "' is not an integer.");
+			} catch (NumberFormatException cause) {
+				throw new IllegalArgumentException("'"+indexString + "' is not an integer.",cause);
 			}
 			if ((index<0)|(index>tableDimLength-1))
-				throw new OmugiException("Table index out of range "+indexString);
+				throw new IndexOutOfBoundsException("Table index out of range "+indexString);
 			if (exclude) {
 				result = new int[tableDimLength-1];
 				for (int i=0; i<index; i++)
@@ -194,7 +193,7 @@ public class IndexString {
 			s = s.substring(1,s.length()-1);
 			String[] ds = s.split(Pattern.quote(dimSep),-1);
 			if (ds.length != dim.length)
-				throw new OmugiException("Index string " + indexString
+				throw new IllegalArgumentException("Index string " + indexString
 					+ " has "+ ds.length +" dimensions but was expecting "+dim.length);
 			for (int i=0; i<ds.length; i++) {
 				int[] ixs = extractDimIndices(i,ds[i],dim[i]);
@@ -229,7 +228,7 @@ public class IndexString {
 			s = s.substring(1,s.length()-1);
 			String[] ds = s.split(Pattern.quote(dimSep),-1);
 			if (ds.length != table.ndim())
-				throw new OmugiException("Index string " + indexString
+				throw new IllegalArgumentException("Index string " + indexString
 					+ " has "+ ds.length +" dimensions while table has "+table.ndim());
 			int[][] dimIndices = new int[ds.length][];
 			for (int i=0; i<ds.length; i++)
@@ -266,7 +265,7 @@ public class IndexString {
 			s = s.substring(1, s.length() - 1);
 		String[] ds = s.split(Pattern.quote(dimSep),-1);
 		if (ds.length != dim.length)
-			throw new OmugiException("Index string " + indexString
+			throw new IllegalArgumentException("Index string " + indexString
 				+ " has "+ ds.length +" dimensions while table has "+dim.length);
 		int[][] dimIndices = new int[ds.length][];
 		for (int i=0; i<ds.length; i++)
@@ -294,7 +293,7 @@ public class IndexString {
 		if ((index==null)&(dim==null))
 			return ""; // whole table - whatever this means
 		if (index.length!=dim.length)
-			throw new OmugiException("Size of index list (" + index.length +
+			throw new IllegalArgumentException("Size of index list (" + index.length +
 				")not matching number of dimensions (" + dim.length + ")");
 		StringBuilder sb = new StringBuilder();
 		boolean wholeTable = true;
