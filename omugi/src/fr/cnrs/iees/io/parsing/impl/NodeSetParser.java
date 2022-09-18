@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
@@ -265,21 +266,21 @@ public abstract class NodeSetParser extends Parser {
 		Class<?> result = null;
 		if (value != null)
 			try {
-				Class<?> superClass = graphPropertyTypes.get(gp);
-				Class<?> c = Class.forName(value, true, OmugiClassLoader.getAppClassLoader());
+				Class<?> superClass =Objects.requireNonNull(graphPropertyTypes.get(gp));
+				Class<?> c = Objects.requireNonNull(Class.forName(value, true, OmugiClassLoader.getAppClassLoader()));
 				if (superClass.isAssignableFrom(c))
 					result = c;
 				else
-					log.severe("graph property \"" + gp + "\" does not refer to a valid type ("
+					log.severe("graph property \"" + gp + "\" does not refer to a valid type  ["+value+"]?-  ("
 							+ graphPropertyTypes.get(gp) + ") - using default type (" + defaultGraphProperties.get(gp) + ")");
 			} catch (ClassNotFoundException e) {
 				log.severe("graph property \"" + gp
-						+ "\" does not refer to a valid java class - using default type (" + defaultGraphProperties.get(gp) + ")");
+						+ "\" does not refer to a valid java class ['"+value+"']- using default type (" + defaultGraphProperties.get(gp) + ")");
 			}
 		if (result == null)
 			try {
 //				result = Class.forName(gp.defaultValue(), false, OmugiClassLoader.getClassLoader());
-				result = Class.forName(defaultGraphProperties.get(gp), false, OmugiClassLoader.getAppClassLoader());
+				result = Objects.requireNonNull(Class.forName(defaultGraphProperties.get(gp), false, OmugiClassLoader.getAppClassLoader()));
 			} catch (ClassNotFoundException e) {
 				// this is an error in GraphProperties.[...].defaultValue - fix code with a
 				// correct class name
@@ -301,8 +302,8 @@ public abstract class NodeSetParser extends Parser {
 	protected void setupFactories(Logger log) {
 		if (nodeFactory==null) // else keep it !
 			if (nFactoryClass==null)
-				nFactoryClass = (Class<? extends NodeFactory>) 
-					getClass(NODE_FACTORY,log);
+				nFactoryClass =Objects.requireNonNull((Class<? extends NodeFactory>) 
+					getClass(NODE_FACTORY,log));
 //		if (propertyListFactory==null)
 //			if (plFactoryClass==null)
 //				plFactoryClass = (Class<? extends PropertyListFactory>) 
@@ -311,12 +312,12 @@ public abstract class NodeSetParser extends Parser {
 		try {
 			if (nodeFactory==null)
 				if (labels.isEmpty()) {
-					nodeFactory = nFactoryClass.getDeclaredConstructor().newInstance();
+					nodeFactory =Objects.requireNonNull( nFactoryClass.getDeclaredConstructor().newInstance());
 				}
 				else {
 					Constructor<? extends NodeFactory> c = 
 						nFactoryClass.getDeclaredConstructor(String.class,Map.class);
-					nodeFactory = c.newInstance(theScope,labels);
+					nodeFactory = Objects.requireNonNull(c.newInstance(theScope,labels));
 				}
 //			if (propertyListFactory==null)
 //				propertyListFactory = plFactoryClass.getDeclaredConstructor().newInstance();
@@ -328,6 +329,7 @@ public abstract class NodeSetParser extends Parser {
 			// unless the factory class is flawed
 			e.printStackTrace();
 		}
+		nodeFactory = Objects.requireNonNull(nodeFactory);
 	}
 	
 	// setup the graph
@@ -352,12 +354,12 @@ public abstract class NodeSetParser extends Parser {
 		for (propSpec p:graphProps) {
 			switch (p.name)  {
 			case CLASS:
-				graphClass = (Class<? extends Graph<? extends Node, ? extends Edge>>) 
-					getClass(CLASS,p.value,log);
+				graphClass =  Objects.requireNonNull((Class<? extends Graph<? extends Node, ? extends Edge>>) 
+					getClass(CLASS,p.value,log));
 				break;
 			case NODE_FACTORY:
-				nFactoryClass = (Class<? extends NodeFactory>) 
-					getClass(NODE_FACTORY,p.value,log);
+				nFactoryClass = Objects.requireNonNull((Class<? extends NodeFactory>) 
+					getClass(NODE_FACTORY,p.value,log));
 				break;
 //			case PROP_FACTORY:
 //				plFactoryClass = (Class<? extends PropertyListFactory>) 
