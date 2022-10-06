@@ -33,36 +33,37 @@ package fr.cnrs.iees.io.parsing;
 import fr.ens.biologie.generic.SaveableAsText;
 
 /**
- * This interface defines the conventions used to save graph elements as text. 
+ * This static class defines the conventions used to save graph elements as text. 
  * For example, which delimiter for which kind of token, etc.
  * <p>CAUTION: change in this file will corrupt ALL SAVED configuration files.</p>
  * 
  * @author gignoux
  *
  */
-public interface TextGrammar {
+public class TextGrammar {
+	private TextGrammar() {};
 
 	// Tables
 	
 	/** delimiter for dimensions */
-	public static char[] DIM_BLOCK_DELIMITERS = SaveableAsText.SQUARE_BRACKETS;
+	public final static char[] DIM_BLOCK_DELIMITERS = SaveableAsText.SQUARE_BRACKETS;
 	/** separator for dimensions */
-	public static char DIM_ITEM_SEPARATOR = SaveableAsText.COMMA;
+	public final static char DIM_ITEM_SEPARATOR = SaveableAsText.COMMA;
 	/** delimiter for tables */
-	public static char[] TABLE_BLOCK_DELIMITERS = SaveableAsText.BRACKETS;
+	public final static char[] TABLE_BLOCK_DELIMITERS = SaveableAsText.BRACKETS;
 	/** separator for table items */
-	public static char TABLE_ITEM_SEPARATOR = SaveableAsText.COMMA;
+	public final static char TABLE_ITEM_SEPARATOR = SaveableAsText.COMMA;
 
 	// Property lists
 	
 	/** delimiter for property lists */
-	public static char[] PROPERTY_LIST_DELIMITERS = SaveableAsText.BRACES;
+	public final static char[] PROPERTY_LIST_DELIMITERS = SaveableAsText.BRACES;
 	/** separator for property lists */
-	public static char PROPERTY_LIST_SEPARATOR = SaveableAsText.BLANK;
+	public final static char PROPERTY_LIST_SEPARATOR = SaveableAsText.BLANK;
 	
 	// Properties
 	
 	/** separator for property (between key and value) */
-	public static char PROPERTY_SEPARATOR = SaveableAsText.EQUAL;
+	public final static char PROPERTY_SEPARATOR = SaveableAsText.EQUAL;
 	    
 }

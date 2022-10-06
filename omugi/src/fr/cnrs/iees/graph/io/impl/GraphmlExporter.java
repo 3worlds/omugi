@@ -47,6 +47,8 @@ import java.util.Map;
 
 import au.edu.anu.rscs.aot.collections.tables.Table;
 
+import static fr.cnrs.iees.io.parsing.TextGrammar.*;
+
 /**
  * <p>A graph exporter for the <a href="http://graphml.graphdrawing.org/">GraphML</a> format. This class implemented mainly as a workbench. 
  * To implement a matching {@code GraphmlImporter}, consider using that of <a href="https://jgrapht.org/">JGraphT</a>.</p>

@@ -37,7 +37,6 @@ package fr.cnrs.iees.io.parsing;
  *
  */
 public interface Tokenizer {
-	
 	/**
 	 * Analyse text input and translate it into a set of tokens representing a graph structure.
 	 */

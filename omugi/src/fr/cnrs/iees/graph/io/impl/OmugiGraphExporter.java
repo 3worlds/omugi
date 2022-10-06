@@ -59,6 +59,8 @@ import fr.cnrs.iees.properties.impl.ExtendablePropertyListImpl;
 import fr.ens.biologie.generic.SaveableAsText;
 import fr.ens.biologie.generic.utils.Logging;
 
+import static fr.cnrs.iees.io.parsing.TextGrammar.*;
+
 /**
  * <p>An exporter into the omugi text format for graphs and trees. Produces a text file 
  * following the syntax described in {@link fr.cnrs.iees.io.parsing.impl.GraphTokenizer GraphTokenizer} and
