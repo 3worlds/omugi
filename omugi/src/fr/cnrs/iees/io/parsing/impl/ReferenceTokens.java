@@ -34,7 +34,7 @@ import fr.ens.biologie.generic.SaveableAsText;
 
 /**
  * Token types used in node references. Based on the former IoConstants interface 
- * in package au.edu.anu.rscs.aot.graph.io.
+ * in package au.edu.anu.omugi.graph.io.
  * 
  * @author Jacques Gignoux - 18 déc. 2018
  *

@@ -34,9 +34,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.rscs.aot.collections.tables.Dimensioner;
-import au.edu.anu.rscs.aot.collections.tables.StringTable;
-import au.edu.anu.rscs.aot.collections.tables.Table;
+import au.edu.anu.omugi.collections.tables.Dimensioner;
+import au.edu.anu.omugi.collections.tables.StringTable;
+import au.edu.anu.omugi.collections.tables.Table;
 
 import static fr.cnrs.iees.io.parsing.ValidPropertyTypes.*;
 
@@ -56,8 +56,8 @@ class ValidPropertyTypesTest {
 		assertEquals(getJavaClassName("java.lang.String"),"java.lang.String");
 		assertEquals(getJavaClassName("String"),"java.lang.String");
 		assertNull(getJavaClassName("string"));
-		assertEquals(getJavaClassName("au.edu.anu.rscs.aot.collections.tables.StringTable"),"au.edu.anu.rscs.aot.collections.tables.StringTable");
-		assertEquals(getJavaClassName("StringTable"),"au.edu.anu.rscs.aot.collections.tables.StringTable");
+		assertEquals(getJavaClassName("au.edu.anu.omugi.collections.tables.StringTable"),"au.edu.anu.omugi.collections.tables.StringTable");
+		assertEquals(getJavaClassName("StringTable"),"au.edu.anu.omugi.collections.tables.StringTable");
 		assertNull(getJavaClassName("List"));
 		assertEquals(getJavaClassName("java.util.List"),"java.util.List");
 	}
@@ -79,7 +79,7 @@ class ValidPropertyTypesTest {
 		assertTrue(isValid("double"));
 		assertTrue(isValid("java.lang.Double"));
 		assertTrue(isValid("ShortTable"));
-		assertTrue(isValid("au.edu.anu.rscs.aot.collections.tables.ShortTable"));
+		assertTrue(isValid("au.edu.anu.omugi.collections.tables.ShortTable"));
 		assertTrue(isValid("IntegerRange"));
 		assertFalse(isValid("string"));
 		assertFalse(isValid("aot.collections.tables.ShortTable"));
@@ -102,7 +102,7 @@ class ValidPropertyTypesTest {
 		assertEquals(getType("String"),"String");
 		assertNull(getType("string"));
 		assertNull(getType("java.lang.string"));
-		assertEquals(getType("au.edu.anu.rscs.aot.collections.tables.IntTable"),"IntTable");
+		assertEquals(getType("au.edu.anu.omugi.collections.tables.IntTable"),"IntTable");
 	}
 
 	@Test
@@ -111,26 +111,26 @@ class ValidPropertyTypesTest {
 		// should display something like that (order may change):
 //
 //		Valid property types currently recorded:
-//		DoubleTable / au.edu.anu.rscs.aot.collections.tables.DoubleTable / {[1],0.0}
-//		ByteTable / au.edu.anu.rscs.aot.collections.tables.ByteTable / {[1],0}
+//		DoubleTable / au.edu.anu.omugi.collections.tables.DoubleTable / {[1],0.0}
+//		ByteTable / au.edu.anu.omugi.collections.tables.ByteTable / {[1],0}
 //		String / java.lang.String / 
 //		float / java.lang.Float / 0.0
 		
-//		CharTable / au.edu.anu.rscs.aot.collections.tables.CharTable / {[1],
+//		CharTable / au.edu.anu.omugi.collections.tables.CharTable / {[1],
 		
 		// for some unknown reason CharTable displays without a final "}". Why ?? it's generic code !
 		
 //		long / java.lang.Long / 0
 //		Char / java.lang.Char /  
-//		ShortTable / au.edu.anu.rscs.aot.collections.tables.ShortTable / {[1],0}
+//		ShortTable / au.edu.anu.omugi.collections.tables.ShortTable / {[1],0}
 //		Boolean / java.lang.Boolean / false
-//		IntTable / au.edu.anu.rscs.aot.collections.tables.IntTable / {[1],0}
+//		IntTable / au.edu.anu.omugi.collections.tables.IntTable / {[1],0}
 //		Short / java.lang.Short / 0
-//		FloatTable / au.edu.anu.rscs.aot.collections.tables.FloatTable / {[1],0.0}
-//		StringTable / au.edu.anu.rscs.aot.collections.tables.StringTable / {[1],}
-//		LongTable / au.edu.anu.rscs.aot.collections.tables.LongTable / {[1],0}
+//		FloatTable / au.edu.anu.omugi.collections.tables.FloatTable / {[1],0.0}
+//		StringTable / au.edu.anu.omugi.collections.tables.StringTable / {[1],}
+//		LongTable / au.edu.anu.omugi.collections.tables.LongTable / {[1],0}
 //		IntegerRange / au.edu.anu.rscs.aot.util.IntegerRange / MIN_INTEGER..*
-//		BooleanTable / au.edu.anu.rscs.aot.collections.tables.BooleanTable / {[1],false}
+//		BooleanTable / au.edu.anu.omugi.collections.tables.BooleanTable / {[1],false}
 //		byte / java.lang.Byte / 0
 //		double / java.lang.Double / 0.0
 //		Double / java.lang.Double / 0.0
@@ -163,7 +163,7 @@ class ValidPropertyTypesTest {
 		assertTrue(isPrimitiveType("String"));
 		assertFalse(isPrimitiveType("IntegerRange"));
 		assertFalse(isPrimitiveType("DoubleRange"));
-		assertFalse(isPrimitiveType("au.edu.anu.rscs.aot.collections.tables.CharTable"));
+		assertFalse(isPrimitiveType("au.edu.anu.omugi.collections.tables.CharTable"));
 		assertFalse(isPrimitiveType("java.util.List"));
 	}
 

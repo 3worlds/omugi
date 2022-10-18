@@ -30,8 +30,8 @@
  *  
  * <p>Finally, as graphs are commonly used to store data, the {@link ReadOnlyDataHolder} and
  * {@link DataHolder} interfaces are provided to allow the storage of any kind of attributes into
- * nodes and edges (cf. the {@link au.edu.anu.rscs.aot.graph.property} and 
- * {@link au.edu.anu.rscs.aot.collections.tables} packages).</p>
+ * nodes and edges (cf. the {@link au.edu.anu.omugi.graph.property} and 
+ * {@link au.edu.anu.omugi.collections.tables} packages).</p>
  * 
  * <img src="{@docRoot}/../doc/images/omugi-interfaces.svg" align="middle" width="1700" alt="main graph interfaces"/>
  * 

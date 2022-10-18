@@ -47,7 +47,7 @@ class TreeTokenizerTest {
 			"		label3 node3\n", 
 			"			prop4 = String(\"coucou\")\n", 
 			"	label5 node5\n", 
-			"		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))\n", 
+			"		table = au.edu.anu.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))\n", 
 			"\n", 
 			"	label6 node6\n", 
 			"		label7 node7\n", 
@@ -83,7 +83,7 @@ class TreeTokenizerTest {
 				"1 LABEL:label5\n" + 
 				"1 NAME:node5\n" + 
 				"2 PROPERTY_NAME:table\n" + 
-				"2 PROPERTY_TYPE:au.edu.anu.rscs.aot.collections.tables.BooleanTable\n" + 
+				"2 PROPERTY_TYPE:au.edu.anu.omugi.collections.tables.BooleanTable\n" + 
 				"2 PROPERTY_VALUE:([3,2]false,false,false,false,false,false)\n" + 
 				"1 LABEL:label6\n" + 
 				"1 NAME:node6\n" + 

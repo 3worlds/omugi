@@ -32,7 +32,7 @@ package fr.cnrs.iees.properties.impl;
 
 import java.util.Set;
 
-import au.edu.anu.rscs.aot.graph.property.PropertyKeys;
+import au.edu.anu.omugi.graph.property.PropertyKeys;
 import fr.cnrs.iees.properties.SimplePropertyList;
 /**
  * <p>Implementation of {@link SimplePropertyList}.</p>

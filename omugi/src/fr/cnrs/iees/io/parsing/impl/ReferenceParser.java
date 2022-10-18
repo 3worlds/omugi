@@ -38,7 +38,7 @@ import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_ITEM_SEPARATOR;
 import java.util.LinkedList;
 import java.util.List;
 
-import au.edu.anu.rscs.aot.collections.tables.Table;
+import au.edu.anu.omugi.collections.tables.Table;
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.ReadOnlyDataHolder;
 import fr.cnrs.iees.graph.TreeNode;

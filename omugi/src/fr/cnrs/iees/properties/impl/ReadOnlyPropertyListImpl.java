@@ -37,7 +37,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import au.edu.anu.rscs.aot.graph.property.Property;
+import au.edu.anu.omugi.graph.property.Property;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.ens.biologie.generic.Textable;
 

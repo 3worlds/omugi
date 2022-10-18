@@ -32,7 +32,7 @@ package fr.cnrs.iees.properties;
 
 import java.util.Set;
 
-import au.edu.anu.rscs.aot.graph.property.Property;
+import au.edu.anu.omugi.graph.property.Property;
 
 /**
  * This interface isolates the generic getters for properties. 

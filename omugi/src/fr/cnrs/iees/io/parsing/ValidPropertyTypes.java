@@ -35,17 +35,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import au.edu.anu.rscs.aot.collections.tables.BooleanTable;
-import au.edu.anu.rscs.aot.collections.tables.ByteTable;
-import au.edu.anu.rscs.aot.collections.tables.CharTable;
-import au.edu.anu.rscs.aot.collections.tables.Dimensioner;
-import au.edu.anu.rscs.aot.collections.tables.DoubleTable;
-import au.edu.anu.rscs.aot.collections.tables.FloatTable;
-import au.edu.anu.rscs.aot.collections.tables.IntTable;
-import au.edu.anu.rscs.aot.collections.tables.LongTable;
-import au.edu.anu.rscs.aot.collections.tables.ShortTable;
-import au.edu.anu.rscs.aot.collections.tables.StringTable;
-
+import au.edu.anu.omugi.collections.tables.BooleanTable;
+import au.edu.anu.omugi.collections.tables.ByteTable;
+import au.edu.anu.omugi.collections.tables.CharTable;
+import au.edu.anu.omugi.collections.tables.Dimensioner;
+import au.edu.anu.omugi.collections.tables.DoubleTable;
+import au.edu.anu.omugi.collections.tables.FloatTable;
+import au.edu.anu.omugi.collections.tables.IntTable;
+import au.edu.anu.omugi.collections.tables.LongTable;
+import au.edu.anu.omugi.collections.tables.ShortTable;
+import au.edu.anu.omugi.collections.tables.StringTable;
 import au.edu.anu.rscs.aot.util.IntegerRange;
 import au.edu.anu.rscs.aot.util.StringUtils;
 
@@ -294,16 +293,16 @@ public class ValidPropertyTypes {
 	 */
 	private enum TableTypes {
 		// class name | java class | default value
-		DoubleTable("au.edu.anu.rscs.aot.collections.tables.DoubleTable", new DoubleTable(new Dimensioner(1)).clear()),
-		FloatTable("au.edu.anu.rscs.aot.collections.tables.FloatTable", new FloatTable(new Dimensioner(1)).clear()),
-		StringTable("au.edu.anu.rscs.aot.collections.tables.StringTable", new StringTable(new Dimensioner(1)).clear()),
-		LongTable("au.edu.anu.rscs.aot.collections.tables.LongTable", new LongTable(new Dimensioner(1)).clear()),
-		IntTable("au.edu.anu.rscs.aot.collections.tables.IntTable", new IntTable(new Dimensioner(1)).clear()),
-		BooleanTable("au.edu.anu.rscs.aot.collections.tables.BooleanTable",
+		DoubleTable("au.edu.anu.omugi.collections.tables.DoubleTable", new DoubleTable(new Dimensioner(1)).clear()),
+		FloatTable("au.edu.anu.omugi.collections.tables.FloatTable", new FloatTable(new Dimensioner(1)).clear()),
+		StringTable("au.edu.anu.omugi.collections.tables.StringTable", new StringTable(new Dimensioner(1)).clear()),
+		LongTable("au.edu.anu.omugi.collections.tables.LongTable", new LongTable(new Dimensioner(1)).clear()),
+		IntTable("au.edu.anu.omugi.collections.tables.IntTable", new IntTable(new Dimensioner(1)).clear()),
+		BooleanTable("au.edu.anu.omugi.collections.tables.BooleanTable",
 				new BooleanTable(new Dimensioner(1)).clear()),
-		ByteTable("au.edu.anu.rscs.aot.collections.tables.ByteTable", new ByteTable(new Dimensioner(1)).clear()),
-		CharTable("au.edu.anu.rscs.aot.collections.tables.CharTable", new CharTable(new Dimensioner(1)).clear()),
-		ShortTable("au.edu.anu.rscs.aot.collections.tables.ShortTable", new ShortTable(new Dimensioner(1)).clear());
+		ByteTable("au.edu.anu.omugi.collections.tables.ByteTable", new ByteTable(new Dimensioner(1)).clear()),
+		CharTable("au.edu.anu.omugi.collections.tables.CharTable", new CharTable(new Dimensioner(1)).clear()),
+		ShortTable("au.edu.anu.omugi.collections.tables.ShortTable", new ShortTable(new Dimensioner(1)).clear());
 
 		private final String className;
 		private final Object defaultValue;

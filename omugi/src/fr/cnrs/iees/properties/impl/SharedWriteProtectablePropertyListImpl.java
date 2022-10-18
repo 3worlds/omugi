@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.properties.impl;
 
-import au.edu.anu.rscs.aot.graph.property.PropertyKeys;
+import au.edu.anu.omugi.graph.property.PropertyKeys;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.cnrs.iees.properties.SimpleWriteProtectablePropertyList;
 

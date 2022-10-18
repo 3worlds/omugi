@@ -38,9 +38,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.rscs.aot.collections.tables.BooleanTable;
-import au.edu.anu.rscs.aot.collections.tables.Dimensioner;
-import au.edu.anu.rscs.aot.collections.tables.Table;
+import au.edu.anu.omugi.collections.tables.BooleanTable;
+import au.edu.anu.omugi.collections.tables.Dimensioner;
+import au.edu.anu.omugi.collections.tables.Table;
 import fr.cnrs.iees.graph.Graph;
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.impl.ALEdge;
@@ -208,23 +208,23 @@ node D89EF3043496-000001683D574316-0002
 
 // 5 EDGES
 [node:D89EF3043496-000001683D574316-0003] edge D89EF3043496-000001683D574318-0003 [node:D89EF3043496-000001683D574317-0000]
-	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	five = au.edu.anu.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
 [node:D89EF3043496-000001683D574316-0001] edge D89EF3043496-000001683D574317-0001 [node:D89EF3043496-000001683D574316-0002]
-	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	five = au.edu.anu.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
 [node:D89EF3043496-000001683D574316-0002] edge D89EF3043496-000001683D574318-0001 [node:D89EF3043496-000001683D574316-0002]
-	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	five = au.edu.anu.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
 [node:D89EF3043496-000001683D574316-0002] edge D89EF3043496-000001683D574318-0000 [node:D89EF3043496-000001683D574316-0001]
-	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	five = au.edu.anu.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
 [node:D89EF3043496-000001683D574316-0002] edge D89EF3043496-000001683D574318-0002 [node:D89EF3043496-000001683D574316-0003]
-	five = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+	five = au.edu.anu.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	four = java.lang.Short(4)
 	one = java.lang.Object(null)
  
@@ -260,7 +260,7 @@ DataTreeNodeImpl 436e852b
 	prop1 = java.lang.Integer(3)
 	prop2 = java.lang.Double(4.2)
 	DataTreeNodeImpl c46bcd4
-		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+		table = au.edu.anu.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	SimpleTreeNodeImpl 631330c
 		DataTreeNodeImpl 42f93a98
 			prop4 = java.lang.String("coucou")

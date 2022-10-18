@@ -44,8 +44,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import au.edu.anu.rscs.aot.collections.tables.Table;
-import au.edu.anu.rscs.aot.graph.property.Property;
+import au.edu.anu.omugi.collections.tables.Table;
+import au.edu.anu.omugi.graph.property.Property;
 import fr.cnrs.iees.OmugiClassLoader;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Graph;

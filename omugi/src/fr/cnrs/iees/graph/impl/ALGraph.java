@@ -35,11 +35,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import au.edu.anu.rscs.aot.collections.QuickListOfLists;
-import fr.cnrs.iees.graph.Direction;
-import fr.cnrs.iees.graph.EdgeFactory;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.GraphFactory;
-import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.graph.*;
 
 /**
  * <p>A graph implemented as an adjacency list (hence the "AL" prefix). An adjacency list stores the list of edges

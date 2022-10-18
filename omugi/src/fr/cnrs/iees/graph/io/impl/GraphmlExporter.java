@@ -45,7 +45,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import au.edu.anu.rscs.aot.collections.tables.Table;
+import au.edu.anu.omugi.collections.tables.Table;
 
 import static fr.cnrs.iees.io.parsing.TextGrammar.*;
 

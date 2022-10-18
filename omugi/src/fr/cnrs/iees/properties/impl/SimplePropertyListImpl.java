@@ -33,7 +33,8 @@ package fr.cnrs.iees.properties.impl;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import au.edu.anu.rscs.aot.graph.property.Property;
+
+import au.edu.anu.omugi.graph.property.Property;
 import fr.cnrs.iees.properties.SimplePropertyList;
 import fr.ens.biologie.generic.Textable;
 
