@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing;
 
-import fr.ens.biologie.generic.SaveableAsText;
+import fr.cnrs.iees.omhtk.SaveableAsText;
 
 /**
  * This static class defines the conventions used to save graph elements as text. 

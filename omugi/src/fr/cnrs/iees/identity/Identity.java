@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.identity;
 
-import fr.ens.biologie.generic.SaveableAsText;
+import fr.cnrs.iees.omhtk.SaveableAsText;
 
 /**
  * <p>A unique identity within a given scope, to attach to some item that requires a unique 

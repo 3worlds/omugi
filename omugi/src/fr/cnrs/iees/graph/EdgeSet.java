@@ -32,7 +32,7 @@ package fr.cnrs.iees.graph;
 
 import java.util.Collection;
 
-import fr.ens.biologie.generic.Textable;
+import fr.cnrs.iees.omhtk.Textable;
 
 /**
  * <p>The set of edges of a graph. Graph G is defined as G=(N,E,f) where N is a set of nodes, 

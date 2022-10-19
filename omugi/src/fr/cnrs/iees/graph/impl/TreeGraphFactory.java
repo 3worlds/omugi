@@ -31,18 +31,13 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.lang.reflect.Constructor;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
-import fr.cnrs.iees.graph.GraphFactory;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.NodeSet;
+import fr.cnrs.iees.graph.*;
 import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.ens.biologie.generic.utils.Logging;
+import fr.cnrs.iees.properties.*;
+import fr.cnrs.iees.omhtk.utils.Logging;
 
 /**
  * <p>The factory for {@link TreeGraph}s (node and edge factory).</p>

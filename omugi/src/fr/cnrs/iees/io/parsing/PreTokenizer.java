@@ -36,17 +36,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
-import fr.cnrs.iees.io.parsing.impl.GraphParser;
-import fr.cnrs.iees.io.parsing.impl.GraphTokenizer;
-import fr.cnrs.iees.io.parsing.impl.TreeGraphParser;
-import fr.cnrs.iees.io.parsing.impl.TreeGraphTokenizer;
-import fr.cnrs.iees.io.parsing.impl.TreeParser;
-import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
-import fr.ens.biologie.generic.utils.Logging;
+import fr.cnrs.iees.io.parsing.impl.*;
+import fr.cnrs.iees.omhtk.utils.Logging;
 
 /**
  * <p>This class is a utility which, given a file in the omugi format,</p>

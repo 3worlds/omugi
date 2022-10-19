@@ -30,9 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.identity.impl;
 
-import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.identity.IdentityScope;
-import fr.ens.biologie.generic.SaveableAsText;
+import fr.cnrs.iees.identity.*;
+import fr.cnrs.iees.omhtk.SaveableAsText;
 
 /**
  * <p>

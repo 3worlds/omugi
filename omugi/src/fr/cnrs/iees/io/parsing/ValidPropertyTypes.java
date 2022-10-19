@@ -30,24 +30,11 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import au.edu.anu.omugi.collections.tables.BooleanTable;
-import au.edu.anu.omugi.collections.tables.ByteTable;
-import au.edu.anu.omugi.collections.tables.CharTable;
-import au.edu.anu.omugi.collections.tables.Dimensioner;
-import au.edu.anu.omugi.collections.tables.DoubleTable;
-import au.edu.anu.omugi.collections.tables.FloatTable;
-import au.edu.anu.omugi.collections.tables.IntTable;
-import au.edu.anu.omugi.collections.tables.LongTable;
-import au.edu.anu.omugi.collections.tables.ShortTable;
-import au.edu.anu.omugi.collections.tables.StringTable;
-import au.edu.anu.rscs.aot.util.IntegerRange;
-import au.edu.anu.rscs.aot.util.StringUtils;
-import fr.ens.biologie.generic.utils.Interval;
+import au.edu.anu.omugi.collections.tables.*;
+import au.edu.anu.rscs.aot.util.*;
+import fr.cnrs.iees.omhtk.utils.Interval;
 
 /**
  * <p>
@@ -320,7 +307,7 @@ public class ValidPropertyTypes {
 		IntegerRange(IntegerRange.class.getCanonicalName(),
 				new IntegerRange(java.lang.Integer.MIN_VALUE, java.lang.Integer.MAX_VALUE)),
 		Interval(Interval.class.getCanonicalName(),
-				fr.ens.biologie.generic.utils.Interval.open(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
+				fr.cnrs.iees.omhtk.utils.Interval.open(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
 
 		private final String className;
 		private final Object defaultValue;

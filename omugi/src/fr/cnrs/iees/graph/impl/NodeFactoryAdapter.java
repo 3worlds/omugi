@@ -30,16 +30,14 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 import fr.cnrs.iees.OmugiClassLoader;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.graph.*;
 import fr.cnrs.iees.identity.IdentityScope;
 import fr.cnrs.iees.identity.impl.LocalScope;
-import fr.ens.biologie.generic.utils.Logging;
+import fr.cnrs.iees.omhtk.utils.Logging;
 
 /**
  * A default abstract implementation of {@link NodeFactory}. Use it for further specialisation,

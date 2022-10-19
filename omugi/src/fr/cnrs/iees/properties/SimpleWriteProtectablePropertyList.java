@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.properties;
 
-import fr.ens.biologie.generic.WriteProtectable;
+import fr.cnrs.iees.omhtk.WriteProtectable;
 
 /**
  * <p>A {@link SimplePropertyList} list that can be made read-only on demand.</p> 

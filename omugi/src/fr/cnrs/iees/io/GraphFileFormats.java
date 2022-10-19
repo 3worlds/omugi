@@ -32,16 +32,12 @@ package fr.cnrs.iees.io;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 import fr.cnrs.iees.OmugiClassLoader;
-import fr.cnrs.iees.graph.io.GraphExporter;
-import fr.cnrs.iees.graph.io.GraphImporter;
-import fr.cnrs.iees.graph.io.impl.GraphmlExporter;
-import fr.cnrs.iees.graph.io.impl.OmugiGraphExporter;
-import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
-import fr.ens.biologie.generic.utils.Logging;
+import fr.cnrs.iees.graph.io.*;
+import fr.cnrs.iees.graph.io.impl.*;
+import fr.cnrs.iees.omhtk.utils.Logging;
 
 /**
  * <p>List of all supported graph file formats for import / export,  

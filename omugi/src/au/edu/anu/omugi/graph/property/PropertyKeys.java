@@ -33,7 +33,7 @@ package au.edu.anu.omugi.graph.property;
 import java.util.Set;
 import java.util.TreeSet;
 
-import fr.ens.biologie.generic.Sizeable;
+import fr.cnrs.iees.omhtk.Sizeable;
 
 /**
  * An ordered list of property names. For use when a large set of graph elements have the same properties

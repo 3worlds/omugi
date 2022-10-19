@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import fr.ens.biologie.generic.Textable;
+import fr.cnrs.iees.omhtk.Textable;
 
 /**
  * <p>The root interface for graphs. Just as in the mathematical definition of a Graph G as

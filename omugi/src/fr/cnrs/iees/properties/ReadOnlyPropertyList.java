@@ -30,8 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.properties;
 
-import fr.ens.biologie.generic.DataContainer;
-import fr.ens.biologie.generic.Sizeable;
+import fr.cnrs.iees.omhtk.*;
 
 /**
  * A read-only property list, ie with getters but no setters.

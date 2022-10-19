@@ -35,12 +35,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.GraphImporter;
-import fr.ens.biologie.generic.utils.Logging;
+import fr.cnrs.iees.omhtk.utils.Logging;
 
 import static fr.cnrs.iees.io.GraphFileFormats.*;
 

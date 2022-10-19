@@ -30,13 +30,11 @@
  **************************************************************************/
 package fr.cnrs.iees.properties.impl;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import au.edu.anu.omugi.graph.property.Property;
 import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.ens.biologie.generic.Textable;
+import fr.cnrs.iees.omhtk.Textable;
 
 /**
  * Implementation of {@link SimplePropertyList}.

@@ -30,16 +30,11 @@
  **************************************************************************/
 package fr.cnrs.iees.properties.impl;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 import au.edu.anu.omugi.graph.property.Property;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.ens.biologie.generic.Textable;
+import fr.cnrs.iees.omhtk.Textable;
 
 /**
  * A read-only property list - property values can only be set at construction time.

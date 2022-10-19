@@ -35,10 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.omugi.collections.tables.Dimensioner;
-import au.edu.anu.omugi.collections.tables.ObjectTable;
-import fr.ens.biologie.generic.utils.Duple;
-import fr.ens.biologie.generic.utils.Interval;
+import fr.cnrs.iees.omhtk.utils.*;
 
 class ObjectTableTest {
 

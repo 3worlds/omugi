@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.properties;
 
-import fr.ens.biologie.generic.Sealable;
+import fr.cnrs.iees.omhtk.Sealable;
 
 /**
  * <p>A mutable {@linkplain SimplePropertyList}, i.e. which can grow and shrink.</p> 

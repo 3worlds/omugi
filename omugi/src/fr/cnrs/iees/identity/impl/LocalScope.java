@@ -30,12 +30,10 @@
  **************************************************************************/
 package fr.cnrs.iees.identity.impl;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
-import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.identity.IdentityScope;
-import fr.ens.biologie.generic.utils.UniqueString;
+import fr.cnrs.iees.identity.*;
+import fr.cnrs.iees.omhtk.utils.UniqueString;
 
 /**
  * <p>

@@ -37,13 +37,8 @@ import java.util.logging.Logger;
 import au.edu.anu.rscs.aot.util.Resources;
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
-import fr.cnrs.iees.io.parsing.impl.GraphParser;
-import fr.cnrs.iees.io.parsing.impl.GraphTokenizer;
-import fr.cnrs.iees.io.parsing.impl.TreeGraphParser;
-import fr.cnrs.iees.io.parsing.impl.TreeGraphTokenizer;
-import fr.cnrs.iees.io.parsing.impl.TreeParser;
-import fr.cnrs.iees.io.parsing.impl.TreeTokenizer;
-import fr.ens.biologie.generic.utils.Logging;
+import fr.cnrs.iees.io.parsing.impl.*;
+import fr.cnrs.iees.omhtk.utils.Logging;
 
 import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.COMMENT;
 

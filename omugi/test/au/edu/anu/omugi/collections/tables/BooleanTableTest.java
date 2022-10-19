@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
 
 import au.edu.anu.omugi.collections.tables.BooleanTable;
 import au.edu.anu.omugi.collections.tables.Dimensioner;
-import fr.ens.biologie.generic.SaveableAsText;
+import fr.cnrs.iees.omhtk.SaveableAsText;
 
 // TODO: Since the code for tables is generated, the tests should also be generated.
 // meanwhile, tests not written for other table types 

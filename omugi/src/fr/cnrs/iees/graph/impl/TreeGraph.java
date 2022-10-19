@@ -30,22 +30,10 @@
  **************************************************************************/
 package fr.cnrs.iees.graph.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import au.edu.anu.rscs.aot.collections.QuickListOfLists;
-import fr.cnrs.iees.graph.Direction;
-import fr.cnrs.iees.graph.EdgeFactory;
-import fr.cnrs.iees.graph.EdgeSet;
-import fr.cnrs.iees.graph.GraphFactory;
-import fr.cnrs.iees.graph.NodeFactory;
-import fr.cnrs.iees.graph.Tree;
-import fr.cnrs.iees.graph.TreeNode;
-import fr.ens.biologie.generic.Textable;
+import fr.cnrs.iees.graph.*;
+import fr.cnrs.iees.omhtk.Textable;
 
 /**
  * <p>Implementation of a "treegraph", i.e. a graph with an internal tree structure or

@@ -32,7 +32,7 @@ package au.edu.anu.omugi.collections.tables;
 
 import com.google.common.base.Strings;
 
-import fr.ens.biologie.generic.DataContainer;
+import fr.cnrs.iees.omhtk.DataContainer;
 
 /** 
  * A multidimensional table of {@code String}s. 

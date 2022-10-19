@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing.impl;
 
-import fr.ens.biologie.generic.SaveableAsText;
+import fr.cnrs.iees.omhtk.SaveableAsText;
 
 /**
  * Token types used in node references. Based on the former IoConstants interface 

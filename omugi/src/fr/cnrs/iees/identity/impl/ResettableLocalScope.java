@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.identity.impl;
 
-import fr.ens.biologie.generic.Resettable;
+import fr.cnrs.iees.omhtk.Resettable;
 
 /**
  * A {@link LocalScope} that can forget all its id on reset.

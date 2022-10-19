@@ -30,23 +30,16 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing.impl;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import au.edu.anu.rscs.aot.util.Resources;
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.EdgeFactory;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.NodeFactory;
+import fr.cnrs.iees.graph.*;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.GraphTokenizer.graphToken;
 import fr.cnrs.iees.properties.PropertyListFactory;
-import fr.ens.biologie.generic.utils.Logging;
+import fr.cnrs.iees.omhtk.utils.Logging;
 
 /**
  * <p>A parser for plain graphs. </p>

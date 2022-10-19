@@ -30,22 +30,16 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing.impl;
 
-import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_BLOCK_DELIMITERS;
-import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_ITEM_SEPARATOR;
-import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_BLOCK_DELIMITERS;
-import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_ITEM_SEPARATOR;
+import static fr.cnrs.iees.io.parsing.TextGrammar.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import au.edu.anu.omugi.collections.tables.Table;
-import fr.cnrs.iees.graph.NodeSet;
-import fr.cnrs.iees.graph.ReadOnlyDataHolder;
-import fr.cnrs.iees.graph.TreeNode;
+import fr.cnrs.iees.graph.*;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer.token;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.ens.biologie.generic.SaveableAsText;
+import fr.cnrs.iees.omhtk.SaveableAsText;
 
 /**
  * TODO: possible flaw here as classId is used as part of identity

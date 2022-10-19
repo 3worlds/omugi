@@ -32,7 +32,7 @@ package fr.cnrs.iees.graph;
 
 import java.util.Collection;
 
-import fr.ens.biologie.generic.Textable;
+import fr.cnrs.iees.omhtk.Textable;
 
 /**
  * <p>The root interface for trees.</p>

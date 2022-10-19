@@ -30,16 +30,9 @@
  **************************************************************************/
 package au.edu.anu.omugi.collections.tables;
 
-import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_BLOCK_DELIMITERS;
-import static fr.cnrs.iees.io.parsing.TextGrammar.DIM_ITEM_SEPARATOR;
-import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_BLOCK_DELIMITERS;
-import static fr.cnrs.iees.io.parsing.TextGrammar.TABLE_ITEM_SEPARATOR;
+import static fr.cnrs.iees.io.parsing.TextGrammar.*;
 
-import fr.ens.biologie.generic.DataContainer;
-import fr.ens.biologie.generic.SaveableAsText;
-import fr.ens.biologie.generic.Showable;
-import fr.ens.biologie.generic.Sizeable;
-import fr.ens.biologie.generic.Textable;
+import fr.cnrs.iees.omhtk.*;
 
 /**
  * <p>

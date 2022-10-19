@@ -31,7 +31,7 @@
 package fr.cnrs.iees.graph;
 
 import fr.cnrs.iees.identity.Identity;
-import fr.ens.biologie.generic.Textable;
+import fr.cnrs.iees.omhtk.Textable;
 
 /**
  * <p>A basic interface for graph elements. Graph elements are connected (cf. the {@link Connected}

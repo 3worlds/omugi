@@ -30,12 +30,9 @@
  **************************************************************************/
 package fr.cnrs.iees.graph;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import fr.ens.biologie.generic.Textable;
+import fr.cnrs.iees.omhtk.Textable;
 
 /**
  * <p>The set of nodes of a graph. Graph G is defined as G=(N,E,f) where N is a set of nodes, 

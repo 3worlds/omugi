@@ -40,24 +40,13 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 import au.edu.anu.omugi.collections.tables.Table;
-import fr.cnrs.iees.graph.DataHolder;
-import fr.cnrs.iees.graph.Direction;
-import fr.cnrs.iees.graph.Edge;
-import fr.cnrs.iees.graph.Graph;
-import fr.cnrs.iees.graph.Node;
-import fr.cnrs.iees.graph.NodeSet;
-import fr.cnrs.iees.graph.ReadOnlyDataHolder;
-import fr.cnrs.iees.graph.Tree;
-import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.impl.TreeGraph;
-import fr.cnrs.iees.graph.impl.TreeGraphNode;
+import fr.cnrs.iees.graph.*;
+import fr.cnrs.iees.graph.impl.*;
 import fr.cnrs.iees.graph.io.GraphExporter;
-import fr.cnrs.iees.properties.ExtendablePropertyList;
-import fr.cnrs.iees.properties.ReadOnlyPropertyList;
-import fr.cnrs.iees.properties.SimplePropertyList;
+import fr.cnrs.iees.properties.*;
 import fr.cnrs.iees.properties.impl.ExtendablePropertyListImpl;
-import fr.ens.biologie.generic.SaveableAsText;
-import fr.ens.biologie.generic.utils.Logging;
+import fr.cnrs.iees.omhtk.SaveableAsText;
+import fr.cnrs.iees.omhtk.utils.Logging;
 
 import static fr.cnrs.iees.io.parsing.TextGrammar.*;
 

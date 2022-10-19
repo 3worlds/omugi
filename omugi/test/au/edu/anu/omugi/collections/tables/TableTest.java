@@ -32,15 +32,9 @@ package au.edu.anu.omugi.collections.tables;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import au.edu.anu.omugi.collections.tables.BooleanTable;
-import au.edu.anu.omugi.collections.tables.Dimensioner;
-import au.edu.anu.omugi.collections.tables.StringTable;
-import au.edu.anu.omugi.collections.tables.Table;
-import au.edu.anu.omugi.collections.tables.TableAdapter;
-import fr.ens.biologie.generic.SaveableAsText;
+import fr.cnrs.iees.omhtk.SaveableAsText;
 
 class TableTest {
 

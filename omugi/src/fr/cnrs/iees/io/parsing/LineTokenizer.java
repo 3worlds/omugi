@@ -30,14 +30,11 @@
  **************************************************************************/
 package fr.cnrs.iees.io.parsing;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 import fr.cnrs.iees.io.parsing.impl.TreeGraphTokens;
-import fr.ens.biologie.generic.utils.Logging;
+import fr.cnrs.iees.omhtk.utils.Logging;
 
 import static fr.cnrs.iees.io.parsing.impl.TreeGraphTokens.*;
 
