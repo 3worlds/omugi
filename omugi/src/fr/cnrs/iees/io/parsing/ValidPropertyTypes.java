@@ -47,6 +47,7 @@ import au.edu.anu.omugi.collections.tables.ShortTable;
 import au.edu.anu.omugi.collections.tables.StringTable;
 import au.edu.anu.rscs.aot.util.IntegerRange;
 import au.edu.anu.rscs.aot.util.StringUtils;
+import fr.ens.biologie.generic.utils.Interval;
 
 /**
  * <p>
@@ -255,27 +256,27 @@ public class ValidPropertyTypes {
 	private enum PrimitiveTypes {
 		// class name | java class | default value
 		// Byte: a very, very short integer [-128 ; 127]
-		Byte("java.lang.Byte", java.lang.Byte.valueOf("0")),
+		Byte(Byte.class.getCanonicalName(), java.lang.Byte.valueOf("0")),
 		// Char: a character value (16-bit Unicode = UTF16, i.e. 65535 different values)
-		Char("java.lang.Char", java.lang.Character.valueOf(' ')),
+		Char(Character.class.getCanonicalName(), java.lang.Character.valueOf(' ')),
 		// Short: a short integer [-32768; 32767]
-		Short("java.lang.Short", java.lang.Short.valueOf((short) 0)),
+		Short(Short.class.getCanonicalName(), java.lang.Short.valueOf((short) 0)),
 		// Integer: an integer [-2147483648; 2147483647]
-		Integer("java.lang.Integer", java.lang.Integer.valueOf(0)),
+		Integer(Integer.class.getCanonicalName(), java.lang.Integer.valueOf(0)),
 		// Long: a long integer [-9223372036854775808; 9223372036854775807]
-		Long("java.lang.Long", java.lang.Long.valueOf(0L)),
+		Long(Long.class.getCanonicalName(), java.lang.Long.valueOf(0L)),
 		// Float: a single precision floating point number (4 10^-38^ to 3.4 10^38^)
 		// with 6 significant digits
-		Float("java.lang.Float", java.lang.Float.valueOf(0f)),
+		Float(Float.class.getCanonicalName(), java.lang.Float.valueOf(0f)),
 		// Double: a single precision floating point number (4 10^-38^ to 3.4 10^38^)
 		// with 15 significant digits
-		Double("java.lang.Double", java.lang.Double.valueOf(0.0)),
+		Double(Double.class.getCanonicalName(), java.lang.Double.valueOf(0.0)),
 		// Boolean: a logical value {true, false}
-		Boolean("java.lang.Boolean", java.lang.Boolean.valueOf("false")),
+		Boolean(Boolean.class.getCanonicalName(), java.lang.Boolean.valueOf("false")),
 		// String: a text string
-		String("java.lang.String", new String("")),
+		String(String.class.getCanonicalName(), new String("")),
 		// Object: Default null 
-		Object("java.lang.Object",null),
+		Object(Object.class.getCanonicalName(),null),
 		;
 
 		private final String className;
@@ -293,16 +294,15 @@ public class ValidPropertyTypes {
 	 */
 	private enum TableTypes {
 		// class name | java class | default value
-		DoubleTable("au.edu.anu.omugi.collections.tables.DoubleTable", new DoubleTable(new Dimensioner(1)).clear()),
-		FloatTable("au.edu.anu.omugi.collections.tables.FloatTable", new FloatTable(new Dimensioner(1)).clear()),
-		StringTable("au.edu.anu.omugi.collections.tables.StringTable", new StringTable(new Dimensioner(1)).clear()),
-		LongTable("au.edu.anu.omugi.collections.tables.LongTable", new LongTable(new Dimensioner(1)).clear()),
-		IntTable("au.edu.anu.omugi.collections.tables.IntTable", new IntTable(new Dimensioner(1)).clear()),
-		BooleanTable("au.edu.anu.omugi.collections.tables.BooleanTable",
-				new BooleanTable(new Dimensioner(1)).clear()),
-		ByteTable("au.edu.anu.omugi.collections.tables.ByteTable", new ByteTable(new Dimensioner(1)).clear()),
-		CharTable("au.edu.anu.omugi.collections.tables.CharTable", new CharTable(new Dimensioner(1)).clear()),
-		ShortTable("au.edu.anu.omugi.collections.tables.ShortTable", new ShortTable(new Dimensioner(1)).clear());
+		DoubleTable(DoubleTable.class.getCanonicalName(), new DoubleTable(new Dimensioner(1)).clear()),
+		FloatTable(FloatTable.class.getCanonicalName(), new FloatTable(new Dimensioner(1)).clear()),
+		StringTable(StringTable.class.getCanonicalName(), new StringTable(new Dimensioner(1)).clear()),
+		LongTable(LongTable.class.getCanonicalName(), new LongTable(new Dimensioner(1)).clear()),
+		IntTable(IntTable.class.getCanonicalName(), new IntTable(new Dimensioner(1)).clear()),
+		BooleanTable(BooleanTable.class.getCanonicalName(),	new BooleanTable(new Dimensioner(1)).clear()),
+		ByteTable(ByteTable.class.getCanonicalName(), new ByteTable(new Dimensioner(1)).clear()),
+		CharTable(CharTable.class.getCanonicalName(), new CharTable(new Dimensioner(1)).clear()),
+		ShortTable(ShortTable.class.getCanonicalName(), new ShortTable(new Dimensioner(1)).clear());
 
 		private final String className;
 		private final Object defaultValue;
@@ -317,9 +317,9 @@ public class ValidPropertyTypes {
 	/** NB: all have a valueOf(String) method */
 	private enum AotTypes {
 		// class name | java class | default value
-		IntegerRange("au.edu.anu.rscs.aot.util.IntegerRange",
+		IntegerRange(IntegerRange.class.getCanonicalName(),
 				new IntegerRange(java.lang.Integer.MIN_VALUE, java.lang.Integer.MAX_VALUE)),
-		Interval("fr.ens.biologie.generic.utils.Interval",
+		Interval(Interval.class.getCanonicalName(),
 				fr.ens.biologie.generic.utils.Interval.open(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
 
 		private final String className;
