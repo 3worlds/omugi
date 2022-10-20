@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,82 +28,84 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.property;
+package fr.cnrs.iees.omugi.graph;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Collection;
 
-import fr.cnrs.iees.omhtk.Sizeable;
+import fr.cnrs.iees.omhtk.Textable;
 
 /**
- * An ordered list of property names. For use when a large set of graph elements have the same properties
- * (cf. {@link fr.cnrs.iees.omugi.properties.impl.SharedPropertyListImpl}).
- * 
- * @author Shayne Flint - looooong ago.
+ * <p>The root interface for trees.</p>
+ * <p>A tree is a special case of a graph where nodes are connected only through <em>parent-child</em>
+ * relations. A node can only have 0..1 parent and 0..* children. This particular behaviour is
+ * implemented by using specific methods and not relying on explicit edges.</p>
+ *  
+ * @author Jacques Gignoux - 9 mai 2019
  *
+ * @param <N> The {@link TreeNode} subclass used to construct the tree
  */
-public class PropertyKeys implements Sizeable {
-
-	private String[] keySet;
-
-	/**
-	 * 
-	 * @param keys the names of the properties
-	 */
-	public PropertyKeys(String... keys) {
-		int len = keys.length;
-		keySet = new String[len];
-		for (int i=0; i< keys.length; i++)
-			keySet[i] = keys[i];
-	}
-
-	/**
-	 * 
-	 * @param keys the names of the properties
-	 */
-	public PropertyKeys(Set<String> keys) {
-		keySet = new String[keys.size()];
-		int i=0;
-		for (String key:keys) {
-			keySet[i]=key;
-			i++;
-		}
-	}
+public interface Tree<N extends TreeNode> extends NodeSet<N>, Textable {
 	
 	/**
+	 * Accessor to the tree root (a tree has 0 or 1 root).
 	 * 
-	 * @return a set of property names
+	 * @return the Node at the root of the tree
 	 */
-	public Set<String> getKeysAsSet() {
-		Set<String> result = new TreeSet<String>();
-		for (String key : keySet)
-			result.add(key);
-		return result;
-	}
+	public N root();
 	
 	/**
-	 * 
-	 * @return an array of property names
+	 * @param node The node that is the root of the required sub-tree
+	 * @return The sub-tree nodes with N as the root.
 	 */
-	public String[] getKeysAsArray() {
-		return keySet;
+	@SuppressWarnings("unchecked")
+	public default Collection<N> subTree(N node) {
+		return (Collection<N>) node.subTree();
+	}
+
+	/**
+	 * Actions taken when a parent node is changed.
+	 */
+	// TODO: ugly code - to fix one day.
+	public void onParentChanged();
+	
+	@Override
+	public default String toShortString() {
+		return toUniqueString() + "(" + nNodes() + " nodes)"; 
 	}
 
 	@Override
-	public int size() {
-		return keySet.length;
+	public default String toDetailedString() {
+		StringBuilder sb = new StringBuilder(toShortString());
+		if (nNodes()>0) {
+			sb.append(" NODES=(");
+			int last = nNodes()-1;
+			int i=0;
+			for (N n:nodes()) {
+				if (i==last)
+					sb.append(n.toShortString());
+				else
+					sb.append(n.toShortString()).append(',');
+				i++;
+			}
+			sb.append(')');
+		}
+		return sb.toString();
 	}
 
 	/**
+	 * Prints a nice hierarchical view of a tree (multi-line).
 	 * 
-	 * @param key the name of a property
-	 * @return the rank of this property in the list
+	 * @param parent the node where to start the print
+	 * @param indent the String used to indent nodes according to hierarchy
 	 */
-	public int indexOf(String key) {
-		for (int i=0; i< keySet.length; i++) {
-			if (keySet[i].equals(key))
-				return i;
-		}
-		return -1;
+	public static void printTree(TreeNode parent, String indent) {
+		System.out.println(indent + parent.classId() + ":" + parent.id());
+		if (parent instanceof ReadOnlyDataHolder)
+			for (String key : ((ReadOnlyDataHolder) parent).properties().getKeysAsSet())
+				System.out.println(indent + "    " + "-(" + key + "="
+						+ ((ReadOnlyDataHolder) parent).properties().getPropertyValue(key) + ")");
+		for (TreeNode child : parent.getChildren())
+			printTree(child, indent + "    ");
 	}
+
 }

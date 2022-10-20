@@ -28,53 +28,41 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.properties;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omhtk.*;
 
-import org.junit.jupiter.api.Test;
+/**
+ * A read-only property list, ie with getters but no setters.
+ * 
+ * @author gignoux - 15 juin 2017
+ *
+ */
+public interface ReadOnlyPropertyList 
+		extends PropertyListGetters, Sizeable, DataContainer {
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
-
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	/**
+	 * Compares the keys of two property lists
+	 * 
+	 * @param list another property list to cmopare to
+	 * @return {@code true} if both lists have the same property names
+	 */
+	public default boolean hasTheSamePropertiesAs(ReadOnlyPropertyList list) {
+		if (size()==list.size())
+			if (getKeysAsSet().equals(list.getKeysAsSet())) {
+				for (String key:getKeysAsSet()) 
+					if (!getPropertyClass(key).equals(list.getPropertyClass(key)))
+						return false;
+				return true;
+			}
+		return false;
 	}
-
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	
+	@Override
+	public default DataContainer clear() {
+		// do nothing, this is read-only
+		return this;
 	}
-
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
-	}
-
+	
+	public ReadOnlyPropertyList clone();
 }

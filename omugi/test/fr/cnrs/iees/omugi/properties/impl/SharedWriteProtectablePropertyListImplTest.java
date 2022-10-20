@@ -28,53 +28,84 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.properties.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+import fr.cnrs.iees.omugi.graph.property.PropertyKeys;
+import fr.cnrs.iees.omugi.properties.SimpleWriteProtectablePropertyList;
+import fr.cnrs.iees.omugi.properties.impl.SharedWriteProtectablePropertyListImpl;
 
-class ValidPropertyTypesTest {
+class SharedWriteProtectablePropertyListImplTest {
 
+	private SimpleWriteProtectablePropertyList sp1=null, sp2=null, sp3=null;
+	
+	private void show(String method,String text) {
+//		System.out.println(method+": "+text);
+	}
+	
+	@BeforeEach
+	private void init() {
+		PropertyKeys keys = new PropertyKeys("int1","double2","triple3");
+		sp1 = new SharedWriteProtectablePropertyListImpl(keys);
+		sp2 = new SharedWriteProtectablePropertyListImpl("int1","double2","triple3");
+		sp3 = new SharedWriteProtectablePropertyListImpl(keys);
+	}
+	
 	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	void testSharedWriteProtectablePropertyListImplPropertyKeys() {
+		show("testSharedPropertyListImplPropertyKeys",sp1.toString());
+		assertNotNull(sp1);
 	}
 
 	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	void testSharedWriteProtectablePropertyListImplSimplePropertyList() {
+		sp3 = new SharedWriteProtectablePropertyListImpl(sp1);
+		show("testSharedPropertyListImplSimplePropertyList",sp3.toString());
+		assertNotNull(sp3);
 	}
 
 	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
+	void testSharedWriteProtectablePropertyListImplStringArray() {
+		show("testSharedPropertyListImplStringArray",sp2.toString());
+		assertNotNull(sp2);
 	}
 
 	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
+	void testSetPropertyStringObject() {
+		sp1.setProperty("int1", 1);
+		show("testSetPropertyStringObject",sp1.toString());
+		assertEquals(sp1.getPropertyValue("int1"),1);
+		sp1.writeDisable();
+		sp1.setProperty("double2",67.84829479723);
+		show("testSetPropertyStringObject",sp1.toString());
+		assertEquals(sp1.getPropertyValue("double2"),null);
+		sp1.writeEnable();
+		sp1.setProperty("double2",67.84829479723);
+		show("testSetPropertyStringObject",sp1.toString());
+		assertEquals(sp1.getPropertyValue("double2"),67.84829479723);
 	}
 
 	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
+	void testIsReadOnly() {
+		assertFalse(sp1.isReadOnly());
 	}
 
 	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
+	void testWriteEnable() {
+		sp1.writeDisable();
+		assertTrue(sp1.isReadOnly());
+		sp1.writeEnable();
+		assertFalse(sp1.isReadOnly());
 	}
 
 	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	void testWriteDisable() {
+		sp1.writeDisable();
+		assertTrue(sp1.isReadOnly());
 	}
 
 }

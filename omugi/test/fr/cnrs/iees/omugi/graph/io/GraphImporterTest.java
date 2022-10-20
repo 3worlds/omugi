@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,35 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.graph.io;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+import fr.cnrs.iees.omugi.graph.NodeSet;
+import fr.cnrs.iees.omugi.graph.io.GraphImporter;
+import fr.cnrs.iees.omugi.io.parsing.impl.TreeParser;
 
-class ValidPropertyTypesTest {
+/**
+ * 
+ * @author Jacques Gignoux - 22 mai 2019
+ *
+ */
+class GraphImporterTest {
 
 	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	final void testImportGraphString() {
+		NodeSet<?> graph = GraphImporter.importGraph("fr/cnrs/iees/io/parsing/impl/importgraph.ugt");
+//		System.out.println(graph.toDetailedString());
+		assertNotNull(graph);
 	}
 
 	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
-	}
-
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	final void testImportGraphStringClassOfQ() {
+		NodeSet<?> graph = GraphImporter.importGraph("importgraph.ugt",TreeParser.class);
+//		System.out.println(graph.toDetailedString());
+		assertNotNull(graph);
 	}
 
 }

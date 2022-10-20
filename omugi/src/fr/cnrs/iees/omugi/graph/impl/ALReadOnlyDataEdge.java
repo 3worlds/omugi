@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,52 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.graph.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omugi.graph.EdgeFactory;
+import fr.cnrs.iees.omugi.graph.Node;
+import fr.cnrs.iees.omugi.graph.ReadOnlyDataHolder;
+import fr.cnrs.iees.omugi.identity.Identity;
+import fr.cnrs.iees.omugi.properties.ReadOnlyPropertyList;
 
-import org.junit.jupiter.api.Test;
+/**
+ * An {@link ALEdge} sub-class with read-only (immutable) data.
+ * 
+ * @author Jacques Gignoux - 10 mai 2019
+ *
+ */
+// tested OK with version 0.2.0 on 17/5/2019
+public class ALReadOnlyDataEdge extends ALEdge implements ReadOnlyDataHolder {
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
-
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	private ReadOnlyPropertyList properties;
+	
+	/**
+	 * This constructor must only be invoked through an {@link EdgeFactory}. It has been set
+	 * public for internal consistency but should be treated as protected.
+	 * 
+	 * @param id Unique {@link Identity}.
+	 * @param start The start node.
+	 * @param end The end node.
+	 * @param props The edge's property list
+	 * @param graph The {@link EdgeFactory} that makes this edge class.
+	 */
+	public ALReadOnlyDataEdge(Identity id, Node start, Node end, 
+			ReadOnlyPropertyList props, EdgeFactory graph) {
+		super(id, start, end, graph);
+		properties = props;
 	}
 
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	@Override
+	public ReadOnlyPropertyList properties() {
+		return properties;
 	}
 
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(properties.toString());
+		return sb.toString();
 	}
 
 }

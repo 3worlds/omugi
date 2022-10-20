@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,42 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.graph;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
-
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
-
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
-	}
-
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
-	}
-
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
-	}
+/**
+ * <p>A factory to create {@link Edge}s and {@link Node}s in an appropriate way to 
+ * populate a {@link Graph}.</p>
+ * 
+ * <p>
+ * Although nodes and edges could in theory exist without the context of a
+ * graph, as soon as one starts to instantiate them a graph starts to exist. If
+ * we want to put some constraints on this graph (e.g. directed/undirected
+ * graph, acyclic graph, tree, multigraph, etc.) then we must be able to
+ * constrain node and edge creation, and a generic public constructor for edges
+ * and nodes does not allow this. Even worse, it could break the graph rules
+ * unintentionnally. To secure this, nodes and edges must exist only within the
+ * context of a graph.
+ * </p>
+ * 
+ * <p>
+ * But sometimes it makes sense that a node belongs to more than one graph. In
+ * order to allow for this possibility, we separate the node creation ability
+ * from the node addition into the graph. This way, a node made by one graph
+ * could be added to another. Each Node or Edge will record which factory
+ * created it, but not which graphs it belongs to. This way, other instances of
+ * the same type can be made by calling the initial factory.
+ * </p>
+ *
+ * <p>All graph elements (nodes and edges) are uniquely identified by a class ID / instance ID
+ * pair (cf. {@link fr.cnrs.iees.omugi.identity.Identity Identity}). This pair is used for deciding if nodes / edges are 
+ * equal (Object.equals(...) method). The unicity is guaranteed within a context, called 
+ * a <em>scope</em>, that can be universal (=unicity within the universe) or local.
+ * A {@code GraphFactory} implementation constructor requires a local scope to guarantee the unicity of all the
+ * node / edge instances it constructs.</p>
+ *  
+ * @author Jacques Gignoux - 15 mai 2019
+ *
+ */
+public interface GraphFactory extends NodeFactory, EdgeFactory {
 
 }

@@ -28,82 +28,97 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.property;
+package fr.cnrs.iees.omugi.properties.impl;
 
-import java.util.Set;
-import java.util.TreeSet;
-
-import fr.cnrs.iees.omhtk.Sizeable;
+import fr.cnrs.iees.omugi.graph.property.PropertyKeys;
+import fr.cnrs.iees.omugi.properties.SimplePropertyList;
+import fr.cnrs.iees.omugi.properties.SimpleWriteProtectablePropertyList;
 
 /**
- * An ordered list of property names. For use when a large set of graph elements have the same properties
- * (cf. {@link fr.cnrs.iees.omugi.properties.impl.SharedPropertyListImpl}).
+ * <p>Implementation of {@link SimplePropertyList}.</p>
+ * <ol>
+ * <li>Storage of properties: keys are shared (and stored outside this class), values
+ * are stored locally.</li>
+ * <li>Optimisation: memory and speed. No checks on dimensions, names or anything else.</li>
+ * <li>Use case: For large numbers of objects sharing the same set of properties and
+ * when a fine control of property list edition capability is needed.</li>
+ * </ol>
+ * <p>Properties and keys are stored in arrays so that property keys always come in the same order.</p>
+ * <p>The value of a property can only be changed if the list is in the 'writeEnable' state.
+ * The current state of the list is known by calling {@code isReadOnly()}. The state can be
+ * changed using {@code writeEnable()} and  {@code writeDisable()}.</p>
  * 
- * @author Shayne Flint - looooong ago.
+ * @author J. Gignoux - 14 févr. 2017
  *
  */
-public class PropertyKeys implements Sizeable {
+// Tested OK with version 0.0.1 on 26-10-2018
+public class SharedWriteProtectablePropertyListImpl extends SharedPropertyListImpl
+		implements SimpleWriteProtectablePropertyList {
+	
+	private boolean readOnly = false;
 
-	private String[] keySet;
-
+	
+	// Constructors
+	// 
+	
 	/**
+	 * Constructor from a list of property names.
 	 * 
-	 * @param keys the names of the properties
+	 * @param keys the property names
 	 */
-	public PropertyKeys(String... keys) {
-		int len = keys.length;
-		keySet = new String[len];
-		for (int i=0; i< keys.length; i++)
-			keySet[i] = keys[i];
-	}
-
-	/**
-	 * 
-	 * @param keys the names of the properties
-	 */
-	public PropertyKeys(Set<String> keys) {
-		keySet = new String[keys.size()];
-		int i=0;
-		for (String key:keys) {
-			keySet[i]=key;
-			i++;
-		}
+	public SharedWriteProtectablePropertyListImpl(PropertyKeys keys) {
+		super(keys);
 	}
 	
 	/**
+	 * Construct from another property list. All values are copied in this instance.
 	 * 
-	 * @return a set of property names
+	 * @param sharedProperties the list of properties
 	 */
-	public Set<String> getKeysAsSet() {
-		Set<String> result = new TreeSet<String>();
-		for (String key : keySet)
-			result.add(key);
-		return result;
+	public SharedWriteProtectablePropertyListImpl(SimplePropertyList sharedProperties) {
+		super(sharedProperties);
+	}
+
+	/**
+	 * Constructor from property names.
+	 * 
+	 * @param keys the property names
+	 */
+	public SharedWriteProtectablePropertyListImpl(String... keys) {
+		super(keys);
+	}
+
+	// PropertyListSetters methods
+	// 
+
+	@Override
+	public SimpleWriteProtectablePropertyList setProperty(String key, Object value) {
+		if (!readOnly) super.setProperty(key, value);
+		return this;
 	}
 	
-	/**
-	 * 
-	 * @return an array of property names
-	 */
-	public String[] getKeysAsArray() {
-		return keySet;
+	// Cloneable methods
+	//	
+
+	
+	// WriteProtectable methods
+	//
+	
+	@Override
+	public boolean isReadOnly() {
+		return readOnly;
 	}
 
 	@Override
-	public int size() {
-		return keySet.length;
+	public SimpleWriteProtectablePropertyList writeEnable() {
+		readOnly = false;
+		return this;
 	}
 
-	/**
-	 * 
-	 * @param key the name of a property
-	 * @return the rank of this property in the list
-	 */
-	public int indexOf(String key) {
-		for (int i=0; i< keySet.length; i++) {
-			if (keySet[i].equals(key))
-				return i;
-		}
-		return -1;
+	@Override
+	public SimpleWriteProtectablePropertyList writeDisable() {
+		readOnly = true;
+		return this;
 	}
+
 }

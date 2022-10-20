@@ -28,53 +28,102 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.graph;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
-import org.junit.jupiter.api.Test;
+/**
+ * The node interface to use in {@link Tree}s.
+ * 
+ * @author Jacques Gignoux - 17 août 2021
+ *
+ */
+public interface TreeNode extends Node {
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
-
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	/**
+	 * Gets the parent node. Returns {@code null} if this is the tree root.
+	 * 
+	 * @return the parent of this node
+	 */
+	public TreeNode getParent();
+	
+	/**
+	 * Set the argument as this node's parent. CAUTION: no consistency checks! this is the
+	 * tree's job (cf {@link Tree#onParentChanged()}).
+	 * 
+	 * @param parent the parent node
+	 */
+	void connectParent(TreeNode parent);
+	
+	/**
+	 * Gets the children nodes.
+	 * 
+	 * @return an immutable collection of children nodes.
+	 */
+	public Collection<? extends TreeNode> getChildren();
+	
+	/**
+	 * Adds a node as a child. CAUTION: no consistency checks! this is the
+	 * tree's job (cf {@link Tree#onParentChanged()}).
+	 * 
+	 * @param child the node to add
+	 */
+	public void connectChild(TreeNode child);
+	
+	/**
+	 * Adds nodes as children
+	 * 
+	 * @param children the nodes to add
+	 */
+	public default void connectChildren(TreeNode... children) {
+		for (TreeNode child:children)
+			connectChild(child);
 	}
-
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	
+	/**
+	 * Adds a set of nodes as children.
+	 * 
+	 * @param children the nodes to add
+	 */
+	public default void connectChildren(Collection<? extends TreeNode> children) {
+		for (TreeNode child:children)
+			connectChild(child);
 	}
+	
+	/**
+	 * Test if this instance is a leaf node.
+	 * 
+	 * @return {@code true} if this node has children
+	 */
+	public boolean hasChildren();
 
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
+	/**
+	 * Get the number of children of this node.
+	 * 
+	 * @return the number of child nodes
+	 */
+	public int nChildren();
+	
+	// recursive
+	private void subTree(List<TreeNode> list, TreeNode parent) {
+		list.add(parent);
+		if (parent.hasChildren())
+			for (TreeNode tn:parent.getChildren())
+				subTree(list,tn);
 	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
+	
+	/**
+	 * Get all the sub-tree starting at this instance.
+	 * 
+	 * @return the subtree starting at this node (=this node + all its children's children)
+	 */
+	public default Collection<? extends TreeNode> subTree() {
+		List<TreeNode> result = new LinkedList<TreeNode>();
+		subTree(result,this);
+		return Collections.unmodifiableCollection(result);
 	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
-	}
-
+	
 }

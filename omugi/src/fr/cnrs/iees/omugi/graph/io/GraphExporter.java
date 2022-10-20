@@ -28,53 +28,23 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.graph.io;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omugi.graph.NodeSet;
 
-import org.junit.jupiter.api.Test;
-
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
-
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
-	}
-
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
-	}
-
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
-	}
+/**
+ * An interface to write a graph to a file, stream, String, etc.
+ * 
+ * @author Jacques Gignoux - 01-08-2018 
+ *
+ */
+public interface GraphExporter{
+	
+	/**
+	 * Exports the graph to the resource provided in constructor
+	 * 
+	 * @param graph the graph to export
+	 */
+	public void exportGraph(NodeSet<?> graph);
 
 }

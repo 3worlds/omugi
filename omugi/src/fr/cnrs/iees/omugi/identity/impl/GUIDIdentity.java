@@ -28,53 +28,54 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.identity.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.UUID;
 
-import org.junit.jupiter.api.Test;
+import fr.cnrs.iees.omugi.identity.Identity;
+import fr.cnrs.iees.omugi.identity.IdentityScope;
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
-
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+/**
+ * <p>Implementation of universally unique {@link fr.cnrs.iees.omugi.identity.Identity Identity} based on {@link java.util.UUID}.
+ * Currently not associated to a {@link fr.cnrs.iees.omugi.identity.IdentityScope IdentityScope} implementation.</p>
+ * 
+ * @author Ian Davies - 28 jan. 2019
+ *
+ */
+public final class GUIDIdentity implements Identity{
+	
+	private final String id;
+	private final IdentityScope scope;
+	
+	/**
+	 * protected constructor, as all instantiations should be made through the scope.
+	 * @param scope
+	 */
+	protected GUIDIdentity(IdentityScope scope) {
+		super();
+		id = UUID.randomUUID().toString();
+		this.scope = scope;
+	}
+	
+	@Override
+	public String id() {
+		return id;
 	}
 
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	@Override
+	public IdentityScope scope() {
+		return scope;
 	}
 
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
+	@Override
+	public String toString() {
+		return id;
 	}
 
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	@Override
+	public void rename(String oldId, String newId) {
+		throw new UnsupportedOperationException("Renaming of '"+this.getClass().getSimpleName()+"' is not implemented.");
+		
 	}
 
 }

@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,74 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.identity.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omhtk.utils.UniqueString;
+import fr.cnrs.iees.omugi.identity.*;
 
-import org.junit.jupiter.api.Test;
+/**
+ * <p>
+ * A 'universal' scope for unique ids. The ids are constructed from (1) the
+ * computer mac Address (2) the time at instantiation in milliseconds (3) an
+ * integer rank for instances sharing the same mac address and date. Resulting
+ * ids are unique over a network of computers within the same running
+ * application.
+ * </p>
+ * 
+ * <p>
+ * Works with {@link UidIdentity}.
+ * </p>
+ * 
+ * @author Jacques Gignoux - 28 janv. 2019
+ *
+ */
+public class UniversalScope implements IdentityScope {
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+	private String id;
 
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	/**
+	 * Constructor using the UniversalScope simple class name as its Id.
+	 */
+	public UniversalScope() {
+		this(UniversalScope.class.getSimpleName());
 	}
 
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	/**
+	 * @param name proposed name of the scope. Its uniqueness will be enforced by
+	 *             incrementing an appended number.
+	 */
+	public UniversalScope(String name) {
+		super();
+		id = UniqueString.makeString(name, scopeIds);
+		scopeIds.add(id);
 	}
 
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
+	@Override
+	public void removeId(String id) {
+		throw new UnsupportedOperationException(
+				"removing an id from '" + this.getClass().getSimpleName() + "' is not implemented  [" + id + "]");
 	}
 
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
+	@Override
+	public Identity newId() {
+		return new UidIdentity(this);
 	}
 
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
+	@Override
+	public java.lang.String id() {
+		return id;
 	}
 
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
+	@Override
+	public boolean contains(String id) {
+		throw new UnsupportedOperationException(
+				"Querying ids in'" + this.getClass().getSimpleName() + "' is not implemented  [" + id + "]");
 	}
 
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	@Override
+	public void addId(String newId) {
+		throw new UnsupportedOperationException(
+				"Adding an id to '" + this.getClass().getSimpleName() + "' is not implemented  [" + newId + "]");
 	}
 
 }

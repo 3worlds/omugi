@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,71 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.graph.io.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+import fr.cnrs.iees.omugi.graph.Tree;
+import fr.cnrs.iees.omugi.graph.TreeNode;
+import fr.cnrs.iees.omugi.graph.io.GraphImporter;
+import fr.cnrs.iees.omugi.graph.io.impl.OmugiGraphImporter;
 
-class ValidPropertyTypesTest {
+/**
+ * 
+ * @author Jacques Gignoux - 14 déc. 2018
+ *
+ */
+class OmugiGraphImporterTest {
 
+	@SuppressWarnings("unchecked")
 	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	void testGetGraph() {
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+			+ File.separator + "test" 
+			+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+			+ File.separator + "treegraph.utg";
+		File file = new File(testfile);
+		assertTrue(file.exists());
+		GraphImporter importer = new OmugiGraphImporter(file);
+		Tree<? extends TreeNode> tree = (Tree<? extends TreeNode>)importer.getGraph();
+		String indent = "";
+		for (TreeNode node:tree.nodes()) {
+			printTree(node,indent);
+		}
+		assertNotNull(tree);
 	}
 
+	// testing a multi-root tree
+	@SuppressWarnings("unchecked")
 	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	void testGetGraph2() {
+		String testfile = System.getProperty("user.dir") // <home dir>/<eclipse workspace>/<project>
+			+ File.separator + "test" 
+			+ File.separator + this.getClass().getPackage().getName().replace('.',File.separatorChar) 
+			+ File.separator + "sameLevelTree.ugt";
+		File file = new File(testfile);
+		assertTrue(file.exists());
+		GraphImporter importer = new OmugiGraphImporter(file);
+		Tree<? extends TreeNode> tree = (Tree<? extends TreeNode>)importer.getGraph();
+		String indent = "";
+		for (TreeNode node:tree.nodes()) {
+			printTree(node,indent);
+		}
+		assertNotNull(tree);
 	}
 
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	
+	private void printTree(TreeNode parent,String indent) {
+//		if (parent.getParent()!=null)
+//			System.out.println(indent+parent.getParent().id()+"->"+parent.id());
+//		else
+//			System.out.println(indent+"null->"+parent.id());
+//		for (TreeNode child:parent.getChildren())
+//			printTree(child,indent+"  ");
 	}
 
 }

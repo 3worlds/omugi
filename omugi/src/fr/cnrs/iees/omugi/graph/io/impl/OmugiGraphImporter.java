@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,57 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.graph.io.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.File;
 
-import org.junit.jupiter.api.Test;
+import fr.cnrs.iees.omugi.graph.NodeSet;
+import fr.cnrs.iees.omugi.graph.io.GraphImporter;
+import fr.cnrs.iees.omugi.io.parsing.Parser;
+import fr.cnrs.iees.omugi.io.parsing.PreTokenizer;
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+/**
+ * Importer for graphs / trees in the omugi simple text format.
+ * 
+ * @author Jacques Gignoux - 14 déc. 2018
+ *
+ */
+// tested OK with version 0.0.1 on 17/12/2018
+// tested OK with version 0.0.10 on 31/1/2019
+public class OmugiGraphImporter implements GraphImporter {
 
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	private PreTokenizer tokenizer;
+	private Parser parser;
+	
+	/**
+	 * 
+	 * @param infile a text file to import as a graph
+	 */
+	public OmugiGraphImporter(File infile) {
+		super();
+		tokenizer = new PreTokenizer(infile);
+		parser = tokenizer.parser();
+	}
+	
+	/**
+	 * 
+	 * @param parser a Parser to immport a graph from
+	 */
+	public OmugiGraphImporter(Parser parser) {
+		super();
+		this.parser = parser;
+	}
+	
+	@Override
+	public NodeSet<?> getGraph() {
+		return parser.graph();
 	}
 
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
-	}
-
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	/**
+	 * @param factory the parent's graph factory.
+	 */
+	public void setFactory(Object factory) {
+		parser.setFactory(factory);		
 	}
 
 }

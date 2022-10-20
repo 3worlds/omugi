@@ -30,7 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.collections.tables;
 
-import static fr.cnrs.iees.io.parsing.TextGrammar.*;
+import static fr.cnrs.iees.omugi.io.parsing.TextGrammar.*;
 
 import fr.cnrs.iees.omhtk.*;
 
@@ -69,7 +69,7 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 
 	/**
 	 * The default separators between values used to convert tables to/from text. cf
-	 * {@link fr.cnrs.iees.io.parsing.TextGrammar TextGrammar}.
+	 * {@link fr.cnrs.iees.omugi.io.parsing.TextGrammar TextGrammar}.
 	 * 
 	 * @return the separator for dimensions and for data in a 2-cell array of char
 	 */
@@ -82,7 +82,7 @@ public interface Table extends DataContainer, Sizeable, Textable, Showable, Save
 
 	/**
 	 * The default block delimiters between values used to convert tables to/from
-	 * text. cf {@link fr.cnrs.iees.io.parsing.TextGrammar TextGrammar}.
+	 * text. cf {@link fr.cnrs.iees.omugi.io.parsing.TextGrammar TextGrammar}.
 	 * 
 	 * @return the block delimiter pairs for dimension and data blocks as a 2-pair
 	 *         array of char

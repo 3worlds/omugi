@@ -28,53 +28,42 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.io.parsing;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omhtk.SaveableAsText;
 
-import org.junit.jupiter.api.Test;
+/**
+ * This static class defines the conventions used to save graph elements as text. 
+ * For example, which delimiter for which kind of token, etc.
+ * <p>CAUTION: change in this file will corrupt ALL SAVED configuration files.</p>
+ * 
+ * @author gignoux
+ *
+ */
+public class TextGrammar {
+	private TextGrammar() {};
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+	// Tables
+	
+	/** delimiter for dimensions */
+	public final static char[] DIM_BLOCK_DELIMITERS = SaveableAsText.SQUARE_BRACKETS;
+	/** separator for dimensions */
+	public final static char DIM_ITEM_SEPARATOR = SaveableAsText.COMMA;
+	/** delimiter for tables */
+	public final static char[] TABLE_BLOCK_DELIMITERS = SaveableAsText.BRACKETS;
+	/** separator for table items */
+	public final static char TABLE_ITEM_SEPARATOR = SaveableAsText.COMMA;
 
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
-	}
-
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
-	}
-
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
-	}
-
+	// Property lists
+	
+	/** delimiter for property lists */
+	public final static char[] PROPERTY_LIST_DELIMITERS = SaveableAsText.BRACES;
+	/** separator for property lists */
+	public final static char PROPERTY_LIST_SEPARATOR = SaveableAsText.BLANK;
+	
+	// Properties
+	
+	/** separator for property (between key and value) */
+	public final static char PROPERTY_SEPARATOR = SaveableAsText.EQUAL;
+	    
 }

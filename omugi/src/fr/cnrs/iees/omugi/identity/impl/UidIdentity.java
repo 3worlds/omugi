@@ -28,53 +28,64 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
+package fr.cnrs.iees.omugi.identity.impl;
 
 import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+import fr.cnrs.iees.omugi.identity.*;
 
-class ValidPropertyTypesTest {
+/**
+ * <p>Implementation of universally unique {@link Identity} based on {@link au.edu.anu.omktk.util.Uid}.
+ * Works with {@link UniversalScope}.</p>
+ * 
+ * <p>The identifier is constructed from:</p>
+ * <ol>
+ * <li>the host computer mac address - these are worldwide unique;</li>
+ * <li>the current time in milliseconds (i.e. at the time of constructor call) - very likely
+ * to be different unless successive calls to the constructor are done during the same millisecond
+ * on the same computer;</li>
+ * <li>a count (as a {@code short} integer) in case constructor calls are done during the same millisecond.</li>
+ * </ol>
+ * <p>When exported as a String, a Uid instance looks like:<br/>
+ * D89EF3043496-00000167D04FC89F-0002<br/>
+ * where the first part represents the mac address, the second the time stamp, and the third the count.
+ * </p>
+ * <p>Not very user friendly, but guaranteed unique.</p>
+ * 
+ * @author Ian Davies - 28 jan. 2019
+ *
+ */
+public final class UidIdentity implements Identity{
 
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	private final String id;
+	private final IdentityScope scope;
+	
+	/**
+	 * protected constructor, as all instantiations should be made through the scope.
+	 * @param scope
+	 */
+	protected UidIdentity(IdentityScope scope) {
+		id = new Uid().toHexString();	
+		this.scope = scope;
+	}
+	
+	@Override
+	public String id() {
+		return id;
+	}
+	
+	@Override
+	public IdentityScope scope() {
+		return scope;
 	}
 
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	@Override
+	public String toString() {
+		return id;
 	}
 
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	@Override
+	public void rename(String oldId, String newId) {
+		throw new UnsupportedOperationException("Renaming of '"+this.getClass().getSimpleName()+"' is not implemented.");
 	}
 
 }

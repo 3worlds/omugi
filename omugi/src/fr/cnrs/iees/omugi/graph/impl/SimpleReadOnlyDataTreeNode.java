@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,47 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.graph.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omugi.graph.NodeFactory;
+import fr.cnrs.iees.omugi.graph.ReadOnlyDataHolder;
+import fr.cnrs.iees.omugi.identity.Identity;
+import fr.cnrs.iees.omugi.properties.ReadOnlyPropertyList;
 
-import org.junit.jupiter.api.Test;
+/**
+ * A {@link SimpleTreeNode} sub-class with read-only (immutable) data.
+ * 
+ * @author Jacques Gignoux - 13 mai 2019
+ *
+ */
+public class SimpleReadOnlyDataTreeNode extends SimpleTreeNode implements ReadOnlyDataHolder {
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+	private ReadOnlyPropertyList properties;
 
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	/**
+	 * This constructor must only be invoked through a {@link NodeFactory}.
+	 * 
+	 * @param id Unique {@link Identity}.
+	 * @param props The node's property list
+	 * @param factory The {@link NodeFactory} that makes this node class.
+	 */
+	public SimpleReadOnlyDataTreeNode(Identity id, 
+			ReadOnlyPropertyList props, NodeFactory factory) {
+		super(id, factory);
+		properties = props;
 	}
 
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	@Override
+	public ReadOnlyPropertyList properties() {
+		return properties;
 	}
 
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	@Override
+	public String toDetailedString() {
+		StringBuilder sb = new StringBuilder(super.toDetailedString());
+		sb.append(' ');
+		sb.append(properties.toString());
+		return sb.toString();
 	}
 
 }

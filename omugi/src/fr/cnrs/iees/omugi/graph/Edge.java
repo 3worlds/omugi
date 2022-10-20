@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,68 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.graph;
 
-import static org.junit.jupiter.api.Assertions.*;
+/**
+ * <p>Ancestor to all edge classes.</p>
+ * 
+ * <p>In all graph definitions, an edge is a connection between two nodes, that cannot exist
+ * in the absence of nodes. In other words, edges are subordinate to nodes: a set containing only
+ * one node or only unconnected nodes is a valid graph, but a set containing only one edge
+ * without its two end nodes is not a graph. A free-floating edge is nonsense.</p> 
+ * 
+ * <p>For this reason, in all the {@code Edge} implementing classes here, all edge constructors and methods 
+ * instantiating an edge require two pre-existing nodes.</p>
+ * 
+ * @author Jacques Gignoux - 10 mai 2019
+ */
+public interface Edge extends Element, Connected<Edge> {
 
-import org.junit.jupiter.api.Test;
+	/**
+	 * Accessor to the start node of this instance.
+	 * 
+	 * @return the start Node
+	 */
+	public Node startNode();
+	
+	/**
+	 * Accessor to the end node of this instance.
+	 * 
+	 * @return the end Node of this edge
+	 */
+	public Node endNode();
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+	/**
+	 * Accessor to the node at the opposite end of this instance.  
+	 * 
+	 * @param other a node at one of the two ends of this edge
+	 * @return the opposite end of this edge - {@code null} if the argument is not found in this edge
+	 */
+	public Node otherNode(Node other);
 
-class ValidPropertyTypesTest {
+	/**
+	 * Setter for both start and end Nodes
+	 * 
+	 * @param start the new start node
+	 * @param end the new end node
+	 */
+	public void connect(Node start, Node end);
 
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
-	}
+	/**
+	 * Accessor to the factory which instantiated this edge
+	 * 
+	 * @return the factory
+	 */
+	public EdgeFactory factory();
 
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
-	}
-
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	
+	@Override
+	public default String classId() {
+		String s = factory().edgeClassName(this.getClass());
+		if (s!=null)
+			return s;
+		else
+			return Element.super.classId();
 	}
 
 }

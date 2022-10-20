@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,48 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.properties;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omugi.graph.property.Property;
+import fr.cnrs.iees.omugi.properties.impl.ReadOnlyPropertyListImpl;
+import fr.cnrs.iees.omugi.properties.impl.SimplePropertyListImpl;
 
-import org.junit.jupiter.api.Test;
+/**
+ * A factory for property lists. Used in {@link fr.cnrs.iees.omugi.graph.GraphFactory GraphFactory}. 
+ * 
+ * @author Jacques Gignoux - 20 déc. 2018
+ *
+ */
+public interface PropertyListFactory {
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
-
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	/**
+	 * Create a read-only property list with property names and values 
+	 * 
+	 * @param properties
+	 * @return
+	 */
+	public default ReadOnlyPropertyList makeReadOnlyPropertyList(Property... properties) {
+		return new ReadOnlyPropertyListImpl(properties);
 	}
-
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	
+	/**
+	 * Create a read-write property list with property names and values 
+	 * 
+	 * @param properties
+	 * @return
+	 */
+	public default SimplePropertyList makePropertyList(Property... properties) {
+		return new SimplePropertyListImpl(properties);
 	}
-
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	
+	/**
+	 * Create a read-write property list with property names, but no values
+	 * 
+	 * @param propertyKeys
+	 * @return
+	 */
+	public default SimplePropertyList makePropertyList(String... propertyKeys) {
+		return new SimplePropertyListImpl(propertyKeys);
 	}
 
 }

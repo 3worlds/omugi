@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,85 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.identity.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omhtk.SaveableAsText;
+import fr.cnrs.iees.omugi.identity.*;
 
-import org.junit.jupiter.api.Test;
+/**
+ * <p>
+ * Implementation of {@link Identity} based on a (label,name) String pair. Works
+ * with {@link PairLocalScope}.
+ * </p>
+ * 
+ * @author Jacques Gignoux - 28 janv. 2019
+ *
+ */
+public class PairIdentity implements Identity {
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+	/**
+	 * The label name separator as a char.
+	 */
+	public static final char LABEL_NAME_SEPARATOR = SaveableAsText.COLON;
+	/**
+	 * The label name separator as a String
+	 */
+	public static final String LABEL_NAME_STR_SEPARATOR = "" + LABEL_NAME_SEPARATOR;
 
-class ValidPropertyTypesTest {
+	private final String label;
+	private final String name;
+	private final IdentityScope scope;
 
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	/**
+	 * protected constructor, as all instantiations should be made through the
+	 * scope.
+	 * 
+	 * @param scope
+	 */
+	protected PairIdentity(String label, String name, IdentityScope scope) {
+		super();
+		this.label = label;
+		this.name = name;
+		this.scope = scope;
 	}
 
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	@Override
+	public String id() {
+		return label + LABEL_NAME_SEPARATOR + name;
 	}
 
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
+	@Override
+	public IdentityScope scope() {
+		return scope;
 	}
 
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
+	/**
+	 * Getter for the Label part (first) of the Identity.
+	 * 
+	 * @return the label.
+	 */
+	public String label() {
+		return label;
 	}
 
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
+	/**
+	 * Getter for the name part (second) of the Identity. Names and unique with in
+	 * the scope.
+	 * 
+	 * @return the name.
+	 */
+	public String name() {
+		return name;
 	}
 
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
+	@Override
+	public String toString() {
+		return id();
 	}
 
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	@Override
+	public void rename(String oldId, String newId) {
+		throw new UnsupportedOperationException("Renaming of '" + this.getClass().getSimpleName() + "' is not implemented.");
 	}
 
 }

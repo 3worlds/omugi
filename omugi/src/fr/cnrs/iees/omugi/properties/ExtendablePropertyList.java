@@ -28,53 +28,27 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.properties;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omhtk.Sealable;
 
-import org.junit.jupiter.api.Test;
-
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
-
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
-	}
-
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
-	}
-
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
-	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
-	}
+/**
+ * <p>A mutable {@linkplain SimplePropertyList}, i.e. which can grow and shrink.</p> 
+ *
+ * <p>The contract is as follows: {@code add...()} methods will add a new property to the list
+ * while {@code set...()} methods will only set a value for an existing property. They should
+ * return an error if the property does not exist.</p>
+ * 
+ * <p>Instances of this class are {@link fr.cnrs.iees.omhtk.Sealable Sealable}, i.e. 
+ * they can be made 
+ * immutable after some time by calling {@code seal()}. This enables, for example,
+ * to read properties from a file without knowing how many are expected, and then
+ * make the property list immutable after the file has been closed.</p>
+ * 
+ * @author Jacques Gignoux - 29-8-2017
+ *
+ */
+public interface ExtendablePropertyList 
+	extends SimplePropertyList, ResizeablePropertyList, Sealable {
 
 }

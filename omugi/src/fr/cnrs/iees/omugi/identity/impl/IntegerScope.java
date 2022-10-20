@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,54 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.identity.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omugi.identity.Identity;
+import fr.cnrs.iees.omugi.identity.IdentityScope;
 
-import org.junit.jupiter.api.Test;
+/**
+ * <p>A very crude but very fast scope to create unique identifiers as incremental long numbers, 
+ * starting at 0. Works with {@link SimpleIdentity}.</p>
+ * 
+ * @author Jacques Gignoux - 13 janv. 2020
+ *
+ */
+public class IntegerScope implements IdentityScope {
+	
+	private String id;
+	private long nextId = 0;
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
-
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	/**
+	 * @param name The name of the scope.
+	 */
+	public IntegerScope(String name) {
+		super();
+		id = name;
 	}
 
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	@Override
+	public String id() {
+		return id;
 	}
 
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
+	@Override
+	public Identity newId() {
+		return new SimpleIdentity(String.valueOf(nextId++),this);
 	}
 
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
+	@Override
+	public void removeId(String id) {
+		throw new UnsupportedOperationException("IntegerScope cannot modify an id");
 	}
 
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
+	@Override
+	public boolean contains(String id) {
+		return Long.parseLong(id)<=nextId;
 	}
 
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	@Override
+	public void addId(String newId) {
+		throw new UnsupportedOperationException("IntegerScope does not store its ids");
 	}
 
 }

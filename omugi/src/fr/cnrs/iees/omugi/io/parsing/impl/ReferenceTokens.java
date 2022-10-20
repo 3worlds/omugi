@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,53 +28,47 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.io.parsing.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omhtk.SaveableAsText;
 
-import org.junit.jupiter.api.Test;
+/**
+ * Token types used in node references. Based on the former IoConstants interface 
+ * in package au.edu.anu.omugi.graph.io.
+ * 
+ * @author Jacques Gignoux - 18 déc. 2018
+ *
+ */
+public enum ReferenceTokens {
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
-
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	// token type	prefix						content type	suffix
+	NODE_REF		('\0',							"token",	SaveableAsText.SLASH),
+	NODE_LABEL		('\0',							"String",	SaveableAsText.COLON),
+	NODE_NAME		(SaveableAsText.COLON,			"String",	'\0'),
+	PROPERTY_NAME	(SaveableAsText.PLUS,			"String",	SaveableAsText.EQUAL),
+	PROPERTY_VALUE	(SaveableAsText.EQUAL,			"Object",	'\0'),
+	;
+	
+	private final char prefix;
+	private final String type;
+	private final char suffix;
+	
+	private ReferenceTokens(char prefix, String type, char suffix) {
+		this.prefix = prefix;
+		this.suffix = suffix;
+		this.type = type;
 	}
-
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	
+	public String tokenType() {
+		return type;
 	}
-
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
+	
+	public String suffix() {
+		return String.valueOf(suffix);
 	}
-
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
-	}
-
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	
+	public String prefix() {
+		return String.valueOf(prefix);
 	}
 
 }

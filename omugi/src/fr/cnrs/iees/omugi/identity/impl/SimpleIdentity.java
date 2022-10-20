@@ -28,53 +28,74 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.omugi.graph.types;
+package fr.cnrs.iees.omugi.identity.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import fr.cnrs.iees.omugi.identity.Identity;
+import fr.cnrs.iees.omugi.identity.IdentityScope;
 
-import org.junit.jupiter.api.Test;
+/**
+ * <p>Implementation of {@link Identity} based on a String. Works with
+ * {@link LocalScope}, {@link ResettableLocalScope} and {@link IntegerScope}.</p>
+ * 
+ * @author Ian Davies - 28 jan. 2019
+ *
+ */
+public final class SimpleIdentity implements Identity {
 
-import au.edu.anu.omhtk.util.Uid;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypes;
+	private String id;
+	private final IdentityScope scope;
 
-class ValidPropertyTypesTest {
-
-	@Test
-	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
+	/**
+	 * protected constructor, as all instantiations should be made through the
+	 * scope.
+	 * 
+	 * @param scope the scope used to instantiate this class
+	 */
+	protected SimpleIdentity(String id, IdentityScope scope) {
+		super();
+		this.id = id;
+		this.scope = scope;
 	}
 
-	@Test
-	void testGetJavaClassName() {
-		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
+	@Override
+	public String id() {
+		return id;
 	}
 
-	@Test
-	void testGetDefaultValue() {
-		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
+	@Override
+	public IdentityScope scope() {
+		return scope;
 	}
 
-	@Test
-	void testIsValid() {
-		assertTrue(ValidPropertyTypes.isValid("Double"));
-		assertTrue(ValidPropertyTypes.isValid("double"));
+	@Override
+	public String toString() {
+		return id;
 	}
+	/*
+	 * renaming can only take if:
+	 * 
+	 * 1) the id is a SimpleIdentity;
+	 * 
+	 * 2) It is contained in a LocalScope;
+	 * 
+	 * 3) If the old id exists, and:
+	 * 
+	 * 4) if the new Id does not exist.
+	 * 
+	 * A better approach may be to implement an editable interface for these
+	 * classes.
+	 */
 
-	@Test
-	void testTypeOf() {
-		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
-	}
-
-	@Test
-	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
-	}
-
-	@Test
-	void testListTypes() {
-//		ValidPropertyTypes.listTypes();
-		assertTrue(true);
+	@Override
+	public void rename(String oldId, String newId) {
+		if (!scope.contains(oldId))
+			throw new IllegalArgumentException("Attempt to rename a non-existent id from '" + oldId + "' to '" + newId + "'");
+		if (scope.contains(newId))
+			throw new IllegalArgumentException(
+					"Attempt to rename an id to one that already exists from '" + oldId + "' to '" + newId + "'");
+		this.id = newId;
+		scope.removeId(oldId);
+		scope.addId(newId);
 	}
 
 }
