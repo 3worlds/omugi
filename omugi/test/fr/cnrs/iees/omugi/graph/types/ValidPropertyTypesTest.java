@@ -68,7 +68,7 @@ class ValidPropertyTypesTest {
 
 	@Test
 	void testGetType() {
-		assertEquals(ValidPropertyTypes.getType("au.edu.anu.omugi.collections.tables.CharTable"),"CharTable");
+		assertEquals(ValidPropertyTypes.getType("fr.cnrs.iees.omugi.collections.tables.CharTable"),"CharTable");
 	}
 
 	@Test

@@ -56,8 +56,8 @@ class ValidPropertyTypesTest {
 		assertEquals(getJavaClassName("java.lang.String"),"java.lang.String");
 		assertEquals(getJavaClassName("String"),"java.lang.String");
 		assertNull(getJavaClassName("string"));
-		assertEquals(getJavaClassName("au.edu.anu.omugi.collections.tables.StringTable"),"au.edu.anu.omugi.collections.tables.StringTable");
-		assertEquals(getJavaClassName("StringTable"),"au.edu.anu.omugi.collections.tables.StringTable");
+		assertEquals(getJavaClassName("fr.cnrs.iees.omugi.collections.tables.StringTable"),"fr.cnrs.iees.omugi.collections.tables.StringTable");
+		assertEquals(getJavaClassName("StringTable"),"fr.cnrs.iees.omugi.collections.tables.StringTable");
 		assertNull(getJavaClassName("List"));
 		assertEquals(getJavaClassName("java.util.List"),"java.util.List");
 	}
@@ -79,7 +79,7 @@ class ValidPropertyTypesTest {
 		assertTrue(isValid("double"));
 		assertTrue(isValid("java.lang.Double"));
 		assertTrue(isValid("ShortTable"));
-		assertTrue(isValid("au.edu.anu.omugi.collections.tables.ShortTable"));
+		assertTrue(isValid("fr.cnrs.iees.omugi.collections.tables.ShortTable"));
 		assertTrue(isValid("IntegerRange"));
 		assertFalse(isValid("string"));
 		assertFalse(isValid("aot.collections.tables.ShortTable"));
@@ -102,7 +102,7 @@ class ValidPropertyTypesTest {
 		assertEquals(getType("String"),"String");
 		assertNull(getType("string"));
 		assertNull(getType("java.lang.string"));
-		assertEquals(getType("au.edu.anu.omugi.collections.tables.IntTable"),"IntTable");
+		assertEquals(getType("fr.cnrs.iees.omugi.collections.tables.IntTable"),"IntTable");
 	}
 
 	@Test
@@ -163,7 +163,7 @@ class ValidPropertyTypesTest {
 		assertTrue(isPrimitiveType("String"));
 		assertFalse(isPrimitiveType("IntegerRange"));
 		assertFalse(isPrimitiveType("DoubleRange"));
-		assertFalse(isPrimitiveType("au.edu.anu.omugi.collections.tables.CharTable"));
+		assertFalse(isPrimitiveType("fr.cnrs.iees.omugi.collections.tables.CharTable"));
 		assertFalse(isPrimitiveType("java.util.List"));
 	}
 

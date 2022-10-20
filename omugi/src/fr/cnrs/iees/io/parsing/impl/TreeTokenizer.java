@@ -118,7 +118,7 @@ label1 node1
 			prop4 = String("coucou") 
 		label4
 	label5 node5 
-		table = au.edu.anu.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false)) 
+		table = fr.cnrs.iees.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false)) 
 		 
 	label6 node6 
 		label7 node7 

@@ -53,7 +53,7 @@ class TreeParserTest {
 			"			prop4 = String(\"coucou\")\n", 
 			"		label4\n",
 			"	label5 node5\n", 
-			"		table = au.edu.anu.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))\n", 
+			"		table = fr.cnrs.iees.omugi.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))\n", 
 			"\n", 
 			"	label6 node6\n", 
 			"		label7 node7\n", 
@@ -84,7 +84,7 @@ class TreeParserTest {
 				"label4:\n" + 
 				"	parent label2:node2\n" + 
 				"label5:node5\n" + 
-				"	table:au.edu.anu.omugi.collections.tables.BooleanTable=([3,2]false,false,false,false,false,false)\n" + 
+				"	table:fr.cnrs.iees.omugi.collections.tables.BooleanTable=([3,2]false,false,false,false,false,false)\n" + 
 				"	parent label1:node1\n" + 
 				"label6:node6\n" + 
 				"	parent label1:node1\n" + 
