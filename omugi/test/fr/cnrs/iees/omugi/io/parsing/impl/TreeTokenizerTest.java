@@ -34,8 +34,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.omugi.io.parsing.impl.TreeTokenizer;
-
 class TreeTokenizerTest {
 
 	String[] test = {"tree // this is a STUPID comment\n", 

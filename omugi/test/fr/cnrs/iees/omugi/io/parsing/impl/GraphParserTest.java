@@ -35,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.omugi.graph.Graph;
-import fr.cnrs.iees.omugi.io.parsing.impl.GraphParser;
-import fr.cnrs.iees.omugi.io.parsing.impl.GraphTokenizer;
 
 class GraphParserTest {
 

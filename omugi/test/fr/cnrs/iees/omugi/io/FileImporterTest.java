@@ -35,7 +35,6 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.omugi.graph.NodeSet;
-import fr.cnrs.iees.omugi.io.FileImporter;
 
 /**
  * 

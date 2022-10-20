@@ -34,8 +34,6 @@ package fr.cnrs.iees.omugi.identity;
 import static org.junit.Assert.assertTrue;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.omugi.identity.Identity;
-import fr.cnrs.iees.omugi.identity.IdentityScope;
 import fr.cnrs.iees.omugi.identity.impl.LocalScope;
 import fr.cnrs.iees.omugi.identity.impl.UniversalScope;
 

@@ -35,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.omugi.collections.tables.Dimensioner;
-
 class DimensionerTest {
 	
 	Dimensioner dim1, dim2, dim3;

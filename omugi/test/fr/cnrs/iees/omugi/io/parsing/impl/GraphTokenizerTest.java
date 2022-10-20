@@ -34,8 +34,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.omugi.io.parsing.impl.GraphTokenizer;
-
 class GraphTokenizerTest {
 
 	String[] test = {"graph // this is a comment\n",

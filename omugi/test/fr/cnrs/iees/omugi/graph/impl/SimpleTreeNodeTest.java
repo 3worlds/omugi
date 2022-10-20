@@ -43,8 +43,6 @@ import org.junit.jupiter.api.Test;
 import fr.cnrs.iees.omugi.graph.Direction;
 import fr.cnrs.iees.omugi.graph.Node;
 import fr.cnrs.iees.omugi.graph.TreeNode;
-import fr.cnrs.iees.omugi.graph.impl.SimpleTreeFactory;
-import fr.cnrs.iees.omugi.graph.impl.SimpleTreeNode;
 
 class SimpleTreeNodeTest {
 

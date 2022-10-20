@@ -1,5 +1,5 @@
 <!--===================================================================================
- ant and ivy scripts for project <omugi> version 0.6.0 (Thu Oct 20 13:24:47 CEST 2022)
+ ant and ivy scripts for project <omugi> version 0.5.0 (Mon Aug 30 13:39:07 CEST 2021)
  author: Jacques Gignoux <jacques.gignoux@upmc.fr>
 
  CAUTION: this file is generated - DO NOT EDIT!
@@ -11,8 +11,8 @@
 	<!-- Artifacts are produced in the project lib directory-->
 	<property name="jarRepo" location="${user.dir}/../lib"/>
 
-	<property name="docRepo" location="${user.dir}/../javadoc"/>	<!-- Use this string as the organisation package -->
-	<property name="org" value="fr.cnrs.iees.omugi"/>
+	<property name="docRepo" location="${user.dir}/../doc/javadoc"/>	<!-- Use this string as the organisation package -->
+	<property name="org" value="au.edu.anu.rscs.aot"/>
 
 	<!-- The project name -->
 	<property name="project" value="omugi"/>
@@ -46,8 +46,8 @@
 			<fileset dir="src"/>
 			<manifest>
 				<attribute name="Implementation-Vendor" value="CNRS/ANU"/>
-				<attribute name="Implementation-Title" value="fr.cnrs.iees.omugi"/>
-				<attribute name="Implementation-Version" value="0.6.0"/>
+				<attribute name="Implementation-Title" value="au.edu.anu.rscs.aot"/>
+				<attribute name="Implementation-Version" value="0.5.0"/>
 				<attribute name="Built-By" value="${user.name}"/>
  			</manifest>
 		</jar>

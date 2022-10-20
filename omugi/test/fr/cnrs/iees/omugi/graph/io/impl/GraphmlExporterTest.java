@@ -45,7 +45,6 @@ import fr.cnrs.iees.omugi.graph.impl.ALEdge;
 import fr.cnrs.iees.omugi.graph.impl.ALGraph;
 import fr.cnrs.iees.omugi.graph.impl.ALGraphFactory;
 import fr.cnrs.iees.omugi.graph.impl.ALNode;
-import fr.cnrs.iees.omugi.graph.io.impl.GraphmlExporter;
 import fr.cnrs.iees.omugi.properties.SimplePropertyList;
 import fr.cnrs.iees.omugi.properties.impl.SimplePropertyListImpl;
 /**

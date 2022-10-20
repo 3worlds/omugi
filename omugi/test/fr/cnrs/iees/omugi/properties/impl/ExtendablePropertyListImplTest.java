@@ -43,7 +43,6 @@ import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.omugi.graph.property.Property;
 import fr.cnrs.iees.omugi.properties.ExtendablePropertyList;
-import fr.cnrs.iees.omugi.properties.impl.ExtendablePropertyListImpl;
 
 class ExtendablePropertyListImplTest {
 	

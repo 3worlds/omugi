@@ -42,7 +42,6 @@ import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.omugi.graph.property.Property;
 import fr.cnrs.iees.omugi.properties.SimplePropertyList;
-import fr.cnrs.iees.omugi.properties.impl.SimplePropertyListImpl;
 
 class SimplePropertyListImplTest {
 

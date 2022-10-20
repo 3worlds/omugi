@@ -35,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.omugi.collections.tables.StringTable;
-
 /**
  * Example of what could be done to parse StringTables using quotes
  * 

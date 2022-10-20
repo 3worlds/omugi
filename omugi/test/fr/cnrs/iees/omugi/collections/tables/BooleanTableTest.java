@@ -36,8 +36,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.omhtk.SaveableAsText;
-import fr.cnrs.iees.omugi.collections.tables.BooleanTable;
-import fr.cnrs.iees.omugi.collections.tables.Dimensioner;
 
 // TODO: Since the code for tables is generated, the tests should also be generated.
 // meanwhile, tests not written for other table types 

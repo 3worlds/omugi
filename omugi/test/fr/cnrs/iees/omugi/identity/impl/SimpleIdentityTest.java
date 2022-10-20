@@ -35,8 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.omugi.identity.IdentityScope;
-import fr.cnrs.iees.omugi.identity.impl.LocalScope;
-import fr.cnrs.iees.omugi.identity.impl.UniversalScope;
 
 class SimpleIdentityTest {
 

@@ -34,8 +34,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.omugi.io.parsing.impl.ReferenceTokenizer;
-
 /**
  * 
  * @author Jacques Gignoux - 18 déc. 2018

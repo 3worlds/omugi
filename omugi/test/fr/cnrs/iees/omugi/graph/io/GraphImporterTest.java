@@ -35,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.omugi.graph.NodeSet;
-import fr.cnrs.iees.omugi.graph.io.GraphImporter;
 import fr.cnrs.iees.omugi.io.parsing.impl.TreeParser;
 
 /**

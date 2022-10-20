@@ -36,7 +36,6 @@ import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.omugi.graph.DataHolder;
 import fr.cnrs.iees.omugi.graph.Node;
-import fr.cnrs.iees.omugi.graph.impl.ALGraphFactory;
 import fr.cnrs.iees.omugi.properties.SimplePropertyList;
 
 /**

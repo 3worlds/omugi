@@ -34,9 +34,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.omugi.io.parsing.impl.TreeParser;
-import fr.cnrs.iees.omugi.io.parsing.impl.TreeTokenizer;
-
 /**
  * 
  * @author Jacques Gignoux - 20 déc. 2018

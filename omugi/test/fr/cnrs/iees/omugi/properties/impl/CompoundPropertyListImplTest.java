@@ -44,9 +44,6 @@ import fr.cnrs.iees.omugi.graph.property.Property;
 import fr.cnrs.iees.omugi.properties.ExtendablePropertyList;
 import fr.cnrs.iees.omugi.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.omugi.properties.SimplePropertyList;
-import fr.cnrs.iees.omugi.properties.impl.CompoundPropertyListImpl;
-import fr.cnrs.iees.omugi.properties.impl.ExtendablePropertyListImpl;
-import fr.cnrs.iees.omugi.properties.impl.SimplePropertyListImpl;
 
 class CompoundPropertyListImplTest {
 	

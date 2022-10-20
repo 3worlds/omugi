@@ -36,8 +36,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.omhtk.utils.*;
-import fr.cnrs.iees.omugi.collections.tables.Dimensioner;
-import fr.cnrs.iees.omugi.collections.tables.ObjectTable;
 
 class ObjectTableTest {
 

@@ -35,11 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
 import fr.cnrs.iees.omhtk.SaveableAsText;
-import fr.cnrs.iees.omugi.collections.tables.BooleanTable;
-import fr.cnrs.iees.omugi.collections.tables.Dimensioner;
-import fr.cnrs.iees.omugi.collections.tables.StringTable;
-import fr.cnrs.iees.omugi.collections.tables.Table;
-import fr.cnrs.iees.omugi.collections.tables.TableAdapter;
 
 class TableTest {
 

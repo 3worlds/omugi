@@ -36,8 +36,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.cnrs.iees.omugi.graph.DataHolder;
-import fr.cnrs.iees.omugi.graph.impl.TreeGraphFactory;
-import fr.cnrs.iees.omugi.graph.impl.TreeGraphNode;
 import fr.cnrs.iees.omugi.properties.SimplePropertyList;
 
 /**

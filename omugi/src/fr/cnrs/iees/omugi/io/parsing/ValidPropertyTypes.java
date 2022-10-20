@@ -35,7 +35,6 @@ import java.util.*;
 import au.edu.anu.omhtk.util.StringUtils;
 import fr.cnrs.iees.omhtk.utils.Interval;
 import fr.cnrs.iees.omugi.collections.tables.*;
-import fr.cnrs.iees.omugi.io.parsing.ValidPropertyTypesTest;
 import au.edu.anu.omhtk.util.IntegerRange;
 
 /**

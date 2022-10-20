@@ -37,9 +37,6 @@ import org.junit.jupiter.api.Test;
 import fr.cnrs.iees.omugi.graph.TreeNode;
 import fr.cnrs.iees.omugi.graph.impl.SimpleTreeFactory;
 import fr.cnrs.iees.omugi.graph.property.Property;
-import fr.cnrs.iees.omugi.io.parsing.impl.NodeReference;
-import fr.cnrs.iees.omugi.io.parsing.impl.ReferenceParser;
-import fr.cnrs.iees.omugi.io.parsing.impl.ReferenceTokenizer;
 import fr.cnrs.iees.omugi.properties.SimplePropertyList;
 import fr.cnrs.iees.omugi.properties.impl.SimplePropertyListImpl;
 
