@@ -33,7 +33,7 @@ package fr.cnrs.iees.properties.impl;
 import java.util.Collection;
 import java.util.List;
 
-import au.edu.anu.omugi.graph.property.Property;
+import fr.cnrs.iees.omugi.graph.property.Property;
 import fr.cnrs.iees.properties.ExtendablePropertyList;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;

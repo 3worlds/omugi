@@ -32,7 +32,7 @@ package fr.cnrs.iees.properties;
 
 import java.util.List;
 
-import au.edu.anu.omugi.graph.property.Property;
+import fr.cnrs.iees.omugi.graph.property.Property;
 
 /**
  * This interface isolates the generic setters for properties. Implementing classes

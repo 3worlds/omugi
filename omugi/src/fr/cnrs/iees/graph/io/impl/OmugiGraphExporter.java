@@ -39,7 +39,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import au.edu.anu.omugi.collections.tables.Table;
 import fr.cnrs.iees.graph.*;
 import fr.cnrs.iees.graph.impl.*;
 import fr.cnrs.iees.graph.io.GraphExporter;
@@ -47,6 +46,7 @@ import fr.cnrs.iees.properties.*;
 import fr.cnrs.iees.properties.impl.ExtendablePropertyListImpl;
 import fr.cnrs.iees.omhtk.SaveableAsText;
 import fr.cnrs.iees.omhtk.utils.Logging;
+import fr.cnrs.iees.omugi.collections.tables.Table;
 
 import static fr.cnrs.iees.io.parsing.TextGrammar.*;
 

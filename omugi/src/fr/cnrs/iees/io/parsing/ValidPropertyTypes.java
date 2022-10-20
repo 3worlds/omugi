@@ -33,8 +33,8 @@ package fr.cnrs.iees.io.parsing;
 import java.util.*;
 
 import au.edu.anu.omhtk.util.StringUtils;
-import au.edu.anu.omugi.collections.tables.*;
 import fr.cnrs.iees.omhtk.utils.Interval;
+import fr.cnrs.iees.omugi.collections.tables.*;
 import au.edu.anu.omhtk.util.IntegerRange;
 
 /**

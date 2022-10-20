@@ -32,9 +32,9 @@ package fr.cnrs.iees.properties.impl;
 
 import java.util.*;
 
-import au.edu.anu.omugi.graph.property.Property;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.omhtk.Textable;
+import fr.cnrs.iees.omugi.graph.property.Property;
 
 /**
  * A read-only property list - property values can only be set at construction time.

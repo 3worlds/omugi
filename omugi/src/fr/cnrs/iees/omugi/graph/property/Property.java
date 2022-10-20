@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,82 +28,55 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.io.parsing.impl;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
-
-import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.impl.SimpleTreeFactory;
-import fr.cnrs.iees.omugi.graph.property.Property;
-import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
+package fr.cnrs.iees.omugi.graph.property;
 
 /**
+ * A property that can be attached to a graph element (node or edge). It is just a (key,value) pair.
  * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * @author Shayne Flint - long ago (2012?)
  *
  */
-// TODO: more tests, with real names and labels
-class ReferenceParserTest {
-	
-	String ref;
-	TreeNode node;
-	SimplePropertyList props;
-	SimpleTreeFactory factory = new SimpleTreeFactory("aa"); 
+public class Property {
 
-	@Test
-	void testParse() {
-		ref = "+prop4=\"blabla\"+prop5=28.96542/label12:node15/labelDeCadix:/+prop8=false";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		assertEquals(p.toString(),"Reference to match\n");
-		p.parse();
-		assertEquals(p.toString(),"Reference to match\n" + 
-				":\n" + 
-				"	prop8=false\n" + 
-				"labelDeCadix:\n" + 
-				"label12:node15\n" + 
-				":\n" + 
-				"	prop4=blabla\n" + 
-				"	prop5=28.96542\n");
+	protected String key;
+	protected Object value;
+	
+	public Property(String key, Object value) {
+		this.key = key;
+		this.value = value;
+	}
+	
+	// used a lot
+	/**
+	 * Get the class name from the value. As a consequence, this will fail if value = {@code null}.
+	 * 
+	 * @return the class name
+	 */
+	public String getClassName() {
+		return value.getClass().getName();
+	}
+	
+	/**
+	 * 
+	 * @return the key
+	 */
+	public String getKey() {
+		return key;
+	}
+	
+	/**
+	 * 
+	 * @return the value
+	 */
+	public Object getValue() {
+		return value;
+	}
+	
+	// JG added - for better readability of Exceptions
+	// ID updated - for the same reason
+	public String toString() {
+//		return("["+super.toString()+":"+key+"="+value+"]");
+		return("["+getClass().getSimpleName()+":"+key+"="+value+"]");
 	}
 
-	@Test
-	void testMatches1() {
-		ref = "+prop1=3.4";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		Property prop = new Property("prop1",3.4);
-		props = new SimplePropertyListImpl(prop);
-		node = factory.makeNode(props);
-		assertTrue(p.matches(node));
-	}
-
-	@Test
-	void testMatches2() {
-		ref = "+prop1=3.4/+prop8=false+prop4=\"blabla\"";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		props = new SimplePropertyListImpl(
-			new Property("prop8",false),
-			new Property("prop4","blabla"));
-		node = factory.makeNode(props);
-		props = new SimplePropertyListImpl(
-			new Property("prop1",3.4));
-		node.connectParent(factory.makeNode(props));
-		assertTrue(p.matches(node));
-	}
-	
-	@Test
-	void testMatches3() {
-		ref = ":blah";
-		node = factory.makeNode("blah");
-		assertTrue(NodeReference.matchesRef(node, ref));
-		node = factory.makeNode("bluh");
-		assertFalse(NodeReference.matchesRef(node, ref));
-	}
-	
-	
 }

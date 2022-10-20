@@ -41,7 +41,7 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.omugi.graph.property.Property;
+import fr.cnrs.iees.omugi.graph.property.Property;
 import fr.cnrs.iees.properties.ExtendablePropertyList;
 
 class ExtendablePropertyListImplTest {

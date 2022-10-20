@@ -34,11 +34,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import au.edu.anu.omugi.graph.property.Property;
-
 import java.util.Set;
 
+import fr.cnrs.iees.omugi.graph.property.Property;
 import fr.cnrs.iees.properties.PropertyListSetters;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.properties.SimplePropertyList;

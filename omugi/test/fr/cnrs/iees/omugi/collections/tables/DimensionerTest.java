@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,82 +28,95 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.io.parsing.impl;
+package fr.cnrs.iees.omugi.collections.tables;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.impl.SimpleTreeFactory;
-import fr.cnrs.iees.omugi.graph.property.Property;
-import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
+import fr.cnrs.iees.omugi.collections.tables.Dimensioner;
 
-/**
- * 
- * @author Jacques Gignoux - 19 déc. 2018
- *
- */
-// TODO: more tests, with real names and labels
-class ReferenceParserTest {
+class DimensionerTest {
 	
-	String ref;
-	TreeNode node;
-	SimplePropertyList props;
-	SimpleTreeFactory factory = new SimpleTreeFactory("aa"); 
+	Dimensioner dim1, dim2, dim3;
 
+	@BeforeEach
+	private void init() {
+		dim1 = new Dimensioner(14);
+		dim2 = new Dimensioner("blue","red","orange");
+		dim3 = new Dimensioner("blue","red","orange");
+	}
+	
+//	private void show(String method,String text) {
+//		System.out.println(method+": "+text);
+//	}
+	
 	@Test
-	void testParse() {
-		ref = "+prop4=\"blabla\"+prop5=28.96542/label12:node15/labelDeCadix:/+prop8=false";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		assertEquals(p.toString(),"Reference to match\n");
-		p.parse();
-		assertEquals(p.toString(),"Reference to match\n" + 
-				":\n" + 
-				"	prop8=false\n" + 
-				"labelDeCadix:\n" + 
-				"label12:node15\n" + 
-				":\n" + 
-				"	prop4=blabla\n" + 
-				"	prop5=28.96542\n");
+	void testDimensionerInt() {
+		assertNotNull(dim1);
 	}
 
 	@Test
-	void testMatches1() {
-		ref = "+prop1=3.4";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		Property prop = new Property("prop1",3.4);
-		props = new SimplePropertyListImpl(prop);
-		node = factory.makeNode(props);
-		assertTrue(p.matches(node));
+	void testDimensionerStringArray() {
+		assertNotNull(dim2);
 	}
 
 	@Test
-	void testMatches2() {
-		ref = "+prop1=3.4/+prop8=false+prop4=\"blabla\"";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		props = new SimplePropertyListImpl(
-			new Property("prop8",false),
-			new Property("prop4","blabla"));
-		node = factory.makeNode(props);
-		props = new SimplePropertyListImpl(
-			new Property("prop1",3.4));
-		node.connectParent(factory.makeNode(props));
-		assertTrue(p.matches(node));
+	void testGetLast() {
+		assertEquals(dim1.getLast(),13);
+		assertEquals(dim2.getLast(),2);
 	}
-	
+
 	@Test
-	void testMatches3() {
-		ref = ":blah";
-		node = factory.makeNode("blah");
-		assertTrue(NodeReference.matchesRef(node, ref));
-		node = factory.makeNode("bluh");
-		assertFalse(NodeReference.matchesRef(node, ref));
+	void testGetLength() {
+		assertEquals(dim1.getLength(),14);
+		assertEquals(dim2.getLength(),3);
 	}
-	
-	
+
+	@Test
+	void testGetName() {
+		assertEquals(dim2.getName(1),"red");
+		try {
+			dim1.getName(12);
+			fail("Name not found exception not raised");
+		}
+		catch (Exception e) {
+			// test OK
+		}
+	}
+
+	@Test
+	void testGetIndex() {
+		assertEquals(dim2.getIndex("blue"),0);
+		try {
+			dim1.getIndex("yellow");
+			fail("No names exception not raised");
+		}
+		catch (Exception e) {
+			// test OK
+		}
+		try {
+			dim2.getIndex("yellow");
+			fail("Name not found exception not raised");
+		}
+		catch (Exception e) {
+			// test OK
+		}
+	}
+
+	@Test
+	void testToString() {
+//		show("testToString",dim1.toString());
+//		show("testToString",dim2.toString());
+		assertEquals(dim1.toString(),"[Dimensioner 0..13]");
+		assertEquals(dim2.toString(),"[Dimensioner 0..2( blue red orange)]");
+	}
+
+	@Test
+	void testEqualsObject() {
+		assertFalse(dim1.equals(dim2));
+		assertTrue(dim2.equals(dim3));
+	}
+
 }

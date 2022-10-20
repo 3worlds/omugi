@@ -1,6 +1,6 @@
 /**
  * <p>Interfaces for lists of attributes associated to graph elements (nodes and edges). An attribute
- * is called a <em>property</em> here and is represented when needed by the {@link au.edu.anu.omugi.graph.property.Property Property} 
+ * is called a <em>property</em> here and is represented when needed by the {@link fr.cnrs.iees.omugi.graph.property.Property Property} 
  * class.</p>
  * 
  * <p>Conceptually, all property lists are lists of (<em>key</em>,<em>value</em>) pairs, where <em>key</em> is any 

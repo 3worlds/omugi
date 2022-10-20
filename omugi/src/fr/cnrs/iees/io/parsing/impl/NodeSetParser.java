@@ -44,8 +44,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import au.edu.anu.omugi.collections.tables.Table;
-import au.edu.anu.omugi.graph.property.Property;
 import fr.cnrs.iees.OmugiClassLoader;
 import fr.cnrs.iees.graph.Edge;
 import fr.cnrs.iees.graph.Graph;
@@ -55,6 +53,8 @@ import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
+import fr.cnrs.iees.omugi.collections.tables.Table;
+import fr.cnrs.iees.omugi.graph.property.Property;
 import fr.cnrs.iees.properties.PropertyListFactory;
 import fr.cnrs.iees.properties.SimplePropertyList;
 

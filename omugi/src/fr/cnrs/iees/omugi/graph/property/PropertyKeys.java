@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,82 +28,82 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.io.parsing.impl;
+package fr.cnrs.iees.omugi.graph.property;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Set;
+import java.util.TreeSet;
 
-import org.junit.jupiter.api.Test;
-
-import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.impl.SimpleTreeFactory;
-import fr.cnrs.iees.omugi.graph.property.Property;
-import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
+import fr.cnrs.iees.omhtk.Sizeable;
 
 /**
+ * An ordered list of property names. For use when a large set of graph elements have the same properties
+ * (cf. {@link fr.cnrs.iees.properties.impl.SharedPropertyListImpl}).
  * 
- * @author Jacques Gignoux - 19 déc. 2018
+ * @author Shayne Flint - looooong ago.
  *
  */
-// TODO: more tests, with real names and labels
-class ReferenceParserTest {
-	
-	String ref;
-	TreeNode node;
-	SimplePropertyList props;
-	SimpleTreeFactory factory = new SimpleTreeFactory("aa"); 
+public class PropertyKeys implements Sizeable {
 
-	@Test
-	void testParse() {
-		ref = "+prop4=\"blabla\"+prop5=28.96542/label12:node15/labelDeCadix:/+prop8=false";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		assertEquals(p.toString(),"Reference to match\n");
-		p.parse();
-		assertEquals(p.toString(),"Reference to match\n" + 
-				":\n" + 
-				"	prop8=false\n" + 
-				"labelDeCadix:\n" + 
-				"label12:node15\n" + 
-				":\n" + 
-				"	prop4=blabla\n" + 
-				"	prop5=28.96542\n");
+	private String[] keySet;
+
+	/**
+	 * 
+	 * @param keys the names of the properties
+	 */
+	public PropertyKeys(String... keys) {
+		int len = keys.length;
+		keySet = new String[len];
+		for (int i=0; i< keys.length; i++)
+			keySet[i] = keys[i];
 	}
 
-	@Test
-	void testMatches1() {
-		ref = "+prop1=3.4";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		Property prop = new Property("prop1",3.4);
-		props = new SimplePropertyListImpl(prop);
-		node = factory.makeNode(props);
-		assertTrue(p.matches(node));
+	/**
+	 * 
+	 * @param keys the names of the properties
+	 */
+	public PropertyKeys(Set<String> keys) {
+		keySet = new String[keys.size()];
+		int i=0;
+		for (String key:keys) {
+			keySet[i]=key;
+			i++;
+		}
+	}
+	
+	/**
+	 * 
+	 * @return a set of property names
+	 */
+	public Set<String> getKeysAsSet() {
+		Set<String> result = new TreeSet<String>();
+		for (String key : keySet)
+			result.add(key);
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @return an array of property names
+	 */
+	public String[] getKeysAsArray() {
+		return keySet;
 	}
 
-	@Test
-	void testMatches2() {
-		ref = "+prop1=3.4/+prop8=false+prop4=\"blabla\"";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		props = new SimplePropertyListImpl(
-			new Property("prop8",false),
-			new Property("prop4","blabla"));
-		node = factory.makeNode(props);
-		props = new SimplePropertyListImpl(
-			new Property("prop1",3.4));
-		node.connectParent(factory.makeNode(props));
-		assertTrue(p.matches(node));
+	@Override
+	public int size() {
+		return keySet.length;
 	}
-	
-	@Test
-	void testMatches3() {
-		ref = ":blah";
-		node = factory.makeNode("blah");
-		assertTrue(NodeReference.matchesRef(node, ref));
-		node = factory.makeNode("bluh");
-		assertFalse(NodeReference.matchesRef(node, ref));
+
+	/**
+	 * 
+	 * @param key the name of a property
+	 * @return the rank of this property in the list
+	 */
+	public int indexOf(String key) {
+		for (int i=0; i< keySet.length; i++) {
+			if (keySet[i].equals(key))
+				return i;
+		}
+		return -1;
 	}
-	
-	
 }

@@ -1,7 +1,7 @@
 /**************************************************************************
  *  OMUGI - One More Ultimate Graph Implementation                        *
  *                                                                        *
- *  Copyright 2018: Shayne Flint, Jacques Gignoux & Ian D. Davies         *
+ *  Copyright 2018: Shayne FLint, Jacques Gignoux & Ian D. Davies         *
  *       shayne.flint@anu.edu.au                                          * 
  *       jacques.gignoux@upmc.fr                                          *
  *       ian.davies@anu.edu.au                                            * 
@@ -28,82 +28,53 @@
  *  along with OMUGI.  If not, see <https://www.gnu.org/licenses/gpl.html>*
  *                                                                        *
  **************************************************************************/
-package fr.cnrs.iees.io.parsing.impl;
+package fr.cnrs.iees.omugi.graph.types;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import fr.cnrs.iees.graph.TreeNode;
-import fr.cnrs.iees.graph.impl.SimpleTreeFactory;
-import fr.cnrs.iees.omugi.graph.property.Property;
-import fr.cnrs.iees.properties.SimplePropertyList;
-import fr.cnrs.iees.properties.impl.SimplePropertyListImpl;
+import au.edu.anu.omhtk.util.Uid;
+import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 
-/**
- * 
- * @author Jacques Gignoux - 19 déc. 2018
- *
- */
-// TODO: more tests, with real names and labels
-class ReferenceParserTest {
-	
-	String ref;
-	TreeNode node;
-	SimplePropertyList props;
-	SimpleTreeFactory factory = new SimpleTreeFactory("aa"); 
+class ValidPropertyTypesTest {
 
 	@Test
-	void testParse() {
-		ref = "+prop4=\"blabla\"+prop5=28.96542/label12:node15/labelDeCadix:/+prop8=false";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		assertEquals(p.toString(),"Reference to match\n");
-		p.parse();
-		assertEquals(p.toString(),"Reference to match\n" + 
-				":\n" + 
-				"	prop8=false\n" + 
-				"labelDeCadix:\n" + 
-				"label12:node15\n" + 
-				":\n" + 
-				"	prop4=blabla\n" + 
-				"	prop5=28.96542\n");
+	void testRecordPropertyType() {
+		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
+		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
 	}
 
 	@Test
-	void testMatches1() {
-		ref = "+prop1=3.4";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		Property prop = new Property("prop1",3.4);
-		props = new SimplePropertyListImpl(prop);
-		node = factory.makeNode(props);
-		assertTrue(p.matches(node));
+	void testGetJavaClassName() {
+		assertEquals(ValidPropertyTypes.getJavaClassName("String"),"java.lang.String");
 	}
 
 	@Test
-	void testMatches2() {
-		ref = "+prop1=3.4/+prop8=false+prop4=\"blabla\"";
-		ReferenceTokenizer tk = new ReferenceTokenizer(ref);
-		ReferenceParser p = tk.parser();
-		props = new SimplePropertyListImpl(
-			new Property("prop8",false),
-			new Property("prop4","blabla"));
-		node = factory.makeNode(props);
-		props = new SimplePropertyListImpl(
-			new Property("prop1",3.4));
-		node.connectParent(factory.makeNode(props));
-		assertTrue(p.matches(node));
+	void testGetDefaultValue() {
+		assertEquals(ValidPropertyTypes.getDefaultValue("Long"),0L);
 	}
-	
+
 	@Test
-	void testMatches3() {
-		ref = ":blah";
-		node = factory.makeNode("blah");
-		assertTrue(NodeReference.matchesRef(node, ref));
-		node = factory.makeNode("bluh");
-		assertFalse(NodeReference.matchesRef(node, ref));
+	void testIsValid() {
+		assertTrue(ValidPropertyTypes.isValid("Double"));
+		assertTrue(ValidPropertyTypes.isValid("double"));
 	}
-	
-	
+
+	@Test
+	void testTypeOf() {
+		assertEquals(ValidPropertyTypes.typeOf(12),"Integer");
+	}
+
+	@Test
+	void testGetType() {
+		assertEquals(ValidPropertyTypes.getType("au.edu.anu.omugi.collections.tables.CharTable"),"CharTable");
+	}
+
+	@Test
+	void testListTypes() {
+//		ValidPropertyTypes.listTypes();
+		assertTrue(true);
+	}
+
 }

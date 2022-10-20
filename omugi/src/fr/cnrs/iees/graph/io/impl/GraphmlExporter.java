@@ -38,14 +38,13 @@ import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.ReadOnlyDataHolder;
 import fr.cnrs.iees.graph.io.GraphExporter;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
+import fr.cnrs.iees.omugi.collections.tables.Table;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-
-import au.edu.anu.omugi.collections.tables.Table;
 
 import static fr.cnrs.iees.io.parsing.TextGrammar.*;
 

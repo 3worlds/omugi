@@ -34,9 +34,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.omugi.collections.tables.Dimensioner;
-import au.edu.anu.omugi.collections.tables.StringTable;
-import au.edu.anu.omugi.collections.tables.Table;
+import fr.cnrs.iees.omugi.collections.tables.Dimensioner;
+import fr.cnrs.iees.omugi.collections.tables.StringTable;
+import fr.cnrs.iees.omugi.collections.tables.Table;
 
 import static fr.cnrs.iees.io.parsing.ValidPropertyTypes.*;
 

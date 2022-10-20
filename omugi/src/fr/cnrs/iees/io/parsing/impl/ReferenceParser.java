@@ -34,12 +34,12 @@ import static fr.cnrs.iees.io.parsing.TextGrammar.*;
 
 import java.util.*;
 
-import au.edu.anu.omugi.collections.tables.Table;
 import fr.cnrs.iees.graph.*;
 import fr.cnrs.iees.io.parsing.Parser;
 import fr.cnrs.iees.io.parsing.impl.ReferenceTokenizer.token;
 import fr.cnrs.iees.properties.ReadOnlyPropertyList;
 import fr.cnrs.iees.omhtk.SaveableAsText;
+import fr.cnrs.iees.omugi.collections.tables.Table;
 
 /**
  * TODO: possible flaw here as classId is used as part of identity

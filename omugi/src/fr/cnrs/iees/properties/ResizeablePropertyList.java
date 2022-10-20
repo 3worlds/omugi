@@ -32,7 +32,7 @@ package fr.cnrs.iees.properties;
 
 import java.util.List;
 
-import au.edu.anu.omugi.graph.property.Property;
+import fr.cnrs.iees.omugi.graph.property.Property;
 
 /**
  * <p>This interface contains the methods required to make a property list 
