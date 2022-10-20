@@ -5,7 +5,7 @@ SimpleDataTreeNode node1
 	prop1 = java.lang.Integer(3)
 	prop2 = java.lang.Double(4.2)
 	SimpleDataTreeNode node5
-		table = au.edu.anu.rscs.aot.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
+		table = au.edu.anu.omhtk.collections.tables.BooleanTable(([3,2]false,false,false,false,false,false))
 	SimpleTreeNode node6
 		SimpleTreeNode node7
 			SimpleTreeNode node8

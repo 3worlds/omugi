@@ -13,7 +13,7 @@
  * behaviours: connection, disconnection, retrieval of neighbour objects in the graph. For
  * implementations to work, they also have to be uniquely identified over the graph 
  * ({@link fr.cnrs.iees.identity.Identity Identity} interface), and various methods from the
- * {@link fr.ens.biologie.generic.Textable Textable} interface are used to display their content 
+ * {@link fr.cnrs.iees.omhtk.Textable Textable} interface are used to display their content 
  * as text. These features are found in the {@link Element} interface and its default abstract
  * implementation, {@link ElementAdapter}, that we recommend to use to write implementations of
  * {@code Node} and {@code Edge}.</p>

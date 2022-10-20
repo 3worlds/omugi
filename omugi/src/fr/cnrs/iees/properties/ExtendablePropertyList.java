@@ -39,7 +39,7 @@ import fr.cnrs.iees.omhtk.Sealable;
  * while {@code set...()} methods will only set a value for an existing property. They should
  * return an error if the property does not exist.</p>
  * 
- * <p>Instances of this class are {@link fr.ens.biologie.generic.Sealable Sealable}, i.e. 
+ * <p>Instances of this class are {@link fr.cnrs.iees.omhtk.Sealable Sealable}, i.e. 
  * they can be made 
  * immutable after some time by calling {@code seal()}. This enables, for example,
  * to read properties from a file without knowing how many are expected, and then

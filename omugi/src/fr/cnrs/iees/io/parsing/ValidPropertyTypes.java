@@ -32,9 +32,10 @@ package fr.cnrs.iees.io.parsing;
 
 import java.util.*;
 
+import au.edu.anu.omhtk.util.StringUtils;
 import au.edu.anu.omugi.collections.tables.*;
-import au.edu.anu.rscs.aot.util.*;
 import fr.cnrs.iees.omhtk.utils.Interval;
+import au.edu.anu.omhtk.util.IntegerRange;
 
 /**
  * <p>
@@ -45,7 +46,7 @@ import fr.cnrs.iees.omhtk.utils.Interval;
  * </p>
  * 
  * <p>NOTE: to be valid as a property, a class must implement the
- * {@link fr.ens.biologie.generic.SaveableAsText SaveableAsText} interface to save as text, 
+ * {@link fr.cnrs.iees.omhtk.SaveableAsText SaveableAsText} interface to save as text, 
  * and a static {@code valueOf(String)} method performing
  * the reverse operation (instantiating from text). As a consequence, all {@code enum}
  * classes are eligible as valid property types since they all have a {@code  valueOf(...)} method matching
@@ -305,7 +306,7 @@ public class ValidPropertyTypes {
 	private enum AotTypes {
 		// class name | java class | default value
 		IntegerRange(IntegerRange.class.getCanonicalName(),
-				new IntegerRange(java.lang.Integer.MIN_VALUE, java.lang.Integer.MAX_VALUE)),
+				new au.edu.anu.omhtk.util.IntegerRange(java.lang.Integer.MIN_VALUE, java.lang.Integer.MAX_VALUE)),
 		Interval(Interval.class.getCanonicalName(),
 				fr.cnrs.iees.omhtk.utils.Interval.open(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
 
@@ -327,9 +328,9 @@ public class ValidPropertyTypes {
 //		TimeStamp		("java.sql.Timestamp", 		new Timestamp(System.currentTimeMillis())),
 //		InetAddress		("java.net.InetAddress",	java.net.InetAddress.getLoopbackAddress()),
 //		Inet4Address	("java.net.Inet4Address", 	java.net.Inet4Address.getLoopbackAddress()),
-//		StringList		("au.edu.anu.rscs.aot.util.StringList", 
+//		StringList		("au.edu.anu.omhtk.util.StringList", 
 //													new StringList("")),
-//		Version			("au.edu.anu.rscs.aot.util.Version", 	
+//		Version			("au.edu.anu.omhtk.util.Version", 	
 //													new Version("0.0")),
 //		StatisticalAggregatesSet("fr.ens.biologie.threeWorlds.resources.core.constants.StatisticalAggregatesSet", 
 //				                                    new StatisticalAggregatesSet(StatisticalAggregates.MEAN)),

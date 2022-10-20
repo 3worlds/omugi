@@ -37,7 +37,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import au.edu.anu.rscs.aot.util.IntegerRange;
+import au.edu.anu.omhtk.util.IntegerRange;
 
 /**
  * <p>Static methods to describe multidimensional indexes using a string with a 

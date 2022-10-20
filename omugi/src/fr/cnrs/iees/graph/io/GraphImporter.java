@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import au.edu.anu.rscs.aot.util.Resources;
+import au.edu.anu.omhtk.util.Resources;
 import fr.cnrs.iees.graph.NodeSet;
 import fr.cnrs.iees.graph.io.impl.OmugiGraphImporter;
 import fr.cnrs.iees.io.parsing.impl.*;

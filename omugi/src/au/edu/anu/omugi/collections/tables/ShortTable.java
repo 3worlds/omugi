@@ -39,7 +39,7 @@ import java.util.Arrays;
  * {@code au.edu.anu.omugi.collections.tables/genPrimitiveClasses.py}
  *  on Thu Aug 21 10:32:35 2014<br/>
  * modified by JG 15/2/2017 to account for {@link Table} and 
- * {@link fr.ens.biologie.generic.DataContainer DataContainer} interfaces
+ * {@link fr.cnrs.iees.omhtk.DataContainer DataContainer} interfaces
  *
  */
 public class ShortTable extends TableAdapter {

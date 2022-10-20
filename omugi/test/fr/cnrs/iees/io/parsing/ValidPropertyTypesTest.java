@@ -129,7 +129,7 @@ class ValidPropertyTypesTest {
 //		FloatTable / au.edu.anu.omugi.collections.tables.FloatTable / {[1],0.0}
 //		StringTable / au.edu.anu.omugi.collections.tables.StringTable / {[1],}
 //		LongTable / au.edu.anu.omugi.collections.tables.LongTable / {[1],0}
-//		IntegerRange / au.edu.anu.rscs.aot.util.IntegerRange / MIN_INTEGER..*
+//		IntegerRange / au.edu.anu.omhtk.util.IntegerRange / MIN_INTEGER..*
 //		BooleanTable / au.edu.anu.omugi.collections.tables.BooleanTable / {[1],false}
 //		byte / java.lang.Byte / 0
 //		double / java.lang.Double / 0.0

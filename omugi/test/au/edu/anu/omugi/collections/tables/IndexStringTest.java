@@ -34,12 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.omugi.collections.tables.BooleanTable;
-import au.edu.anu.omugi.collections.tables.Dimensioner;
-import au.edu.anu.omugi.collections.tables.IndexString;
-import au.edu.anu.omugi.collections.tables.StringTable;
-import au.edu.anu.omugi.collections.tables.Table;
-import au.edu.anu.rscs.aot.util.IntegerRange;
+import au.edu.anu.omhtk.util.IntegerRange;
 
 /**
  * 

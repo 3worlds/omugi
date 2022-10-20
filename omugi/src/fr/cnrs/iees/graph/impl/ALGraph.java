@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import au.edu.anu.rscs.aot.collections.QuickListOfLists;
+import au.edu.anu.omhtk.collections.QuickListOfLists;
 import fr.cnrs.iees.graph.*;
 
 /**

@@ -31,7 +31,7 @@
 package fr.cnrs.iees.graph.impl;
 
 import java.util.*;
-import au.edu.anu.rscs.aot.collections.QuickListOfLists;
+import au.edu.anu.omhtk.collections.QuickListOfLists;
 import fr.cnrs.iees.graph.*;
 import fr.cnrs.iees.omhtk.Textable;
 

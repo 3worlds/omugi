@@ -48,7 +48,7 @@ import fr.cnrs.iees.omhtk.utils.UniqueString;
  * result, this scope implementation becomes slow with increasing numbers of
  * {@code Identity} instances and should only be used with small sets of
  * identifiers. The method used to modify proposed identifiers is
- * {@link fr.ens.biologie.generic.utils.UniqueString#makeString(String, Set)}.
+ * {@link fr.cnrs.iees.omhtk.utils.UniqueString#makeString(String, Set)}.
  * </p>
  * 
  * <p>

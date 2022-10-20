@@ -30,12 +30,11 @@
  **************************************************************************/
 package fr.cnrs.iees.identity.impl;
 
-import au.edu.anu.rscs.aot.util.Uid;
-import fr.cnrs.iees.identity.Identity;
-import fr.cnrs.iees.identity.IdentityScope;
+import au.edu.anu.omhtk.util.Uid;
+import fr.cnrs.iees.identity.*;
 
 /**
- * <p>Implementation of universally unique {@link Identity} based on {@link au.edu.anu.rscs.aot.util.Uid}.
+ * <p>Implementation of universally unique {@link Identity} based on {@link au.edu.anu.omktk.util.Uid}.
  * Works with {@link UniversalScope}.</p>
  * 
  * <p>The identifier is constructed from:</p>

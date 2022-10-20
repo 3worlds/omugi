@@ -39,7 +39,7 @@ import fr.cnrs.iees.omhtk.DataContainer;
  * 
  * @author Shayne Flint - looong ago<br/>
  * modified by JG 15/2/2017 to account for {@link Table} and 
- * {@link fr.ens.biologie.generic.DataContainer DataContainer} interfaces * 
+ * {@link fr.cnrs.iees.omhtk.DataContainer DataContainer} interfaces * 
  *
  */
 public class StringTable extends TableAdapter {

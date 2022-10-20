@@ -34,7 +34,7 @@ import java.io.File;
 import java.util.*;
 import java.util.logging.Logger;
 
-import au.edu.anu.rscs.aot.util.Resources;
+import au.edu.anu.omhtk.util.Resources;
 import fr.cnrs.iees.graph.*;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 import fr.cnrs.iees.io.parsing.impl.TreeTokenizer.treeToken;

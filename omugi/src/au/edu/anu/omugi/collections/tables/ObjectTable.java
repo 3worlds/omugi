@@ -42,8 +42,8 @@ import java.util.Arrays;
  *  
  * @author Shayne Flint - looong ago
  * <ul><li>modified by JG 15/2/2017 to account for {@link Table} and 
- * {@link fr.ens.biologie.generic.DataContainer DataContainer} interfaces</li>
- * <li>modified by JG 1/10/2018 to account for {@link fr.ens.biologie.generic.Textable Textable} interface</li>
+ * {@link fr.cnrs.iees.omhtk.DataContainer DataContainer} interfaces</li>
+ * <li>modified by JG 1/10/2018 to account for {@link fr.cnrs.iees.omhtk.Textable Textable} interface</li>
  * <li>modified by JG 3/2/2021 to fix the {@code valueOf(...)} issues</li>
  * </ul>
  *

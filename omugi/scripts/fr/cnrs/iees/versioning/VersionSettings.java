@@ -36,7 +36,7 @@ public class VersionSettings {
 
 	/** The organisation name as will appear in the ivy module specification - it is a good idea
 	 * to keep it consistent with the project src directory (although not required).*/
-	protected static String ORG = "au.edu.anu.rscs.aot";
+	protected static String ORG = "fr.cnrs.iees.omugi";
 
 	/** The name of the ivy module (this will be the name of the generated jar file for
 	 * dependent projects).*/
@@ -85,7 +85,7 @@ public class VersionSettings {
 	 *
 	 */
 	protected static String[][] DEPS = {
-		{"fr.ens.biologie", "generics", "[0.4.0,)", null},
+		{"fr.cnrs.iees.omhtk", "generics", "[0.4.0,)", null},
 	};
 
 	/** The name of the main class to put in the jar manifest, if any. This enables users to

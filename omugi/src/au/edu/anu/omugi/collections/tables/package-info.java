@@ -8,7 +8,7 @@
  * 
  * <p>Concrete implementations are provided for all primitive types, {@code String} and {@code Object}.</p>
  * 
- * <p>The {@link fr.ens.biologie.generic.SaveableAsText SaveableAsText} interface extended by {@code Table} provides methods to save the
+ * <p>The {@link fr.cnrs.iees.omhtk.SaveableAsText SaveableAsText} interface extended by {@code Table} provides methods to save the
  * table as a String that can be later used to reconstruct a table through a table descendant
  * class static {@code valueOf(...)} method, as in this example:</p>
  * <pre>

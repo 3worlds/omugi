@@ -34,15 +34,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import au.edu.anu.rscs.aot.util.Uid;
+import au.edu.anu.omhtk.util.Uid;
 import fr.cnrs.iees.io.parsing.ValidPropertyTypes;
 
 class ValidPropertyTypesTest {
 
 	@Test
 	void testRecordPropertyType() {
-		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.rscs.aot.util", Uid.nullUid());
-		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.rscs.aot.util");
+		ValidPropertyTypes.recordPropertyType("Uid", "au.edu.anu.omhtk.util", Uid.nullUid());
+		assertEquals(ValidPropertyTypes.getJavaClassName("Uid"),"au.edu.anu.omhtk.util");
 	}
 
 	@Test
