@@ -34,7 +34,7 @@ import au.edu.anu.omhtk.util.Uid;
 import fr.cnrs.iees.omugi.identity.*;
 
 /**
- * <p>Implementation of universally unique {@link Identity} based on {@link au.edu.anu.omktk.util.Uid}.
+ * <p>Implementation of universally unique {@link Identity} based on {@link au.edu.anu.omhtk.util.Uid Uid}.
  * Works with {@link UniversalScope}.</p>
  * 
  * <p>The identifier is constructed from:</p>
