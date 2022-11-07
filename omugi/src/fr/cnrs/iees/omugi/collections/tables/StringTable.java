@@ -301,11 +301,11 @@ public class StringTable extends TableAdapter {
 			sb.append(isep[DIMix]).append(dimensioners[i].getLength());
 		sb.append(bdel[DIMix][BLOCK_CLOSE]);
 		if (flatSize > 0)
-			sb.append(Strings.nullToEmpty(elementToString(0)));
-//			sb.append('"').append(Strings.nullToEmpty(elementToString(0))).append('"');
+//			sb.append(Strings.nullToEmpty(elementToString(0)));
+			sb.append('"').append(Strings.nullToEmpty(elementToString(0))).append('"');
 		for (int i = 1; i < flatSize; i++)
-			sb.append(isep[TABLEix]).append(Strings.nullToEmpty(elementToString(i)));
-//			sb.append(isep[TABLEix]).append('"').append(Strings.nullToEmpty(elementToString(i))).append('"');
+//			sb.append(isep[TABLEix]).append(Strings.nullToEmpty(elementToString(i)));
+			sb.append(isep[TABLEix]).append('"').append(Strings.nullToEmpty(elementToString(i))).append('"');
 		sb.append(bdel[TABLEix][BLOCK_CLOSE]);
 		return sb.toString();
 	}
