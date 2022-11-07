@@ -42,24 +42,29 @@ import org.junit.jupiter.api.Test;
  *
  */
 class StringTableTest {
-private void show (String eg,String value, String saveable) {
+	private void show(String eg, String value, String saveable) {
 //	System.out.println(eg+":\t\'"+value+"\' read as \'"+saveable+"\'");
-}
+	}
+
 	@Test
 	final void testValueOf() {
-		String value = "([4]\"a\", \"table[0,2:3][][0,2][-1]\", \"zer\" , \"12\")";
+		// NB: Quotes around elements are no longer required EXCEPT if the element has a
+//		 literal element separator, not intended to be an element separator. This applies to
+		// saving StringTables that have a index range statement as below.
+		//
+
+		String value = "([4]\"a\",\"table[0,2:3][][0,2][-1]\",\"zer\",\"12\")";
 		StringTable st = StringTable.valueOf(value);
 		assertNotNull(st);
-		assertEquals("([4]\"a\",\"table[0,2:3][][0,2][-1]\",\"zer\",\"12\")",st.toSaveableString());
-		show("example 1",value,st.toSaveableString());
+		assertEquals("([4]\"a\",\"table[0,2:3][][0,2][-1]\",\"zer\",\"12\")", st.toSaveableString());
+		show("example 1", value, st.toSaveableString());
 		// round trip test
 		value = st.toSaveableString();
 		st = StringTable.valueOf(value);
 		assertNotNull(st);
-		show("example 1a",value,st.toSaveableString());
+		show("example 1a", value, st.toSaveableString());
 //		System.out.println("example 1a:\t\'"+value+"\' read as \'"+st.toSaveableString()+"\'");
-		
-		
+
 		value = "";
 		st = StringTable.valueOf(value);
 //		show("example 2",value,st.toString());
@@ -67,84 +72,91 @@ private void show (String eg,String value, String saveable) {
 		assertNull(st);
 
 		// This throws an exception because the dimension is wrong
-		assertThrows(IllegalArgumentException.class,()->StringTable.valueOf("([2]a,b,c,d)"));
-		
-		value="([3]a,\"b,c\",d)";
+		assertThrows(IllegalArgumentException.class, () -> StringTable.valueOf("([2]a,b,c,d)"));
+
+		value = "([3]a,\"b,c\",d)";
 		st = StringTable.valueOf(value);
-		show("example 3",value,st.toSaveableString());
+		show("example 3", value, st.toSaveableString());
 //		System.out.println("example 3 : value \'"+value+"\' read as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
-		
+
 		value = st.toSaveableString();
 		st = StringTable.valueOf(value);
-		show("example 4",value,st.toSaveableString());
+		show("example 4", value, st.toSaveableString());
 //		System.out.println("example 4 : value \'"+value+"\' read as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
-		
-		// This throws an exception because the table separators in the second element are not quoted
-		assertThrows(IllegalArgumentException.class,()->StringTable.valueOf("([4]\"a\", table[0,2:3][][0,2][-1], \"zer\" , \"12\")"));
-		
+
+		// This throws an exception because the table separators in the second element
+		// are not quoted
+		assertThrows(IllegalArgumentException.class,
+				() -> StringTable.valueOf("([4]\"a\", table[0,2:3][][0,2][-1], \"zer\" , \"12\")"));
+
 		value = "([4]a,b, \"c\" , \"d\")";
 		st = StringTable.valueOf(value);
-		show("example 5",value,st.toSaveableString());
-//		System.out.println("example 5 : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
+		show("example 5", value, st.toSaveableString());
 		assertNotNull(st);
-		
+
 		value = "([2]\"\ta\t\",\" b \")";
 		st = StringTable.valueOf(value);
-		show("example 6",value,st.toSaveableString());
-//		System.out.println("example 6 : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
+		show("example 6", value, st.toSaveableString());
 		assertNotNull(st);
 
 		// tests with null content
 		value = "([1]null)";
 		st = StringTable.valueOf(value);
-		show("example 7",value,st.toSaveableString());
-//		System.out.println("example 7 : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
+		show("example 7", value, st.toSaveableString());
 		assertNotNull(st);
 		String s = st.getWithFlatIndex(0);
-		assertEquals(s,"");
+		assertEquals(s, "");
 		value = "([1]\"\")";
 		st = StringTable.valueOf(value);
-		show("example 7b",value,st.toSaveableString());
+		show("example 7b", value, st.toSaveableString());
 //		System.out.println("example 7b : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
 		s = st.getWithFlatIndex(0);
-		assertEquals(s,"");
+		assertEquals(s, "\"\"");
 		value = "([1])";
 		st = StringTable.valueOf(value);
-		show("example 7c",value,st.toSaveableString());
+		show("example 7c", value, st.toSaveableString());
 //		System.out.println("example 7c : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
 		s = st.getWithFlatIndex(0);
-		assertEquals(s,"");
+		assertEquals(s, "");
 		value = "([1]\"null\")";
 		st = StringTable.valueOf(value);
-		show("example 7d",value,st.toSaveableString());
+		show("example 7d", value, st.toSaveableString());
 //		System.out.println("example 7d : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
 		s = st.getWithFlatIndex(0);
-		assertEquals(s,"");
-		
+		assertEquals(s, "");
+
 		value = "([3]null,douze,)";
 		st = StringTable.valueOf(value);
-		show("example 8",value,st.toSaveableString());
+		show("example 8", value, st.toSaveableString());
 //		System.out.println("example 8 : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
 		s = st.getWithFlatIndex(0);
-		assertEquals(s,"");
+		assertEquals(s, "");
 		s = st.getWithFlatIndex(1);
 		assertNotNull(s);
 		// TODO: Is this correct or should an exception have been thrown?
 		s = st.getWithFlatIndex(2);
-		assertEquals(s,"");
-
+		assertEquals(s, "");
 
 		// Try this one day:
-		value = "([1]\"System.out.println(\",\");\")";
-		final String v = value;
-		assertThrows(IllegalArgumentException.class,()->StringTable.valueOf(v));
-		
+		// Works as long as entry containing quotes is not itself within quotes.
+
+		// So we will have problems with toSaveableString for things with embedded
+		// commas i.e index strings!
+		//
+		value = "([1]System.out.println(\",\");)";
+
+		st = StringTable.valueOf(value);
+		assertNotNull(st);
+		s = st.getWithFlatIndex(0);
+		assertEquals(s, "System.out.println(\",\");");
+		show("example 9",value,st.toSaveableString());
+
 	}
 
 }

@@ -34,12 +34,12 @@ import com.google.common.base.Strings;
 
 import fr.cnrs.iees.omhtk.DataContainer;
 
-/** 
- * A multidimensional table of {@code String}s. 
+/**
+ * A multidimensional table of {@code String}s.
  * 
  * @author Shayne Flint - looong ago<br/>
- * modified by JG 15/2/2017 to account for {@link Table} and 
- * {@link fr.cnrs.iees.omhtk.DataContainer DataContainer} interfaces * 
+ *         modified by JG 15/2/2017 to account for {@link Table} and
+ *         {@link fr.cnrs.iees.omhtk.DataContainer DataContainer} interfaces *
  *
  */
 public class StringTable extends TableAdapter {
@@ -129,7 +129,7 @@ public class StringTable extends TableAdapter {
 		return String.class;
 	}
 
-	/** get the value stored at <em>indexes</em>*/
+	/** get the value stored at <em>indexes</em> */
 	public String getByInt(int... indexes) {
 		return data[getFlatIndexByInt(indexes)];
 	}
@@ -139,7 +139,7 @@ public class StringTable extends TableAdapter {
 		data[getFlatIndexByInt(indexes)] = value;
 	}
 
-	/** get the value stored at flat <em>index</em>*/
+	/** get the value stored at flat <em>index</em> */
 	public String getWithFlatIndex(int index) {
 		return data[index];
 	}
@@ -149,7 +149,7 @@ public class StringTable extends TableAdapter {
 		data[index] = value;
 	}
 
-	/** get the value stored at <em>indexes</em>*/
+	/** get the value stored at <em>indexes</em> */
 	public String get(Object... indexes) {
 		return data[getFlatIndex(indexes)];
 	}
@@ -195,10 +195,11 @@ public class StringTable extends TableAdapter {
 	}
 
 	/**
-	 * Construct an instance from a {@code String} previously produced with 
-	 * {@link TableAdapter#toSaveableString() toSaveableString()}. Uses the default block delimiters
-	 * and item separators defined in {@link Table#getDefaultDelimiters()} 
-	 * and {@link Table#getDefaultSeparators()}.
+	 * Construct an instance from a {@code String} previously produced with
+	 * {@link TableAdapter#toSaveableString() toSaveableString()}. Uses the default
+	 * block delimiters and item separators defined in
+	 * {@link Table#getDefaultDelimiters()} and
+	 * {@link Table#getDefaultSeparators()}.
 	 * 
 	 * @param value the {@code String} to read data from
 	 * @return the new instance
@@ -208,15 +209,48 @@ public class StringTable extends TableAdapter {
 	}
 
 	/**
-	 * Construct an instance from a {@code String} previously produced with 
+	 * Construct an instance from a {@code String} previously produced with
 	 * {@link TableAdapter#toSaveableString toSaveableString(...)}.
 	 * 
 	 * @param value the {@code String} to read data from
-	 * @param bdel block delimiters to use
-	 * @param isep item separators to use
+	 * @param bdel  block delimiters to use
+	 * @param isep  item separators to use
 	 * @return the new instance
 	 */
 	public static StringTable valueOf(String value, char[][] bdel, char[] isep) {
+//		if (value == null)
+//			return null;
+//		if (value.isBlank())
+//			return null;
+//		if (value.isEmpty())
+//			return null;
+//		value = value.trim();
+//		String content = TableAdapter.getBlockContent(value, bdel[TABLEix]);
+//		String dims = content.substring(0, content.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
+//		StringTable result = new StringTable(readDimensioners(dims.trim(), bdel[DIMix], isep[DIMix]));
+//		int size = result.size();
+//		result.clear();
+//		String tableEntries = content.substring(content.indexOf(bdel[DIMix][BLOCK_CLOSE]) + 1);
+//		String sep = "" + isep[TABLEix];
+//		// https://stackoverflow.com/questions/1757065/java-splitting-a-comma-separated-string-but-ignoring-commas-in-quotes
+//		String rgxIgnoreSepWithinQuotes = sep + "(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+//		String[] entries = tableEntries.split(rgxIgnoreSepWithinQuotes, -1);
+//		if (size != entries.length)
+//			throw new IllegalArgumentException("Number of table entries does not match the table size. Table size = "
+//					+ size + " Number of entries = " + entries.length + ",");
+//		for (int i = 0; i < result.flatSize; i++)
+//			if (entries[i].equals("null") || entries[i].equals("\"null\"") || entries[i].isBlank()
+//					|| entries[i].isEmpty())
+//				result.data[i] = "";
+//			else
+//				result.data[i] = entries[i];
+//		
+//		System.out.println(value);
+//		System.out.println(result.toSaveableString());
+//		System.out.println();
+//		
+//		return result;
+
 		value = value.trim();
 		if ((value == null) || value.isBlank() || value.isEmpty())
 			return null;
@@ -267,11 +301,11 @@ public class StringTable extends TableAdapter {
 			sb.append(isep[DIMix]).append(dimensioners[i].getLength());
 		sb.append(bdel[DIMix][BLOCK_CLOSE]);
 		if (flatSize > 0)
-			sb.append('"').append(Strings.nullToEmpty(elementToString(0))).append('"');
+			sb.append(Strings.nullToEmpty(elementToString(0)));
+//			sb.append('"').append(Strings.nullToEmpty(elementToString(0))).append('"');
 		for (int i = 1; i < flatSize; i++)
-			sb.append(isep[TABLEix]).append('"')
-				.append(Strings.nullToEmpty(elementToString(i)))
-				.append('"');
+			sb.append(isep[TABLEix]).append(Strings.nullToEmpty(elementToString(i)));
+//			sb.append(isep[TABLEix]).append('"').append(Strings.nullToEmpty(elementToString(i))).append('"');
 		sb.append(bdel[TABLEix][BLOCK_CLOSE]);
 		return sb.toString();
 	}
