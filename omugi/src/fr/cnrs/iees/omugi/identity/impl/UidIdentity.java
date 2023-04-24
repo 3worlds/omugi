@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.identity.impl;
 
+import java.util.Objects;
+
 import au.edu.anu.omhtk.util.Uid;
 import fr.cnrs.iees.omugi.identity.*;
 
@@ -58,6 +60,8 @@ public final class UidIdentity implements Identity{
 
 	private final String id;
 	private final IdentityScope scope;
+	// hash code for fast indexing
+	private int hash = 0;
 	
 	/**
 	 * protected constructor, as all instantiations should be made through the scope.
@@ -86,6 +90,29 @@ public final class UidIdentity implements Identity{
 	@Override
 	public void rename(String oldId, String newId) {
 		throw new UnsupportedOperationException("Renaming of '"+this.getClass().getSimpleName()+"' is not implemented.");
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0)
+			hash = Objects.hash(id,scope); 
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof UidIdentity))
+			return false;
+		UidIdentity other = (UidIdentity) obj;
+		return Objects.equals(id,other.id) && Objects.equals(scope,other.scope);
 	}
 
 }

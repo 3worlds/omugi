@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.collections.tables;
 
+import java.util.Arrays;
+
 /**
  * A multidimensional table of {@code long} integers.
  * 
@@ -192,6 +194,34 @@ public class LongTable extends TableAdapter {
 		}
 		result.data[i] = Long.valueOf(ss);
 		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0) {
+			final int prime = 31;
+			hash = super.hashCode();
+			hash = prime * hash + Arrays.hashCode(data);
+		}
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof LongTable))
+			return false;
+		LongTable other = (LongTable) obj;
+		return Arrays.equals(data, other.data);
 	}
 
 }

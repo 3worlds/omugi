@@ -34,12 +34,6 @@ import static fr.cnrs.iees.omugi.io.parsing.TextGrammar.*;
 
 import fr.cnrs.iees.omhtk.*;
 
-
-
-
-
-
-
 /**
  * <p>
  * An interface for multidimensional access to data. Basically there are three

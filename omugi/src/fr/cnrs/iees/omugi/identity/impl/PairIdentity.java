@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.identity.impl;
 
+import java.util.Objects;
+
 import fr.cnrs.iees.omhtk.SaveableAsText;
 import fr.cnrs.iees.omugi.identity.*;
 
@@ -56,6 +58,8 @@ public class PairIdentity implements Identity {
 	private final String label;
 	private final String name;
 	private final IdentityScope scope;
+	// hash code for fast indexing
+	private int hash = 0;
 
 	/**
 	 * protected constructor, as all instantiations should be made through the
@@ -107,6 +111,31 @@ public class PairIdentity implements Identity {
 	@Override
 	public void rename(String oldId, String newId) {
 		throw new UnsupportedOperationException("Renaming of '" + this.getClass().getSimpleName() + "' is not implemented.");
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0)
+			hash = Objects.hash(label, name, scope);
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof PairIdentity))
+			return false;
+		PairIdentity other = (PairIdentity) obj;
+		return Objects.equals(label, other.label) 
+			&& Objects.equals(name, other.name)
+			&& Objects.equals(scope, other.scope);
 	}
 
 }

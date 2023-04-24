@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.collections.tables;
 
+import java.util.Arrays;
+
 /**
  * A multidimensional table of {@code boolean}s.
  * 
@@ -195,6 +197,34 @@ public class BooleanTable extends TableAdapter {
 	 */
 	public static BooleanTable valueOf(String value) {
 		return BooleanTable.valueOf(value,Table.getDefaultDelimiters(),Table.getDefaultSeparators());
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0) {
+			final int prime = 31;
+			hash = super.hashCode();
+			hash = prime * hash + Arrays.hashCode(data);
+		}
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof BooleanTable))
+			return false;
+		BooleanTable other = (BooleanTable) obj;
+		return Arrays.equals(data, other.data);
 	}
 	
 }

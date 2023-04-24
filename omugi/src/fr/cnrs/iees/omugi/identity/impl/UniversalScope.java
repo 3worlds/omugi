@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.identity.impl;
 
+import java.util.Objects;
+
 import fr.cnrs.iees.omhtk.utils.UniqueString;
 import fr.cnrs.iees.omugi.identity.*;
 
@@ -96,6 +98,27 @@ public class UniversalScope implements IdentityScope {
 	public void addId(String newId) {
 		throw new UnsupportedOperationException(
 				"Adding an id to '" + this.getClass().getSimpleName() + "' is not implemented  [" + newId + "]");
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof UniversalScope))
+			return false;
+		UniversalScope other = (UniversalScope) obj;
+		return Objects.equals(id, other.id);
 	}
 
 }

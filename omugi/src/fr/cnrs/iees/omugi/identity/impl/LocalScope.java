@@ -78,7 +78,7 @@ public class LocalScope implements IdentityScope {
 	 */
 	public LocalScope(String name) {
 		super();
-		id = UniqueString.makeString(name, scopeIds);
+		id = UniqueString.makeString(name,scopeIds);
 		scopeIds.add(id);
 	}
 
@@ -130,6 +130,27 @@ public class LocalScope implements IdentityScope {
 	@Override
 	public void addId(String newId) {
 		ids.add(newId);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof LocalScope))
+			return false;
+		LocalScope other = (LocalScope) obj;
+		return Objects.equals(id, other.id);
 	}
 
 }

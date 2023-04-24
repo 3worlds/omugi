@@ -130,5 +130,24 @@ public class PairLocalScope implements IdentityScope {
 		throw new UnsupportedOperationException("Adding an id to '"+this.getClass().getSimpleName()+"' is not implemented  ["+newId+"]");		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof PairLocalScope))
+			return false;
+		PairLocalScope other = (PairLocalScope) obj;
+		return Objects.equals(id, other.id);
+	}
 }

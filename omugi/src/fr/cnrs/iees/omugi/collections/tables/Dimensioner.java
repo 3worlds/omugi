@@ -30,6 +30,9 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.collections.tables;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * <p>A class to set the dimensions of other objects (typically, multi-dimensional containers such
  * as {@link Table}). It will store or generate the relevant indexes to access the object(s) it
@@ -42,6 +45,8 @@ public class Dimensioner {
 
 	private int last;
 	private String[] names;
+	// hash code for faster comparison in maps
+	private int hash = 0;
 	
 	/**
 	 * Simple constructor just defining the length of the dimension. The indexes will 
@@ -126,27 +131,31 @@ public class Dimensioner {
 		return result;
 	}
 
-// This class is NOT Textable, so please stop confusion.	
-//	public String toShortString() {
-//		return "[" + "0.." + last + "]";
-//	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0) {
+			final int prime = 31;
+			hash = 1;
+			hash = prime * hash + Arrays.hashCode(names);
+			hash = prime * hash + Objects.hash(last);
+		}
+		return hash;
+	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (Dimensioner.class.isAssignableFrom(obj.getClass())) {
-			Dimensioner dim = (Dimensioner) obj;
-			if (dim.last==last) {
-				if (names!=null) {
-					for (int i=0; i<names.length; i++)
-						if (!names[i].equals(dim.names[i]))
-							return false;
-					return true;
-				}
-				return true;
-			}
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Dimensioner))
 			return false;
-		}
-		return false;
+		Dimensioner other = (Dimensioner) obj;
+		return last == other.last && Arrays.equals(names,other.names);
 	}
 	
 }

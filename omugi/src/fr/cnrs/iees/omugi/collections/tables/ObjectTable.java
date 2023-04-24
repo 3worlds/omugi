@@ -188,4 +188,32 @@ public class ObjectTable<T> extends TableAdapter {
 		return valueOf(value,Table.getDefaultDelimiters(),Table.getDefaultSeparators());
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0) {
+			final int prime = 31;
+			hash = super.hashCode();
+			hash = prime * hash + Arrays.deepHashCode(data);
+		}
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof ObjectTable))
+			return false;
+		ObjectTable<?> other = (ObjectTable<?>) obj;
+		return Arrays.deepEquals(data, other.data);
+	}
+
 }

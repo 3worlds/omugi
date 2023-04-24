@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.collections.tables;
 
+import java.util.Arrays;
+
 import com.google.common.base.Strings;
 
 import fr.cnrs.iees.omhtk.DataContainer;
@@ -308,6 +310,34 @@ public class StringTable extends TableAdapter {
 			sb.append(isep[TABLEix]).append('"').append(Strings.nullToEmpty(elementToString(i))).append('"');
 		sb.append(bdel[TABLEix][BLOCK_CLOSE]);
 		return sb.toString();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0) {
+			final int prime = 31;
+			hash = super.hashCode();
+			hash = prime * hash + Arrays.hashCode(data);
+		}
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof StringTable))
+			return false;
+		StringTable other = (StringTable) obj;
+		return Arrays.equals(data, other.data);
 	}
 
 }

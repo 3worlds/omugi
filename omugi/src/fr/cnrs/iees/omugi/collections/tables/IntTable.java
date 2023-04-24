@@ -195,4 +195,32 @@ public class IntTable extends TableAdapter {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0) {
+			final int prime = 31;
+			hash = super.hashCode();
+			hash = prime * hash + Arrays.hashCode(data);
+		}
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof IntTable))
+			return false;
+		IntTable other = (IntTable) obj;
+		return Arrays.equals(data, other.data);
+	}
+
 }

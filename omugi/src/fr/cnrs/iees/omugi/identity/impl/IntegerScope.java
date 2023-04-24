@@ -30,6 +30,9 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.identity.impl;
 
+import java.util.Objects;
+
+import fr.cnrs.iees.omhtk.utils.UniqueString;
 import fr.cnrs.iees.omugi.identity.Identity;
 import fr.cnrs.iees.omugi.identity.IdentityScope;
 
@@ -50,7 +53,8 @@ public class IntegerScope implements IdentityScope {
 	 */
 	public IntegerScope(String name) {
 		super();
-		id = name;
+		id = UniqueString.makeString(name,scopeIds);
+		scopeIds.add(id);
 	}
 
 	@Override
@@ -76,6 +80,27 @@ public class IntegerScope implements IdentityScope {
 	@Override
 	public void addId(String newId) {
 		throw new UnsupportedOperationException("IntegerScope does not store its ids");
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof IntegerScope))
+			return false;
+		IntegerScope other = (IntegerScope) obj;
+		return Objects.equals(id, other.id);
 	}
 
 }

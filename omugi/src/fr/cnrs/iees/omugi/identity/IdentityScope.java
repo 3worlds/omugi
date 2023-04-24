@@ -122,8 +122,4 @@ public interface IdentityScope {
 	 */
 	public void addId(String newId);
 
-	
-	
-	
-
 }
