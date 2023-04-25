@@ -59,7 +59,7 @@ class SimpleTreeTest {
 	//  └─tn3
 	
 	@BeforeEach
-	private void init() {
+	void init() {
 		f = new SimpleTreeFactory("cuckoo");
 		tn1 = f.makeNode("tn1");
 		tn2 = f.makeNode("tn1");

@@ -41,7 +41,7 @@ class TableTest {
 	private Table tb;
 	
 	@BeforeEach
-	private void init() {
+	void init() {
 		Dimensioner dim1 = new Dimensioner(5);
 		Dimensioner dim2 = new Dimensioner(3);
 		Dimensioner dim3 = new Dimensioner(2);

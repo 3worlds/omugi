@@ -55,7 +55,7 @@ class ALGraphTest {
 	//     <--e2--- 
 
 	@BeforeEach
-	private void init() {
+	void init() {
 		f = new ALGraphFactory("bzt");
 		n1 = f.makeNode("n1");
 		n2 = f.makeNode("n1");

@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import fr.cnrs.iees.omugi.graph.property.Property;
@@ -60,6 +61,8 @@ public class CompoundPropertyListImpl implements SimplePropertyList {
 
 	private Map<String,ReadOnlyPropertyList> readOnlyProps = new HashMap<>();
 	private Map<String,SimplePropertyList> readWriteProps = new HashMap<>();
+	// hash code for fast indexing
+	private int hash = 0;
 	
 	/**
 	 * Constructor from a list of property lists
@@ -258,4 +261,30 @@ public class CompoundPropertyListImpl implements SimplePropertyList {
 
 		return sb.toString();
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0)
+			hash = Objects.hash(readOnlyProps, readWriteProps); 
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof CompoundPropertyListImpl))
+			return false;
+		CompoundPropertyListImpl other = (CompoundPropertyListImpl) obj;
+		return Objects.equals(readOnlyProps,other.readOnlyProps)
+			&& Objects.equals(readWriteProps,other.readWriteProps);
+	}
+	
+	
 }

@@ -64,7 +64,7 @@ class TreeGraphNodeTest {
 	// e2: n4-->n1
 
 	@BeforeEach
-	private void init() {
+	void init() {
 		f = new TreeGraphFactory("Brf");
 		n1 = f.makeNode("n1");
 		n2 = f.makeNode("n1");

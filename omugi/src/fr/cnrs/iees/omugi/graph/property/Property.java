@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.graph.property;
 
+import java.util.Objects;
+
 /**
  * A property that can be attached to a graph element (node or edge). It is just a (key,value) pair.
  * 
@@ -77,6 +79,27 @@ public class Property {
 	public String toString() {
 //		return("["+super.toString()+":"+key+"="+value+"]");
 		return("["+getClass().getSimpleName()+":"+key+"="+value+"]");
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(key,value);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Property))
+			return false;
+		Property other = (Property) obj;
+		return Objects.equals(key, other.key) && Objects.equals(value, other.value);
 	}
 
 }

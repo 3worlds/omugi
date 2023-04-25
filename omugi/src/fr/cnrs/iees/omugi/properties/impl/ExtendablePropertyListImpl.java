@@ -237,4 +237,6 @@ public class ExtendablePropertyListImpl
 		return clone;
 	}
 
+	// no equals or hashCode methods - those of ReadOnlyPropertyListImpl are OK.
+
 }

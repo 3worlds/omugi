@@ -165,4 +165,6 @@ public class SimplePropertyListImpl
 		return this;
 	}
 
+	// no equals or hashCode methods - those of ReadOnlyPropertyListImpl are OK.
+	
 }

@@ -40,7 +40,7 @@ class DimensionerTest {
 	Dimensioner dim1, dim2, dim3;
 
 	@BeforeEach
-	private void init() {
+	void init() {
 		dim1 = new Dimensioner(14);
 		dim2 = new Dimensioner("blue","red","orange");
 		dim3 = new Dimensioner("blue","red","orange");

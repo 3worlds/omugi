@@ -30,6 +30,7 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.graph.property;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -45,6 +46,8 @@ import fr.cnrs.iees.omhtk.Sizeable;
 public class PropertyKeys implements Sizeable {
 
 	private String[] keySet;
+	// hash code for fast indexing
+	private int hash = 0;
 
 	/**
 	 * 
@@ -106,4 +109,32 @@ public class PropertyKeys implements Sizeable {
 		}
 		return -1;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0) {
+			final int prime = 31;
+			int hash = 1;
+			hash = prime * hash + Arrays.hashCode(keySet);
+		}
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof PropertyKeys))
+			return false;
+		PropertyKeys other = (PropertyKeys) obj;
+		return Arrays.equals(keySet, other.keySet);
+	}
+	
+	
 }

@@ -30,10 +30,12 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.properties;
 
+import java.util.Objects;
+
 import fr.cnrs.iees.omhtk.*;
 
 /**
- * A read-only property list, ie with getters but no setters.
+ * <p>A read-only property list, ie with getters but no setters.</p>
  * 
  * @author gignoux - 15 juin 2017
  *
@@ -44,7 +46,7 @@ public interface ReadOnlyPropertyList
 	/**
 	 * Compares the keys of two property lists
 	 * 
-	 * @param list another property list to cmopare to
+	 * @param list another property list to compare to
 	 * @return {@code true} if both lists have the same property names
 	 */
 	public default boolean hasTheSamePropertiesAs(ReadOnlyPropertyList list) {
@@ -55,6 +57,23 @@ public interface ReadOnlyPropertyList
 						return false;
 				return true;
 			}
+		return false;
+	}
+	
+	/**
+	 * Compares the content of two property lists. NB: calls {@link hasTheSamePropertiesAs(...)}
+	 * and then checks equality for all values.
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public default boolean hasTheSamePropertyValuesAs(ReadOnlyPropertyList list) {
+		if (hasTheSamePropertiesAs(list)) {
+			for (String key:getKeysAsSet())
+				if (!(Objects.equals(getPropertyValue(key),list.getPropertyValue(key))))
+					return false;
+			return true;
+		}
 		return false;
 	}
 	

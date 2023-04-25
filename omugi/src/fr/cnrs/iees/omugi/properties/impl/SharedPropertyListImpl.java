@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.properties.impl;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 
 import fr.cnrs.iees.omugi.graph.property.PropertyKeys;
@@ -51,9 +53,12 @@ import fr.cnrs.iees.omugi.properties.SimplePropertyList;
 public class SharedPropertyListImpl
 		implements SimplePropertyList {
 
-	protected PropertyKeys keys; // shared between many instances of this class
-									// for saving space
+	// shared between many instances of this class for saving space
+	protected PropertyKeys keys; 
+	// local to this instance
 	protected Object[] values;
+	// hash code for fast indexing
+	protected int hash = 0;
 
 	// Constructors
 	//
@@ -176,6 +181,33 @@ public class SharedPropertyListImpl
 					.append("=")
 					.append(values[i]);
 		return sb.toString();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0) {
+			final int prime = 31;
+			hash = 1;
+			hash = prime * hash + Arrays.deepHashCode(values);
+			hash = prime * hash + Objects.hash(keys);
+		}
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (getClass() != obj.getClass())
+			return false;
+		SharedPropertyListImpl other = (SharedPropertyListImpl) obj;
+		return Objects.equals(keys, other.keys) && Arrays.deepEquals(values, other.values);
 	}
 
 }

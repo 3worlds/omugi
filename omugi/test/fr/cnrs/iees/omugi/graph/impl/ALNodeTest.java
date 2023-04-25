@@ -59,7 +59,7 @@ class ALNodeTest {
 	//     <--e2--- 
 
 	@BeforeEach
-	private void init() {
+	void init() {
 		f = new ALGraphFactory("coucou");
 		nodes = new HashMap<String,String>();
 		n1 = f.makeNode();

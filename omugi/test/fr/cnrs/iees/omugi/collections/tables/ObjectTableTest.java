@@ -49,7 +49,7 @@ class ObjectTableTest {
 //	}
 	
 	@BeforeEach
-	private void init() {
+	void init() {
 		inter = Interval.open(1.2,3.5);
 		inter1 = Interval.openToPosInf(0.2);
 		inter2 = Interval.halfOpenSup(12.8, 25.4);

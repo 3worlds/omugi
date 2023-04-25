@@ -49,7 +49,7 @@ class TreeGraphDataNodeTest {
 	private TreeGraphNode n1;
 
 	@BeforeEach
-	private void init() {
+	void init() {
 		f = new TreeGraphFactory("Grtz");
 		SimplePropertyList p;
 		p = f.nodePropertyFactory().makePropertyList("a","b","c");

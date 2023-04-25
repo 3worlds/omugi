@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.properties.impl;
 
+import java.util.Objects;
+
 import fr.cnrs.iees.omugi.graph.property.PropertyKeys;
 import fr.cnrs.iees.omugi.properties.SimplePropertyList;
 import fr.cnrs.iees.omugi.properties.SimpleWriteProtectablePropertyList;
@@ -56,7 +58,6 @@ public class SharedWriteProtectablePropertyListImpl extends SharedPropertyListIm
 		implements SimpleWriteProtectablePropertyList {
 	
 	private boolean readOnly = false;
-
 	
 	// Constructors
 	// 
@@ -99,7 +100,6 @@ public class SharedWriteProtectablePropertyListImpl extends SharedPropertyListIm
 	
 	// Cloneable methods
 	//	
-
 	
 	// WriteProtectable methods
 	//
@@ -119,6 +119,34 @@ public class SharedWriteProtectablePropertyListImpl extends SharedPropertyListIm
 	public SimpleWriteProtectablePropertyList writeDisable() {
 		readOnly = true;
 		return this;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0) {
+			final int prime = 31;
+			hash = super.hashCode();
+			hash = prime * hash + Objects.hash(readOnly);
+		}
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof SharedWriteProtectablePropertyListImpl))
+			return false;
+		SharedWriteProtectablePropertyListImpl other = (SharedWriteProtectablePropertyListImpl) obj;
+		return readOnly == other.readOnly;
 	}
 
 }

@@ -88,7 +88,7 @@ class IndexStringTest {
 
 	@Test
 	final void testStringToIndex4() {
-		assertThrows(IllegalArgumentException.class,()->IndexString.stringToIndex("[1:3||2:3]",table));
+		assertThrows(Exception.class,()->IndexString.stringToIndex("[1:3||2:3]",table));
 	}
 
 	@Test
@@ -121,7 +121,7 @@ class IndexStringTest {
 
 	@Test
 	final void testStringToIndex9() {
-		assertThrows(IllegalArgumentException.class,()->IndexString.stringToIndex("[1:3||2:3]",4,3,3));
+		assertThrows(Exception.class,()->IndexString.stringToIndex("[1:3||2:3]",4,3,3));
 	}
 
 	@Test

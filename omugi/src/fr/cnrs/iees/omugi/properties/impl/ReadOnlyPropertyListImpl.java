@@ -46,6 +46,8 @@ import fr.cnrs.iees.omugi.properties.ReadOnlyPropertyList;
 public class ReadOnlyPropertyListImpl implements ReadOnlyPropertyList, Textable {
 
 	protected SortedMap<String, Object> propertyMap = new TreeMap<String, Object>();
+	// hash code for fast indexing
+	private int hash = 0;
 	
 	// Constructors
 	
@@ -140,6 +142,29 @@ public class ReadOnlyPropertyListImpl implements ReadOnlyPropertyList, Textable 
 			} else
 				sb.append(" ").append(e.getKey()).append("=").append(e.getValue());
 		return sb.toString();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		if (hash==0)
+			hash = Objects.hash(propertyMap);
+		return hash;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (getClass() != obj.getClass())
+			return false;
+		ReadOnlyPropertyListImpl other = (ReadOnlyPropertyListImpl) obj;
+		return Objects.equals(propertyMap,other.propertyMap);
 	}
 
 }

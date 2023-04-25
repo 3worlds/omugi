@@ -30,6 +30,8 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.graph;
 
+import java.util.Objects;
+
 import fr.cnrs.iees.omugi.identity.Identity;
 import fr.cnrs.iees.omugi.identity.IdentityScope;
 
@@ -99,29 +101,31 @@ public abstract class ElementAdapter implements Element {
 		return "["+toShortString()+"]";
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+
 	/**
-	 * Two elements are equal if they have the same id within the same scope
+	 *  <p>NOTE: graph elements ({@link Node} and {@link Edge} and all their descendants) all have
+	 *  a unique identifier (within a given scope). Hence equality is only a matter of comparing their
+	 *  unique ids.
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object) 
+	 * @see {@linkplain Identity}
+	 * @see {@linkplain IdentityScope}
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj==null)
+		if (this == obj)
+			return true;
+		if (!(obj instanceof ElementAdapter))
 			return false;
-		if (!(obj instanceof Element))
-			return false;
-		Element e = (Element) obj;
-		return (scope().id().equals(e.scope().id()) &&
-				id().equals(e.id()));
-	}
-	
-	// This is important when using HashSets or HahsMaps: to make sure graph elements are only
-	// considered different if they differ by classId+UniqueId, their hashCode must be computed
-	// based on classId+UniqueId. Otherwise Object.hashCode() is called to compute the Hash
-	// for the Map/Set and no subsequent call to .equals() is made, so elements with other
-	// differences than classId+uniqueId will be considered different even if they have the 
-	// same classId+instanceId.
-	@Override
-	public int hashCode() {
-		return id.universalId().hashCode();
+		ElementAdapter other = (ElementAdapter) obj;
+		return Objects.equals(id, other.id);
 	}
 	
 	

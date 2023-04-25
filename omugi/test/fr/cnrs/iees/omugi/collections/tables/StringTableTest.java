@@ -114,7 +114,7 @@ class StringTableTest {
 //		System.out.println("example 7b : value \'"+value+"\' saveable as \'"+st.toSaveableString()+"\'");
 		assertNotNull(st);
 		s = st.getWithFlatIndex(0);
-		assertEquals(s, "\"\"");
+		assertEquals(s, "");
 		value = "([1])";
 		st = StringTable.valueOf(value);
 		show("example 7c", value, st.toSaveableString());
@@ -154,7 +154,7 @@ class StringTableTest {
 		st = StringTable.valueOf(value);
 		assertNotNull(st);
 		s = st.getWithFlatIndex(0);
-		assertEquals(s, "System.out.println(\",\");");
+		assertEquals(s, "System.out.println(,);");
 		show("example 9",value,st.toSaveableString());
 
 	}
