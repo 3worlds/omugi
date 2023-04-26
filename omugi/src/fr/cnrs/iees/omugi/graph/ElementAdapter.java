@@ -30,8 +30,6 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.graph;
 
-import java.util.Objects;
-
 import fr.cnrs.iees.omugi.identity.Identity;
 import fr.cnrs.iees.omugi.identity.IdentityScope;
 
@@ -125,7 +123,9 @@ public abstract class ElementAdapter implements Element {
 		if (!(obj instanceof ElementAdapter))
 			return false;
 		ElementAdapter other = (ElementAdapter) obj;
-		return Objects.equals(id, other.id);
+//		return Objects.equals(id, other.id);
+		return id == other.id; // if the id is not the same object, then it's a different element
+
 	}
 	
 	
