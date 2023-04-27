@@ -44,7 +44,8 @@ import fr.cnrs.iees.omugi.identity.IdentityScope;
  */
 public final class SimpleIdentity implements Identity {
 
-	private String id;
+	private String ids;
+	private long idi;
 	private final IdentityScope scope;
 	// hash code for fast indexing
 	private int hash = 0;
@@ -57,13 +58,14 @@ public final class SimpleIdentity implements Identity {
 	 */
 	protected SimpleIdentity(String id, IdentityScope scope) {
 		super();
-		this.id = id;
+		this.ids = id;
+		this.idi = Long.valueOf(ids);
 		this.scope = scope;
 	}
 
 	@Override
 	public String id() {
-		return id;
+		return ids;
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public final class SimpleIdentity implements Identity {
 
 	@Override
 	public String toString() {
-		return id;
+		return ids;
 	}
 	/*
 	 * renaming can only take if:
@@ -97,7 +99,7 @@ public final class SimpleIdentity implements Identity {
 		if (scope.contains(newId))
 			throw new IllegalArgumentException(
 					"Attempt to rename an id to one that already exists from '" + oldId + "' to '" + newId + "'");
-		this.id = newId;
+		this.ids = newId;
 		scope.removeId(oldId);
 		scope.addId(newId);
 	}
@@ -108,7 +110,7 @@ public final class SimpleIdentity implements Identity {
 	@Override
 	public int hashCode() {
 		if (hash==0)
-			hash = Objects.hash(id,scope);
+			hash = Objects.hash(idi,scope);
 		return hash;
 	}
 
@@ -122,7 +124,7 @@ public final class SimpleIdentity implements Identity {
 		if (!(obj instanceof SimpleIdentity))
 			return false;
 		SimpleIdentity other = (SimpleIdentity) obj;
-		return Objects.equals(id,other.id) && Objects.equals(scope,other.scope);
+		return idi==other.idi && Objects.equals(scope,other.scope);
 	}
 
 }
