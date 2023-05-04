@@ -45,7 +45,7 @@ import fr.cnrs.iees.omugi.identity.IdentityScope;
 public final class SimpleIdentity implements Identity {
 
 	private String ids;
-	private long idi;
+//	private long idi;
 	private final IdentityScope scope;
 	// hash code for fast indexing
 	private int hash = 0;
@@ -59,7 +59,7 @@ public final class SimpleIdentity implements Identity {
 	protected SimpleIdentity(String id, IdentityScope scope) {
 		super();
 		this.ids = id;
-		this.idi = Long.valueOf(ids);
+//		this.idi = Long.valueOf(ids);
 		this.scope = scope;
 	}
 
@@ -110,7 +110,7 @@ public final class SimpleIdentity implements Identity {
 	@Override
 	public int hashCode() {
 		if (hash==0)
-			hash = Objects.hash(idi,scope);
+			hash = Objects.hash(ids,scope);
 		return hash;
 	}
 
@@ -124,7 +124,8 @@ public final class SimpleIdentity implements Identity {
 		if (!(obj instanceof SimpleIdentity))
 			return false;
 		SimpleIdentity other = (SimpleIdentity) obj;
-		return idi==other.idi && Objects.equals(scope,other.scope);
+//		return idi==other.idi && Objects.equals(scope,other.scope);
+		return ids.equals(other.ids) && Objects.equals(scope,other.scope);
 	}
 
 }
