@@ -30,6 +30,10 @@
  **************************************************************************/
 package fr.cnrs.iees.omugi.graph;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import fr.cnrs.iees.omhtk.Textable;
 
 /**
@@ -48,6 +52,10 @@ import fr.cnrs.iees.omhtk.Textable;
  */
 public interface Graph<N extends Node, E extends Edge> 
 		extends NodeSet<N>, EdgeSet<E>, Textable {
+	
+	public static enum searchAlgorithm {
+		firstDepthSearch;
+	}
 
 	@Override
 	public default String toShortString() {
@@ -55,7 +63,7 @@ public interface Graph<N extends Node, E extends Edge>
 	}
 
 	@Override
-	default String toDetailedString() {
+	public default String toDetailedString() {
 		StringBuilder sb = new StringBuilder(toShortString());
 		StringBuilder zb = new StringBuilder();
 		sb.append(" NODES=(");
@@ -71,5 +79,64 @@ public interface Graph<N extends Node, E extends Edge>
 		sb.append(") EDGES=(").append(zb.toString()).append(')');
 		return sb.toString();
 	}
+	
+	/**
+	 * <p>Computation of 
+	 * <a href="https://en.wikipedia.org/wiki/Component_(graph_theory)">connected components</a>
+	 *  within a graph.</p>
+	 *  <p>The search algorithm can be specified by overriding the {@code searchAlgorithm()} method.
+	 *  Default is the <em>First depth search</em> algorithm.</p> 
+	 * 
+	 * @return a collection of sets of connected nodes
+	 */
+	public default Collection<Set<Node>> connectedComponents() {
+		switch (searchAlgorithm()) {
+		case firstDepthSearch: 
+			return firstDepthSearch();
+		default:
+			throw new UnsupportedOperationException("Invalid search agorithm for connected component search");
+		}
+	}
+	
+	/**
+	 * <p>Selection of a graph search algorithm for finding connected components in a graph.
+	 * Default is the <em>First depth search</em> algorithm for undirected graphs as implemented from 
+	 * <a href="https://fr.wikipedia.org/wiki/Algorithme_de_parcours_en_profondeur#Impl%C3%A9mentation_r%C3%A9cursive">there</a>.
+	 * </p>
+	 * <p><strong>NB:</strong> at the moment only <em>First depth search</em> algorithm is implemented.</p>
+	 * 
+	 * @return an enum value of class {@code searchAlgorithm}
+	 */
+	public default searchAlgorithm searchAlgorithm() {
+		return searchAlgorithm.firstDepthSearch;
+	}
+	
+	// recursive helper method for firstDepthSearch
+	private void exploreGraph(Node n, Set<Node> tagged) {
+		tagged.add(n);
+		for (Edge e:n.edges()) {
+			Node nn = e.otherNode(n);
+			if (!tagged.contains(nn))
+				exploreGraph(nn,tagged);
+		}
+	}
+	
+	// implementation of the First depth search algorithm for connected component search
+	private Collection<Set<Node>> firstDepthSearch() {
+		Set<Node> tagged = new HashSet<>();
+		Set<Set<Node>> connectedComponents = new HashSet<>();
+		Set<Node> previouslyTagged = new HashSet<>();
+		for (Node n:nodes()) {
+			if (!tagged.contains(n)) {
+				exploreGraph(n,tagged);
+				Set<Node> setDif = new HashSet<>(tagged);
+				setDif.removeAll(previouslyTagged);				
+				connectedComponents.add(setDif);	
+				previouslyTagged.addAll(setDif);
+			}
+		}
+		return connectedComponents;
+	}
+	
 
 }

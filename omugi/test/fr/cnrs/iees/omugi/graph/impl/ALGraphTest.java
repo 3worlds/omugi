@@ -32,6 +32,9 @@ package fr.cnrs.iees.omugi.graph.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Collection;
+import java.util.Set;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -182,6 +185,20 @@ class ALGraphTest {
 	@Test
 	void testToString() {
 		show("testToString",graph.toString());
+	}
+	
+	@Test
+	void testConnectedComponents() {
+		ALNode n5 = f.makeNode("n5");
+		ALNode n6 = f.makeNode("n6");
+		ALNode n7 = f.makeNode("n7");
+		f.makeEdge(n7,n5,"e6");
+		graph.addNode(n5);
+		graph.addNode(n6);
+		graph.addNode(n7);
+		Collection<Set<Node>> result = graph.connectedComponents();
+		show("testConnectedComponents",result.toString());
+		assertEquals(result.size(),3);		
 	}
 
 }
