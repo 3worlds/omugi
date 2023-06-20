@@ -1,5 +1,5 @@
 <!--===================================================================================
- ant and ivy scripts for project <omugi> version 0.7.0 (Tue Jun 20 15:50:38 CEST 2023)
+ ant and ivy scripts for project <omugi> version 0.6.1 (Tue Apr 25 11:31:38 CEST 2023)
  author: Jacques Gignoux <jacques.gignoux@upmc.fr>
 
  CAUTION: this file is generated - DO NOT EDIT!
@@ -47,7 +47,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="CNRS/ANU"/>
 				<attribute name="Implementation-Title" value="fr.cnrs.iees.omugi"/>
-				<attribute name="Implementation-Version" value="0.7.0"/>
+				<attribute name="Implementation-Version" value="0.6.1"/>
 				<attribute name="Built-By" value="${user.name}"/>
  			</manifest>
 		</jar>
